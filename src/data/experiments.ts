@@ -69,13 +69,13 @@ const AI_OMOK: Experiment = {
 const STOCKPULSE_SELF: Experiment = {
   id: 'stockpulse-ai-self-improvement',
   name: 'StockPulse AI 자기개선 실험',
-  description: 'AI가 스스로 예측을 분석하고 개선하는 실험 — 매일 아침 KOSPI 예측을 저장하고, 장 마감 후 정확도를 측정하며 개선 방안을 LLM이 자동 생성',
+  description: 'AI가 스스로 예측을 분석하고 개선하는 실험 — 매일 아침 KOSPI 예측을 저장하고, 장 마감 후 정확도를 측정하여 LLM이 개선 방안을 도출, 실제 프롬프트/ML 파라미터/데이터 피처를 자동 변경하는 자기개선 루프',
   progress: 80,
   color: 'orange',
   status: '진행중',
   category: 'running',
   startedAt: '2026.07.21',
-  whyText: 'StockPulse의 아침 예측이 얼마나 정확한지 측정하고, 실패 원인을 분석하여 점진적으로 개선하는 것이 목표. 투자 목적이 아닌 AI 예측 모델의 정확도 한계를 탐구하는 순수 실험.',
+  whyText: '매일 아침 09:00 KOSPI 예측 → 장 마감 후 정확도 측정 → LLM이 실패 원인 분석 + 개선 방안 도출 → 개선 방안을 실제 파이프라인에 자동 적용(프롬프트 패치/ML 파라미터/피처 변경) → 다음날 개선된 환경에서 재예측. 이 루프가 매일 반복되며, "분석만 하고 끝"이 아니라 실제로 시스템이 진화하는 것이 목표. 투자 목적이 아닌 AI 예측 모델이 스스로 개선할 수 있는지 탐구하는 실험.',
   nextGoals: ['7일 연속 예측 기록 수집', '실패 패턴 분석 및 프롬프트 개선', '정확도 60% 이상 달성', 'Lab 대시보드에 실시간 정확도 표시'],
   timeline: [
     { name: '파이프라인 설계',        status: '완료',   date: '2026.07.21', result: '설계 문서 위키 저장' },
@@ -83,6 +83,7 @@ const STOCKPULSE_SELF: Experiment = {
     { name: '아침 예측 저장 로직',    status: '완료',   date: '2026.07.21', result: 'stockpulse_publish.py' },
     { name: '저녁 분석 + Lab 게시',   status: '완료',   date: '2026.07.21', blogSlug: '/lab/stockpulse-self-2026-07-21', result: '7/21 예측(하락) vs 실제(상승) 분석 — 정확도 0.65, LLM 개선 방안 생성, Lab 포스트 발행' },
     { name: '프론트 성공률 위젯',     status: '완료',   date: '2026.07.22', result: 'Stock 페이지 상단 예측 현황 3-칼럼 위젯 + API' },
+    { name: '자기개선 루프 구축',      status: '완료',   date: '2026.07.22', result: 'LLM action plan → 자동 프롬프트/ML/피처 변경 → Lab 기록' },
   ],
   blogPosts: ['/lab/stockpulse-self-2026-07-21'],
   githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
