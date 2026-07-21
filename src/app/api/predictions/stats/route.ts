@@ -1,14 +1,9 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from '@/lib/supabase'
 
-const supabaseUrl = process.env.SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
-
-export const revalidate = 300 // 5분 ISR
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
-  const supabase = createClient(supabaseUrl, supabaseServiceKey)
-
   // 1. 가장 최근 예측
   const { data: latest } = await supabase
     .from('predictions')
@@ -34,15 +29,14 @@ export async function GET() {
     .select('accuracy_score, is_correct')
     .not('accuracy_score', 'is', null)
 
-  // 계산
   const r7 = recent7 || []
   const allData = allMorning || []
 
   const calcStats = (items: any[]) => {
     const total = items.length
-    const correct = items.filter(p => p.is_correct === true).length
-    const wrong = items.filter(p => p.is_correct === false).length
-    const pending = items.filter(p => p.is_correct === null).length
+    const correct = items.filter((p: any) => p.is_correct === true).length
+    const wrong = items.filter((p: any) => p.is_correct === false).length
+    const pending = items.filter((p: any) => p.is_correct === null).length
     const accuracy = total > 0 && total !== pending
       ? Math.round((correct / (total - pending)) * 100) / 100
       : null

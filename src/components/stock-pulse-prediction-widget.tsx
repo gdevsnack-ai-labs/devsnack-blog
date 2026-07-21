@@ -1,9 +1,5 @@
 import { TrendingUp, TrendingDown, Minus, AlertCircle, CheckCircle2, HelpCircle, BarChart3, Target } from 'lucide-react'
-import { createClient } from '@supabase/supabase-js'
-
-const supabaseUrl = process.env.SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
-const supabase = createClient(supabaseUrl, supabaseServiceKey)
+import { supabase } from '@/lib/supabase'
 
 function DirectionIcon({ direction, size = 16 }: { direction: string; size?: number }) {
   if (direction === '상승') return <TrendingUp size={size} className="text-red-500" />
