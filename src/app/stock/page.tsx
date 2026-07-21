@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Calendar, TrendingUp } from 'lucide-react'
 import { BlogHeader } from '@/components/blog-header'
 import { BlogSidebar } from '@/components/blog-sidebar'
+import { StockPulsePredictionWidget } from '@/components/stock-pulse-prediction-widget'
 
 export const revalidate = 60
 
@@ -47,6 +48,7 @@ export default async function StockPage({
     <div className="min-h-screen">
       <BlogHeader title="StockPulse AI Lab" subtitle="AI가 분석하는 주식 시장 — KOSPI/KOSDAQ" icon="trending" color="green" />
       <main className="max-w-6xl mx-auto px-4 py-8">
+        <StockPulsePredictionWidget />
         <div className="flex gap-8">
           <div className="flex-1 min-w-0">
             <div className="mb-8">

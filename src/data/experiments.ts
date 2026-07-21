@@ -82,7 +82,7 @@ const STOCKPULSE_SELF: Experiment = {
     { name: 'predictions 테이블 생성', status: '완료',   date: '2026.07.21', result: 'Supabase 16개 컬럼' },
     { name: '아침 예측 저장 로직',    status: '완료',   date: '2026.07.21', result: 'stockpulse_publish.py' },
     { name: '저녁 분석 + Lab 게시',   status: '완료',   date: '2026.07.21', blogSlug: '/lab/stockpulse-self-2026-07-21', result: '7/21 예측(하락) vs 실제(상승) 분석 — 정확도 0.65, LLM 개선 방안 생성, Lab 포스트 발행' },
-    { name: '프론트 성공률 위젯',     status: '예정' },
+    { name: '프론트 성공률 위젯',     status: '완료',   date: '2026.07.22', result: 'Stock 페이지 상단 예측 현황 3-칼럼 위젯 + API' },
   ],
   blogPosts: ['/lab/stockpulse-self-2026-07-21'],
   githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
