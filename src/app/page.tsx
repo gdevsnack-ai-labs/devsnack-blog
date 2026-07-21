@@ -11,7 +11,7 @@ import { ExperimentStrip } from '@/components/experiment-strip'
 import { SubscribeCta } from '@/components/subscribe-cta'
 import { LabDashboard } from '@/components/lab-dashboard'
 import { supabase, type Post } from '@/lib/supabase'
-import { experiments } from '@/data/experiments'
+import { getStats } from '@/lib/stats'
 import type { BlogId } from '@/lib/colors'
 
 export const revalidate = 60 // 1분 ISR
@@ -58,18 +58,7 @@ const BLOGS = [
 export default async function Home() {
   const latestPosts = await getLatestPosts(3)
   
-  const running = experiments.filter(e => e.category === 'running').length
-  const { count: totalPosts } = await supabase
-    .from('posts')
-    .select('id', { count: 'exact', head: true })
-    .eq('status', 'live')
-  const stats = {
-    runningProjects: running,
-    totalPosts: totalPosts || 0,
-    totalVideos: 17,
-    modelsTested: 42,
-    benchmarkRuns: 318,
-  }
+  const stats = await getStats()
 
   return (
     <div className="min-h-screen flex flex-col bg-background">

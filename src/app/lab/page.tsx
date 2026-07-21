@@ -1,7 +1,7 @@
 import { LabDashboard } from '@/components/lab-dashboard'
 import { LabProjectCard } from '@/components/lab-project-card'
 import { experiments, type ExperimentCategory } from '@/data/experiments'
-import { supabase } from '@/lib/supabase'
+import { getStats } from '@/lib/stats'
 
 export const revalidate = 60
 
@@ -10,25 +10,6 @@ const GROUPS: Array<{ key: ExperimentCategory; label: string; description: strin
   { key: 'planning',  label: '🟡 Planning',  description: '계획 중인 실험' },
   { key: 'completed', label: '✅ Completed', description: '완료된 실험' },
 ]
-
-async function getStats() {
-  const { count: totalPosts } = await supabase
-    .from('posts')
-    .select('id', { count: 'exact', head: true })
-    .eq('status', 'live')
-
-  const running = experiments.filter(e => e.category === 'running').length
-  const nonDummy = experiments.filter(e => !e.isDummy)
-  const completed = nonDummy.filter(e => e.category === 'completed').length
-
-  return {
-    runningProjects: running,
-    totalPosts: totalPosts || 0,
-    totalVideos: 17,
-    modelsTested: 40,
-    benchmarkRuns: 19,
-  }
-}
 
 export default async function LabPage() {
   const stats = await getStats()

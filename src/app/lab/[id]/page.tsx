@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, FileText, Video, ExternalLink, CheckCircle2, Sparkles, Calendar, Clock } from 'lucide-react'
+import { ArrowLeft, FileText, Video, ExternalLink, CheckCircle2, Sparkles, Calendar, Clock, ViewIcon } from 'lucide-react'
 import { ProgressBar } from '@/components/progress-bar'
 import { experiments, type PartStatus } from '@/data/experiments'
 import { supabase } from '@/lib/supabase'
@@ -35,8 +35,73 @@ async function getBlogPosts(slugs: string[]) {
   return data || []
 }
 
-export default async function LabDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
+/** Render a lab blog post (blog_id='lab') */
+async function LabPostPage({ slug }: { slug: string }) {
+  const { data: post } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('slug', slug)
+    .eq('status', 'live')
+    .eq('blog_id', 'lab')
+    .single()
+
+  if (!post) notFound()
+
+  const readingTime = Math.max(1, Math.ceil((post.content?.length || 0) / 2000))
+
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="max-w-4xl mx-auto px-4 py-4">
+        <Link href="/lab" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground no-underline mb-6">
+          <ArrowLeft className="w-4 h-4" />
+          Lab으로 돌아가기
+        </Link>
+      </div>
+
+      <article className="max-w-3xl mx-auto px-4 py-8">
+        {post.cover_image && (
+          <div className="aspect-[16/7] rounded-xl overflow-hidden mb-8 bg-gray-100 dark:bg-gray-800">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={post.cover_image} alt={`${post.title} — 대표 이미지`} className="w-full h-full object-cover" />
+          </div>
+        )}
+
+        <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-4">{post.title}</h1>
+
+        <div className="flex flex-wrap items-center gap-3 mb-8 text-sm text-muted-foreground">
+          {post.published && (
+            <span className="flex items-center gap-1.5">
+              <Calendar className="w-4 h-4" />
+              {new Date(post.published).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </span>
+          )}
+          <span className="flex items-center gap-1.5">
+            <Clock className="w-4 h-4" />
+            약 {readingTime}분
+          </span>
+          {post.labels && post.labels.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {post.labels.map((label: string) => (
+                <span key={label} className="px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                  {label}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* 본문 */}
+        <div
+          className="prose prose-devsnack dark:prose-invert max-w-none"
+          dangerouslySetInnerHTML={{ __html: post.content || '' }}
+        />
+      </article>
+    </div>
+  )
+}
+
+/** Render experiment detail page */
+async function ExperimentDetailPage({ id }: { id: string }) {
   const exp = experiments.find(e => e.id === id)
   if (!exp) notFound()
 
@@ -45,13 +110,11 @@ export default async function LabDetailPage({ params }: { params: Promise<{ id: 
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* 뒤로 가기 */}
         <Link href="/lab" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground no-underline mb-6">
           <ArrowLeft className="w-4 h-4" />
           Lab으로 돌아가기
         </Link>
 
-        {/* 헤더 */}
         <div className="flex items-start justify-between gap-4 mb-6">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{exp.name}</h1>
@@ -65,12 +128,10 @@ export default async function LabDetailPage({ params }: { params: Promise<{ id: 
           <ProgressBar value={exp.progress} color={exp.color} showLabel size="md" />
         </div>
 
-        {/* 설명 */}
         <section className="mb-8">
           <p className="text-base leading-relaxed">{exp.description}</p>
         </section>
 
-        {/* Why */}
         {exp.whyText && (
           <section className="mb-8 p-5 bg-muted/30 rounded-xl border border-border">
             <h2 className="text-sm font-semibold mb-2 text-muted-foreground">🤔 왜 만들었는가</h2>
@@ -78,9 +139,7 @@ export default async function LabDetailPage({ params }: { params: Promise<{ id: 
           </section>
         )}
 
-        {/* 2-칼럼: 타임라인 + Next Goals */}
         <div className="grid gap-6 md:grid-cols-2 mb-8">
-          {/* 타임라인 */}
           {exp.timeline && exp.timeline.length > 0 && (
             <div className="border border-border rounded-xl p-5 bg-white dark:bg-gray-900">
               <h2 className="text-lg font-bold mb-4">📅 Timeline</h2>
@@ -119,7 +178,6 @@ export default async function LabDetailPage({ params }: { params: Promise<{ id: 
             </div>
           )}
 
-          {/* Next Goals */}
           {exp.nextGoals && exp.nextGoals.length > 0 && (
             <div className="border border-border rounded-xl p-5 bg-white dark:bg-gray-900">
               <h2 className="text-lg font-bold mb-4">🎯 Next Goals</h2>
@@ -135,7 +193,6 @@ export default async function LabDetailPage({ params }: { params: Promise<{ id: 
           )}
         </div>
 
-        {/* Links */}
         <section className="mb-8 border border-border rounded-xl p-5 bg-white dark:bg-gray-900">
           <h2 className="text-lg font-bold mb-4">🔗 Links</h2>
           <div className="flex flex-wrap gap-3">
@@ -179,4 +236,31 @@ export default async function LabDetailPage({ params }: { params: Promise<{ id: 
       </div>
     </div>
   )
+}
+
+// ── Main: experiment first, fallback to lab blog post ──
+export default async function LabDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+
+  // 1) 실험 상세 페이지 시도
+  const exp = experiments.find(e => e.id === id)
+  if (exp) {
+    return <ExperimentDetailPage id={id} />
+  }
+
+  // 2) Lab 블로그 포스트 시도
+  const { data: post } = await supabase
+    .from('posts')
+    .select('slug')
+    .eq('slug', id)
+    .eq('status', 'live')
+    .eq('blog_id', 'lab')
+    .single()
+
+  if (post) {
+    return <LabPostPage slug={id} />
+  }
+
+  // 3) 둘 다 없으면 404
+  notFound()
 }
