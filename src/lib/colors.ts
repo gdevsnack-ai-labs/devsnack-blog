@@ -1,7 +1,7 @@
 // DevSnack Blog — 블로그별 색상 토큰
 // docs/DESIGN.md 참조
 
-export type BlogId = 'devsnack' | 'stockpulse' | 'realestate' | 'aitech'
+export type BlogId = 'devsnack' | 'stockpulse' | 'realestate' | 'aitech' | 'lab'
 export type BlogColor = 'blue' | 'green' | 'orange' | 'purple'
 
 export const BLOG_COLORS: Record<BlogId, {
@@ -39,6 +39,13 @@ export const BLOG_COLORS: Record<BlogId, {
     border: 'border-purple-200 dark:border-purple-800',
     hover: 'hover:border-purple-300 dark:hover:border-purple-700',
   },
+  lab: {
+    primary: 'blue',
+    text: 'text-blue-600 dark:text-blue-400',
+    bg: 'bg-blue-100 dark:bg-blue-900/30',
+    border: 'border-blue-200 dark:border-blue-800',
+    hover: 'hover:border-blue-300 dark:hover:border-blue-700',
+  },
 }
 
 export const BLOG_LABEL: Record<BlogId, string> = {
@@ -46,6 +53,7 @@ export const BLOG_LABEL: Record<BlogId, string> = {
   stockpulse: 'StockPulse',
   realestate: '부동산',
   aitech: 'AI Tech',
+  lab: 'Lab',
 }
 
 export const BLOG_PATH: Record<BlogId, string> = {
@@ -53,4 +61,5 @@ export const BLOG_PATH: Record<BlogId, string> = {
   stockpulse: '/stock',
   realestate: '/realestate',
   aitech: '/aitech',
+  lab: '/lab',
 }
