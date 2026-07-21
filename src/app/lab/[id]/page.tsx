@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, FileText, Video, ExternalLink, CheckCircle2, Sparkles, Calendar, Clock, ViewIcon } from 'lucide-react'
+import { ArrowLeft, FileText, Video, ExternalLink, CheckCircle2, Sparkles, Calendar, Clock } from 'lucide-react'
 import { ProgressBar } from '@/components/progress-bar'
 import { experiments, type PartStatus } from '@/data/experiments'
 import { supabase } from '@/lib/supabase'
+import { MarkdownRenderer } from '@/components/markdown-renderer'
 import type { BlogId, BlogColor } from '@/lib/colors'
 
 export const revalidate = 60
@@ -90,11 +91,8 @@ async function LabPostPage({ slug }: { slug: string }) {
           )}
         </div>
 
-        {/* 본문 */}
-        <div
-          className="prose prose-devsnack dark:prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ __html: post.content || '' }}
-        />
+        {/* 본문 — 마크다운 렌더링 */}
+        <MarkdownRenderer content={post.content || ''} />
       </article>
     </div>
   )
