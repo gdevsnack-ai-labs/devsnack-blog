@@ -105,6 +105,19 @@ async function ExperimentDetailPage({ id }: { id: string }) {
 
   const relatedPosts = await getBlogPosts(exp.blogPosts || [])
 
+  // StockPulse 자기개선 실험: 일별 분석 리포트 동적 조회
+  let dailyReports: any[] = []
+  if (id === 'stockpulse-ai-self-improvement') {
+    const { data } = await supabase
+      .from('posts')
+      .select('slug, blog_id, title, published, excerpt')
+      .like('slug', 'stockpulse-self-%')
+      .eq('status', 'live')
+      .order('published', { ascending: false })
+      .limit(50)
+    dailyReports = data || []
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -190,6 +203,34 @@ async function ExperimentDetailPage({ id }: { id: string }) {
             </div>
           )}
         </div>
+
+        {/* 일별 분석 리포트 (동적) */}
+        {dailyReports.length > 0 && (
+          <section className="mb-8 border border-border rounded-xl p-5 bg-white dark:bg-gray-900">
+            <h2 className="text-lg font-bold mb-4">📋 일별 분석 리포트</h2>
+            <div className="space-y-2">
+              {dailyReports.map((post: any) => (
+                <Link
+                  key={post.slug}
+                  href={`/lab/${post.slug}`}
+                  className="flex items-center justify-between gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors no-underline group"
+                >
+                  <div className="flex-1 min-w-0">
+                    <span className="text-sm font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
+                      {post.title}
+                    </span>
+                    {post.excerpt && (
+                      <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{post.excerpt}</p>
+                    )}
+                  </div>
+                  <span className="text-xs text-muted-foreground shrink-0">
+                    {post.published ? new Date(post.published).toLocaleDateString('ko-KR') : ''}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="mb-8 border border-border rounded-xl p-5 bg-white dark:bg-gray-900">
           <h2 className="text-lg font-bold mb-4">🔗 Links</h2>
