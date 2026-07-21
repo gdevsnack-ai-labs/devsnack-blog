@@ -6,12 +6,9 @@ import { TagChip } from '@/components/tag-chip'
 import { ProgressBar } from '@/components/progress-bar'
 import { LatestPostCard } from '@/components/latest-post-card'
 import { LatestVideoCard } from '@/components/latest-video-card'
-import { CurrentExperimentCard } from '@/components/current-experiment-card'
 import { ExperimentStrip } from '@/components/experiment-strip'
 import { SubscribeCta } from '@/components/subscribe-cta'
-import { LabDashboard } from '@/components/lab-dashboard'
 import { supabase, type Post } from '@/lib/supabase'
-import { getStats } from '@/lib/stats'
 import type { BlogId } from '@/lib/colors'
 
 export const revalidate = 60 // 1분 ISR
@@ -58,8 +55,6 @@ const BLOGS = [
 export default async function Home() {
   const latestPosts = await getLatestPosts(3)
   
-  const stats = await getStats()
-
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <BlogHeader title="DevSnack Blog" subtitle="개발자의 시선으로 보는 AI" icon="terminal" color="blue" />
@@ -101,19 +96,9 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Lab 스탯 */}
-        <section className="max-w-6xl mx-auto px-4 py-6">
-          <LabDashboard stats={stats} />
-          <div className="text-center mt-4">
-            <Link href="/lab" className="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline no-underline">
-              모든 실험 보기 → <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </section>
-
         {/* 3-칼럼: 최신 글 / 최신 영상 / 현재 진행 중 */}
         <section className="max-w-6xl mx-auto px-4 py-8">
-          <div className="grid gap-6 lg:grid-cols-3">
+          <div className="grid gap-6 lg:grid-cols-2">
             {/* 좌: 최신 글 */}
             <div className="border border-border rounded-xl p-5 bg-white dark:bg-gray-900">
               <div className="flex items-center justify-between mb-4">
@@ -143,7 +128,7 @@ export default async function Home() {
               )}
             </div>
 
-            {/* 중앙: 최신 영상 */}
+            {/* 우: 최신 영상 */}
             <div>
               <div className="flex items-center justify-between mb-4 px-1">
                 <h3 className="text-lg font-bold flex items-center gap-2">
@@ -160,20 +145,6 @@ export default async function Home() {
                 </a>
               </div>
               <LatestVideoCard />
-            </div>
-
-            {/* 우: 현재 진행 중 */}
-            <div>
-              <div className="flex items-center justify-between mb-4 px-1">
-                <h3 className="text-lg font-bold flex items-center gap-2">
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                  </svg>
-                  현재 진행 중
-                </h3>
-                <span className="text-xs text-muted-foreground">프로젝트 →</span>
-              </div>
-              <CurrentExperimentCard />
             </div>
           </div>
         </section>

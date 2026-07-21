@@ -1,7 +1,5 @@
-import { LabDashboard } from '@/components/lab-dashboard'
 import { LabProjectCard } from '@/components/lab-project-card'
 import { experiments, type ExperimentCategory } from '@/data/experiments'
-import { getStats } from '@/lib/stats'
 
 export const revalidate = 60
 
@@ -12,7 +10,6 @@ const GROUPS: Array<{ key: ExperimentCategory; label: string; description: strin
 ]
 
 export default async function LabPage() {
-  const stats = await getStats()
   const nonDummy = experiments.filter(e => !e.isDummy)
 
   return (
@@ -25,9 +22,6 @@ export default async function LabPage() {
             AI와 함께 진행 중인 실험과 연구 프로젝트
           </p>
         </div>
-
-        {/* 대시보드 */}
-        <LabDashboard stats={stats} />
 
         {/* 상태별 그룹 */}
         <div className="mt-12 space-y-10">
