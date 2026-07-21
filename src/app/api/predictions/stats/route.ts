@@ -9,15 +9,15 @@ export const revalidate = 300 // 5분 ISR
 export async function GET() {
   const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-  // 1. 가장 최근 예측 (오늘/최신)
+  // 1. 가장 최근 예측
   const { data: latest } = await supabase
     .from('predictions')
     .select('*')
     .order('date', { ascending: false })
     .limit(1)
-    .single()
+    .maybeSingle()
 
-  // 2. 최근 7일 예측 정확도 통계
+  // 2. 최근 7일
   const sevenDaysAgo = new Date()
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
   const sevenDayStr = sevenDaysAgo.toISOString().slice(0, 10)
@@ -35,24 +35,21 @@ export async function GET() {
     .not('accuracy_score', 'is', null)
 
   // 계산
-  const recent7Total = recent7?.length || 0
-  const recent7Correct = recent7?.filter(p => p.is_correct === true).length || 0
-  const recent7Wrong = recent7?.filter(p => p.is_correct === false).length || 0
-  const recent7Pending = recent7?.filter(p => p.is_correct === null).length || 0
-  const recent7Accuracy = recent7Total > 0 && recent7Total !== recent7Pending
-    ? Math.round((recent7Correct / (recent7Total - recent7Pending)) * 100) / 100
-    : null
+  const r7 = recent7 || []
+  const allData = allMorning || []
 
-  const allTotal = allMorning?.length || 0
-  const allCorrect = allMorning?.filter(p => p.is_correct === true).length || 0
-  const allWrong = allMorning?.filter(p => p.is_correct === false).length || 0
-  const allPending = allMorning?.filter(p => p.is_correct === null).length || 0
-  const allAccuracy = allTotal > 0 && allTotal !== allPending
-    ? Math.round((allCorrect / (allTotal - allPending)) * 100) / 100
-    : null
+  const calcStats = (items: any[]) => {
+    const total = items.length
+    const correct = items.filter(p => p.is_correct === true).length
+    const wrong = items.filter(p => p.is_correct === false).length
+    const pending = items.filter(p => p.is_correct === null).length
+    const accuracy = total > 0 && total !== pending
+      ? Math.round((correct / (total - pending)) * 100) / 100
+      : null
+    return { total, correct, wrong, pending, accuracy }
+  }
 
-  // 오늘 예측 (가장 최근 morning 세션)
-  const todayPrediction = latest?.session === 'morning' ? latest : null
+  const todayPrediction = latest && latest.session === 'morning' ? latest : null
 
   return NextResponse.json({
     today: todayPrediction ? {
@@ -67,21 +64,9 @@ export async function GET() {
       fail_reason: todayPrediction.fail_reason,
       improvement: todayPrediction.improvement,
     } : null,
-    recent7: {
-      total: recent7Total,
-      correct: recent7Correct,
-      wrong: recent7Wrong,
-      pending: recent7Pending,
-      accuracy: recent7Accuracy,
-    },
-    all: {
-      total: allTotal,
-      correct: allCorrect,
-      wrong: allWrong,
-      pending: allPending,
-      accuracy: allAccuracy,
-    },
-    latestEvaluation: latest?.is_correct !== null ? {
+    recent7: calcStats(r7),
+    all: calcStats(allData),
+    latestEvaluation: latest && latest.is_correct != null ? {
       is_correct: latest.is_correct,
       accuracy_score: latest.accuracy_score,
       fail_reason: latest.fail_reason,
