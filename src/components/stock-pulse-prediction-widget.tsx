@@ -37,15 +37,25 @@ function StatusBadge({ is_correct }: { is_correct: boolean | null }) {
 }
 
 export async function StockPulsePredictionWidget() {
-  // 1. 가장 최근 예측
+  // 1. 최신 LLM 예측
   const { data: latest } = await supabase
     .from('predictions')
     .select('*')
+    .eq('session', 'morning')
     .order('date', { ascending: false })
     .limit(1)
     .maybeSingle()
 
-  // 2. 최근 7일
+  // 2. 최신 ML 예측
+  const { data: mlLatest } = await supabase
+    .from('predictions')
+    .select('*')
+    .eq('session', 'ml')
+    .order('date', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  // 3. 최근 7일 — LLM
   const sevenDaysAgo = new Date()
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
   const sevenDayStr = sevenDaysAgo.toISOString().slice(0, 10)
@@ -53,21 +63,38 @@ export async function StockPulsePredictionWidget() {
   const { data: recent7 } = await supabase
     .from('predictions')
     .select('*')
+    .eq('session', 'morning')
     .gte('date', sevenDayStr)
     .order('date', { ascending: false })
 
-  // 3. 전체 통계
+  // 4. 최근 7일 — ML
+  const { data: mlRecent7 } = await supabase
+    .from('predictions')
+    .select('*')
+    .eq('session', 'ml')
+    .gte('date', sevenDayStr)
+    .order('date', { ascending: false })
+
+  // 5. 전체 통계 — LLM
   const { data: allMorning } = await supabase
     .from('predictions')
     .select('accuracy_score, is_correct')
+    .eq('session', 'morning')
+    .not('accuracy_score', 'is', null)
+
+  // 6. 전체 통계 — ML
+  const { data: allMl } = await supabase
+    .from('predictions')
+    .select('accuracy_score, is_correct')
+    .eq('session', 'ml')
     .not('accuracy_score', 'is', null)
 
   // 아무 데이터도 없으면 렌더링 안 함
-  if ((!recent7 || recent7.length === 0) && (!latest || !latest.is_correct)) {
+  if ((!recent7 || recent7.length === 0) && (!latest || !latest.is_correct) && (!mlRecent7 || mlRecent7.length === 0)) {
     return null
   }
 
-  // 계산
+  // LLM 계산
   const r7 = recent7 || []
   const r7Total = r7.length
   const r7Correct = r7.filter(p => p.is_correct === true).length
@@ -86,7 +113,25 @@ export async function StockPulsePredictionWidget() {
     ? Math.round((allCorrect / (allTotal - allPending)) * 100) / 100
     : null
 
-  // 오늘 예측 = 최신 morning 세션
+  // ML 계산
+  const mlR7 = mlRecent7 || []
+  const mlR7Total = mlR7.length
+  const mlR7Correct = mlR7.filter(p => p.is_correct === true).length
+  const mlR7Wrong = mlR7.filter(p => p.is_correct === false).length
+  const mlR7Pending = mlR7.filter(p => p.is_correct === null).length
+  const mlR7Accuracy = mlR7Total > 0 && mlR7Total !== mlR7Pending
+    ? Math.round((mlR7Correct / (mlR7Total - mlR7Pending)) * 100) / 100
+    : null
+
+  const allMlData = allMl || []
+  const mlAllTotal = allMlData.length
+  const mlAllCorrect = allMlData.filter(p => p.is_correct === true).length
+  const mlAllWrong = allMlData.filter(p => p.is_correct === false).length
+  const mlAllPending = allMlData.filter(p => p.is_correct === null).length
+  const mlAllAccuracy = mlAllTotal > 0 && mlAllTotal !== mlAllPending
+    ? Math.round((mlAllCorrect / (mlAllTotal - mlAllPending)) * 100) / 100
+    : null
+
   const todayPrediction = latest?.session === 'morning' ? latest : null
 
   return (
@@ -147,7 +192,7 @@ export async function StockPulsePredictionWidget() {
           </div>
           <div className="flex items-baseline gap-2 mb-1">
             <AccuracyBadge score={r7Accuracy} />
-            <span className="text-xs text-muted-foreground">정확도</span>
+            <span className="text-xs text-muted-foreground">LLM 정확도</span>
           </div>
           <div className="flex gap-3 text-xs text-muted-foreground">
             <span className="text-green-600 dark:text-green-400">✅ {r7Correct}</span>
@@ -167,6 +212,34 @@ export async function StockPulsePredictionWidget() {
               />
             </div>
           )}
+          {/* ML recent 7 */}
+          <div className="mt-3 pt-3 border-t border-border">
+            <div className="flex items-baseline gap-2 mb-1">
+              <AccuracyBadge score={mlR7Accuracy} />
+              <span className="text-xs text-muted-foreground">ML 정확도</span>
+            </div>
+            <div className="flex gap-3 text-xs text-muted-foreground">
+              <span className="text-green-600 dark:text-green-400">✅ {mlR7Correct}</span>
+              <span className="text-red-500">❌ {mlR7Wrong}</span>
+              {mlR7Pending > 0 && <span className="text-gray-400">⏳ {mlR7Pending}</span>}
+            </div>
+            {mlR7Total > 0 && (
+              <div className="mt-2 h-1.5 rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                <div
+                  className="h-full rounded-full transition-all"
+                  style={{
+                    width: mlR7Accuracy !== null ? `${Math.round(mlR7Accuracy * 100)}%` : '0%',
+                    background: mlR7Accuracy !== null
+                      ? mlR7Accuracy >= 0.7 ? '#16a34a' : mlR7Accuracy >= 0.4 ? '#ca8a04' : '#dc2626'
+                      : '#d1d5db',
+                  }}
+                />
+              </div>
+            )}
+            {mlR7Total === 0 && (
+              <p className="text-xs text-muted-foreground mt-1">데이터 수집 중...</p>
+            )}
+          </div>
           {r7Total === 0 && (
             <p className="text-xs text-muted-foreground mt-1">데이터 수집 중...</p>
           )}
@@ -179,12 +252,23 @@ export async function StockPulsePredictionWidget() {
           </div>
           <div className="flex items-baseline gap-2 mb-1">
             <AccuracyBadge score={allAccuracy} />
-            <span className="text-xs text-muted-foreground">정확도 (총 {allTotal}회)</span>
+            <span className="text-xs text-muted-foreground">LLM 정확도 (총 {allTotal}회)</span>
           </div>
           <div className="flex gap-3 text-xs text-muted-foreground">
             <span className="text-green-600 dark:text-green-400">✅ {allCorrect}</span>
             <span className="text-red-500">❌ {allWrong}</span>
             {allPending > 0 && <span className="text-gray-400">⏳ {allPending}</span>}
+          </div>
+          <div className="mt-2 pt-2 border-t border-border">
+            <div className="flex items-baseline gap-2 mb-1">
+              <AccuracyBadge score={mlAllAccuracy} />
+              <span className="text-xs text-muted-foreground">ML 정확도 (총 {mlAllTotal}회)</span>
+            </div>
+            <div className="flex gap-3 text-xs text-muted-foreground">
+              <span className="text-green-600 dark:text-green-400">✅ {mlAllCorrect}</span>
+              <span className="text-red-500">❌ {mlAllWrong}</span>
+              {mlAllPending > 0 && <span className="text-gray-400">⏳ {mlAllPending}</span>}
+            </div>
           </div>
           {latest && latest.is_correct !== null && (
             <div className="mt-2 pt-2 border-t border-border">
@@ -193,7 +277,7 @@ export async function StockPulsePredictionWidget() {
               </p>
               {latest.accuracy_score !== null && (
                 <p className="text-[10px] text-muted-foreground mt-0.5">
-                  정확도 {Math.round(latest.accuracy_score * 100)}%
+                  LLM 정확도 {Math.round(latest.accuracy_score * 100)}%
                 </p>
               )}
             </div>
