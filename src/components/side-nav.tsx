@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
-  House, FileText, FlaskConical, Video, Info,
+  House, FileText, FlaskConical, Video, Info, Telescope,
   ChevronLeft, Search,
 } from 'lucide-react'
 
@@ -22,6 +22,7 @@ const NAV_ITEMS = [
   { href: '/realestate', label: '부동산',  icon: FileText, blogId: 'realestate' as const },
   { href: '/aitech',   label: 'AI Tech',  icon: FileText, blogId: 'aitech' as const },
   { href: '/lab',      label: 'Lab',      icon: FlaskConical },
+  { href: '/research', label: 'Research', icon: Telescope },
   { href: '/links',    label: 'Links',    icon: Video },
   { href: '/about',    label: 'About',    icon: Info },
 ]
