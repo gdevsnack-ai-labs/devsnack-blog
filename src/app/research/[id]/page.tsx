@@ -25,11 +25,12 @@ const CATEGORY_LABEL: Record<string, string> = {
   'hardware': '🖥️ 하드웨어 · 기타',
 }
 
-export default async function ResearchPostPage({ params }: { params: { id: string } }) {
+export default async function ResearchPostPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const { data: post } = await supabase
     .from('posts')
     .select('*')
-    .eq('slug', params.id)
+    .eq('slug', id)
     .eq('status', 'live')
     .eq('blog_id', 'research')
     .single()
