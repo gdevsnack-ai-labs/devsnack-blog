@@ -160,11 +160,11 @@
 }
 
 .prose-devsnack pre {
-  @apply bg-gray-100 rounded-lg p-4 overflow-x-auto text-sm my-4;
+  @apply bg-gray-100 rounded-lg p-4 overflow-x-auto text-sm my-4 text-gray-800;
 }
 
 .prose-devsnack code {
-  @apply bg-gray-100 px-1.5 py-0.5 rounded text-sm;
+  @apply bg-gray-100 px-1.5 py-0.5 rounded text-sm text-gray-800;
 }
 
 .prose-devsnack ul, .prose-devsnack ol {
@@ -204,11 +204,11 @@
 }
 
 .dark .prose-devsnack pre {
-  @apply bg-gray-800;
+  @apply bg-gray-800 text-gray-200;
 }
 
 .dark .prose-devsnack code {
-  @apply bg-gray-800;
+  @apply bg-gray-800 text-gray-200;
 }
 
 .dark .prose-devsnack th, .dark .prose-devsnack td {
