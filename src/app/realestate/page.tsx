@@ -57,6 +57,24 @@ type TradeDetail = {
 const TRADE_TYPES = ['매매', '전세', '반전세', '월세'] as const
 type TradeType = typeof TRADE_TYPES[number]
 
+const PAGE_SIZE = 10
+
+function getPageNumbers(current: number, total: number): (number | '...')[] {
+  const nums: (number | '...')[] = []
+  const start = Math.max(1, current - 2)
+  const end = Math.min(total, current + 2)
+  if (start > 1) {
+    nums.push(1)
+    if (start > 2) nums.push('...')
+  }
+  for (let i = start; i <= end; i++) nums.push(i)
+  if (end < total) {
+    if (end < total - 1) nums.push('...')
+    nums.push(total)
+  }
+  return nums
+}
+
 function priceLabel(t: TradeType): string {
   if (t === '매매') return '평균가'
   if (t === '반전세' || t === '월세') return '월 평균 월세'
@@ -85,6 +103,9 @@ export default function RealEstatePage() {
   const [clickedMonth, setClickedMonth] = useState<string | null>(null)
   const [sortBy, setSortBy] = useState<'deals' | 'price'>('deals')
   const [sortDesc, setSortDesc] = useState(true)
+  const [page, setPage] = useState(1)
+  const [minPrice, setMinPrice] = useState('')
+  const [maxPrice, setMaxPrice] = useState('')
 
   useEffect(() => {
     Promise.all([
@@ -187,6 +208,30 @@ export default function RealEstatePage() {
     }
   }, [])
 
+  const sortedComplexes = useMemo(() => {
+    const hasPriceFilter = minPrice !== '' || maxPrice !== ''
+    const min = minPrice ? Number(minPrice) : null
+    const max = maxPrice ? Number(maxPrice) : null
+    return complexSummary
+      .filter(c => c.trade_type === selectedTradeType)
+      .filter(c => {
+        if (!hasPriceFilter) return true
+        if (c.avg_price == null) return false
+        if (min != null && c.avg_price < min) return false
+        if (max != null && c.avg_price > max) return false
+        return true
+      })
+      .sort((a, b) => {
+        const dir = sortDesc ? -1 : 1
+        if (sortBy === 'price') return ((a.avg_price ?? 0) - (b.avg_price ?? 0)) * dir
+        return (a.total_deals - b.total_deals) * dir
+      })
+  }, [complexSummary, selectedTradeType, sortBy, sortDesc, minPrice, maxPrice])
+
+  const totalPages = Math.max(1, Math.ceil(sortedComplexes.length / PAGE_SIZE))
+  const safePage = Math.min(page, totalPages)
+  const topComplexes = sortedComplexes.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)
+
   if (loading) return (
     <div className="min-h-screen">
       <BlogHeader title="부동산 실거래" subtitle="AI가 분석하는 아파트 실거래가 동향" icon="realestate" color="orange" />
@@ -208,12 +253,6 @@ export default function RealEstatePage() {
       return acc
     }, [] as Record<string, any>[])
   const volumeData = latestPerRegion.map(r => ({ region: r.region_name, count: r.trade_count || 0, avg: r.avg_price }))
-  const topComplexes = complexSummary.filter(c => c.trade_type === selectedTradeType)
-    .sort((a, b) => {
-      const dir = sortDesc ? -1 : 1
-      if (sortBy === 'price') return ((a.avg_price ?? 0) - (b.avg_price ?? 0)) * dir
-      return (a.total_deals - b.total_deals) * dir
-    }).slice(0, 50)
 
   return (
     <div className="min-h-screen">
@@ -228,9 +267,18 @@ export default function RealEstatePage() {
           </select>
           <div className="flex rounded-lg border overflow-hidden">
             {TRADE_TYPES.map(t => (
-              <button key={t} onClick={() => setSelectedTradeType(t)}
+              <button key={t} onClick={() => { setSelectedTradeType(t); setPage(1) }}
                 className={`px-3 py-1.5 text-sm transition-colors ${selectedTradeType === t ? 'bg-orange-500 text-white' : 'bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800'}`}>{t}</button>
             ))}
+          </div>
+          <div className="flex items-center gap-1.5">
+            <input type="text" inputMode="numeric" placeholder="최소가(만원)" value={minPrice}
+              onChange={e => { setMinPrice(e.target.value.replace(/[^0-9]/g, '')); setPage(1) }}
+              className="w-24 px-3 py-1.5 rounded-lg border bg-white dark:bg-gray-900 text-sm" />
+            <span className="text-muted-foreground">~</span>
+            <input type="text" inputMode="numeric" placeholder="최대가(만원)" value={maxPrice}
+              onChange={e => { setMaxPrice(e.target.value.replace(/[^0-9]/g, '')); setPage(1) }}
+              className="w-24 px-3 py-1.5 rounded-lg border bg-white dark:bg-gray-900 text-sm" />
           </div>
           <div ref={searchRef} className="relative flex-1 min-w-[200px] max-w-sm">
             <input type="text" placeholder="단지명 검색..." value={searchTerm}
@@ -306,15 +354,18 @@ export default function RealEstatePage() {
               <thead><tr className="border-b text-left text-muted-foreground">
                 <th className="pb-2 font-medium">단지명</th><th className="pb-2 font-medium">지역</th>
                 <th className="pb-2 font-medium text-right cursor-pointer hover:text-foreground select-none"
-                    onClick={() => { if (sortBy === 'price') setSortDesc(!sortDesc); else { setSortBy('price'); setSortDesc(true) } }}>
+                    onClick={() => { if (sortBy === 'price') setSortDesc(!sortDesc); else { setSortBy('price'); setSortDesc(true) }; setPage(1) }}>
                   {priceLabel(selectedTradeType)} {sortBy === 'price' ? (sortDesc ? '▼' : '▲') : '⇅'}
                 </th>
                 <th className="pb-2 font-medium text-right cursor-pointer hover:text-foreground select-none"
-                    onClick={() => { if (sortBy === 'deals') setSortDesc(!sortDesc); else { setSortBy('deals'); setSortDesc(true) } }}>
+                    onClick={() => { if (sortBy === 'deals') setSortDesc(!sortDesc); else { setSortBy('deals'); setSortDesc(true) }; setPage(1) }}>
                   누적거래 {sortBy === 'deals' ? (sortDesc ? '▼' : '▲') : '⇅'}
                 </th>
               </tr></thead>
               <tbody>
+                {topComplexes.length === 0 && (
+                  <tr><td colSpan={4} className="py-8 text-center text-muted-foreground">조건에 맞는 단지가 없습니다</td></tr>
+                )}
                 {topComplexes.map((c, i) => (
                   <tr key={`${c.sigungu_code}|${c.apt_name}|${i}`}
                     onClick={() => { setSelectedComplex(c.apt_name); setSearchTerm(c.apt_name) }}
@@ -326,6 +377,20 @@ export default function RealEstatePage() {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div className="flex items-center justify-between mt-4">
+            <span className="text-xs text-muted-foreground">총 {sortedComplexes.length}개 단지</span>
+            <div className="flex items-center gap-1">
+              <button onClick={() => setPage(Math.max(1, safePage - 1))} disabled={safePage === 1}
+                className={`px-2.5 py-1 text-sm rounded-lg border ${safePage === 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-orange-50 dark:hover:bg-gray-800'}`}>‹</button>
+              {getPageNumbers(safePage, totalPages).map((n, i) =>
+                n === '...' ? <span key={`gap-${i}`} className="px-1 text-muted-foreground">…</span> :
+                  <button key={n} onClick={() => setPage(n)}
+                    className={`px-2.5 py-1 text-sm rounded-lg border ${n === safePage ? 'bg-orange-500 text-white border-orange-500' : 'hover:bg-orange-50 dark:hover:bg-gray-800'}`}>{n}</button>
+              )}
+              <button onClick={() => setPage(Math.min(totalPages, safePage + 1))} disabled={safePage === totalPages}
+                className={`px-2.5 py-1 text-sm rounded-lg border ${safePage === totalPages ? 'opacity-40 cursor-not-allowed' : 'hover:bg-orange-50 dark:hover:bg-gray-800'}`}>›</button>
+            </div>
           </div>
         </div>
 
