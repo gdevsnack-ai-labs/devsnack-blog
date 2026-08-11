@@ -53,7 +53,7 @@ const BLOGS = [
 ]
 
 export default async function Home() {
-  const latestPosts = await getLatestPosts(3)
+  const latestPosts = await getLatestPosts(8)
   
   return (
     <div className="min-h-screen flex flex-col bg-background">
