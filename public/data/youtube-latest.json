@@ -1,12 +1,68 @@
 {
-  "videoId": "MGnvf4i6m50",
-  "title": "AI는 점점 똑똑해지는데, 나는 과연 더 똑똑해지고 있을까?",
-  "description": "AI는 매주 더 강력한 모델을 내놓고 있습니다. 더 빠르게, 더 정확하게, 더 많은 일을 대신해줍니다. 그런데 어느 순간 이런 생각이 들었 ...",
-  "thumbnail": "https://i.ytimg.com/vi/MGnvf4i6m50/hqdefault.jpg",
-  "url": "https://youtu.be/MGnvf4i6m50",
-  "publishedAt": "2026-07-20T11:00:32Z",
-  "channelTitle": "Devsnack AI lab",
-  "syncedAt": "2026-07-21T12:45:28.386323+00:00",
+  "videos": [
+    {
+      "videoId": "nTNePTVzIio",
+      "title": "AI가 다 해주는데, 왜 아직도 공부해야 할까?",
+      "description": "AI가 코드를 작성하고,\n글을 요약하고,\n이미지를 만들고,\n질문에도 답해주는 시대가 되었습니다.\n\n그렇다면 우리는 이제 공부하지 않아도 되는 걸까요?\n\n오히려 AI 시대에는\n무엇을 외우느냐보다\n무엇을 이해하고 판단하느냐가 더 중요해지고 있습니다.\n\n이번 영상에서는\n'왜 AI 시대에도 공부가 필요한가'\n그리고 AI를 진짜 도구로 만드는 사람들의 공통점을 이야기합니다.\n\n📖 원문 칼럼 및 추가 내용\nhttps://devsnack.blogspot.com/2026/07/why-we-need-study-ai-gen.html\n\n연구소\nhttp",
+      "thumbnail": "https://i.ytimg.com/vi/nTNePTVzIio/maxresdefault.jpg",
+      "url": "https://youtu.be/nTNePTVzIio",
+      "publishedAt": "2026-08-01T06:58:30Z",
+      "channelTitle": "Devsnack AI lab",
+      "viewCount": "50",
+      "viewCountText": "50",
+      "duration": "11:12"
+    },
+    {
+      "videoId": "E0KOd_Tj5Hc",
+      "title": "AI에게 오목 엔진을 만들어 달라고 했다. 결과는 충격적이었다",
+      "description": "AI에게 오목 엔진을 만들어 달라고 했습니다.\n\n단 1시간 만에 약 780줄 규모의 Minimax 기반 오목 엔진이 완성되었습니다.\n\n그리고 그 엔진을 현존 최강급 오픈소스 오목 엔진인 Rapfi와 대결시켰습니다.\n\n결과보다 더 흥미로웠던 것은,\nLLM이 단순히 코드를 생성하는 것을 넘어 문제를 해결하기 위해 스스로 구조를 만들어가는 과정이었습니다.\n\n이번 영상에서는\n• AI가 오목 엔진을 만드는 과정\n• Rapfi와의 실제 대결\n• LLM 코딩의 가능성과 한계\n• AI 시대 개발자의 역할\n\n에 대해 이야기합니다.\n\n📖 원문 실험 ",
+      "thumbnail": "https://i.ytimg.com/vi/E0KOd_Tj5Hc/maxresdefault.jpg",
+      "url": "https://youtu.be/E0KOd_Tj5Hc",
+      "publishedAt": "2026-07-28T09:30:20Z",
+      "channelTitle": "Devsnack AI lab",
+      "viewCount": "14",
+      "viewCountText": "14",
+      "duration": "8:01"
+    },
+    {
+      "videoId": "MGnvf4i6m50",
+      "title": "AI는 점점 똑똑해지는데, 나는 과연 더 똑똑해지고 있을까?",
+      "description": "AI는 매주 더 강력한 모델을 내놓고 있습니다.\n\n더 빠르게,\n더 정확하게,\n더 많은 일을 대신해줍니다.\n\n그런데 어느 순간 이런 생각이 들었습니다.\n\nAI는 점점 똑똑해지고 있는데,\n나는 과연 더 똑똑해지고 있는 걸까?\n\n우리는 AI를 사용하면서 성장하고 있는 걸까요,\n아니면 사고를 위임하고 있는 걸까요?\n\n이번 영상에서는 AI 시대의 성장,\n학습,\n그리고 인간의 역할에 대해 이야기합니다.\n\n📖 원문 칼럼 및 추가 내용:\nhttps://devsnack.blogspot.com/2026/07/ai-is-getting-smarter-b",
+      "thumbnail": "https://i.ytimg.com/vi/MGnvf4i6m50/maxresdefault.jpg",
+      "url": "https://youtu.be/MGnvf4i6m50",
+      "publishedAt": "2026-07-20T11:00:32Z",
+      "channelTitle": "Devsnack AI lab",
+      "viewCount": "37",
+      "viewCountText": "37",
+      "duration": "9:05"
+    },
+    {
+      "videoId": "rWaogXuE4Z4",
+      "title": "오목의 역설 | AI는 왜 도구가 필요해졌을까?",
+      "description": "알파고는 바둑판 위에서 인간을 이겼습니다.\n\n그런데 최신 AI는 오히려\n검색을 하고,\n메모리를 사용하고,\n코드를 실행하고,\n외부 도구를 호출합니다.\n\n왜 AI는 더 강해질수록\n더 많은 도구를 필요로 하게 된 걸까요?\n\n이번 실험에서는 오목 게임을 통해\nLLM의 한계와 도구 사용,\n그리고 AI 에이전트의 미래를 이야기합니다.\n\n📖 원문 칼럼 및 실험 기록:\nhttps://devsnack.blogspot.com/2026/07/ai-llm-omok-experiment.html\n\n블로그:\nhttps://devsnack.blogspot.co",
+      "thumbnail": "https://i.ytimg.com/vi/rWaogXuE4Z4/maxresdefault.jpg",
+      "url": "https://youtu.be/rWaogXuE4Z4",
+      "publishedAt": "2026-07-17T02:07:52Z",
+      "channelTitle": "Devsnack AI lab",
+      "viewCount": "34",
+      "viewCountText": "34",
+      "duration": "6:52"
+    },
+    {
+      "videoId": "OfOSJpTUX8w",
+      "title": "AI는 지름길이 아니다 | 우리는 AI를 어떻게 사용해야 할까? 딸깍 신화",
+      "description": "AI는 우리를 더 빠르게 만들어줍니다.\n\n코드를 작성하고,\n글을 쓰고,\n아이디어를 정리하고,\n반복 작업을 자동화합니다.\n\n하지만 AI는 우리의 경험과 이해,\n그리고 판단까지 대신해주지는 않습니다.\n\n우리는 AI를 지름길로 사용하고 있는 걸까요,\n아니면 더 멀리 가기 위한 도구로 사용하고 있는 걸까요?\n\n이번 영상에서는 AI 시대의 학습과 성장,\n그리고 AI를 사용하는 방식에 대해 이야기합니다.\n\n📖 원문 칼럼 및 추가 내용:\nhttps://devsnack.blogspot.com/2026/07/ai-is-not-a-shortcut.h",
+      "thumbnail": "https://i.ytimg.com/vi/OfOSJpTUX8w/maxresdefault.jpg",
+      "url": "https://youtu.be/OfOSJpTUX8w",
+      "publishedAt": "2026-07-15T00:15:04Z",
+      "channelTitle": "Devsnack AI lab",
+      "viewCount": "13",
+      "viewCountText": "13",
+      "duration": "8:43"
+    }
+  ],
+  "syncedAt": "2026-08-11T14:21:02.819623+00:00",
   "source": "youtube-data-api-v3",
-  "channelId": "UCYxVshrQljHUUmpuc30zEhg"
+  "channelId": "UCYxVshrQljHUUmpuc30zEhg",
+  "channelUrl": "https://www.youtube.com/@DevsnackAILab"
 }
