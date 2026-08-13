@@ -78,7 +78,7 @@ const STOCKPULSE_SELF: Experiment = {
   category: 'running',
   startedAt: '2026.07.21',
   whyText: '매일 아침 08:30 KOSPI 예측 저장 → 장 마감 후 16:30 정확도 측정 → LLM이 실패 원인 분석 + 개선 방안 도출 → 개선 방안을 실제 파이프라인에 자동 적용(프롬프트 패치/ML 파라미터/피처 변경) → 다음날 개선된 환경에서 재예측. 이 루프가 매일 반복되며, "분석만 하고 끝"이 아니라 실제로 시스템이 진화하는 것이 목표. 투자 목적이 아닌 AI 예측 모델이 스스로 개선할 수 있는지 탐구하는 실험.',
-  nextGoals: ['정확도 60% 이상 달성', 'Lab 대시보드에 실시간 정확도 표시', '장기 예측 정확도 추세 분석'],
+  nextGoals: ['정확도 60% 이상 달성', '장기 예측 정확도 추세 분석'],
   timeline: [
     { name: '파이프라인 설계',        status: '완료',   date: '2026.07.21', result: '설계 문서 위키 저장' },
     { name: 'predictions 테이블 생성', status: '완료',   date: '2026.07.21', result: 'Supabase 16개 컬럼' },
@@ -87,6 +87,7 @@ const STOCKPULSE_SELF: Experiment = {
     { name: '프론트 성공률 위젯',     status: '완료',   date: '2026.07.22', result: 'Stock 페이지 상단 예측 현황 3-칼럼 위젯 + API' },
     { name: '자기개선 루프 구축',      status: '완료',   date: '2026.07.22', result: 'LLM action plan → 자동 프롬프트/ML/피처 변경 → Lab 기록' },
     { name: '7일 연속 예측 기록 수집', status: '완료',   date: '2026.08.13', result: '8/4~8/13 연속 예측 — 7일 이상 데이터 확보' },
+    { name: 'Lab 페이지 실시간 정확도 표시', status: '완료', date: '2026.08.13', result: 'Lab 상세 페이지에 LLM/ML 정확도 위젯 추가 (Stock 위젯 재사용)' },
     { name: '실패 패턴 분석 및 프롬프트 개선', status: '진행중', date: '2026.08.13', result: '매일 저녁 LLM이 예측 실패 분석 → 프롬프트/ML 파라미터/피처 자동 개선 루프 가동 중' },
   ],
   blogPosts: ['/lab/stockpulse-self-2026-07-21', '/lab/stockpulse-self-2026-08-07', '/lab/stockpulse-self-2026-08-10', '/lab/stockpulse-self-2026-08-11', '/lab/stockpulse-self-2026-08-12', '/lab/stockpulse-self-2026-08-13'],

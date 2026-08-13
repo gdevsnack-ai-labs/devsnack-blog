@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, FileText, Video, ExternalLink, CheckCircle2, Sparkles, Calendar, Clock } from 'lucide-react'
 import { ProgressBar } from '@/components/progress-bar'
+import { StockPulsePredictionWidget } from '@/components/stock-pulse-prediction-widget'
 import { experiments, type PartStatus } from '@/data/experiments'
 import { supabase } from '@/lib/supabase'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
@@ -203,6 +204,13 @@ async function ExperimentDetailPage({ id }: { id: string }) {
             </div>
           )}
         </div>
+
+        {/* 실시간 예측 정확도 (StockPulse 실험 전용) */}
+        {id === 'stockpulse-ai-self-improvement' && (
+          <div className="mb-8">
+            <StockPulsePredictionWidget />
+          </div>
+        )}
 
         {/* 일별 분석 리포트 (동적) */}
         {dailyReports.length > 0 && (
