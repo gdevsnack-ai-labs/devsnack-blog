@@ -191,6 +191,36 @@
   @apply bg-gray-50 font-semibold;
 }
 
+/* Blogger 마이그레이션 인라인 font-size 정규화 (2026-08-14)
+   Blogger 글에 박혀 있는 <h1 style="font-size:28px">, <p style="font-size:13px"> 등이
+   테마를 덮어쓰지 않도록 !important로 고정 */
+.prose-devsnack h1 {
+  font-size: 26px !important;
+  line-height: 1.4 !important;
+}
+.prose-devsnack h2 {
+  font-size: 24px !important;
+}
+.prose-devsnack h3 {
+  font-size: 20px !important;
+}
+.prose-devsnack p {
+  font-size: 15px !important;
+  line-height: 28px !important;
+}
+.prose-devsnack li {
+  font-size: 15px !important;
+}
+.prose-devsnack span,
+.prose-devsnack div {
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+.prose-devsnack th,
+.prose-devsnack td {
+  font-size: 14px !important;
+}
+
 .dark .prose-devsnack {
   @apply text-gray-200;
 }
