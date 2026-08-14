@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowLeft, Zap, Flame, Thermometer, Fan, Gauge, Timer, Trophy, TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import { ArrowLeft, Zap, Flame, Thermometer, Fan, Gauge, Timer, Trophy, TrendingUp, TrendingDown, Minus, Wifi, Share2 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
 export const revalidate = 60
@@ -22,6 +22,20 @@ interface MiningScore {
   uptime_sec: number | null
   score: number | null
   rank_at_insert: number | null
+  pool_hashrate_1m_ghs: number | null
+  pool_hashrate_1h_ghs: number | null
+  lastshare_sec: number | null
+  pool_workers: number | null
+  pool_bestshare: number | null
+  pool_bestever: number | null
+}
+
+interface ScoreboardEntry {
+  id: number
+  measured_at: string
+  rank: number
+  difficulty: number | null
+  job_id: string | null
 }
 
 const fmt = (n: number | null, digits = 1) => (n === null || n === undefined ? '-' : n.toLocaleString('ko-KR', { maximumFractionDigits: digits }))
@@ -42,6 +56,25 @@ export default async function MiningLeaderboardPage() {
   const rows = (data ?? []) as MiningScore[]
   const latest = rows[0] ?? null
   const top20 = rows.slice(0, 20)
+
+  // 최신 스코어보드 스냅샷 (베스트 공유 top 20)
+  let scoreboard: ScoreboardEntry[] = []
+  if (latest) {
+    const { data: sb } = await supabase
+      .from('mining_scoreboard')
+      .select('id, measured_at, rank, difficulty, job_id')
+      .eq('measured_at', latest.measured_at)
+      .order('rank', { ascending: true })
+    scoreboard = (sb ?? []) as ScoreboardEntry[]
+  }
+
+  // 풀 상태 포맷
+  const poolHash1m = latest?.pool_hashrate_1m_ghs ? (latest.pool_hashrate_1m_ghs / 1e3).toFixed(2) + ' TH/s' : '-'
+  const poolHash1h = latest?.pool_hashrate_1h_ghs ? (latest.pool_hashrate_1h_ghs / 1e3).toFixed(2) + ' TH/s' : '-'
+  const lastshareStr = latest?.lastshare_sec !== null && latest?.lastshare_sec !== undefined
+    ? (latest.lastshare_sec < 60 ? `${latest.lastshare_sec}초 전` : `${Math.round(latest.lastshare_sec / 60)}분 전`)
+    : '-'
+  const poolBestG = latest?.pool_bestever ? (latest.pool_bestever / 1e9).toFixed(2) : '-'
 
   return (
     <div className="min-h-screen bg-background">
@@ -103,10 +136,85 @@ export default async function MiningLeaderboardPage() {
               </div>
             </div>
 
-            {/* 베스트 20 테이블 */}
+            {/* 풀 상태 카드 */}
+            <div className="rounded-xl border bg-card p-4 mb-8">
+              <div className="flex items-center gap-2 mb-3">
+                <Wifi className="w-4 h-4 text-green-600 dark:text-green-400" />
+                <h2 className="font-semibold text-sm md:text-base">🌐 풀 상태 — solo.ckpool.org (BTC)</h2>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3 text-sm">
+                <div>
+                  <div className="text-xs text-muted-foreground mb-0.5">풀 해시 (1m)</div>
+                  <div className="font-semibold">{poolHash1m}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground mb-0.5">풀 해시 (1h)</div>
+                  <div className="font-semibold">{poolHash1h}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground mb-0.5">마지막 공유</div>
+                  <div className={`font-semibold ${latest?.lastshare_sec !== null && latest?.lastshare_sec !== undefined && latest.lastshare_sec < 300 ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'}`}>{lastshareStr}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground mb-0.5">워커</div>
+                  <div className="font-semibold">{latest?.pool_workers ?? '-'}개</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground mb-0.5">풀 역대 best</div>
+                  <div className="font-semibold">{poolBestG}B</div>
+                </div>
+              </div>
+            </div>
+
+            {/* 베스트 공유 스코어보드 (채굴기 UI 동일) */}
+            <div className="rounded-xl border bg-card overflow-hidden mb-8">
+              <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/40">
+                <h2 className="font-semibold text-sm md:text-base">⛏️ 베스트 공유 스코어보드</h2>
+                <span className="text-xs text-muted-foreground">채굴기가 찾은 최고 난이도 공유 · {scoreboard.length > 0 ? `${scoreboard.length}위까지` : '-'} · {fmtTime(latest?.measured_at ?? null)} 스냅샷</span>
+              </div>
+              {scoreboard.length === 0 ? (
+                <div className="p-8 text-center text-sm text-muted-foreground">스코어보드 데이터가 아직 없어요. 다음 갱신에 채워집니다!</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-left text-xs text-muted-foreground border-b">
+                        <th className="px-4 py-2 font-medium">순위</th>
+                        <th className="px-4 py-2 font-medium text-right">공유 난이도</th>
+                        <th className="px-4 py-2 font-medium text-right">블록 대비</th>
+                        <th className="px-4 py-2 font-medium text-right">job</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {scoreboard.map((e) => {
+                        const diffB = e.difficulty ? (e.difficulty / 1e9).toFixed(3) : '-'
+                        const vsBlock = e.difficulty ? `1/${Math.round((latest?.pool_bestever ?? 7.86e9) / e.difficulty).toLocaleString('ko-KR')}` : '-'
+                        return (
+                          <tr key={e.id} className={`border-b last:border-0 ${e.rank === 1 ? 'bg-amber-500/5' : e.rank === 2 ? 'bg-gray-500/5' : e.rank === 3 ? 'bg-orange-500/5' : ''}`}>
+                            <td className="px-4 py-2">
+                              <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold ${
+                                e.rank === 1 ? 'bg-amber-400 text-amber-950'
+                                : e.rank === 2 ? 'bg-gray-300 text-gray-800'
+                                : e.rank === 3 ? 'bg-orange-300 text-orange-950'
+                                : 'bg-muted text-muted-foreground'
+                              }`}>{e.rank}</span>
+                            </td>
+                            <td className="px-4 py-2 text-right font-mono font-semibold">{diffB} B</td>
+                            <td className="px-4 py-2 text-right text-muted-foreground">{vsBlock}</td>
+                            <td className="px-4 py-2 text-right text-muted-foreground font-mono text-xs">{e.job_id?.slice(0, 14) ?? '-'}</td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {/* 데일리 측정 기록 top 20 */}
             <div className="rounded-xl border bg-card overflow-hidden">
               <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/40">
-                <h2 className="font-semibold text-sm md:text-base">🏆 베스트 20</h2>
+                <h2 className="font-semibold text-sm md:text-base">📊 데일리 측정 기록 — 베스트 20</h2>
                 <span className="text-xs text-muted-foreground">등락 = 직전 갱신 대비 랭크 변화</span>
               </div>
 
