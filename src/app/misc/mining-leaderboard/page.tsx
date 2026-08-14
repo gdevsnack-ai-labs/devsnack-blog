@@ -57,24 +57,38 @@ export default async function MiningLeaderboardPage() {
   const latest = rows[0] ?? null
   const top20 = rows.slice(0, 20)
 
-  // 최신 스코어보드 스냅샷 (베스트 공유 top 20)
+  // 최신 측정 (풀 상태·스코어보드용 — id desc, 스코어와 무관)
+  const { data: latestRow } = await supabase
+    .from('mining_scores')
+    .select('*')
+    .order('id', { ascending: false })
+    .limit(1)
+  const latestMeasure = (latestRow?.[0] ?? null) as MiningScore | null
+
+  // 최신 스코어보드 스냅샷 (가장 최근 measured_at 기준 — 베스트 공유 top 20)
   let scoreboard: ScoreboardEntry[] = []
-  if (latest) {
+  const { data: sbLatest } = await supabase
+    .from('mining_scoreboard')
+    .select('measured_at')
+    .order('measured_at', { ascending: false })
+    .limit(1)
+  const sbTime = sbLatest?.[0]?.measured_at as string | undefined
+  if (sbTime) {
     const { data: sb } = await supabase
       .from('mining_scoreboard')
       .select('id, measured_at, rank, difficulty, job_id')
-      .eq('measured_at', latest.measured_at)
+      .eq('measured_at', sbTime)
       .order('rank', { ascending: true })
     scoreboard = (sb ?? []) as ScoreboardEntry[]
   }
 
-  // 풀 상태 포맷
-  const poolHash1m = latest?.pool_hashrate_1m_ghs ? (latest.pool_hashrate_1m_ghs / 1e3).toFixed(2) + ' TH/s' : '-'
-  const poolHash1h = latest?.pool_hashrate_1h_ghs ? (latest.pool_hashrate_1h_ghs / 1e3).toFixed(2) + ' TH/s' : '-'
-  const lastshareStr = latest?.lastshare_sec !== null && latest?.lastshare_sec !== undefined
-    ? (latest.lastshare_sec < 60 ? `${latest.lastshare_sec}초 전` : `${Math.round(latest.lastshare_sec / 60)}분 전`)
+  // 풀 상태 포맷 (최신 측정 기준)
+  const poolHash1m = latestMeasure?.pool_hashrate_1m_ghs ? (latestMeasure.pool_hashrate_1m_ghs / 1e3).toFixed(2) + ' TH/s' : '-'
+  const poolHash1h = latestMeasure?.pool_hashrate_1h_ghs ? (latestMeasure.pool_hashrate_1h_ghs / 1e3).toFixed(2) + ' TH/s' : '-'
+  const lastshareStr = latestMeasure?.lastshare_sec !== null && latestMeasure?.lastshare_sec !== undefined
+    ? (latestMeasure.lastshare_sec < 60 ? `${latestMeasure.lastshare_sec}초 전` : `${Math.round(latestMeasure.lastshare_sec / 60)}분 전`)
     : '-'
-  const poolBestG = latest?.pool_bestever ? (latest.pool_bestever / 1e9).toFixed(2) : '-'
+  const poolBestG = latestMeasure?.pool_bestever ? (latestMeasure.pool_bestever / 1e9).toFixed(2) : '-'
 
   return (
     <div className="min-h-screen bg-background">
@@ -170,7 +184,7 @@ export default async function MiningLeaderboardPage() {
             <div className="rounded-xl border bg-card overflow-hidden mb-8">
               <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/40">
                 <h2 className="font-semibold text-sm md:text-base">⛏️ 베스트 공유 스코어보드</h2>
-                <span className="text-xs text-muted-foreground">채굴기가 찾은 최고 난이도 공유 · {scoreboard.length > 0 ? `${scoreboard.length}위까지` : '-'} · {fmtTime(latest?.measured_at ?? null)} 스냅샷</span>
+                <span className="text-xs text-muted-foreground">채굴기가 찾은 최고 난이도 공유 · {scoreboard.length > 0 ? `${scoreboard.length}위까지` : '-'} · {fmtTime(sbTime ?? null)} 스냅샷</span>
               </div>
               {scoreboard.length === 0 ? (
                 <div className="p-8 text-center text-sm text-muted-foreground">스코어보드 데이터가 아직 없어요. 다음 갱신에 채워집니다!</div>
@@ -188,7 +202,7 @@ export default async function MiningLeaderboardPage() {
                     <tbody>
                       {scoreboard.map((e) => {
                         const diffB = e.difficulty ? (e.difficulty / 1e9).toFixed(3) : '-'
-                        const vsBlock = e.difficulty ? `1/${Math.round((latest?.pool_bestever ?? 7.86e9) / e.difficulty).toLocaleString('ko-KR')}` : '-'
+                        const vsBlock = e.difficulty ? `1/${Math.round((latestMeasure?.pool_bestever ?? 7.86e9) / e.difficulty).toLocaleString('ko-KR')}` : '-'
                         return (
                           <tr key={e.id} className={`border-b last:border-0 ${e.rank === 1 ? 'bg-amber-500/5' : e.rank === 2 ? 'bg-gray-500/5' : e.rank === 3 ? 'bg-orange-500/5' : ''}`}>
                             <td className="px-4 py-2">
