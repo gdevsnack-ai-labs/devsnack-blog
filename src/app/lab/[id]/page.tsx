@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, FileText, Video, ExternalLink, CheckCircle2, Sparkles, Calendar, Clock } from 'lucide-react'
 import { ProgressBar } from '@/components/progress-bar'
-import { CopyLinkButton } from '@/components/copy-link-button'
 import { StockPulsePredictionWidget } from '@/components/stock-pulse-prediction-widget'
 import { experiments, type PartStatus } from '@/data/experiments'
 import { supabase } from '@/lib/supabase'
@@ -82,7 +81,6 @@ async function LabPostPage({ slug }: { slug: string }) {
             <Clock className="w-4 h-4" />
             약 {readingTime}분
           </span>
-          <CopyLinkButton />
           {post.labels && post.labels.length > 0 && (
             <div className="flex flex-wrap gap-1.5">
               {post.labels.map((label: string) => (

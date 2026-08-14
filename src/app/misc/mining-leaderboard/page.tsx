@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { ArrowLeft, Zap, Flame, Thermometer, Fan, Gauge, Timer, Trophy, TrendingUp, TrendingDown, Minus, Wifi, Share2 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
-import { CopyLinkButton } from '@/components/copy-link-button'
 
 export const revalidate = 60
 
@@ -103,7 +102,6 @@ export default async function MiningLeaderboardPage() {
         <div className="flex items-center gap-3 mb-2">
           <span className="text-3xl">⛏️</span>
           <h1 className="text-2xl md:text-3xl font-bold">채굴 스코어 리더보드</h1>
-          <span className="ml-auto"><CopyLinkButton /></span>
         </div>
         <p className="text-sm text-muted-foreground mb-8">
           Bitaxe Gamma 601 — BTC 솔로 채굴 성적표. 매 6시간 자동 갱신 (00 · 06 · 12 · 18시) · 재미용 ⚡

@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { ArrowLeft, Calendar, Clock, ExternalLink } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
-import { CopyLinkButton } from '@/components/copy-link-button'
 
 export const revalidate = 60
 export const dynamicParams = true
@@ -74,7 +73,6 @@ export default async function ResearchPostPage({ params }: { params: Promise<{ i
               <Clock className="w-4 h-4" />
               약 {readingTime}분
             </span>
-            <CopyLinkButton />
           </div>
 
           {/* 본문 — 마크다운 렌더링 */}

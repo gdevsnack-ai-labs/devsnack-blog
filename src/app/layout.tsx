@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react"
 import { AppLayout } from "@/components/app-layout"
+import { CopyLinkButton } from "@/components/copy-link-button"
 import "./globals.css";
 
 const geistSans = Geist({
@@ -39,6 +40,7 @@ export default function RootLayout({
         <AppLayout>
           {children}
         </AppLayout>
+        <CopyLinkButton variant="fab" />
         <Analytics />
       </body>
     </html>

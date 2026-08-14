@@ -4,7 +4,6 @@ import { supabase, type Post } from '@/lib/supabase'
 import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Calendar, Clock, TrendingUp } from 'lucide-react'
 import { ViewCounter } from '@/components/view-counter'
-import { CopyLinkButton } from '@/components/copy-link-button'
 import { BlogHeader } from '@/components/blog-header'
 
 export const revalidate = 60
@@ -70,7 +69,6 @@ export default async function StockPostPage({ params }: { params: Promise<{ slug
             약 {readingTime}분
           </span>
           <ViewCounter slug={post.slug} views={post.views} />
-          <CopyLinkButton />
           {post.labels && post.labels.length > 0 && (
             <div className="flex flex-wrap gap-1.5">
               {post.labels.map((label) => (
