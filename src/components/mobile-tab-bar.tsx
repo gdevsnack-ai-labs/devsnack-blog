@@ -10,7 +10,7 @@ const TABS = [
   { href: '/lab',          label: 'Lab',    icon: FlaskConical },
   { href: '/demos',        label: 'Demos',  icon: Play },
   { href: '/research',     label: 'Research', icon: Telescope },
-  { href: '/misc',         label: '잡동',    icon: Wrench },
+  { href: '/misc',         label: 'Tools',  icon: Wrench },
   { href: '/links',        label: 'Links',  icon: Video },
   { href: '/about',        label: 'About',  icon: Info },
 ]
