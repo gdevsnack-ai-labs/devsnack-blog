@@ -3,12 +3,12 @@ import { supabase } from '@/lib/supabase'
 
 export const revalidate = 60
 
-type ResearchStatus = '조사완료' | '적용대기' | '적용중' | '적용완료' | '보류'
+type ResearchStatus = '조사완료' | '적용대기' | '진행중' | '적용완료' | '보류'
 
 const STATUS_META: Record<ResearchStatus, { emoji: string; label: string; badge: string }> = {
   '조사완료': { emoji: '🔍', label: '조사 완료', badge: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' },
   '적용대기': { emoji: '⏳', label: '적용 대기', badge: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' },
-  '적용중':   { emoji: '🔄', label: '적용 중',   badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
+  '진행중':   { emoji: '🔄', label: '진행 중',   badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
   '적용완료': { emoji: '✅', label: '적용 완료', badge: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
   '보류':     { emoji: '📦', label: '보류',     badge: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' },
 }

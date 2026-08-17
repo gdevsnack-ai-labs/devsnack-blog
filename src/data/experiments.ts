@@ -119,17 +119,6 @@ const BLOG_AUTO: Experiment = {
 // ── 더미 — 추후 Lab 페이지에서 관리 예정 ──
 const DUMMIES: Experiment[] = [
   {
-    id: 'llm-bench',
-    name: 'Local LLM Benchmark',
-    description: 'DGX Spark GB10 기반 GGUF 모델 성능 비교',
-    progress: 0,
-    color: 'blue',
-    status: '미정',
-    isDummy: true,
-    category: 'planning',
-    startedAt: '',
-  },
-  {
     id: 'music-qa',
     name: 'Music QA System',
     description: 'AI 음악 품질 평가 시스템',
@@ -153,4 +142,27 @@ const DUMMIES: Experiment[] = [
   },
 ]
 
-export const experiments: Experiment[] = [STOCKPULSE_SELF, AI_OMOK, BLOG_AUTO, ...DUMMIES]
+// ── Local LLM Benchmark — DGX Spark GB10 GGUF 성능 실험 (2026-08-18 시작) ──
+const LLM_BENCH: Experiment = {
+  id: 'local-llm-benchmark',
+  name: 'Local LLM Benchmark',
+  description: 'DGX Spark GB10에서 GGUF 양자화 로컬 LLM의 실측 성능 비교 — MTP 스펙 디코딩, 프리필/디코드 속도, 수락률, 실사용 생성 품질을 단일 프롬프트로 검증',
+  progress: 35,
+  color: 'blue',
+  status: '진행중',
+  category: 'running',
+  startedAt: '2026.08.18',
+  whyText: 'GB10(128GB 통합 메모리, Blackwell sm_120)에서 27B급 dense 모델의 현실적 로컬 라인이 어디까지인지 실측한다. GPU 메모리 여유가 커서 NVFP4 같은 고밀도 양자화를 그대로 활용할 수 있고, MTP 헤드 내장 모델은 별도 드래프터 없이 스펙 디코딩을 켤 수 있다. 스펙만 보면 되는 게 아니라 실제 서빙 부하(4슬롯 동시)와 생성 품질(단일 프롬프트 → 산출물)까지 봐야 판단할 수 있다.',
+  nextGoals: ['VERY-HIGH 티어 비교 실측', 'thinking ON/OFF 품질 차이 검증', 'Muse Glimmer 30B·DeepSeek V4 Pro 등 경쟁 모델 비교', '벤치마크 자동화 스크립트 구축'],
+  timeline: [
+    { name: '실행 스크립트 4종 작성',     status: '완료',   date: '2026.08.18', result: 'HIGH/VERY-HIGH × thinking ON/OFF, MTP n-max 6 + p-min 0.75' },
+    { name: '단일 테스트 실측',            status: '완료',   date: '2026.08.18', result: '프리필 680~930 t/s, 디코드 17~19.5 t/s, 수락률 93.1%' },
+    { name: '장기 서빙 실측 (4슬롯 동시)', status: '완료',   date: '2026.08.18', result: '장문 생성 18~22 t/s 유지, 수락률 평균 ~94%, 초장문 8,287토큰 18.5 t/s' },
+    { name: '실사용 데모 (단일 프롬프트)', status: '완료',   date: '2026.08.18', result: 'Ragdoll Playground HTML — 1회 생성으로 완성, 데모 공개' },
+    { name: '다른 모델과 비교 (Muse Glimmer 30B 등)', status: '예정' },
+  ],
+  blogPosts: ['/research/qwen3-8-27b-nvfp4-mtp-gguf-gb10'],
+  githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
+}
+
+export const experiments: Experiment[] = [STOCKPULSE_SELF, AI_OMOK, BLOG_AUTO, LLM_BENCH, ...DUMMIES]

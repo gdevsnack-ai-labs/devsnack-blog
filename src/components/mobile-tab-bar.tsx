@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { House, FileText, FlaskConical, Telescope, Wrench, Video, Info } from 'lucide-react'
+import { House, FileText, FlaskConical, Telescope, Wrench, Video, Info, Play } from 'lucide-react'
 
 const TABS = [
   { href: '/',             label: 'Home',   icon: House },
   { href: '/devsnack',     label: 'Blogs',  icon: FileText },
   { href: '/lab',          label: 'Lab',    icon: FlaskConical },
+  { href: '/demos',        label: 'Demos',  icon: Play },
   { href: '/research',     label: 'Research', icon: Telescope },
   { href: '/misc',         label: '잡동',    icon: Wrench },
   { href: '/links',        label: 'Links',  icon: Video },
