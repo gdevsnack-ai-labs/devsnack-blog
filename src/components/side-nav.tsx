@@ -271,7 +271,7 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
           <div key="research">
             <button
               onClick={() => toggleGroup('Research')}
-              className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm no-underline transition-colors cursor-pointer ${
+              className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm text-left no-underline transition-colors cursor-pointer ${
                 isActive(RESEARCH_ITEM.href) || RESEARCH_ITEM.subItems?.some(s => isActive(s.href))
                   ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-medium'
                   : 'text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
