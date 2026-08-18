@@ -1,8 +1,8 @@
 // 데모 카탈로그 — 로컬 AI 생성 결과물 모음 (수동 관리)
-// 카테고리: html / music / image
+// 카테고리: html / music / image / shortmovie
 // href는 public/ 또는 외부 URL
 
-export type DemoCategory = 'html' | 'music' | 'image'
+export type DemoCategory = 'html' | 'music' | 'image' | 'shortmovie'
 
 export interface Demo {
   id: string
@@ -28,6 +28,7 @@ export const DEMO_CATEGORIES: DemoCategoryMeta[] = [
   { key: 'html',  label: 'HTML',  emoji: '📄', description: '단일 파일 HTML 인터랙티브 데모' },
   { key: 'music', label: 'Music', emoji: '🎵', description: 'AI 생성 음악/오디오 데모' },
   { key: 'image', label: 'Image', emoji: '🖼️', description: 'AI 생성 이미지 데모' },
+  { key: 'shortmovie', label: 'Short Movie', emoji: '🎬', description: 'AI 생성 단편 영상 — LTX 2.5 + Krea2' },
 ]
 
 export const DEMOS: Record<DemoCategory, Demo[]> = {
@@ -45,6 +46,18 @@ export const DEMOS: Record<DemoCategory, Demo[]> = {
   ],
   music: [],
   image: [],
+  shortmovie: [
+    {
+      id: 'hero-intro-30s',
+      title: '히어로 인트로 — 30초 6히어로',
+      description: '6명의 히어로가 각자 능력을 시전하는 30초 인트로 영상. 각 씬별 시네마틱 이미지 + LTX 2.5 i2v.',
+      href: '/hero-intro.html',
+      embeddable: true,
+      model: 'Krea2 (Flux) + LTX 2.5 22B i2v',
+      createdAt: '2026.08.18',
+      note: '이미지 6장(Krea2 1280×720) → 영상 6개(LTX 2.5, 각 5초) → ffmpeg concat. GB10 로컬 생성.',
+    },
+  ],
 }
 
 export function getDemoCategoryMeta(key: string): DemoCategoryMeta | undefined {

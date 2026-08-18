@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>히어로 인트로 — 30초 6히어로 | DevSnack Demos</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0a0a; color: #e5e5e5; font-family: 'Inter', -apple-system, sans-serif; line-height: 1.6; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+    /* Header */
+    .header { text-align: center; margin-bottom: 3rem; }
+    .header h1 { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #9b59b6, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .header p { color: #a0a0a0; margin-top: 0.5rem; font-size: 0.95rem; }
+    .header .meta { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; font-size: 0.8rem; color: #666; }
+    .header .meta span { background: #1a1a1a; padding: 0.25rem 0.75rem; border-radius: 9999px; border: 1px solid #333; }
+
+    /* Video Section */
+    .video-section { margin-bottom: 3rem; }
+    .video-section h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: #fff; }
+    .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; border: 1px solid #222; }
+    .video-wrapper video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+    /* Hero Grid */
+    .hero-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+    .hero-card { background: #111; border: 1px solid #222; border-radius: 12px; overflow: hidden; transition: border-color 0.2s; }
+    .hero-card:hover { border-color: #444; }
+    .hero-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+    .hero-card .info { padding: 1rem 1.25rem; }
+    .hero-card .name { font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+    .hero-card .name .color-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .hero-card .ability { font-size: 0.85rem; color: #888; margin: 0.25rem 0 0.75rem; }
+
+    /* Prompt Sections */
+    .prompt-section { margin-top: 0.5rem; }
+    .prompt-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #555; margin-bottom: 0.35rem; }
+    .prompt-text { font-size: 0.78rem; color: #999; line-height: 1.5; background: #0d0d0d; padding: 0.6rem 0.75rem; border-radius: 6px; border: 1px solid #1a1a1a; max-height: 120px; overflow-y: auto; white-space: pre-wrap; word-break: break-word; }
+    .prompt-text.expanded { max-height: none; }
+    .toggle-prompt { font-size: 0.7rem; color: #4d96ff; cursor: pointer; border: none; background: none; padding: 0.25rem 0; }
+    .toggle-prompt:hover { text-decoration: underline; }
+
+    /* Tech Stack */
+    .tech-stack { background: #111; border: 1px solid #222; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
+    .tech-stack h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .tech-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+    .tech-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: #aaa; }
+    .tech-item .icon { font-size: 1.2rem; }
+
+    /* Footer */
+    .footer { text-align: center; padding: 2rem 0; color: #444; font-size: 0.8rem; border-top: 1px solid #1a1a1a; margin-top: 2rem; }
+
+    @media (max-width: 768px) {
+      .header h1 { font-size: 1.8rem; }
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🦸 히어로 인트로</h1>
+      <p>6명의 히어로가 각자 능력을 시전하는 30초 인트로 영상</p>
+      <div class="meta">
+        <span>🎬 LTX 2.5 22B</span>
+        <span>🖼️ Krea2 (Flux)</span>
+        <span>⏱️ 30초</span>
+        <span>📐 1280×720</span>
+        <span>📅 2026.08.18</span>
+      </div>
+    </div>
+
+    <!-- Video -->
+    <div class="video-section">
+      <h2>🎬 완성 영상</h2>
+      <div class="video-wrapper">
+        <video controls preload="metadata" poster="https://lh3.googleusercontent.com/d/1Ny9mKk3rQwQCh4bsoYHSl_8PnlArFDy9">
+          <source src="https://devsnack-blog.vercel.app/api/drive?id=1v27RE-bF1CPEs1ijeR24jbFTuYTjjKa7" type="video/mp4">
+          브라우저가 영상을 지원하지 않습니다.
+        </video>
+      </div>
+    </div>
+
+    <!-- Tech Stack -->
+    <div class="tech-stack">
+      <h3>🛠️ 기술 스택</h3>
+      <div class="tech-list">
+        <div class="tech-item"><span class="icon">🖼️</span> Krea2 (Flux 기반) — 이미지 생성</div>
+        <div class="tech-item"><span class="icon">🎬</span> LTX 2.5 22B (NVFP4) — I2V 영상 생성</div>
+        <div class="tech-item"><span class="icon">🔧</span> ComfyUI — 워크플로우 실행</div>
+        <div class="tech-item"><span class="icon">💻</span> NVIDIA DGX Spark GB10 — 로컬 실행</div>
+        <div class="tech-item"><span class="icon">🎞️</span> FFmpeg — 영상 합성 (concat + fade)</div>
+        <div class="tech-item"><span class="icon">☁️</span> Google Drive + Vercel — 호스팅</div>
+      </div>
+    </div>
+
+    <!-- Hero Cards -->
+    <h2 style="font-size:1.5rem; font-weight:700; margin-bottom:1.5rem;">🦸 6명의 히어로</h2>
+    <div class="hero-grid">
+
+      <!-- 1. Ignis -->
+      <div class="hero-card">
+        <img src="https://lh3.googleusercontent.com/d/1Ny9mKk3rQwQCh4bsoYHSl_8PnlArFDy9" alt="이그니스 — 화염 전사" loading="lazy">
+        <div class="info">
+          <div class="name"><span class="color-dot" style="background:#ff4444"></span> 이그니스 (Ignis)</div>
+          <div class="ability">🔥 화염 파워 — 불꽃 주먹, 용암 균열, 화염 폭발</div>
+          <div class="prompt-section">
+            <div class="prompt-label">🖼️ 이미지 프롬프트 (Krea2)</div>
+            <div class="prompt-text" id="p-ignis-img">Cinematic film still, 16:9 widescreen. A powerful fire elemental warrior standing tall, surrounded by swirling flames and embers. Armored in black obsidian plate with molten lava cracks glowing bright orange, both fists raised and engulfed in roaring fire. Dark volcanic landscape with lava rivers in the background, thick smoke and ash in the air, dramatic orange and red rim lighting, epic superhero movie quality, photorealistic, no text, no typography</div>
+            <button class="toggle-prompt" onclick="togglePrompt('p-ignis-img')">더보기</button>
+
+            <div class="prompt-label" style="margin-top:0.75rem">🎬 영상 프롬프트 (LTX 2.5)</div>
+            <div class="prompt-text" id="p-ignis-vid">A fire elemental warrior in black obsidian armor stands with both fists raised, flames erupting from both hands. He swings his right fist forward and a massive fireball launches across the volcanic landscape, leaving a trail of fire and smoke. He stomps the ground and cracks of lava spread outward in a star pattern, flames dance around his body as he clenches his fists, embers swirl upward. The camera tracks him at a steady pace as he rises into the air surrounded by a vortex of fire, his armor glows brighter with each heartbeat, then he slams both fists down sending a shockwave of flame outward</div>
+            <button class="toggle-prompt" onclick="togglePrompt('p-ignis-vid')">더보기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Glacius -->
+      <div class="hero-card">
+        <img src="https://lh3.googleusercontent.com/d/1hLpcOXkt0qjuNWGXZTkopl25u003KaeX" alt="글라시우스 — 빙결 소르서러" loading="lazy">
+        <div class="info">
+          <div class="name"><span class="color-dot" style="background:#4488ff"></span> 글라시우스 (Glacius)</div>
+          <div class="ability">💎 빙결 — 얼음 결정, 서리 파동, 동결 호수</div>
+          <div class="prompt-section">
+            <div class="prompt-label">🖼️ 이미지 프롬프트</div>
+            <div class="prompt-text" id="p-glacius-img">Cinematic film still, 16:9 widescreen. An ice sorceress in a flowing white-blue crystalline coat, standing on a frozen lake surface with cracked ice patterns beneath her feet. Both hands extended forward, shards of ice and frost spiraling around her arms. Frozen mountains and aurora borealis in the background, cold blue and white lighting with volumetric fog, crystalline reflections on the ice, epic superhero movie quality, photorealistic, no text, no typography</div>
+            <button class="toggle-prompt" onclick="togglePrompt('p-glacius-img')">더보기</button>
+
+            <div class="prompt-label" style="margin-top:0.75rem">🎬 영상 프롬프트</div>
+            <div class="prompt-text" id="p-glacius-vid">An ice sorceress in a crystalline white-blue coat stands on a frozen lake, shards of ice orbiting her arms. She thrusts both hands forward and a wave of ice erupts from the ground, freezing everything in its path, ice crystals grow tall like spires around her as she spins, frost spreads across the lake surface in intricate fractal patterns, she raises one hand overhead and a massive ice shard forms above her, the camera pushes in as she brings her hand down and the shard crashes forward shattering into a thousand sparkling fragments</div>
+            <button class="toggle-prompt" onclick="togglePrompt('p-glacius-vid')">더보기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Volt -->
+      <div class="hero-card">
+        <img src="https://lh3.googleusercontent.com/d/1Iz8DVxMudNAGu2oB5iwoxacNmEDCX_DX" alt="볼트 — 번개 스피드스터" loading="lazy">
+        <div class="info">
+          <div class="name"><span class="color-dot" style="background:#ffdd00"></span> 볼트 (Volt)</div>
+          <div class="ability">⚡ 번개 스피드 — 초고속 질주, 전기 충격파, 네온 도시</div>
+          <div class="prompt-section">
+            <div class="prompt-label">🖼️ 이미지 프롬프트</div>
+            <div class="prompt-text" id="p-volt-img">Cinematic film still, 16:9 widescreen. A lightning speedster in a sleek dark bodysuit with glowing yellow circuit lines, mid-stride in a dynamic running pose, electricity crackling around both fists. Urban rooftop at night with a sprawling neon-lit cityscape below, lightning bolts arc between buildings in the background, electric blue and yellow glow illuminating the scene, motion trails behind the figure, epic superhero movie quality, photorealistic, no text, no typography</div>
+            <button class="toggle-prompt" onclick="togglePrompt('p-volt-img')">더보기</button>
+
+            <div class="prompt-label" style="margin-top:0.75rem">🎬 영상 프롬프트</div>
+            <div class="prompt-text" id="p-volt-vid">A lightning speedster in a dark suit with yellow circuit lines dashes across rooftop to rooftop at blinding speed, electricity trailing behind each footstep. He leaps between buildings and time seems to slow, arcs of lightning crackle from his body to nearby structures, he lands on a rooftop and punches the ground sending a shockwave of electricity across the surface, neon lights flicker as energy courses through him, the camera tracks at a steady pace keeping up as he dashes forward again, leaving a bright yellow afterimage trail that lingers in the air</div>
+            <button class="toggle-prompt" onclick="togglePrompt('p-volt-vid')">더보기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Noctis -->
+      <div class="hero-card">
+        <img src="https://lh3.googleusercontent.com/d/1tADTsM-b4SK04AzonnejGuEv3XvhgJaa" alt="녹티스 — 그림자 암살자" loading="lazy">
+        <div class="info">
+          <div class="name"><span class="color-dot" style="background:#9944ff"></span> 녹티스 (Noctis)</div>
+          <div class="ability">🌑 그림자 암살 — 어둠 소환, 그림자 은신, 암흑 칼날</div>
+          <div class="prompt-section">
+            <div class="prompt-label">🖼️ 이미지 프롬프트</div>
+            <div class="prompt-text" id="p-noctis-img">Cinematic film still, 16:9 widescreen. A shadow assassin emerging from complete darkness, half of the face illuminated in cold purple light, wearing a dark hooded cloak with dark energy wisps. Both hands wielding curved daggers dripping with dark purple ethereal energy. Abandoned gothic cathedral ruins at midnight, moonlight piercing through broken stained glass, dust particles floating in purple-tinted light beams, epic superhero movie quality, photorealistic, no text, no typography</div>
+            <button class="toggle-prompt" onclick="togglePrompt('p-noctis-img')">더보기</button>
+
+            <div class="prompt-label" style="margin-top:0.75rem">🎬 영상 프롬프트</div>
+            <div class="prompt-text" id="p-noctis-vid">A shadow assassin in a dark hooded cloak emerges from complete darkness in gothic ruins, wielding curved daggers dripping with purple energy. He slashes the air and dark energy arcs outward in crescent shapes, shadows from the broken cathedral walls bend toward him as he moves, he spins and dissolves into a cloud of dark smoke, reappearing behind an invisible target, purple energy trails follow each dagger movement, the camera circles slowly around the ruins as shadow tendrils reach upward, he lands and the shadows around him settle, daggers glowing faintly in the dark</div>
+            <button class="toggle-prompt" onclick="togglePrompt('p-noctis-vid')">더보기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Aegis -->
+      <div class="hero-card">
+        <img src="https://lh3.googleusercontent.com/d/1FFxdqnxzqJCMEtm_a53ag0fFodNeYfvi" alt="아에기스 — 자연 수호자" loading="lazy">
+        <div class="info">
+          <div class="name"><span class="color-dot" style="background:#44bb44"></span> 아에기스 (Aegis)</div>
+          <div class="ability">🌿 자연 수호 — 뿌리 성장, 생명의 빛, 숲 부활</div>
+          <div class="prompt-section">
+            <div class="prompt-label">🖼️ 이미지 프롬프트</div>
+            <div class="prompt-text" id="p-aegis-img">Cinematic film still, 16:9 widescreen. A nature guardian druid standing tall with arms raised, massive roots and vines growing from the ground around their feet. Wearing organic green armor made of living bark and leaves, a radiant golden-green light emanating from their chest. Ancient mystical forest with giant trees and floating particles of golden light, dappled sunlight filtering through the canopy, epic superhero movie quality, photorealistic, no text, no typography</div>
+            <button class="toggle-prompt" onclick="togglePrompt('p-aegis-img')">더보기</button>
+
+            <div class="prompt-label" style="margin-top:0.75rem">🎬 영상 프롬프트</div>
+            <div class="prompt-text" id="p-aegis-vid">A nature guardian in living bark armor stands in an ancient forest with arms raised, roots and vines burst from the ground spiraling upward around the body. Golden-green light radiates from their chest and spreads outward through the forest, trees begin to bloom and leaves unfurl in a wave of life, the guardian presses both hands to the ground and massive roots surge forward across the forest floor, flowers bloom in their wake as the camera tilts upward, the forest canopy pulses with green bioluminescent light as nature energy flows through every branch</div>
+            <button class="toggle-prompt" onclick="togglePrompt('p-aegis-vid')">더보기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Zenith -->
+      <div class="hero-card">
+        <img src="https://lh3.googleusercontent.com/d/1UIaK5V1Cq-WK9AB9jTWqLgtbRjX_qgpC" alt="제니스 — 우주 에너지 워커" loading="lazy">
+        <div class="info">
+          <div class="name"><span class="color-dot" style="background:#ffffff; border:1px solid #555"></span> 제니스 (Zenith)</div>
+          <div class="ability">✨ 우주 에너지 — 빛의 구체, 에너지 파동, 우주 폭발</div>
+          <div class="prompt-section">
+            <div class="prompt-label">🖼️ 이미지 프롬프트</div>
+            <div class="prompt-text" id="p-zenith-img">Cinematic film still, 16:9 widescreen. A cosmic energy wielder floating above the ground in a cruciform pose, both arms spread wide with blinding white-gold light pouring from their palms. Wearing a pristine white suit with golden geometric patterns that glow with inner light. Vast open sky at twilight with swirling cosmic nebula colors — gold, white, and violet — energy rings orbit around the figure, volumetric god-rays, epic superhero movie quality, photorealistic, no text, no typography</div>
+            <button class="toggle-prompt" onclick="togglePrompt('p-zenith-img')">더보기</button>
+
+            <div class="prompt-label" style="margin-top:0.75rem">🎬 영상 프롬프트</div>
+            <div class="prompt-text" id="p-zenith-vid">A cosmic energy wielder in a white suit with golden geometric patterns floats above the ground in a cruciform pose. Light pours from both palms and energy rings orbit around the body at increasing speed. The wielder brings both hands together and releases a massive sphere of white-gold energy upward, the sphere expands into a shockwave that lights up the twilight sky. Nebula colors swirl and intensify as cosmic power channels through the body, the camera pushes in as light engulfs the entire frame, energy rings shatter into thousands of sparkling particles that scatter outward across the sky</div>
+            <button class="toggle-prompt" onclick="togglePrompt('p-zenith-vid')">더보기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      Generated on NVIDIA DGX Spark GB10 · Krea2 + LTX 2.5 22B · ComfyUI · FFmpeg<br>
+      DevSnack AI Lab © 2026
+    </div>
+  </div>
+
+  <script>
+    function togglePrompt(id) {
+      const el = document.getElementById(id);
+      el.classList.toggle('expanded');
+      const btn = el.nextElementSibling;
+      btn.textContent = el.classList.contains('expanded') ? '접기' : '더보기';
+    }
+  </script>
+</body>
+</html>

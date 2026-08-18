@@ -67,6 +67,7 @@ const DEMOS_ITEM: NavItem = {
     { href: '/demos/html',  label: 'HTML' },
     { href: '/demos/music', label: 'Music' },
     { href: '/demos/image', label: 'Image' },
+    { href: '/demos/shortmovie', label: 'Short Movie' },
   ],
 }
 

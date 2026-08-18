@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, ExternalLink, FileCode2, Music2, Image } from 'lucide-react'
+import { ArrowLeft, ExternalLink, FileCode2, Music2, Image, Film } from 'lucide-react'
 import { DEMO_CATEGORIES, DEMOS, getDemoCategoryMeta, type DemoCategory } from '@/data/demos'
 
 export const revalidate = 60
@@ -9,6 +9,7 @@ const CATEGORY_ICON: Record<string, any> = {
   html: FileCode2,
   music: Music2,
   image: Image,
+  shortmovie: Film,
 }
 
 export default async function DemoCategoryPage({ params }: { params: Promise<{ category: string }> }) {
