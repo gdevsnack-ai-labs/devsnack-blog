@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowLeft, Zap, Flame, Thermometer, Fan, Gauge, Timer, Trophy, TrendingUp, TrendingDown, Minus, Wifi, Share2 } from 'lucide-react'
+import { ArrowLeft, Zap, Flame, Thermometer, Fan, Gauge, Timer, Trophy, TrendingUp, TrendingDown, Minus, Share2 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
 export const revalidate = 60
@@ -82,14 +82,6 @@ export default async function MiningLeaderboardPage() {
     scoreboard = (sb ?? []) as ScoreboardEntry[]
   }
 
-  // 풀 상태 포맷 (최신 측정 기준)
-  const poolHash1m = latestMeasure?.pool_hashrate_1m_ghs ? (latestMeasure.pool_hashrate_1m_ghs / 1e3).toFixed(2) + ' TH/s' : '-'
-  const poolHash1h = latestMeasure?.pool_hashrate_1h_ghs ? (latestMeasure.pool_hashrate_1h_ghs / 1e3).toFixed(2) + ' TH/s' : '-'
-  const lastshareStr = latestMeasure?.lastshare_sec !== null && latestMeasure?.lastshare_sec !== undefined
-    ? (latestMeasure.lastshare_sec < 60 ? `${latestMeasure.lastshare_sec}초 전` : `${Math.round(latestMeasure.lastshare_sec / 60)}분 전`)
-    : '-'
-  const poolBestG = latestMeasure?.pool_bestever ? (latestMeasure.pool_bestever / 1e9).toFixed(2) : '-'
-
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -147,36 +139,6 @@ export default async function MiningLeaderboardPage() {
                 </div>
                 <div className="text-2xl font-bold">{fmt(latest.chip_temp)}<span className="text-sm font-normal text-muted-foreground">°C</span></div>
                 <div className="text-xs text-muted-foreground mt-1">VR {fmt(latest.vr_temp)}°C · 팬 {fmt(latest.fan_speed, 0)}% · {fmt(latest.power_w, 1)}W</div>
-              </div>
-            </div>
-
-            {/* 풀 상태 카드 */}
-            <div className="rounded-xl border bg-card p-4 mb-8">
-              <div className="flex items-center gap-2 mb-3">
-                <Wifi className="w-4 h-4 text-green-600 dark:text-green-400" />
-                <h2 className="font-semibold text-sm md:text-base">🌐 풀 상태 — solo.ckpool.org (BTC)</h2>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3 text-sm">
-                <div>
-                  <div className="text-xs text-muted-foreground mb-0.5">풀 해시 (1m)</div>
-                  <div className="font-semibold">{poolHash1m}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground mb-0.5">풀 해시 (1h)</div>
-                  <div className="font-semibold">{poolHash1h}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground mb-0.5">마지막 공유</div>
-                  <div className={`font-semibold ${latest?.lastshare_sec !== null && latest?.lastshare_sec !== undefined && latest.lastshare_sec < 300 ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'}`}>{lastshareStr}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground mb-0.5">워커</div>
-                  <div className="font-semibold">{latest?.pool_workers ?? '-'}개</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground mb-0.5">풀 역대 best</div>
-                  <div className="font-semibold">{poolBestG}B</div>
-                </div>
               </div>
             </div>
 
