@@ -100,35 +100,6 @@ async function LabPostPage({ slug }: { slug: string }) {
   )
 }
 
-/** Fetch and render the detailed benchmark report from Supabase lab posts */
-async function BenchmarkReportSection() {
-  const { data: post } = await supabase
-    .from('posts')
-    .select('title, content, excerpt, published')
-    .eq('slug', 'local-llm-benchmark')
-    .eq('blog_id', 'lab')
-    .eq('status', 'live')
-    .single()
-
-  if (!post) return null
-
-  return (
-    <section className="mb-8 border border-border rounded-xl overflow-hidden">
-      <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 px-6 py-4 border-b border-border">
-        <h2 className="text-lg font-bold flex items-center gap-2">
-          📊 실측 리포트 상세
-        </h2>
-        <p className="text-xs text-muted-foreground mt-1">
-          {post.published ? new Date(post.published).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}
-        </p>
-      </div>
-      <div className="px-6 py-5">
-        <MarkdownRenderer content={post.content || ''} />
-      </div>
-    </section>
-  )
-}
-
 /** Render experiment detail page */
 async function ExperimentDetailPage({ id }: { id: string }) {
   const exp = experiments.find(e => e.id === id)
@@ -240,11 +211,6 @@ async function ExperimentDetailPage({ id }: { id: string }) {
           <div className="mb-8">
             <StockPulsePredictionWidget />
           </div>
-        )}
-
-        {/* Local LLM Benchmark 실험: 상세 실측 리포트 (Supabase lab 글) */}
-        {id === 'local-llm-benchmark' && (
-          <BenchmarkReportSection />
         )}
 
         {/* Local LLM Benchmark 실험: 벤치 프롬프트 라이브러리 */}
