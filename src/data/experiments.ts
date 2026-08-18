@@ -147,7 +147,7 @@ const LLM_BENCH: Experiment = {
   id: 'local-llm-benchmark',
   name: 'Local LLM Benchmark',
   description: 'DGX Spark GB10에서 GGUF 양자화 로컬 LLM의 실측 성능 비교 — MTP 스펙 디코딩, 프리필/디코드 속도, 수락률, 실사용 생성 품질을 단일 프롬프트로 검증',
-  progress: 40,
+  progress: 45,
   color: 'blue',
   status: '진행중',
   category: 'running',
@@ -160,10 +160,11 @@ const LLM_BENCH: Experiment = {
     { name: '장기 서빙 실측 (4슬롯 동시)', status: '완료',   date: '2026.08.18', result: '장문 생성 18~22 t/s 유지, 수락률 평균 ~94%, 초장문 8,287토큰 18.5 t/s' },
     { name: '실사용 데모 (단일 프롬프트)', status: '완료',   date: '2026.08.18', result: 'Ragdoll Playground HTML — 1회 생성으로 완성, 데모 공개' },
     { name: 'Self Bench Pack 자체 설계 (24종)', status: '완료', date: '2026.08.18', result: 'TokenChaser 84개 참고·한영 이중언어 + 자기검증 루프 내장, 오픈코드 에이전트 실행기 구축' },
+    { name: '실사용 데모 — Stock Dashboard (Ridge 3.7bpw)', status: '완료', date: '2026.08.19', result: 'Qwen3.8-27B Ridge 3.7bpw로 KOSPI/KOSDAQ 대시보드 1회 생성. 디코드 ~29 t/s, MTP 수락률 ~88%, worklog+llama_log 기록' },
     { name: '벤치 프롬프트 에이전트 실행', status: '예정',   result: '8080 qwen3.5-35b 백본, 생성→테스트→수정 루프' },
     { name: '다른 모델과 비교 (Muse Glimmer 30B 등)', status: '예정' },
   ],
-  blogPosts: ['/research/qwen3-8-27b-nvfp4-mtp-gguf-gb10'],
+  blogPosts: ['/research/qwen3-8-27b-nvfp4-mtp-gguf-gb10', '/research/local-llm-benchmark'],
   githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
 }
 

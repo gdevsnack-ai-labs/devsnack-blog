@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한국 주식 대시보드 / Korean Stock Dashboard</title>
+<style>
+  :root {
+    --bg: #0e1117;
+    --surface: #161b24;
+    --surface-2: #1d2330;
+    --border: #2a3242;
+    --text: #e8ecf3;
+    --muted: #8b95a7;
+    --accent: #4f8cff;
+    --up: #22c55e;
+    --down: #ef4444;
+    --radius: 12px;
+    --shadow: 0 8px 24px rgba(0,0,0,.35);
+    font-size: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-font-smoothing: antialiased; }
+  body {
+    font-family: 'Noto Sans KR', 'Nanum Gothic', 'Malgun Gothic', 'Apple SD Gothic Neo', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 40px; }
+
+  /* ---------- Header ---------- */
+  header.top {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap; margin-bottom: 16px;
+  }
+  .brand h1 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em; }
+  .brand .sub { color: var(--muted); font-size: .8rem; margin-top: 2px; }
+  .lang-toggle {
+    display: inline-flex; border: 1px solid var(--border); border-radius: 8px;
+    overflow: hidden; background: var(--surface);
+  }
+  .lang-toggle button {
+    appearance: none; border: 0; cursor: pointer;
+    background: transparent; color: var(--muted);
+    font: inherit; font-size: .8rem; font-weight: 600;
+    padding: 7px 14px; transition: background .15s, color .15s;
+  }
+  .lang-toggle button.active { background: var(--accent); color: #fff; }
+  .lang-toggle button:not(.active):hover { color: var(--text); }
+
+  /* ---------- Market summary ---------- */
+  .summary {
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    margin-bottom: 18px;
+  }
+  .summary .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px 16px;
+  }
+  .summary .label { color: var(--muted); font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+  .summary .value { font-size: 1.3rem; font-weight: 700; margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .summary .delta { font-size: .8rem; font-weight: 600; margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .up { color: var(--up); }
+  .down { color: var(--down); }
+
+  /* ---------- Toolbar ---------- */
+  .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+  .search {
+    flex: 1; min-width: 220px; max-width: 380px;
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 12px;
+  }
+  .search input {
+    flex: 1; background: transparent; border: 0; outline: 0;
+    color: var(--text); font: inherit; font-size: .9rem;
+  }
+  .search input::placeholder { color: var(--muted); }
+  .search .icon { color: var(--muted); font-size: 1rem; }
+  .result-count { color: var(--muted); font-size: .8rem; }
+
+  /* ---------- Stock grid ---------- */
+  .grid {
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px 16px;
+    cursor: pointer; position: relative;
+    transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    animation: cardIn .3s ease both;
+  }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: var(--shadow); }
+  .card:active { transform: translateY(0); }
+  .card .row1 { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .card .name { font-weight: 700; font-size: 1rem; }
+  .card .ticker { color: var(--muted); font-size: .72rem; font-weight: 600; }
+  .card .row2 { display: flex; align-items: baseline; justify-content: space-between; margin-top: 8px; }
+  .card .price { font-size: 1.15rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .card .chg { font-size: .82rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .card svg.spark { width: 100%; height: 36px; display: block; margin-top: 10px; }
+  .card .spark-line { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .empty { color: var(--muted); text-align: center; padding: 40px 0; font-size: .95rem; grid-column: 1 / -1; }
+
+  /* ---------- Modal ---------- */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 50;
+    background: rgba(0,0,0,.6); backdrop-filter: blur(3px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; opacity: 0; animation: fadeIn .2s ease forwards;
+  }
+  .modal-overlay[hidden] { display: none; }
+  @keyframes fadeIn { to { opacity: 1; } }
+  .modal {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; box-shadow: var(--shadow);
+    width: 100%; max-width: 460px;
+    padding: 22px; position: relative;
+    animation: modalIn .22s cubic-bezier(.2,.9,.3,1.2) both;
+  }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: none; } }
+  .modal .close {
+    position: absolute; top: 14px; right: 14px;
+    appearance: none; border: 0; background: var(--surface-2); color: var(--muted);
+    width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+    font-size: 1rem; line-height: 1; transition: background .15s, color .15s;
+  }
+  .modal .close:hover { background: var(--border); color: var(--text); }
+  .modal h2 { font-size: 1.25rem; font-weight: 700; }
+  .modal .m-ticker { color: var(--muted); font-size: .8rem; font-weight: 600; margin-top: 2px; }
+  .modal .m-price { display: flex; align-items: baseline; gap: 10px; margin-top: 14px; }
+  .modal .m-price .p { font-size: 1.7rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .modal .m-price .c { font-size: .95rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .stats {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+    margin-top: 18px;
+  }
+  .stats .stat {
+    background: var(--surface-2); border-radius: 8px; padding: 10px 12px;
+  }
+  .stats .stat .k { color: var(--muted); font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+  .stats .stat .v { font-size: 1rem; font-weight: 700; margin-top: 3px; font-variant-numeric: tabular-nums; }
+  .chart-box { margin-top: 18px; }
+  .chart-box .title { color: var(--muted); font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; }
+  .chart-box canvas { width: 100%; height: 160px; display: block; }
+  .chart-legend { display: flex; gap: 14px; margin-top: 8px; font-size: .72rem; color: var(--muted); }
+  .chart-legend .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+
+  footer { margin-top: 28px; color: var(--muted); font-size: .72rem; text-align: center; }
+
+  @media (max-width: 640px) {
+    .grid { grid-template-columns: 1fr; }
+    .summary { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1 data-i18n="appTitle">한국 주식 대시보드</h1>
+      <div class="sub" data-i18n="appSub">KOSPI · KOSDAQ 시계열 (가상 데이터)</div>
+    </div>
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button id="btn-ko" class="active" onclick="setLang('ko')">한국어</button>
+      <button id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+  </header>
+
+  <section class="summary" id="summary" aria-label="Market summary"></section>
+
+  <div class="toolbar">
+    <div class="search">
+      <span class="icon">🔍</span>
+      <input id="search" type="search" autocomplete="off" data-i18n-ph="searchPlaceholder" placeholder="종목 검색 (예: 삼성전자)">
+    </div>
+    <div class="result-count" id="resultCount"></div>
+  </div>
+
+  <main class="grid" id="grid"></main>
+
+  <footer data-i18n="footer">본 대시보드의 모든 데이터는 가상이며 실제 시장 가격과 무관합니다.</footer>
+</div>
+
+<div class="modal-overlay" id="modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="close" id="modalClose" aria-label="Close">✕</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+/* ============================================================
+   i18n
+   ============================================================ */
+const I18N = {
+  ko: {
+    appTitle: '한국 주식 대시보드',
+    appSub: 'KOSPI · KOSDAQ 시계열 (가상 데이터)',
+    searchPlaceholder: '종목 검색 (예: 삼성전자)',
+    footer: '본 대시보드의 모든 데이터는 가상이며 실제 시장 가격과 무관합니다.',
+    results: (n) => `${n}개 종목 표시 중`,
+    noResults: '검색 결과가 없습니다.',
+    kospi: 'KOSPI', kosdaq: 'KOSDAQ',
+    adv: '상승', dec: '하락', unchanged: '보합',
+    open: '시가', high: '고가', low: '저가', volume: '거래량',
+    chart30: '30일 차트', priceLine: '종가', avgLine: '평균',
+    volumeUnit: '주',
+    dateAgo: (d) => `${d}일 전`,
+    today: '오늘'
+  },
+  en: {
+    appTitle: 'Korean Stock Dashboard',
+    appSub: 'KOSPI · KOSDAQ Watchlist (fictional data)',
+    searchPlaceholder: 'Search stocks (e.g. Samsung)',
+    footer: 'All data on this dashboard is fictional and unrelated to real market prices.',
+    results: (n) => `${n} stock${n === 1 ? '' : 's'} shown`,
+    noResults: 'No stocks found.',
+    kospi: 'KOSPI', kosdaq: 'KOSDAQ',
+    adv: 'up', dec: 'down', unchanged: 'flat',
+    open: 'Open', high: 'High', low: 'Low', volume: 'Volume',
+    chart30: '30-day chart', priceLine: 'Close', avgLine: 'Average',
+    volumeUnit: 'shares',
+    dateAgo: (d) => `${d} days ago`,
+    today: 'Today'
+  }
+};
+let lang = 'ko';
+const t = (key) => I18N[lang][key];
+const stockName = (s) => (lang === 'ko' ? s.name : s.en);
+
+function setLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  document.getElementById('btn-ko').classList.toggle('active', l === 'ko');
+  document.getElementById('btn-en').classList.toggle('active', l === 'en');
+  document.getElementById('search').placeholder = t('searchPlaceholder');
+  applyStaticI18n();
+  renderAll();
+}
+function applyStaticI18n() {
+  document.querySelector('[data-i18n="appTitle"]').textContent = t('appTitle');
+  document.querySelector('[data-i18n="appSub"]').textContent = t('appSub');
+  document.querySelector('[data-i18n="footer"]').textContent = t('footer');
+}
+
+/* ============================================================
+   Data (deterministic, fictional)
+   ============================================================ */
+function mulberry32(seed) {
+  return function() {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let x = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x;
+    return ((x ^ x >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+const STOCKS = [
+  { id: '005930', name: '삼성전자', en: 'Samsung Electronics', market: 'KOSPI', base: 81200 },
+  { id: '000660', name: 'SK하이닉스', en: 'SK Hynix', market: 'KOSPI', base: 178500 },
+  { id: '373220', name: 'LG에너지솔루션', en: 'LG Energy Solution', market: 'KOSPI', base: 312400 },
+  { id: '035460', name: 'NAVER', en: 'NAVER', market: 'KOSPI', base: 198700 },
+  { id: '035450', name: '카카오', en: 'Kakao', market: 'KOSPI', base: 45350 },
+  { id: '005380', name: '현대차', en: 'Hyundai Motor', market: 'KOSPI', base: 142800 },
+  { id: '003620', name: '기아', en: 'Kia', market: 'KOSPI', base: 118900 },
+  { id: '068360', name: '셀트리온', en: 'Celltrion', market: 'KOSPI', base: 165300 }
+];
+
+const IDX = { kospi: { base: 2648.52 }, kosdaq: { base: 712.38 } };
+
+function genSeries(seed, base, days) {
+  const rnd = mulberry32(seed);
+  const out = [];
+  let v = base * (0.97 + rnd() * 0.03);
+  for (let i = 0; i < days; i++) {
+    const drift = (rnd() - 0.48) * 0.012;
+    v = v * (1 + drift);
+    out.push(Math.round(v));
+  }
+  return out;
+}
+
+const DATA = STOCKS.map((s, i) => {
+  const seed = 1000 + i * 97;
+  const series30 = genSeries(seed, s.base, 30);
+  const prev = series30[series30.length - 2];
+  const price = series30[series30.length - 1];
+  const chg = ((price - prev) / prev) * 100;
+  const spark = series30.slice(-7);
+  const hi = Math.max(...series30.slice(-7));
+  const lo = Math.min(...series30.slice(-7));
+  const open = series30[series30.length - 1] * (1 + (mulberry32(seed + 7)() - 0.5) * 0.01);
+  const vol = Math.round(2e6 + mulberry32(seed + 13)() * 9e6);
+  return { ...s, price, chg, spark, open: Math.round(open), high: hi, low: lo, vol, series30 };
+});
+
+const IDX_SERIES = (() => {
+  const k = genSeries(42, IDX.kospi.base, 30);
+  const q = genSeries(77, IDX.kosdaq.base, 30);
+  return {
+    kospi: { price: k[k.length-1], chg: ((k[k.length-1]-k[k.length-2]) / k[k.length-2]) * 100 },
+    kosdaq: { price: q[q.length-1], chg: ((q[q.length-1]-q[q.length-2]) / q[q.length-2]) * 100 }
+  };
+})();
+
+/* ============================================================
+   Formatting
+   ============================================================ */
+const fmtPrice = (n) => n.toLocaleString('ko-KR');
+const fmtPct = (n) => (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
+const fmtVol = (n) => n.toLocaleString('ko-KR');
+function chgClass(n) { return n > 0 ? 'up' : n < 0 ? 'down' : ''; }
+function chgWord(n) { return n > 0 ? t('adv') : n < 0 ? t('dec') : t('unchanged'); }
+
+/* ============================================================
+   Rendering
+   ============================================================ */
+function sparkline(points, up) {
+  const w = 100, h = 36, pad = 3;
+  const min = Math.min(...points), max = Math.max(...points);
+  const range = max - min || 1;
+  const coords = points.map((p, i) => {
+    const x = pad + (i / (points.length - 1)) * (w - pad * 2);
+    const y = h - pad - ((p - min) / range) * (h - pad * 2);
+    return [x, y];
+  });
+  const d = coords.map((c, i) => (i ? 'L' : 'M') + c[0].toFixed(1) + ',' + c[1].toFixed(1)).join(' ');
+  const color = up ? 'var(--up)' : 'var(--down)';
+  const last = coords[coords.length - 1];
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">
+    <path d="${d}" class="spark-line" style="stroke:${color}"/>
+    <circle cx="${last[0]}" cy="${last[1]}" r="2.4" style="fill:${color}"/>
+  </svg>`;
+}
+
+function renderSummary() {
+  const el = document.getElementById('summary');
+  const k = IDX_SERIES.kospi, q = IDX_SERIES.kosdaq;
+  const card = (label, val, chg) => `
+    <div class="card">
+      <div class="label">${label}</div>
+      <div class="value">${val}</div>
+      <div class="delta ${chgClass(chg)}">${fmtPct(chg)} · ${chgWord(chg)}</div>
+    </div>`;
+  el.innerHTML =
+    card(t('kospi'), IDX_SERIES.kospi.price.toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), k.chg) +
+    card(t('kosdaq'), IDX_SERIES.kosdaq.price.toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), q.chg);
+}
+
+function renderGrid(filter) {
+  const grid = document.getElementById('grid');
+  const f = (filter || '').trim().toLowerCase();
+  const list = DATA.filter(s => !f || s.name.toLowerCase().includes(f) || s.en.toLowerCase().includes(f) || s.id.includes(f));
+  document.getElementById('resultCount').textContent = t('results')(list.length);
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty">${t('noResults')}</div>`;
+    return;
+  }
+  grid.innerHTML = list.map((s, i) => `
+    <div class="card" style="animation-delay:${i * 30}ms" onclick="openModal('${s.id}')" role="button" tabindex="0"
+         onkeydown="if(event.key==='Enter')openModal('${s.id}')">
+      <div class="row1">
+        <div class="name">${stockName(s)}</div>
+        <div class="ticker">${s.id} · ${s.market}</div>
+      </div>
+      <div class="row2">
+        <div class="price">${fmtPrice(s.price)}</div>
+        <div class="chg ${chgClass(s.chg)}">${fmtPct(s.chg)}</div>
+      </div>
+      ${sparkline(s.spark, s.chg >= 0)}
+    </div>`).join('');
+}
+
+function renderAll() {
+  renderSummary();
+  renderGrid(document.getElementById('search').value);
+}
+
+/* ============================================================
+   Modal + 30-day canvas chart
+   ============================================================ */
+const modal = document.getElementById('modal');
+const modalBody = document.getElementById('modalBody');
+
+function openModal(id) {
+  const s = DATA.find(x => x.id === id);
+  if (!s) return;
+  const cls = chgClass(s.chg);
+  modalBody.innerHTML = `
+    <h2>${stockName(s)}</h2>
+    <div class="m-ticker">${lang === 'ko' ? s.en : s.name} · ${s.id} · ${s.market}</div>
+    <div class="m-price">
+      <span class="p">${fmtPrice(s.price)}</span>
+      <span class="c ${cls}">${fmtPct(s.chg)} · ${chgWord(s.chg)}</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="k">${t('open')}</div><div class="v">${fmtPrice(s.open)}</div></div>
+      <div class="stat"><div class="k">${t('high')}</div><div class="v up">${fmtPrice(s.high)}</div></div>
+      <div class="stat"><div class="k">${t('low')}</div><div class="v down">${fmtPrice(s.low)}</div></div>
+      <div class="stat"><div class="k">${t('volume')}</div><div class="v">${fmtVol(s.vol)} ${t('volumeUnit')}</div></div>
+    </div>
+    <div class="chart-box">
+      <div class="title">${t('chart30')}</div>
+      <canvas id="chartCanvas"></canvas>
+      <div class="chart-legend">
+        <span><span class="dot" style="background:var(--accent)"></span>${t('priceLine')}</span>
+        <span><span class="dot" style="background:var(--muted)"></span>${t('avgLine')}</span>
+      </div>
+    </div>`;
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  drawChart(s.series30);
+}
+
+function closeModal() {
+  modal.hidden = true;
+  document.body.style.overflow = '';
+}
+
+function drawChart(series) {
+  const canvas = document.getElementById('chartCanvas');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  const W = rect.width, H = rect.height;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, W, H);
+
+  const padL = 8, padR = 46, padT = 10, padB = 20;
+  const min = Math.min(...series), max = Math.max(...series);
+  const range = max - min || 1;
+  const x = (i) => padL + (i / (series.length - 1)) * (W - padL - padR);
+  const y = (v) => padT + (1 - (v - min) / range) * (H - padT - padB);
+
+  // grid lines
+  ctx.strokeStyle = 'rgba(139,149,167,.15)';
+  ctx.lineWidth = 1;
+  for (let g = 0; g <= 4; g++) {
+    const gy = padT + (g / 4) * (H - padT - padB);
+    ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(W - padR, gy); ctx.stroke();
+  }
+
+  // average line
+  const avg = series.reduce((a, b) => a + b, 0) / series.length;
+  ctx.strokeStyle = '#8b95a7';
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(padL, y(avg)); ctx.lineTo(W - padR, y(avg)); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // area fill
+  const grad = ctx.createLinearGradient(0, padT, 0, H);
+  grad.addColorStop(0, 'rgba(79,140,255,.35)');
+  grad.addColorStop(1, 'rgba(79,140,255,0)');
+  ctx.beginPath();
+  ctx.moveTo(x(0), H - padB);
+  series.forEach((v, i) => ctx.lineTo(x(i), y(v)));
+  ctx.lineTo(x(series.length - 1), H - padB);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // price line
+  ctx.strokeStyle = '#4f8cff';
+  ctx.lineWidth = 2;
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  series.forEach((v, i) => i ? ctx.lineTo(x(i), y(v)) : ctx.moveTo(x(i), y(v)));
+  ctx.stroke();
+
+  // labels: min/max price on right, first/last date on bottom
+  ctx.fillStyle = '#8b95a7';
+  ctx.font = '10px sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText(fmtPrice(max), W - padR + 4, y(max) + 3);
+  ctx.fillText(fmtPrice(min), W - padR + 4, y(min) + 3);
+  ctx.textAlign = 'left';
+  ctx.fillText(t('dateAgo')(29), padL, H - 5);
+  ctx.textAlign = 'right';
+  ctx.fillText(t('today'), W - padR, H - 5);
+}
+
+/* ============================================================
+   Events
+   ============================================================ */
+document.getElementById('search').addEventListener('input', (e) => renderGrid(e.target.value));
+document.getElementById('modalClose').addEventListener('click', closeModal);
+modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+window.addEventListener('resize', () => { if (!modal.hidden) { const id = modalBody.querySelector('.m-ticker'); } });
+
+applyStaticI18n();
+renderAll();
+</script>
+</body>
+</html>
