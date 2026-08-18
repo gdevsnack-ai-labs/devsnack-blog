@@ -33,7 +33,6 @@ interface NavGroup {
 const SINGLE_ITEMS: NavItem[] = [
   { href: '/', label: 'Home', icon: House },
   { href: '/lab', label: 'Lab', icon: FlaskConical },
-  { href: '/research', label: 'Research', icon: Telescope },
   { href: '/links', label: 'Links', icon: Video },
   { href: '/about', label: 'About', icon: Info },
 ]
@@ -71,6 +70,21 @@ const DEMOS_ITEM: NavItem = {
   ],
 }
 
+// ── Research (단독 + 카테고리 서브메뉴) — 전체 / 세부 카테고리 ──
+const RESEARCH_ITEM: NavItem = {
+  href: '/research',
+  label: 'Research',
+  icon: Telescope,
+  subItems: [
+    { href: '/research',                    label: '전체' },
+    { href: '/research/category/llm',       label: '🤖 LLM/모델' },
+    { href: '/research/category/tts',       label: '🎙️ TTS' },
+    { href: '/research/category/media',     label: '🎨 미디어' },
+    { href: '/research/category/benchmark', label: '📊 벤치마크' },
+    { href: '/research/category/hardware',  label: '🖥️ 하드웨어' },
+  ],
+}
+
 export function SideNav({ counts }: { counts?: SideNavCounts }) {
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
@@ -89,6 +103,7 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
     // 하위 항목이 활성화되어 있으면 자동 펼침
     if (group.items.some(item => isActive(item.href))) return true
     if (group.label === 'Demos' && DEMOS_ITEM.subItems?.some(s => isActive(s.href))) return true
+    if (group.label === 'Research' && RESEARCH_ITEM.subItems?.some(s => isActive(s.href))) return true
     return !!openGroups[group.label]
   }
 
@@ -244,6 +259,31 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
             </Link>
             {!collapsed && groupOpen({ label: 'Demos', items: [] }) && DEMOS_ITEM.subItems && (
               renderSubItems(DEMOS_ITEM.subItems)
+            )}
+          </div>
+
+          {/* Research — 단독 + 카테고리 서브메뉴 */}
+          <div key="research">
+            <Link
+              href={RESEARCH_ITEM.href}
+              onClick={() => toggleGroup('Research')}
+              className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm no-underline transition-colors ${
+                isActive(RESEARCH_ITEM.href) || RESEARCH_ITEM.subItems?.some(s => isActive(s.href))
+                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-medium'
+                  : 'text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+              } ${collapsed ? 'justify-center' : ''}`}
+              title={collapsed ? RESEARCH_ITEM.label : undefined}
+            >
+              {RESEARCH_ITEM.icon && <RESEARCH_ITEM.icon className="w-4 h-4 shrink-0" />}
+              {!collapsed && (
+                <>
+                  <span className="flex-1 truncate">{RESEARCH_ITEM.label}</span>
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${groupOpen({ label: 'Research', items: [] }) ? 'rotate-180' : ''}`} />
+                </>
+              )}
+            </Link>
+            {!collapsed && groupOpen({ label: 'Research', items: [] }) && RESEARCH_ITEM.subItems && (
+              renderSubItems(RESEARCH_ITEM.subItems)
             )}
           </div>
         </div>

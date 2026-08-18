@@ -38,7 +38,19 @@ const TABS: Tab[] = [
       { href: '/demos',  label: 'Demos' },
     ],
   },
-  { href: '/research', label: 'Research', icon: Telescope },
+  {
+    href: '/research',
+    label: 'Research',
+    icon: Telescope,
+    subItems: [
+      { href: '/research',                    label: '전체' },
+      { href: '/research/category/llm',       label: '🤖 LLM' },
+      { href: '/research/category/tts',       label: '🎙️ TTS' },
+      { href: '/research/category/media',     label: '🎨 미디어' },
+      { href: '/research/category/benchmark', label: '📊 벤치' },
+      { href: '/research/category/hardware',  label: '🖥️ 하드웨어' },
+    ],
+  },
   {
     href: '/misc',
     label: 'Tools',
