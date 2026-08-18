@@ -164,7 +164,7 @@ const LLM_BENCH: Experiment = {
     { name: '벤치 프롬프트 에이전트 실행', status: '예정',   result: '8080 qwen3.5-35b 백본, 생성→테스트→수정 루프' },
     { name: '다른 모델과 비교 (Muse Glimmer 30B 등)', status: '예정' },
   ],
-  blogPosts: ['/research/qwen3-8-27b-nvfp4-mtp-gguf-gb10', '/research/local-llm-benchmark'],
+  blogPosts: ['/research/qwen3-8-27b-nvfp4-mtp-gguf-gb10'],
   githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
 }
 

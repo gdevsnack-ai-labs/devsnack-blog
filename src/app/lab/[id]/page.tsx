@@ -120,8 +120,6 @@ async function BenchmarkReportSection() {
         </h2>
         <p className="text-xs text-muted-foreground mt-1">
           {post.published ? new Date(post.published).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}
-          {' · '}
-          <a href="/research/local-llm-benchmark" className="text-blue-500 hover:underline">전체 글 보기 →</a>
         </p>
       </div>
       <div className="px-6 py-5">
