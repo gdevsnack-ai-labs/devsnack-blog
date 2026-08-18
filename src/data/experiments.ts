@@ -153,7 +153,7 @@ const LLM_BENCH: Experiment = {
   category: 'running',
   startedAt: '2026.08.18',
   whyText: 'GB10(128GB 통합 메모리, Blackwell sm_120)에서 27B급 dense 모델의 현실적 로컬 라인이 어디까지인지 실측한다. GPU 메모리 여유가 커서 NVFP4 같은 고밀도 양자화를 그대로 활용할 수 있고, MTP 헤드 내장 모델은 별도 드래프터 없이 스펙 디코딩을 켤 수 있다. 스펙만 보면 되는 게 아니라 실제 서빙 부하(4슬롯 동시)와 생성 품질(단일 프롬프트 → 산출물)까지 봐야 판단할 수 있다.',
-  nextGoals: ['VERY-HIGH 티어 비교 실측', 'thinking ON/OFF 품질 차이 검증', 'Self Bench Pack 24종 에이전트 실행 (8080 qwen3.5-35b)', '벤치마크 자동화 스크립트 구축', 'Muse Glimmer 30B·DeepSeek V4 Pro 등 경쟁 모델 비교'],
+  nextGoals: ['thinking ON/OFF 품질 차이 검증', 'Self Bench Pack 24종 에이전트 실행 (8080 qwen3.5-35b)', '벤치마크 자동화 스크립트 구축', 'Ridge vs NVFP4HIGH 속도·품질 비교'],
   timeline: [
     { name: '실행 스크립트 4종 작성',     status: '완료',   date: '2026.08.18', result: 'HIGH/VERY-HIGH × thinking ON/OFF, MTP n-max 6 + p-min 0.75' },
     { name: '단일 테스트 실측',            status: '완료',   date: '2026.08.18', result: '프리필 680~930 t/s, 디코드 17~19.5 t/s, 수락률 93.1%' },
