@@ -269,10 +269,9 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
 
           {/* Research — 단독 + 카테고리 서브메뉴 */}
           <div key="research">
-            <Link
-              href={RESEARCH_ITEM.href}
+            <button
               onClick={() => toggleGroup('Research')}
-              className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm no-underline transition-colors ${
+              className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm no-underline transition-colors cursor-pointer ${
                 isActive(RESEARCH_ITEM.href) || RESEARCH_ITEM.subItems?.some(s => isActive(s.href))
                   ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-medium'
                   : 'text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
@@ -286,7 +285,7 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
                   <ChevronDown className={`w-3.5 h-3.5 transition-transform ${groupOpen({ label: 'Research', items: [] }) ? 'rotate-180' : ''}`} />
                 </>
               )}
-            </Link>
+            </button>
             {!collapsed && groupOpen({ label: 'Research', items: [] }) && RESEARCH_ITEM.subItems && (
               renderSubItems(RESEARCH_ITEM.subItems)
             )}
