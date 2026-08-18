@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ArrowLeft, FileText, Video, ExternalLink, CheckCircle2, Sparkles, Calendar, Clock } from 'lucide-react'
 import { ProgressBar } from '@/components/progress-bar'
 import { StockPulsePredictionWidget } from '@/components/stock-pulse-prediction-widget'
+import { BenchPromptLibrary } from '@/components/bench-prompt-library'
 import { experiments, type PartStatus } from '@/data/experiments'
 import { supabase } from '@/lib/supabase'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
@@ -209,6 +210,13 @@ async function ExperimentDetailPage({ id }: { id: string }) {
         {id === 'stockpulse-ai-self-improvement' && (
           <div className="mb-8">
             <StockPulsePredictionWidget />
+          </div>
+        )}
+
+        {/* Local LLM Benchmark 실험: 벤치 프롬프트 라이브러리 */}
+        {id === 'local-llm-benchmark' && (
+          <div className="mb-8">
+            <BenchPromptLibrary />
           </div>
         )}
 
