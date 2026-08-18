@@ -90,6 +90,7 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({})
+  const [userToggled, setUserToggled] = useState<Record<string, boolean>>({})
 
   const isActive = (href: string): boolean => {
     if (href === '/') return pathname === '/'
@@ -97,15 +98,18 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
   }
 
   const toggleGroup = (label: string) => {
+    setUserToggled(prev => ({ ...prev, [label]: true }))
     setOpenGroups(prev => ({ ...prev, [label]: !prev[label] }))
   }
 
   const groupOpen = (group: NavGroup): boolean => {
+    // 사용자가 직접 토글한 적 있으면 수동 상태 우선
+    if (userToggled[group.label]) return !!openGroups[group.label]
     // 하위 항목이 활성화되어 있으면 자동 펼침
     if (group.items.some(item => isActive(item.href))) return true
     if (group.label === 'Demos' && DEMOS_ITEM.subItems?.some(s => isActive(s.href))) return true
     if (group.label === 'Research' && RESEARCH_ITEM.subItems?.some(s => isActive(s.href))) return true
-    return !!openGroups[group.label]
+    return false
   }
 
   const renderSubItems = (subItems: { href: string; label: string }[]) => (
