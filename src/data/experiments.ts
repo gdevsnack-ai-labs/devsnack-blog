@@ -168,4 +168,26 @@ const LLM_BENCH: Experiment = {
   githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
 }
 
-export const experiments: Experiment[] = [STOCKPULSE_SELF, AI_OMOK, BLOG_AUTO, LLM_BENCH, ...DUMMIES]
+const ISEKAI_MAGE: Experiment = {
+  id: 'isekai-instagram-mage-prologue',
+  name: '이세계 인스타 여신 마법사 — GPT Image 2 + LTX 2.5',
+  description: 'GPT Image 2 캐릭터 기준 시트와 LTX 2.5 native audio I2V를 결합해 같은 인물이 서울에서 이세계의 마법사로 이어지는 60초 프롤로그 숏 무비를 만드는 실험',
+  progress: 100,
+  color: 'purple',
+  status: '완료',
+  category: 'completed',
+  startedAt: '2026.08.20',
+  whyText: '이 실험은 완벽한 영화 제작이 아니라 로컬 AI 비디오 생성, GPT Luna의 프롬프트 작성·검증 능력, Hermes 멀티툴 자동화, LTX 2.5의 native audio를 한 번에 확인하는 Lab 테스트다. GPT Image 2 캐릭터 기준 시트를 모든 장면에 참조했지만, 최종 영상에서는 여성·헤어·분위기는 유지되고 얼굴 identity는 장면 중간에 달라졌다. 개별 프레임의 해부학 검증만으로는 cross-scene 동일 인물을 보장할 수 없다는 검증 프로토콜의 한계를 확인했다.',
+  nextGoals: ['얼굴이 잘 보이는 2~3개 장면만 distilled/base 모델 비교', 'steps 증가에 따른 얼굴 보존·생성 시간 trade-off 측정', '얼굴 identity gate와 임베딩 기반 비교 추가'],
+  timeline: [
+    { name: 'GPT Image 2 캐릭터 기준 시트', status: '완료', date: '2026.08.20', result: '정면·3/4·전신·측면 2×2 시트 생성, identity anchor 확정' },
+    { name: '6개 장면 이미지 생성', status: '완료', date: '2026.08.20', result: '동일 기준 시트 참조, 장면별 시각 검수 및 Scene 4 손 crop 재생성' },
+    { name: 'LTX 2.5 6개 I2V 클립', status: '완료', date: '2026.08.20', result: '채택 클립 생성 1125.513초, 6개 모두 10.041667초·1280×704·24fps·AAC native audio' },
+    { name: '얼굴 identity 비교 검증', status: '완료', date: '2026.08.20', result: '개별 프레임은 해부학적으로 사용 가능했지만, 기준 시트와 cross-scene 비교에서 다른 얼굴로 변하는 현상 확인' },
+    { name: '최종 MP4 합성 + 모바일 재생 검증', status: '완료', date: '2026.08.20', blogSlug: '/lab/isekai-instagram-mage-prologue', result: '6개 클립을 0.45초 xfade/acrossfade로 합성. 최종 58초·1280×704·H.264 NVENC·AAC 생성 및 공개 게시' },
+  ],
+  blogPosts: ['/lab/isekai-instagram-mage-prologue'],
+  githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
+}
+
+export const experiments: Experiment[] = [STOCKPULSE_SELF, AI_OMOK, BLOG_AUTO, LLM_BENCH, ISEKAI_MAGE, ...DUMMIES]
