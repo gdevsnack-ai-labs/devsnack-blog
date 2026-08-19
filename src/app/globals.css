@@ -221,6 +221,19 @@
   font-size: 14px !important;
 }
 
+/* 다크모드 인라인 color 정규화 (font-size 정규화와 동일 패턴) */
+.dark .prose-devsnack,
+.dark .prose-devsnack p,
+.dark .prose-devsnack h2,
+.dark .prose-devsnack h3,
+.dark .prose-devsnack li,
+.dark .prose-devsnack th,
+.dark .prose-devsnack td,
+.dark .prose-devsnack span,
+.dark .prose-devsnack div {
+  color: inherit !important;
+}
+
 .dark .prose-devsnack {
   @apply text-gray-200;
 }
