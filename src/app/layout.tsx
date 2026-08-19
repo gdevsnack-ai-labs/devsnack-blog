@@ -38,6 +38,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
+        {/* Google AdSense */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4720187903290730"
+          crossOrigin="anonymous"
+        />
         {/* SSR flash 방지: React hydration 전에 .dark 클래스 적용 */}
         <script
           dangerouslySetInnerHTML={{
