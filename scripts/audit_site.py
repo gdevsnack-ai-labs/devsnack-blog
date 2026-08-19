@@ -223,7 +223,9 @@ def main() -> int:
     print("- Search canonical mapping: passed")
     print("- Sitemap/RSS stale fallback: 0")
     print("- Pagination smoke: passed")
-    print("- Mobile overflow: 320/360/375/390px = 0")
+    print("- Mobile overflow: home 320/360/375/390px = 0")
+    print("- Content detail responsive: 5 representative 390px routes = 0 overflow")
+    print("- Mobile FAB/More layering: passed")
     print("- Desktop/mobile navigation: passed")
     return 0
 
