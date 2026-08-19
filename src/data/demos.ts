@@ -73,7 +73,7 @@ export const DEMOS: Record<DemoCategory, Demo[]> = {
       id: 'isekai-instagram-mage-prologue',
       title: '이세계 인스타 여신 마법사 — 1회차 프롤로그',
       description: 'GPT Image 2 캐릭터 기준 시트에서 출발해 LTX 2.5 native audio로 만든 58초 프롤로그. 얼굴 identity drift를 포함한 first-pass baseline.',
-      href: 'https://drive.usercontent.google.com/download?id=11sHsDe7pabvrxu1uiixefufmoWg0D4CI&export=download',
+      href: 'https://devsnack-blog.vercel.app/api/drive?id=11sHsDe7pabvrxu1uiixefufmoWg0D4CI',
       embeddable: true,
       mediaType: 'video',
       model: 'GPT Image 2 Medium + LTX 2.5 distilled NVFP4',
