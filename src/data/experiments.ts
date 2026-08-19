@@ -169,7 +169,7 @@ const LLM_BENCH: Experiment = {
 }
 
 const ISEKAI_MAGE: Experiment = {
-  id: 'isekai-instagram-mage-prologue',
+  id: 'isekai-instagram-mage-experiment',
   name: '이세계 인스타 여신 마법사 — GPT Image 2 + LTX 2.5',
   description: 'GPT Image 2 캐릭터 기준 시트와 LTX 2.5 native audio I2V를 결합해 같은 인물이 서울에서 이세계의 마법사로 이어지는 60초 프롤로그 숏 무비를 만드는 실험',
   progress: 100,

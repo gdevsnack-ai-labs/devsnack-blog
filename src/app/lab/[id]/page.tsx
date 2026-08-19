@@ -164,23 +164,23 @@ async function ExperimentDetailPage({ id }: { id: string }) {
                   const m = STATUS_META[t.status]
                   const Icon = m?.icon || Clock
                   return (
-                    <div key={i} className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <Icon className={`w-4 h-4 ${m?.color || ''} shrink-0`} />
+                    <div key={i} className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 rounded-lg border border-border/60 p-3 sm:border-0 sm:p-0">
+                      <div className="flex items-start gap-2 min-w-0">
+                        <Icon className={`w-4 h-4 mt-0.5 ${m?.color || ''} shrink-0`} />
                         <div className="min-w-0">
-                          <span className="text-sm truncate block">{t.name}</span>
+                          <span className="text-sm leading-5 break-words block">{t.name}</span>
                           {t.result && (
-                            <span className="text-[11px] text-muted-foreground/70 block truncate">{t.result}</span>
+                            <span className="hidden sm:block text-[11px] leading-4 text-muted-foreground/70 line-clamp-2 break-words">{t.result}</span>
                           )}
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        {t.date && <span className="text-xs text-muted-foreground">{t.date}</span>}
-                        <span className={`text-xs font-medium ${m?.color || ''}`}>{m?.label || t.status}</span>
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 pl-6 sm:pl-0 shrink-0 text-xs">
+                        {t.date && <span className="text-muted-foreground">{t.date}</span>}
+                        <span className={`font-medium ${m?.color || ''}`}>{m?.label || t.status}</span>
                         {t.blogSlug && (
                           <a
                             href={t.blogSlug}
-                            className="inline-flex items-center text-[10px] text-blue-500 hover:text-blue-700 no-underline ml-1"
+                            className="inline-flex items-center text-[10px] text-blue-500 hover:text-blue-700 no-underline"
                             title="관련 블로그 글"
                           >
                             →Blog

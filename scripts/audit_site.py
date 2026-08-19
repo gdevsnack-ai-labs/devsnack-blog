@@ -20,6 +20,7 @@ ROUTES = [
     "/realestate",
     "/lab",
     "/demos",
+    "/demos/shortmovie",
     "/research",
     "/misc",
     "/search",
@@ -39,6 +40,8 @@ CONTENT_ROUTES = [
     "/devsnack/gemma-4-mtp-drafter-dgx-spark-3-31b",
     "/aitech/ai-mistral",
     "/lab/local-llm-benchmark-report",
+    "/lab/isekai-instagram-mage-experiment",
+    "/lab/isekai-instagram-mage-prologue",
     "/research/dflash-2-qwen3-8-27b-vs-mtp",
     "/misc/rx-7900-xtx",
 ]
@@ -219,12 +222,12 @@ def main() -> int:
             print(f"- {failure}")
         return 1
     print(f"SITE AUDIT PASSED: {BASE_URL}")
-    print("- HTTP routes: 12/12")
+    print("- HTTP routes: 13/13")
     print("- Search canonical mapping: passed")
     print("- Sitemap/RSS stale fallback: 0")
     print("- Pagination smoke: passed")
     print("- Mobile overflow: home 320/360/375/390px = 0")
-    print("- Content detail responsive: 5 representative 390px routes = 0 overflow")
+    print("- Content detail responsive: 7 representative 390px routes = 0 overflow")
     print("- Mobile FAB/More layering: passed")
     print("- Desktop/mobile navigation: passed")
     return 0

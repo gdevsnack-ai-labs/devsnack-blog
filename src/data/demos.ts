@@ -11,6 +11,8 @@ export interface Demo {
   href: string
   /** iframe 임베드 가능 여부 (같은 도메인 정적 html 등) */
   embeddable?: boolean
+  /** 외부 미디어의 렌더링 방식 */
+  mediaType?: 'video'
   model: string
   createdAt: string
   /** 출처/비고 */
@@ -66,6 +68,17 @@ export const DEMOS: Record<DemoCategory, Demo[]> = {
       model: 'Krea2 (Flux) + LTX 2.5 22B i2v',
       createdAt: '2026.08.18',
       note: '이미지 6장(Krea2 1280×720) → 영상 6개(LTX 2.5, 각 5초) → ffmpeg concat. GB10 로컬 생성.',
+    },
+    {
+      id: 'isekai-instagram-mage-prologue',
+      title: '이세계 인스타 여신 마법사 — 1회차 프롤로그',
+      description: 'GPT Image 2 캐릭터 기준 시트에서 출발해 LTX 2.5 native audio로 만든 58초 프롤로그. 얼굴 identity drift를 포함한 first-pass baseline.',
+      href: 'https://drive.usercontent.google.com/download?id=11sHsDe7pabvrxu1uiixefufmoWg0D4CI&export=download',
+      embeddable: true,
+      mediaType: 'video',
+      model: 'GPT Image 2 Medium + LTX 2.5 distilled NVFP4',
+      createdAt: '2026.08.20',
+      note: '6장면 × 10초, 1280×704, 24fps, native AAC. 상세 실험 기록은 Lab 글에서 확인할 수 있습니다.',
     },
   ],
 }

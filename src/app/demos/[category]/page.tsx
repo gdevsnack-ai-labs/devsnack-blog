@@ -70,8 +70,20 @@ export default async function DemoCategoryPage({ params }: { params: Promise<{ c
                   )}
                 </div>
 
-                {/* 임베드 가능한 데모는 iframe으로 바로 재생 */}
-                {demo.embeddable && (
+                {/* 미디어 데모는 실제 플레이어, HTML 데모는 iframe으로 바로 실행 */}
+                {demo.mediaType === 'video' ? (
+                  <div className="bg-gray-50 dark:bg-gray-950 p-3 sm:p-4">
+                    <video
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="w-full rounded-lg bg-black aspect-video"
+                    >
+                      <source src={demo.href} type="video/mp4" />
+                      브라우저가 video 태그를 지원하지 않습니다.
+                    </video>
+                  </div>
+                ) : demo.embeddable ? (
                   <div className="bg-gray-50 dark:bg-gray-950">
                     <div className="flex items-center justify-between px-4 py-2 bg-muted/50">
                       <span className="text-xs text-muted-foreground">🔽 데모 직접 실행 (아래)</span>
@@ -84,7 +96,7 @@ export default async function DemoCategoryPage({ params }: { params: Promise<{ c
                       loading="lazy"
                     />
                   </div>
-                )}
+                ) : null}
               </div>
             ))}
           </div>
