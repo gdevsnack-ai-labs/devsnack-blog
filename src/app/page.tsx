@@ -48,7 +48,7 @@ async function getLatestPosts(limit = 3): Promise<LatestPost[]> {
 const BLOGS = [
   { id: 'devsnack'   as const, href: '/devsnack',   title: 'DevSnack',       subtitle: '개발/기술',     desc: 'NVIDIA DGX Spark 기반 AI 인프라 실험, LLM 벤치마크, 오픈소스 모델 분석.', icon: Terminal },
   { id: 'stockpulse' as const, href: '/stock',      title: 'StockPulse',     subtitle: '주식 시장',     desc: 'AI가 분석하는 KOSPI/KOSDAQ 일일 리포트.',                                  icon: TrendingUp },
-  { id: 'realestate' as const, href: '/realestate', title: '부동산',          subtitle: '실거래 분석',   desc: 'AI가 분석하는 아파트 실거래가 동향과 지역별 추세.',                        icon: HomeIcon },
+  { id: 'realestate' as const, href: '/realestate', title: '부동산', subtitle: '데이터 도구',   desc: 'AI가 분석하는 아파트 실거래가 동향과 지역별 추세.',                        icon: HomeIcon, ctaLabel: '도구 열기' },
   { id: 'aitech'     as const, href: '/aitech',     title: 'AI Tech Insight', subtitle: 'AI 뉴스',      desc: 'AI 기술, 산업 동향, 연구 결과를 분석합니다.',                              icon: Bot },
 ]
 
@@ -91,6 +91,7 @@ export default async function Home() {
                 subtitle={b.subtitle}
                 description={b.desc}
                 icon={b.icon}
+                ctaLabel={b.ctaLabel}
               />
             ))}
           </div>
@@ -106,8 +107,8 @@ export default async function Home() {
                   <FileText className="w-4 h-4" />
                   최신 글
                 </h3>
-                <Link href="/devsnack" className="text-xs text-blue-600 dark:text-blue-400 hover:underline no-underline">
-                  더보기 →
+                <Link href="/search" className="text-xs text-blue-600 dark:text-blue-400 hover:underline no-underline">
+                  전체 콘텐츠 →
                 </Link>
               </div>
               {latestPosts.length > 0 ? (

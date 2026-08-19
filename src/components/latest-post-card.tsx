@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { FileText } from 'lucide-react'
-import { BLOG_COLORS, BLOG_PATH, BLOG_LABEL, type BlogId } from '@/lib/colors'
+import { BLOG_COLORS, BLOG_LABEL, type BlogId } from '@/lib/colors'
+import { postHref } from '@/config/site-catalog'
 
 interface Props {
   slug: string
@@ -13,10 +14,11 @@ interface Props {
 export function LatestPostCard({ slug, blogId, title, publishedAt, thumbnail }: Props) {
   const c = BLOG_COLORS[blogId]
   const label = BLOG_LABEL[blogId]
-  const base = BLOG_PATH[blogId]
+  const href = postHref(blogId, slug)
+  if (!href) return null
   return (
     <Link
-      href={`${base}/${slug}`}
+      href={href}
       className="flex items-start gap-3 p-3 rounded-lg border border-border hover:border-foreground/20 transition-colors no-underline"
     >
       {thumbnail ? (

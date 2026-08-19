@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import type { MetadataRoute } from 'next'
+import { postHref } from '@/config/site-catalog'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { data: posts } = await supabase
@@ -11,16 +12,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://devsnack-blog.vercel.app'
 
   const blogEntries = (posts ?? []).flatMap((post) => {
-    const blogPath = post.blog_id === 'stockpulse' ? 'stock' 
-      : post.blog_id === 'realestate' ? 'realestate'
-      : post.blog_id === 'aitech' ? 'aitech'
-      : 'devsnack'
-    return {
-      url: `${baseUrl}/${blogPath}/${post.slug}`,
+    const url = postHref(post.blog_id, post.slug)
+    if (!url) {
+      console.error(`[sitemap] 알 수 없는 blog_id: ${post.blog_id}`)
+      return []
+    }
+    return [{
+      url: `${baseUrl}${url}`,
       lastModified: post.updated ? new Date(post.updated) : new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.7,
-    }
+    }]
   })
 
   return [
@@ -53,6 +55,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/lab`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/demos`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/research`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/misc`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.6,
     },
     {
       url: `${baseUrl}/about`,

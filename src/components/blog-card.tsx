@@ -9,9 +9,10 @@ interface Props {
   subtitle: string
   description: string
   icon: React.ComponentType<{ className?: string }>
+  ctaLabel?: string
 }
 
-export function BlogCard({ id, href, title, subtitle, description, icon: Icon }: Props) {
+export function BlogCard({ id, href, title, subtitle, description, icon: Icon, ctaLabel = '블로그 보기' }: Props) {
   const c = BLOG_COLORS[id]
   return (
     <Link href={href}
@@ -27,7 +28,7 @@ export function BlogCard({ id, href, title, subtitle, description, icon: Icon }:
       </div>
       <p className="text-sm text-muted-foreground leading-relaxed mb-3">{description}</p>
       <span className={`inline-flex items-center gap-1 text-sm font-medium ${c.text} group-hover:gap-2 transition-all`}>
-        블로그 보기 <ArrowRight className="w-4 h-4" />
+        {ctaLabel} <ArrowRight className="w-4 h-4" />
       </span>
     </Link>
   )

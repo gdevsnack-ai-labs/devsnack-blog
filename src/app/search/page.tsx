@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { Search, X, ArrowRight, Calendar } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { destinationLabel, postHref } from '@/config/site-catalog'
 
 type SearchResult = {
   id: number
@@ -38,14 +39,23 @@ export default function SearchPage() {
   }, [query])
 
   useEffect(() => {
-    if (query.length >= 2) {
-      const timer = setTimeout(() => handleSearch(), 400)
-      return () => clearTimeout(timer)
-    } else {
+    if (query.length < 2) return
+    const timer = setTimeout(() => handleSearch(), 400)
+    return () => clearTimeout(timer)
+  }, [query, handleSearch])
+
+  const handleQueryChange = (value: string) => {
+    setQuery(value)
+    if (value.length < 2) {
       setResults([])
       setSearched(false)
     }
-  }, [query, handleSearch])
+  }
+
+  const typeCounts = results.reduce<Record<string, number>>((acc, result) => {
+    acc[result.blog_id] = (acc[result.blog_id] || 0) + 1
+    return acc
+  }, {})
 
   return (
     <div className="min-h-screen">
@@ -60,14 +70,18 @@ export default function SearchPage() {
             <input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={e => handleQueryChange(e.target.value)}
               placeholder="검색어를 입력하세요..."
               className="w-full pl-10 pr-10 py-3 rounded-xl border bg-background focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
               autoFocus
             />
             {query && (
-              <button onClick={() => { setQuery(''); setResults([]); setSearched(false) }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+              <button
+                type="button"
+                onClick={() => { setQuery(''); setResults([]); setSearched(false) }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                aria-label="검색어 지우기"
+              >
                 <X className="w-5 h-5" />
               </button>
             )}
@@ -76,9 +90,7 @@ export default function SearchPage() {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-8">
-        {loading && (
-          <p className="text-center text-muted-foreground py-8">검색 중...</p>
-        )}
+        {loading && <p className="text-center text-muted-foreground py-8">검색 중...</p>}
 
         {!loading && searched && results.length === 0 && (
           <p className="text-center text-muted-foreground py-8">
@@ -87,50 +99,54 @@ export default function SearchPage() {
         )}
 
         {!loading && results.length > 0 && (
-          <p className="text-sm text-muted-foreground mb-4">
-            총 {results.length}개 결과 (블로그: {results.filter(r => r.blog_id === 'devsnack').length}개 DevSnack, {results.filter(r => r.blog_id === 'stockpulse').length}개 StockPulse)
-          </p>
+          <div className="text-sm text-muted-foreground mb-4 space-y-1">
+            <p>총 {results.length}개 결과</p>
+            <p className="text-xs">
+              {Object.entries(typeCounts)
+                .map(([id, count]) => `${destinationLabel(id)} ${count}개`)
+                .join(' · ')}
+            </p>
+          </div>
         )}
 
         <div className="space-y-4">
-          {results.map((post) => (
-            <Link
-              key={post.id}
-              href={`/${post.blog_id === 'stockpulse' ? 'stock' : 'devsnack'}/${post.slug}`}
-              className="block no-underline group"
-            >
-              <article className="rounded-xl border bg-white dark:bg-gray-900 p-4 hover:shadow-md transition-all">
-                <div className="flex items-start gap-4">
-                  {post.cover_image && (
-                    <img src={post.cover_image} alt="" className="w-20 h-20 rounded-lg object-cover shrink-0" />
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Badge variant="outline" className="text-xs">
-                        {post.blog_id === 'stockpulse' ? '📈 StockPulse' : '💻 DevSnack'}
-                      </Badge>
-                      {post.labels?.slice(0, 2).map(l => (
-                        <Badge key={l} variant="secondary" className="text-xs font-normal">{l}</Badge>
-                      ))}
+          {results.map(post => {
+            const href = postHref(post.blog_id, post.slug)
+            if (!href) return null
+            const label = destinationLabel(post.blog_id)
+
+            return (
+              <Link key={post.id} href={href} className="block no-underline group">
+                <article className="rounded-xl border bg-white dark:bg-gray-900 p-4 hover:shadow-md transition-all">
+                  <div className="flex items-start gap-4">
+                    {post.cover_image && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={post.cover_image} alt="" className="w-20 h-20 rounded-lg object-cover shrink-0" />
+                    )}
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <Badge variant="outline" className="text-xs">{label}</Badge>
+                        {post.labels?.slice(0, 2).map(l => (
+                          <Badge key={l} variant="secondary" className="text-xs font-normal">{l}</Badge>
+                        ))}
+                      </div>
+                      <h2 className="font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                        {post.title}
+                      </h2>
+                      {post.excerpt && <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{post.excerpt}</p>}
+                      {post.published && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          <Calendar className="w-3 h-3 inline mr-1" />
+                          {new Date(post.published).toLocaleDateString('ko-KR')}
+                        </p>
+                      )}
                     </div>
-                    <h2 className="font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
-                      {post.title}
-                    </h2>
-                    {post.excerpt && (
-                      <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{post.excerpt}</p>
-                    )}
-                    {post.published && (
-                      <p className="text-xs text-muted-foreground mt-1">
-                        <Calendar className="w-3 h-3 inline mr-1" />
-                        {new Date(post.published).toLocaleDateString('ko-KR')}
-                      </p>
-                    )}
+                    <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-blue-600 shrink-0 mt-1" />
                   </div>
-                  <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-blue-600 shrink-0 mt-1" />
-                </div>
-              </article>
-            </Link>
-          ))}
+                </article>
+              </Link>
+            )
+          })}
         </div>
       </main>
     </div>
