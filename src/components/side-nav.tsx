@@ -10,6 +10,7 @@ import {
 import type { LucideIcon } from 'lucide-react'
 import { ThemeToggle } from './theme-toggle'
 import { NAV_GROUPS, SINGLE_NAV_ITEMS, type IconKey, type NavGroup, type NavItem } from '@/config/site-catalog'
+import { trackSiteEvent } from '@/lib/analytics'
 
 interface SideNavCounts {
   devsnack?: number
@@ -50,6 +51,7 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
   }
 
   const toggleGroup = (id: string) => {
+    trackSiteEvent('nav_group_toggle', { location: 'desktop', group: id })
     setUserToggled(prev => ({ ...prev, [id]: true }))
     setOpenGroups(prev => ({ ...prev, [id]: !prev[id] }))
   }

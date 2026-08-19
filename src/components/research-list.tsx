@@ -3,25 +3,14 @@ import { supabase } from '@/lib/supabase'
 
 export const revalidate = 60
 
-type ResearchStatus = '조사완료' | '적용대기' | '진행중' | '적용완료' | '보류'
+import {
+  RESEARCH_CATEGORIES,
+  RESEARCH_CATEGORY_LABEL,
+  RESEARCH_STATUS_META,
+  classifyResearch,
+} from '@/lib/content-taxonomy'
 
-const STATUS_META: Record<ResearchStatus, { emoji: string; label: string; badge: string }> = {
-  '조사완료': { emoji: '🔍', label: '조사 완료', badge: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' },
-  '적용대기': { emoji: '⏳', label: '적용 대기', badge: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' },
-  '진행중':   { emoji: '🔄', label: '진행 중',   badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
-  '적용완료': { emoji: '✅', label: '적용 완료', badge: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
-  '보류':     { emoji: '📦', label: '보류',     badge: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' },
-}
-
-export const RESEARCH_CATEGORIES = ['llm', 'tts', 'media', 'benchmark', 'hardware'] as const
-
-const CATEGORY_LABEL: Record<string, string> = {
-  'llm': '🤖 LLM / 모델',
-  'tts': '🎙️ TTS 엔진',
-  'media': '🎨 이미지 · 영상 · 음악',
-  'benchmark': '📊 벤치마크 · 도구',
-  'hardware': '🖥️ 하드웨어 · 기타',
-}
+export { RESEARCH_CATEGORIES }
 
 interface ResearchPost {
   slug: string
@@ -42,10 +31,7 @@ async function getResearchPosts() {
 }
 
 function extractMeta(post: ResearchPost) {
-  const labels = post.labels || []
-  const status = (labels.find(l => STATUS_META[l as ResearchStatus]) || '조사완료') as ResearchStatus
-  const category = labels.find(l => CATEGORY_LABEL[l]) || 'hardware'
-  return { status, category }
+  return classifyResearch(post.labels)
 }
 
 /** 카테고리 탭 — 전체 + 세부 카테고리 (클릭 시 해당 카테고리만 보이는 경로로 이동) */
@@ -64,7 +50,7 @@ function CategoryTabs({ active, counts }: { active: string | null; counts: Recor
       </Link>
       {RESEARCH_CATEGORIES.map(cat => (
         <Link key={cat} href={`/research/category/${cat}`} className={tabClass(active === cat)}>
-          {CATEGORY_LABEL[cat].split(' ')[0]} <span className="opacity-70">({counts[cat] ?? 0})</span>
+          {RESEARCH_CATEGORY_LABEL[cat as keyof typeof RESEARCH_CATEGORY_LABEL].split(' ')[0]} <span className="opacity-70">({counts[cat] ?? 0})</span>
         </Link>
       ))}
     </div>
@@ -103,7 +89,7 @@ export async function ResearchList({ category }: { category: string | null }) {
     ? (byCategory.get(category) || [])
     : posts
 
-  const activeTitle = category ? CATEGORY_LABEL[category] || category : null
+  const activeTitle = category ? RESEARCH_CATEGORY_LABEL[category as keyof typeof RESEARCH_CATEGORY_LABEL] || category : null
 
   return (
     <div className="min-h-screen bg-background">
@@ -126,7 +112,7 @@ export async function ResearchList({ category }: { category: string | null }) {
         {/* 상태 요약 (전체일 때만) */}
         {!category && (
           <div className="flex flex-wrap gap-2 mb-8">
-            {Object.entries(STATUS_META).map(([key, meta]) => (
+            {Object.entries(RESEARCH_STATUS_META).map(([key, meta]) => (
               <span key={key} className={`px-3 py-1.5 rounded-full text-xs font-medium ${meta.badge}`}>
                 {meta.emoji} {meta.label}
                 {statusCounts.get(key) ? <span className="ml-1 opacity-70">({statusCounts.get(key)})</span> : null}
@@ -148,7 +134,7 @@ export async function ResearchList({ category }: { category: string | null }) {
           <div className="grid gap-3 sm:grid-cols-2">
             {visiblePosts.map(post => {
               const { status } = extractMeta(post)
-              const meta = STATUS_META[status]
+              const meta = RESEARCH_STATUS_META[status]
               return (
                 <Link
                   key={post.slug}
@@ -179,7 +165,7 @@ export async function ResearchList({ category }: { category: string | null }) {
             <section key={cat} className="mb-10">
               <h2 className="text-xl font-bold mb-1">
                 <Link href={`/research/category/${cat}`} className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
-                  {CATEGORY_LABEL[cat] || cat}
+                  {RESEARCH_CATEGORY_LABEL[cat as keyof typeof RESEARCH_CATEGORY_LABEL] || cat}
                 </Link>
               </h2>
               <p className="text-xs text-muted-foreground mb-4">
@@ -188,7 +174,7 @@ export async function ResearchList({ category }: { category: string | null }) {
               <div className="grid gap-3 sm:grid-cols-2">
                 {byCategory.get(cat)!.map(post => {
                   const { status } = extractMeta(post)
-                  const meta = STATUS_META[status]
+                  const meta = RESEARCH_STATUS_META[status]
                   return (
                     <Link
                       key={post.slug}

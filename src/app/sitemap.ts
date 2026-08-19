@@ -2,6 +2,8 @@ import { supabase } from '@/lib/supabase'
 import type { MetadataRoute } from 'next'
 import { postHref } from '@/config/site-catalog'
 
+export const dynamic = 'force-dynamic'
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { data: posts } = await supabase
     .from('posts')

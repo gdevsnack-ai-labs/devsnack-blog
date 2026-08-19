@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Search, X, ArrowRight, Calendar } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { destinationLabel, postHref } from '@/config/site-catalog'
+import { trackSiteEvent } from '@/lib/analytics'
 
 type SearchResult = {
   id: number
@@ -31,9 +32,12 @@ export default function SearchPage() {
     try {
       const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`)
       const data = await res.json()
-      setResults(data.results ?? [])
+      const nextResults = data.results ?? []
+      setResults(nextResults)
+      trackSiteEvent('search_submit', { query_length: query.trim().length, result_count: nextResults.length })
     } catch {
       setResults([])
+      trackSiteEvent('search_submit', { query_length: query.trim().length, result_count: 0 })
     }
     setLoading(false)
   }, [query])

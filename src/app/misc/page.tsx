@@ -1,17 +1,8 @@
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import { classifyJunk, JUNK_STATUS_META } from '@/lib/content-taxonomy'
 
 export const revalidate = 60
-
-type JunkStatus = '운영중' | '대기중' | '보관' | '완료' | '폐기'
-
-const STATUS_META: Record<JunkStatus, { emoji: string; label: string; badge: string }> = {
-  '운영중': { emoji: '🔧', label: '운영 중', badge: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
-  '대기중': { emoji: '⏸️', label: '대기 중', badge: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' },
-  '보관':   { emoji: '📦', label: '보관',    badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
-  '완료':   { emoji: '✅', label: '완료',    badge: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' },
-  '폐기':   { emoji: '🗑️', label: '폐기',    badge: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' },
-}
 
 interface JunkPost {
   slug: string
@@ -32,8 +23,7 @@ async function getJunkPosts() {
 }
 
 function extractStatus(post: JunkPost) {
-  const labels = post.labels || []
-  return (labels.find(l => STATUS_META[l as JunkStatus]) || '운영중') as JunkStatus
+  return classifyJunk(post.labels).status
 }
 
 export default async function JunkPage() {
@@ -59,7 +49,7 @@ export default async function JunkPage() {
 
         {/* 상태 요약 */}
         <div className="flex flex-wrap gap-2 mb-8">
-          {Object.entries(STATUS_META).map(([key, meta]) => (
+          {Object.entries(JUNK_STATUS_META).map(([key, meta]) => (
             <span key={key} className={`px-3 py-1.5 rounded-full text-xs font-medium ${meta.badge}`}>
               {meta.emoji} {meta.label}
               {statusCounts.get(key) ? <span className="ml-1 opacity-70">({statusCounts.get(key)})</span> : null}
@@ -74,7 +64,7 @@ export default async function JunkPage() {
         <div className="grid gap-3 sm:grid-cols-2">
           {posts.map(post => {
             const status = extractStatus(post)
-            const meta = STATUS_META[status]
+            const meta = JUNK_STATUS_META[status]
             return (
               <Link
                 key={post.slug}

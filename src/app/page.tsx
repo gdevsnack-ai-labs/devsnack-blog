@@ -1,9 +1,8 @@
 import Link from 'next/link'
-import { Terminal, TrendingUp, HomeIcon, Bot, ArrowRight, FileText, Video } from 'lucide-react'
+import { Terminal, TrendingUp, HomeIcon, Bot, ArrowRight, FileText, Video, Search as SearchIcon, FlaskConical, Play } from 'lucide-react'
 import { BlogHeader } from '@/components/blog-header'
 import { BlogCard } from '@/components/blog-card'
 import { TagChip } from '@/components/tag-chip'
-import { ProgressBar } from '@/components/progress-bar'
 import { LatestPostCard } from '@/components/latest-post-card'
 import { LatestVideoCard } from '@/components/latest-video-card'
 import { ExperimentStrip } from '@/components/experiment-strip'
@@ -52,6 +51,12 @@ const BLOGS = [
   { id: 'aitech'     as const, href: '/aitech',     title: 'AI Tech Insight', subtitle: 'AI 뉴스',      desc: 'AI 기술, 산업 동향, 연구 결과를 분석합니다.',                              icon: Bot },
 ]
 
+const START_POINTS = [
+  { href: '/search', title: '읽을 콘텐츠 찾기', description: '블로그·Lab·Research·Tools 전체를 한 번에 검색합니다.', icon: SearchIcon, iconBg: 'bg-blue-100 dark:bg-blue-900/30', iconText: 'text-blue-600 dark:text-blue-400' },
+  { href: '/lab', title: '진행 중인 실험 보기', description: '현재 진행 중인 실험과 다음 목표를 확인합니다.', icon: FlaskConical, iconBg: 'bg-green-100 dark:bg-green-900/30', iconText: 'text-green-600 dark:text-green-400' },
+  { href: '/demos', title: '결과물 직접 실행하기', description: '로컬 AI로 만든 HTML·영상·음악·이미지 데모를 실행합니다.', icon: Play, iconBg: 'bg-purple-100 dark:bg-purple-900/30', iconText: 'text-purple-600 dark:text-purple-400' },
+]
+
 export default async function Home() {
   const latestPosts = await getLatestPosts(8)
   
@@ -76,6 +81,32 @@ export default async function Home() {
               <TagChip tag="automation" />
               <TagChip tag="data" />
             </div>
+          </div>
+        </section>
+
+        {/* Start here */}
+        <section className="max-w-6xl mx-auto px-4 py-6">
+          <div className="mb-4">
+            <h2 className="text-lg font-bold">어디서 시작할까요?</h2>
+            <p className="text-sm text-muted-foreground mt-1">읽기·실험·실행 중 원하는 경로로 바로 들어가세요.</p>
+          </div>
+          <div className="grid gap-3 md:grid-cols-3">
+            {START_POINTS.map(point => {
+              const Icon = point.icon
+              return (
+                <Link key={point.href} href={point.href} className="group flex items-start gap-3 rounded-xl border border-border bg-white dark:bg-gray-900 p-4 no-underline hover:shadow-md transition-shadow">
+                  <span className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center ${point.iconBg}`}>
+                    <Icon className={`w-5 h-5 ${point.iconText}`} />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="flex items-center gap-1 font-semibold text-sm group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                      {point.title}<ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                    <span className="block text-xs text-muted-foreground mt-1 leading-relaxed">{point.description}</span>
+                  </span>
+                </Link>
+              )
+            })}
           </div>
         </section>
 

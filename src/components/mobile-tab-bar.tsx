@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { House, FileText, FlaskConical, Telescope, Wrench, Info, Play, Search, Link as LinkIcon, Rss, ChevronUp, Sun, Moon } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { NAV_GROUPS, SINGLE_NAV_ITEMS, type IconKey, type NavGroup } from '@/config/site-catalog'
+import { trackSiteEvent } from '@/lib/analytics'
 
 const ICONS: Record<IconKey, LucideIcon> = {
   house: House,
@@ -89,7 +90,11 @@ export function MobileTabBar() {
               {hasSub ? (
                 <button
                   type="button"
-                  onClick={e => { e.stopPropagation(); setOpenMenu(prev => prev === tab.id ? null : tab.id) }}
+                  onClick={e => {
+                    e.stopPropagation()
+                    trackSiteEvent('nav_group_toggle', { location: 'mobile', group: tab.id })
+                    setOpenMenu(prev => prev === tab.id ? null : tab.id)
+                  }}
                   className={itemClass}
                   aria-expanded={open}
                   aria-haspopup="menu"
