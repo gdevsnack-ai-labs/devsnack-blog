@@ -161,6 +161,7 @@ const LLM_BENCH: Experiment = {
     { name: '실사용 데모 (단일 프롬프트)', status: '완료',   date: '2026.08.18', result: 'Ragdoll Playground HTML — 1회 생성으로 완성, 데모 공개' },
     { name: 'Self Bench Pack 자체 설계 (24종)', status: '완료', date: '2026.08.18', result: 'TokenChaser 84개 참고·한영 이중언어 + 자기검증 루프 내장, 오픈코드 에이전트 실행기 구축' },
     { name: '실사용 데모 — Stock Dashboard (Ridge 3.7bpw)', status: '완료', date: '2026.08.19', result: 'Qwen3.8-27B Ridge 3.7bpw로 KOSPI/KOSDAQ 대시보드 1회 생성. 디코드 ~29 t/s, MTP 수락률 ~88%, worklog+llama_log 기록', blogSlug: '/lab/local-llm-benchmark-report' },
+    { name: 'HTML in Canvas 데모', status: '완료', date: '2026.08.20', result: 'Canvas bitmap + HTML DOM overlay + html2canvas snapshot을 단일 HTML로 공개', blogSlug: '/research/html-in-canvas-dom-overlay-rasterization' },
     { name: '벤치 프롬프트 에이전트 실행', status: '예정',   result: '8080 qwen3.5-35b 백본, 생성→테스트→수정 루프' },
     { name: '다른 모델과 비교 (Muse Glimmer 30B 등)', status: '예정' },
   ],
