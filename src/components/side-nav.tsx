@@ -219,20 +219,23 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
         collapsed ? 'w-16' : 'w-56'
       } shrink-0`}
     >
-      {/* 로고 */}
+      {/* 로고 + 테마 토글 + 접기 */}
       <div className={`flex items-center border-b border-border px-3 py-3 ${collapsed ? 'justify-center' : 'justify-between'}`}>
         {!collapsed && (
           <Link href="/" className="no-underline">
             <span className="text-sm font-bold">🧪 Lab</span>
           </Link>
         )}
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="p-1 rounded-lg hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
-          title={collapsed ? '펼치기' : '접기'}
-        >
-          <ChevronLeft className={`w-4 h-4 transition-transform ${collapsed ? 'rotate-180' : ''}`} />
-        </button>
+        <div className="flex items-center gap-1">
+          <ThemeToggle />
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="p-1 rounded-lg hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+            title={collapsed ? '펼치기' : '접기'}
+          >
+            <ChevronLeft className={`w-4 h-4 transition-transform ${collapsed ? 'rotate-180' : ''}`} />
+          </button>
+        </div>
       </div>
 
       {/* 네비게이션 */}
@@ -294,9 +297,8 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
         </div>
       </nav>
 
-      {/* 하단: 테마 토글 + 검색 */}
-      <div className="border-t border-border px-2 py-3 space-y-1">
-        <ThemeToggle className={collapsed ? 'justify-center' : ''} />
+      {/* 하단 검색 */}
+      <div className="border-t border-border px-2 py-3">
         <Link
           href="/search"
           className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground no-underline transition-colors ${

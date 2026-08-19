@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Sun, Moon } from 'lucide-react'
 
-export function ThemeToggle({ className = '' }: { className?: string }) {
+export function ThemeToggle() {
   const [dark, setDark] = useState(false)
 
   useEffect(() => {
@@ -20,13 +20,10 @@ export function ThemeToggle({ className = '' }: { className?: string }) {
   return (
     <button
       onClick={toggle}
-      className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm transition-colors cursor-pointer
-        text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground
-        ${className}`}
+      className="p-1 rounded-lg hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-pointer"
       title={dark ? '라이트 모드로 전환' : '다크 모드로 전환'}
     >
       {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-      <span>{dark ? 'Light' : 'Dark'}</span>
     </button>
   )
 }
