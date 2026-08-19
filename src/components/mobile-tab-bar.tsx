@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { House, FileText, FlaskConical, Telescope, Wrench, Info, ChevronUp } from 'lucide-react'
+import { House, FileText, FlaskConical, Telescope, Wrench, Info, ChevronUp, Sun, Moon } from 'lucide-react'
 
 interface TabSubItem {
   href: string
@@ -66,6 +66,11 @@ const TABS: Tab[] = [
 export function MobileTabBar() {
   const pathname = usePathname()
   const [openMenu, setOpenMenu] = useState<string | null>(null)
+  const [dark, setDark] = useState(false)
+
+  useEffect(() => {
+    setDark(document.documentElement.classList.contains('dark'))
+  }, [])
 
   const isActive = (href: string): boolean => {
     if (href === '/') return pathname === '/'
@@ -89,6 +94,13 @@ export function MobileTabBar() {
 
   const toggleMenu = (label: string) => {
     setOpenMenu(prev => (prev === label ? null : label))
+  }
+
+  const toggleTheme = () => {
+    const next = !document.documentElement.classList.contains('dark')
+    document.documentElement.classList.toggle('dark', next)
+    localStorage.setItem('theme', next ? 'dark' : 'light')
+    setDark(next)
   }
 
   return (
@@ -157,6 +169,15 @@ export function MobileTabBar() {
             </div>
           )
         })}
+        {/* 테마 토글 — 탭 스타일 통일 */}
+        <button
+          onClick={(e) => { e.stopPropagation(); toggleTheme() }}
+          className="flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+          title={dark ? '라이트 모드' : '다크 모드'}
+        >
+          {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          <span className="text-[10px] font-medium">{dark ? 'Light' : 'Dark'}</span>
+        </button>
       </div>
     </nav>
   )

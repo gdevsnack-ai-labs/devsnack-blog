@@ -7,6 +7,7 @@ import {
   House, FileText, FlaskConical, Video, Info, Telescope,
   ChevronLeft, ChevronDown, Search, Play, Wrench,
 } from 'lucide-react'
+import { ThemeToggle } from './theme-toggle'
 
 interface SideNavCounts {
   devsnack?: number
@@ -293,8 +294,9 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
         </div>
       </nav>
 
-      {/* 하단 검색 */}
-      <div className="border-t border-border px-2 py-3">
+      {/* 하단: 테마 토글 + 검색 */}
+      <div className="border-t border-border px-2 py-3 space-y-1">
+        <ThemeToggle className={collapsed ? 'justify-center' : ''} />
         <Link
           href="/search"
           className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground no-underline transition-colors ${
