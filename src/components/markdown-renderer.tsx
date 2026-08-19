@@ -16,14 +16,14 @@ export function MarkdownRenderer({ content, isHtml = false }: Props) {
   if (hasHtmlTags || isHtml) {
     return (
       <div
-        className="prose prose-devsnack dark:prose-invert max-w-none"
+        className="prose prose-devsnack dark:prose-invert max-w-none min-w-0 font-sans"
         dangerouslySetInnerHTML={{ __html: content }}
       />
     )
   }
 
   return (
-    <div className="prose prose-devsnack dark:prose-invert max-w-none">
+    <div className="prose prose-devsnack dark:prose-invert max-w-none min-w-0 font-sans">
       <ReactMarkdown remarkPlugins={[remarkGfm]}>
         {content}
       </ReactMarkdown>

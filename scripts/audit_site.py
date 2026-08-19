@@ -35,6 +35,13 @@ BLOG_PATHS = {
     "research": "/research/",
     "misc": "/misc/",
 }
+CONTENT_ROUTES = [
+    "/devsnack/gemma-4-mtp-drafter-dgx-spark-3-31b",
+    "/aitech/ai-mistral",
+    "/lab/local-llm-benchmark-report",
+    "/research/dflash-2-qwen3-8-27b-vs-mtp",
+    "/misc/rx-7900-xtx",
+]
 
 
 def normalize_html(body: str) -> str:
@@ -129,6 +136,31 @@ async def check_browser(failures: list[str]) -> None:
             if metrics["scrollWidth"] != metrics["clientWidth"] or metrics["bodyScrollWidth"] != width:
                 failures.append(f"mobile {width}px overflow: {metrics}")
             await page.close()
+
+        for route in CONTENT_ROUTES:
+            page = await browser.new_page(viewport={"width": 390, "height": 844})
+            await page.goto(f"{BASE_URL}{route}", wait_until="networkidle", timeout=60_000)
+            metrics = await page.evaluate(
+                """() => ({
+                    bodyWidth: document.documentElement.scrollWidth,
+                    mainWidth: document.querySelector('main')?.scrollWidth ?? -1,
+                    contentWidth: document.querySelector('.content-article, .prose-devsnack')?.clientWidth ?? -1,
+                })"""
+            )
+            if metrics["bodyWidth"] != 390 or metrics["mainWidth"] > 390:
+                failures.append(f"content {route} horizontal overflow: {metrics}")
+            await page.close()
+
+        page = await browser.new_page(viewport={"width": 390, "height": 844})
+        await page.goto(f"{BASE_URL}{CONTENT_ROUTES[0]}", wait_until="networkidle", timeout=60_000)
+        nav = page.locator("nav[data-mobile-nav]")
+        if await page.get_by_title("링크 복사").count() != 1:
+            failures.append("mobile content: copy-link FAB missing before menu")
+        await nav.get_by_role("button", name="More 메뉴").click(force=True)
+        await page.wait_for_timeout(100)
+        if await page.get_by_title("링크 복사").count() != 0:
+            failures.append("mobile More menu: copy-link FAB still visible")
+        await page.close()
 
         page = await browser.new_page(viewport={"width": 1440, "height": 900})
         await page.goto(f"{BASE_URL}/", wait_until="networkidle", timeout=60_000)

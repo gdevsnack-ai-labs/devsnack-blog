@@ -62,7 +62,7 @@ async function LabPostPage({ slug }: { slug: string }) {
         </Link>
       </div>
 
-      <article className="max-w-3xl mx-auto px-4 py-8">
+      <article className="content-article max-w-3xl mx-auto min-w-0 px-4 py-8">
         {post.cover_image && (
           <div className="aspect-[16/7] rounded-xl overflow-hidden mb-8 bg-gray-100 dark:bg-gray-800">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -123,13 +123,13 @@ async function ExperimentDetailPage({ id }: { id: string }) {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto min-w-0 px-4 py-8">
         <Link href="/lab" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground no-underline mb-6">
           <ArrowLeft className="w-4 h-4" />
           Lab으로 돌아가기
         </Link>
 
-        <div className="flex items-start justify-between gap-4 mb-6">
+        <div className="flex flex-col md:flex-row items-start justify-between gap-4 mb-6">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{exp.name}</h1>
             <div className="flex items-center gap-3 mt-2 text-sm text-muted-foreground">
@@ -139,7 +139,9 @@ async function ExperimentDetailPage({ id }: { id: string }) {
               {exp.startedAt && <span>Started: {exp.startedAt}</span>}
             </div>
           </div>
-          <ProgressBar value={exp.progress} color={exp.color} showLabel size="md" />
+          <div className="w-full md:w-48 shrink-0">
+            <ProgressBar value={exp.progress} color={exp.color} showLabel size="md" />
+          </div>
         </div>
 
         <section className="mb-8">

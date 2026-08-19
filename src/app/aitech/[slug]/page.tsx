@@ -49,7 +49,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           <ArrowLeft className="w-4 h-4" /> AI Tech 목록으로
         </Link>
       </div>
-      <article className="max-w-3xl mx-auto px-4 py-8">
+      <article className="content-article max-w-3xl mx-auto min-w-0 px-4 py-8">
         {post.cover_image && (
           <div className="aspect-[16/7] rounded-xl overflow-hidden mb-8 bg-gray-100 dark:bg-gray-800">
             <img src={post.cover_image} alt={post.title} className="w-full h-full object-cover" />

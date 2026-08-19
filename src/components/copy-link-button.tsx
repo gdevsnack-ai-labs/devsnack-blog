@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link2, Check } from 'lucide-react'
 
 /**
@@ -9,6 +9,19 @@ import { Link2, Check } from 'lucide-react'
  */
 export function CopyLinkButton({ variant = 'inline' }: { variant?: 'inline' | 'fab' }) {
   const [copied, setCopied] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  useEffect(() => {
+    if (variant !== 'fab') return
+    const nav = document.querySelector('[data-mobile-nav]')
+    if (!nav) return
+
+    const update = () => setMobileMenuOpen(Boolean(nav.querySelector('[aria-expanded="true"]')))
+    update()
+    const observer = new MutationObserver(update)
+    observer.observe(nav, { subtree: true, attributes: true, attributeFilter: ['aria-expanded'] })
+    return () => observer.disconnect()
+  }, [variant])
 
   const handleCopy = async () => {
     const url = window.location.href
@@ -30,13 +43,14 @@ export function CopyLinkButton({ variant = 'inline' }: { variant?: 'inline' | 'f
   }
 
   if (variant === 'fab') {
+    if (mobileMenuOpen) return null
     return (
       <button
         type="button"
         onClick={handleCopy}
         title={copied ? '복사됨!' : '링크 복사'}
         aria-label="링크 복사"
-        className={`fixed right-6 z-50 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all cursor-pointer bottom-20 md:bottom-6 ${
+        className={`fixed right-20 z-40 md:right-6 md:z-50 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all cursor-pointer bottom-20 md:bottom-6 ${
           copied
             ? 'bg-green-500 text-white scale-105'
             : 'bg-foreground text-background hover:scale-105'

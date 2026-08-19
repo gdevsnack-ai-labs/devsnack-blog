@@ -70,7 +70,7 @@ export function MobileTabBar() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background md:hidden"
+      className="fixed bottom-0 left-0 right-0 z-[60] border-t border-border bg-background md:hidden"
       data-mobile-nav
       aria-label="모바일 주 메뉴"
       onClick={e => e.stopPropagation()}

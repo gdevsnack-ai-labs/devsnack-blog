@@ -42,7 +42,7 @@ export default async function JunkPostPage({ params }: { params: Promise<{ id: s
           Junk Drawer 목록으로
         </Link>
 
-        <article>
+        <article className="content-article min-w-0">
           <h1 className="text-2xl md:text-3xl font-bold leading-tight mb-4">{post.title}</h1>
 
           <div className="flex flex-wrap items-center gap-3 mb-6 text-sm text-muted-foreground">

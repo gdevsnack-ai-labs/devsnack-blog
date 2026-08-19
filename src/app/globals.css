@@ -221,7 +221,102 @@
   font-size: 14px !important;
 }
 
-/* 다크모드 인라인 color 정규화 (font-size 정규화와 동일 패턴) */
+/* 모바일·긴 콘텐츠 반응형 보정 */
+.content-article,
+.prose-devsnack {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.prose-devsnack p,
+.prose-devsnack li,
+.prose-devsnack blockquote,
+.prose-devsnack a {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.prose-devsnack pre {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.prose-devsnack table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.prose-devsnack img,
+.prose-devsnack video,
+.prose-devsnack iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 639px) {
+  .content-article {
+    padding-top: 1.25rem;
+    padding-bottom: 3rem;
+  }
+
+  .content-article > h1 {
+    font-size: clamp(1.65rem, 7vw, 2.25rem);
+    line-height: 1.22;
+    overflow-wrap: anywhere;
+  }
+
+  .prose-devsnack {
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  .prose-devsnack h2 {
+    font-size: 1.45rem !important;
+    line-height: 1.35 !important;
+    margin-top: 2.5rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .prose-devsnack h3 {
+    font-size: 1.2rem !important;
+    line-height: 1.4 !important;
+    margin-top: 2rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .prose-devsnack p {
+    line-height: 1.85 !important;
+    margin-top: 0 !important;
+    margin-bottom: 1rem;
+  }
+
+  .prose-devsnack pre {
+    margin-block: 1rem;
+    padding: 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1.55;
+    border-radius: 0.65rem;
+  }
+
+  .prose-devsnack table {
+    margin-block: 1rem;
+    font-size: 0.75rem;
+  }
+
+  .prose-devsnack th,
+  .prose-devsnack td {
+    padding: 0.55rem 0.65rem;
+  }
+}
+
 .dark .prose-devsnack,
 .dark .prose-devsnack p,
 .dark .prose-devsnack h2,
