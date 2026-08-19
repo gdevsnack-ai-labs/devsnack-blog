@@ -184,7 +184,7 @@ const ISEKAI_MAGE: Experiment = {
     { name: '6개 장면 이미지 생성', status: '완료', date: '2026.08.20', result: '동일 기준 시트 참조, 장면별 시각 검수 및 Scene 4 손 crop 재생성' },
     { name: 'LTX 2.5 6개 I2V 클립', status: '완료', date: '2026.08.20', result: '채택 클립 생성 1125.513초, 6개 모두 10.041667초·1280×704·24fps·AAC native audio' },
     { name: '얼굴 identity 비교 검증', status: '완료', date: '2026.08.20', result: '개별 프레임은 해부학적으로 사용 가능했지만, 기준 시트와 cross-scene 비교에서 다른 얼굴로 변하는 현상 확인' },
-    { name: '최종 MP4 합성 + 모바일 재생 검증', status: '완료', date: '2026.08.20', blogSlug: '/lab/isekai-instagram-mage-prologue', result: '6개 클립을 0.45초 xfade/acrossfade로 합성. 최종 58초·1280×704·H.264 NVENC·AAC 생성 및 공개 게시' },
+    { name: '최종 MP4 합성 + 출력 검증', status: '완료', date: '2026.08.20', blogSlug: '/lab/isekai-instagram-mage-prologue', result: '6개 클립을 0.45초 xfade/acrossfade로 합성. 최종 58초·1280×704·H.264 NVENC·AAC 생성, ffprobe 및 faststart/yuv420p 검증, 공개 게시' },
   ],
   blogPosts: ['/lab/isekai-instagram-mage-prologue'],
   githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
