@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
-  House, FileText, FlaskConical, Telescope, Wrench,
+  House, FileText, FlaskConical, Telescope, Wrench, Server,
   ChevronLeft, ChevronDown, Search, Info, Play, Link as LinkIcon, Rss,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -25,6 +25,7 @@ const ICONS: Record<IconKey, LucideIcon> = {
   flask: FlaskConical,
   telescope: Telescope,
   wrench: Wrench,
+  server: Server,
   play: Play,
   search: Search,
   info: Info,

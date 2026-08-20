@@ -1,8 +1,8 @@
 import { BLOG_LABEL, BLOG_PATH, type BlogId } from '@/lib/colors'
 
-export type DestinationId = 'home' | BlogId | 'demos'
+export type DestinationId = 'home' | BlogId | 'demos' | 'operations'
 export type NavGroupId = 'blogs' | 'lab' | 'research' | 'tools' | 'more'
-export type IconKey = 'house' | 'fileText' | 'flask' | 'telescope' | 'wrench' | 'play' | 'search' | 'info' | 'link' | 'rss'
+export type IconKey = 'house' | 'fileText' | 'flask' | 'telescope' | 'wrench' | 'server' | 'play' | 'search' | 'info' | 'link' | 'rss'
 
 export interface NavItem {
   id: string
@@ -33,6 +33,7 @@ export const DESTINATION_META: Record<DestinationId, {
   research: { path: BLOG_PATH.research, label: BLOG_LABEL.research, kind: 'research', navGroup: 'research' },
   realestate: { path: BLOG_PATH.realestate, label: BLOG_LABEL.realestate, kind: 'tool', navGroup: 'tools' },
   misc: { path: BLOG_PATH.misc, label: BLOG_LABEL.misc, kind: 'tool', navGroup: 'tools' },
+  operations: { path: '/tools/operations', label: '운영중인 시스템', kind: 'tool', navGroup: 'tools' },
   demos: { path: '/demos', label: 'Demos', kind: 'demo', navGroup: 'lab' },
 }
 
@@ -76,6 +77,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { id: 'realestate', href: DESTINATION_META.realestate.path, label: '부동산 데이터', blogId: 'realestate' },
       { id: 'misc', href: DESTINATION_META.misc.path, label: 'Junk Drawer', blogId: 'misc' },
+      { id: 'operations', href: DESTINATION_META.operations.path, label: '운영중인 시스템', icon: 'server' },
     ],
   },
   {
@@ -102,6 +104,7 @@ export const MOBILE_NAV_GROUPS = NAV_GROUPS.filter(group => group.id !== 'more' 
 export function getDestinationPath(id: string): string | null {
   if (id === 'home') return DESTINATION_META.home.path
   if (id === 'demos') return DESTINATION_META.demos.path
+  if (id === 'operations') return DESTINATION_META.operations.path
   if (id in BLOG_PATH) return BLOG_PATH[id as BlogId]
   return null
 }

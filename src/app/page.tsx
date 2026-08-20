@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Terminal, TrendingUp, HomeIcon, Bot, ArrowRight, FileText, Video, Search as SearchIcon, FlaskConical, Play } from 'lucide-react'
+import { Terminal, TrendingUp, HomeIcon, Bot, ArrowRight, FileText, Video, Search as SearchIcon, FlaskConical, Play, Server } from 'lucide-react'
 import { BlogHeader } from '@/components/blog-header'
 import { BlogCard } from '@/components/blog-card'
 import { TagChip } from '@/components/tag-chip'
@@ -55,6 +55,7 @@ const START_POINTS = [
   { href: '/search', title: '읽을 콘텐츠 찾기', description: '블로그·Lab·Research·Tools 전체를 한 번에 검색합니다.', icon: SearchIcon, iconBg: 'bg-blue-100 dark:bg-blue-900/30', iconText: 'text-blue-600 dark:text-blue-400' },
   { href: '/lab', title: '진행 중인 실험 보기', description: '현재 진행 중인 실험과 다음 목표를 확인합니다.', icon: FlaskConical, iconBg: 'bg-green-100 dark:bg-green-900/30', iconText: 'text-green-600 dark:text-green-400' },
   { href: '/demos', title: '결과물 직접 실행하기', description: '로컬 AI로 만든 HTML·영상·음악·이미지 데모를 실행합니다.', icon: Play, iconBg: 'bg-purple-100 dark:bg-purple-900/30', iconText: 'text-purple-600 dark:text-purple-400' },
+  { href: '/tools/operations', title: '운영중인 시스템', description: '포트·Docker·크론잡·설치된 Tools 현황을 확인합니다.', icon: Server, iconBg: 'bg-amber-100 dark:bg-amber-900/30', iconText: 'text-amber-600 dark:text-amber-400' },
 ]
 
 export default async function Home() {
@@ -90,7 +91,7 @@ export default async function Home() {
             <h2 className="text-lg font-bold">어디서 시작할까요?</h2>
             <p className="text-sm text-muted-foreground mt-1">읽기·실험·실행 중 원하는 경로로 바로 들어가세요.</p>
           </div>
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
             {START_POINTS.map(point => {
               const Icon = point.icon
               return (

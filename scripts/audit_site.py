@@ -23,6 +23,7 @@ ROUTES = [
     "/demos/shortmovie",
     "/research",
     "/misc",
+    "/tools/operations",
     "/search",
     "/sitemap.xml",
     "/rss.xml",
@@ -171,6 +172,9 @@ async def check_browser(failures: list[str]) -> None:
         await aside.get_by_role("button", name="Lab").click(force=True)
         if "Demos" not in await aside.inner_text():
             failures.append("desktop Lab group: Demos missing")
+        await aside.get_by_role("button", name="Tools").click(force=True)
+        if "운영중인 시스템" not in await aside.inner_text():
+            failures.append("desktop Tools group: Operations missing")
         await aside.get_by_role("button", name="More").click(force=True)
         if "검색" not in await aside.inner_text():
             failures.append("desktop More group: Search missing")
@@ -222,7 +226,7 @@ def main() -> int:
             print(f"- {failure}")
         return 1
     print(f"SITE AUDIT PASSED: {BASE_URL}")
-    print("- HTTP routes: 13/13")
+    print("- HTTP routes: 14/14")
     print("- Search canonical mapping: passed")
     print("- Sitemap/RSS stale fallback: 0")
     print("- Pagination smoke: passed")

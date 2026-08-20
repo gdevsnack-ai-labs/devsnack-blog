@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { House, FileText, FlaskConical, Telescope, Wrench, Info, Play, Search, Link as LinkIcon, Rss, ChevronUp, Sun, Moon } from 'lucide-react'
+import { House, FileText, FlaskConical, Telescope, Wrench, Server, Info, Play, Search, Link as LinkIcon, Rss, ChevronUp, Sun, Moon } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { NAV_GROUPS, SINGLE_NAV_ITEMS, type IconKey, type NavGroup } from '@/config/site-catalog'
 import { trackSiteEvent } from '@/lib/analytics'
@@ -14,6 +14,7 @@ const ICONS: Record<IconKey, LucideIcon> = {
   flask: FlaskConical,
   telescope: Telescope,
   wrench: Wrench,
+  server: Server,
   play: Play,
   search: Search,
   info: Info,
