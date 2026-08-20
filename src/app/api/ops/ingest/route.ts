@@ -24,8 +24,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid operations snapshot' }, { status: 400 })
     }
 
-    const supabaseUrl = process.env.SUPABASE_URL
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY
     if (!supabaseUrl || !serviceRoleKey) {
       return NextResponse.json({ error: 'Supabase server environment is not configured' }, { status: 503 })
     }
@@ -42,7 +42,19 @@ export async function POST(request: NextRequest) {
       .select('id, captured_at')
       .single()
 
-    if (error) throw error
+    if (error) {
+      console.error('Operations ingest Supabase insert failed:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      })
+      return NextResponse.json({
+        error: 'Supabase insert failed',
+        code: error.code || 'unknown',
+        detail: error.message || 'unknown database error',
+      }, { status: 502 })
+    }
     return NextResponse.json({ ok: true, id: data.id, capturedAt: data.captured_at })
   } catch (error) {
     console.error('Operations ingest error:', error)
