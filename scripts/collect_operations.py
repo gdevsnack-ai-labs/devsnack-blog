@@ -39,6 +39,21 @@ PORT_LABELS = {
     19999: ("Hindsight admin", "memory"),
 }
 
+# 운영 현황판에서 관리할 필요가 없는 기본 OS/네트워크 포트.
+# 서비스 자체를 중지하지 않고 공개 현황에서만 제외한다.
+EXCLUDED_PORTS = {22, 53, 80, 443, 58175, 631}
+
+# 사용자가 직접 만들었거나 현재 운영에 필요한 systemd 서비스만 노출한다.
+# 기본 OS, 데스크톱, 프린터, NVIDIA 관리 서비스는 현황판에서 제외한다.
+DISPLAY_SYSTEMD_SERVICES = {
+    "ai-llama-server.service",
+    "ai-thermal-monitor.service",
+    "comfyui.service",
+    "containerd.service",
+    "docker.service",
+    "real-estate-monitor.service",
+}
+
 
 def run_command(command: list[str], timeout: int = 10) -> str:
     try:
@@ -72,6 +87,8 @@ def collect_ports() -> list[dict[str, Any]]:
         local = columns[3]
         port = parse_port(local)
         if port is None:
+            continue
+        if port in EXCLUDED_PORTS:
             continue
         process_text = " ".join(columns[6:]) if len(columns) > 6 else ""
         process_match = re.search(r'\(\("([^"]+)', process_text)
@@ -127,6 +144,8 @@ def collect_systemd() -> list[dict[str, Any]]:
         if len(columns) < 4:
             continue
         name, load, active, sub = columns[:4]
+        if name not in DISPLAY_SYSTEMD_SERVICES:
+            continue
         description = columns[4] if len(columns) == 5 else ""
         services.append({
             "name": name,
