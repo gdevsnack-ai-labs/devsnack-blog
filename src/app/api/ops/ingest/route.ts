@@ -55,9 +55,19 @@ export async function POST(request: NextRequest) {
         detail: error.message || 'unknown database error',
       }, { status: 502 })
     }
+    if (!data) {
+      console.error('Operations ingest Supabase insert returned no row')
+      return NextResponse.json({
+        error: 'Supabase insert returned no row',
+        code: 'NO_INSERTED_ROW',
+      }, { status: 502 })
+    }
     return NextResponse.json({ ok: true, id: data.id, capturedAt: data.captured_at })
   } catch (error) {
     console.error('Operations ingest error:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json({
+      error: 'Internal server error',
+      detail: error instanceof Error ? error.message : 'unknown error',
+    }, { status: 500 })
   }
 }
