@@ -49,6 +49,22 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    const { data: existingPost, error: existingPostError } = await supabase
+      .from('posts')
+      .select('id, slug, status, workflow_state')
+      .eq('blog_id', 'research')
+      .eq('topic_fingerprint', fingerprint)
+      .maybeSingle()
+
+    if (existingPostError) throw existingPostError
+    if (existingPost) {
+      return NextResponse.json({
+        accepted: false,
+        route: 'draft-existing',
+        post: existingPost,
+      })
+    }
+
     if (content) {
       const { data: reservation, error: reservationError } = await supabase.rpc('reserve_research_draft', {
         p_slug: stringValue(body.slug),
