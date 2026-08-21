@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Calendar, Clock } from 'lucide-react'
 import { ViewCounter } from '@/components/view-counter'
 import { BlogHeader } from '@/components/blog-header'
+import { buildRouteMetadata, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 
 export const revalidate = 60
 
@@ -25,11 +26,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = await getPost(slug)
   if (!post) return { title: 'Not Found' }
 
-  return {
-    title: `${post.title} — DevSnack`,
-    description: post.seo_desc ?? post.excerpt ?? post.title,
-    openGraph: post.cover_image ? { images: [post.cover_image] } : undefined,
-  }
+  const description = post.seo_desc ?? post.excerpt ?? post.title
+  return buildRouteMetadata({
+    title: post.title,
+    description,
+    canonicalPath: `/devsnack/${slug}`,
+    kind: 'article',
+    image: post.cover_image,
+    publishedTime: post.published,
+    modifiedTime: post.updated,
+  })
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -83,7 +89,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
         <div className="border-t mb-8" />
 
-        <div className="prose-devsnack" dangerouslySetInnerHTML={{ __html: post.content }} />
+        <div className="prose-devsnack" dangerouslySetInnerHTML={{ __html: stripImportedHeadArtifacts(post.content || '') }} />
       </article>
 
       <footer className="border-t mt-16">

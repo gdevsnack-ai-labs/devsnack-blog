@@ -1,17 +1,18 @@
-import type { Metadata } from 'next'
 import { Database, Radio, Radar } from 'lucide-react'
 import { DataServiceCard } from '@/components/data-service-card'
 import { HubHeader } from '@/components/hub-header'
 import { RelatedAssets } from '@/components/related-assets'
 import { getDataHubSnapshot } from '@/lib/ia/hub-data'
 import { getRelatedAssets } from '@/lib/ia/hub-projections'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
 
 export const revalidate = 60
 
-export const metadata: Metadata = {
+export const metadata = buildRouteMetadata({
   title: 'Data — DevSnack',
   description: 'AI Tech·StockPulse 피드와 부동산·채굴 Tracker를 한 곳에서 확인하는 DevSnack Data Hub',
-}
+  canonicalPath: '/data',
+})
 
 function formatDate(value?: string | null): string {
   if (!value) return '업데이트 시각 미기록'

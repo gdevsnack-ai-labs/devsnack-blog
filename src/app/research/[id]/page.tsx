@@ -8,21 +8,13 @@ import { MarkdownRenderer } from '@/components/markdown-renderer'
 export const revalidate = 60
 export const dynamicParams = true
 
-const SITE_URL = 'https://devsnack-blog.vercel.app'
-const ARTICLE_SOURCES = [
-  'https://ornith.ai/ornith_1_5.html',
-  'https://huggingface.co/ornith-ai/Ornith-1.5-9B-GGUF',
-  'https://huggingface.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF',
-  'https://huggingface.co/ornith-ai/Ornith-1.5-397B-GGUF',
-  'https://huggingface.co/bartowski/Ornith-1.5-35B-A3B-GGUF',
-  'https://huggingface.co/AtomicChat/Ornith-1.5-35B-A3B-GGUF',
-]
 
 import {
   classifyResearch,
   RESEARCH_CATEGORY_LABEL,
   RESEARCH_STATUS_META,
 } from '@/lib/content-taxonomy'
+import { buildResearchJsonLd, SITE_URL, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 
 async function getResearchPost(id: string) {
   const { data } = await supabase
@@ -111,23 +103,17 @@ export default async function ResearchPostPage({ params }: { params: Promise<{ i
   const description = getDescription(post)
   const keywords = getKeywords(post)
   const canonical = `${SITE_URL}/research/${id}`
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'TechArticle',
-    headline: post.title,
+  const content = stripImportedHeadArtifacts(post.content || '')
+  const jsonLd = buildResearchJsonLd({
+    title: post.title,
     description,
-    url: canonical,
-    mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
-    datePublished: post.published || undefined,
-    dateModified: post.updated || undefined,
-    inLanguage: 'ko-KR',
-    isAccessibleForFree: true,
-    articleSection: 'AI 모델 리서치',
-    author: { '@type': 'Organization', name: 'DevSnack' },
-    publisher: { '@type': 'Organization', name: 'DevSnack Blog', url: SITE_URL },
+    canonical,
+    categoryLabel: RESEARCH_CATEGORY_LABEL[category],
     keywords: keywords.join(', '),
-    citation: ARTICLE_SOURCES,
-  }
+    content,
+    published: post.published,
+    updated: post.updated,
+  })
 
   return (
     <div className="min-h-screen bg-background">
@@ -175,7 +161,7 @@ export default async function ResearchPostPage({ params }: { params: Promise<{ i
           </div>
 
           {/* 본문 — 마크다운 렌더링 */}
-          <MarkdownRenderer content={post.content || ''} />
+          <MarkdownRenderer content={content} />
 
           {/* 공개 링크 (있을 경우) */}
           {(post.seo_desc || post.cover_image) && (

@@ -4,11 +4,17 @@ import { Badge } from '@/components/ui/badge'
 import { BlogHeader } from '@/components/blog-header'
 import { BlogSidebar } from '@/components/blog-sidebar'
 import { Pagination } from '@/components/pagination'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
+
+export const metadata = buildRouteMetadata({
+  title: 'Stories — DevSnack',
+  description: '사람이 읽는 경험·해석·기술 칼럼을 모은 DevSnack Stories',
+  canonicalPath: '/devsnack',
+})
 
 export const revalidate = 60
 
 const PAGE_SIZE = 24
-
 type PostSummary = {
   slug: string
   title: string

@@ -5,11 +5,17 @@ import { Calendar } from 'lucide-react'
 import { BlogHeader } from '@/components/blog-header'
 import { BlogSidebar } from '@/components/blog-sidebar'
 import { Pagination } from '@/components/pagination'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
+
+export const metadata = buildRouteMetadata({
+  title: 'AI Tech — DevSnack',
+  description: '자동 수집·정리되는 AI 기술과 산업 동향 Feed',
+  canonicalPath: '/aitech',
+})
 
 export const revalidate = 60
 
 const PAGE_SIZE = 24
-
 type PostSummary = {
   slug: string
   title: string

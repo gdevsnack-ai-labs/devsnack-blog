@@ -6,6 +6,7 @@ import { ProgressBar } from '@/components/progress-bar'
 import { getCurrentStage, getDomainLabel, getKeyFinding, getKeyMetrics, getKeyResults, getLatestResult, getNature, getSortedTimeline } from '@/lib/labs'
 import { getRelatedAssets } from '@/lib/ia/hub-projections'
 import { RelatedAssets } from '@/components/related-assets'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
 
 const STATUS_CLASS: Record<string, string> = {
   진행중: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
@@ -23,6 +24,19 @@ function relatedLabel(href: string): string {
 }
 
 export const revalidate = 60
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const experiment = experiments.find(item => item.id === id)
+  if (!experiment) return { title: 'Lab Not Found' }
+
+  return buildRouteMetadata({
+    title: `${experiment.name} — DevSnack Lab`,
+    description: experiment.description,
+    canonicalPath: `/labs/${id}`,
+    kind: 'website',
+  })
+}
 
 export default async function LabsDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

@@ -3,6 +3,34 @@ import Link from 'next/link'
 import { ArrowLeft, Calendar, Clock } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
+import { buildRouteMetadata, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
+
+async function getMiscPost(id: string) {
+  const { data } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('slug', id)
+    .eq('status', 'live')
+    .eq('blog_id', 'misc')
+    .single()
+  return data
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const post = await getMiscPost(id)
+  if (!post) return { title: 'Misc Not Found' }
+  const description = post.seo_desc ?? post.excerpt ?? post.title
+  return buildRouteMetadata({
+    title: post.title,
+    description,
+    canonicalPath: `/misc/${id}`,
+    kind: 'article',
+    image: post.cover_image,
+    publishedTime: post.published,
+    modifiedTime: post.updated,
+  })
+}
 
 export const revalidate = 60
 export const dynamicParams = true
@@ -19,13 +47,7 @@ const STATUS_META: Record<JunkStatus, { emoji: string; label: string; badge: str
 
 export default async function JunkPostPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const { data: post } = await supabase
-    .from('posts')
-    .select('*')
-    .eq('slug', id)
-    .eq('status', 'live')
-    .eq('blog_id', 'misc')
-    .single()
+  const post = await getMiscPost(id)
 
   if (!post) notFound()
 
@@ -62,7 +84,7 @@ export default async function JunkPostPage({ params }: { params: Promise<{ id: s
           </div>
 
           {/* 본문 — 마크다운 렌더링 */}
-          <MarkdownRenderer content={post.content || ''} />
+          <MarkdownRenderer content={stripImportedHeadArtifacts(post.content || '')} />
         </article>
       </div>
     </div>

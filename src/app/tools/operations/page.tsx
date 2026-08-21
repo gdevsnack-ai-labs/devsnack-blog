@@ -1,11 +1,16 @@
 import type { Metadata } from 'next'
 import { OperationsDashboard } from './operations-dashboard'
 import { normalizeOperationsSnapshot } from '@/lib/operations-types'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
 import { supabase } from '@/lib/supabase'
 
 export const metadata: Metadata = {
-  title: '운영중인 시스템 — DevSnack',
-  description: 'DGX Spark에서 실행 중인 서비스, 포트, Docker, systemd, Hermes 크론잡과 설치된 도구 현황',
+  ...buildRouteMetadata({
+    title: '운영중인 시스템 — DevSnack',
+    description: 'DGX Spark에서 실행 중인 서비스, 포트, Docker, systemd, Hermes 크론잡과 설치된 도구 현황',
+    canonicalPath: '/tools/operations',
+  }),
+  robots: { index: false, follow: true },
 }
 
 export const revalidate = 60

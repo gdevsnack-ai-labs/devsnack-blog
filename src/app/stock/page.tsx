@@ -6,11 +6,17 @@ import { BlogHeader } from '@/components/blog-header'
 import { BlogSidebar } from '@/components/blog-sidebar'
 import { StockPulsePredictionWidget } from '@/components/stock-pulse-prediction-widget'
 import { Pagination } from '@/components/pagination'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
+
+export const metadata = buildRouteMetadata({
+  title: 'StockPulse — DevSnack',
+  description: '자동 생성되는 KOSPI·KOSDAQ 시장 분석 Feed와 자기개선 실험',
+  canonicalPath: '/stock',
+})
 
 export const revalidate = 60
 
 const PAGE_SIZE = 24
-
 type PostSummary = {
   slug: string
   title: string

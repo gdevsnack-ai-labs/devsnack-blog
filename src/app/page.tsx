@@ -1,4 +1,3 @@
-import type { Metadata } from 'next'
 import Link from 'next/link'
 import { BarChart3, BookOpen, FlaskConical, Info, Play, Search, Terminal } from 'lucide-react'
 import { HomeDataStrip, HomeExploreLink, HomeFeatureCard, HomeFindingItem, HomeKnowledgeItem, HomeRelationNote, HomeStoryCard } from '@/components/home-projection'
@@ -6,23 +5,15 @@ import { experiments } from '@/data/experiments'
 import { getDataHubSnapshot, getKnowledgePosts, getRecentStories } from '@/lib/ia/hub-data'
 import { createHomeProjection } from '@/lib/ia/home-projections'
 import { projectKnowledgePosts } from '@/lib/ia/hub-projections'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
 
 export const revalidate = 60
 
-export const metadata: Metadata = {
+export const metadata = buildRouteMetadata({
   title: 'DevSnack — AI·개발 작업 기록과 결과',
   description: 'AI와 개발을 직접 조사하고, 만들고, 측정하고, 기록하는 DevSnack의 작업 공간과 결과 아카이브입니다.',
-  openGraph: {
-    title: 'DevSnack — AI·개발 작업 기록과 결과',
-    description: 'AI와 개발을 직접 조사하고, 만들고, 측정하고, 기록하는 DevSnack의 작업 공간과 결과 아카이브입니다.',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary',
-    title: 'DevSnack — AI·개발 작업 기록과 결과',
-    description: 'AI와 개발을 직접 조사하고, 만들고, 측정하고, 기록하는 DevSnack의 작업 공간과 결과 아카이브입니다.',
-  },
-}
+  canonicalPath: '/',
+})
 
 export default async function Home() {
   const [knowledgePosts, dataSnapshot, storyPosts] = await Promise.all([

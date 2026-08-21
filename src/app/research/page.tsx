@@ -1,4 +1,3 @@
-import type { Metadata } from 'next'
 import { BookOpen, Layers3 } from 'lucide-react'
 import { HubHeader } from '@/components/hub-header'
 import { KnowledgeAssetCard } from '@/components/knowledge-asset-card'
@@ -9,13 +8,15 @@ import {
   projectKnowledgePosts,
   type KnowledgeDomain,
 } from '@/lib/ia/hub-projections'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
 
 export const revalidate = 60
 
-export const metadata: Metadata = {
+export const metadata = buildRouteMetadata({
   title: 'Knowledge — DevSnack',
   description: 'AI·LLM·Agent·Media·Infrastructure 기술 지식을 다시 찾아보는 DevSnack Knowledge 저장소',
-}
+  canonicalPath: '/research',
+})
 
 const DOMAIN_ORDER: KnowledgeDomain[] = ['ai-llm', 'agent-memory', 'media', 'infrastructure', 'hardware', 'other']
 

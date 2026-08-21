@@ -1,6 +1,13 @@
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { classifyJunk, JUNK_STATUS_META } from '@/lib/content-taxonomy'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
+
+export const metadata = buildRouteMetadata({
+  title: 'Junk Drawer — DevSnack',
+  description: '현재 운영·보관 중인 기타 기술 기록과 도구 목록',
+  canonicalPath: '/misc',
+})
 
 export const revalidate = 60
 

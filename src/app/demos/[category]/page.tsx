@@ -1,9 +1,21 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, ExternalLink, FileCode2, Music2, Image, Film } from 'lucide-react'
-import { DEMO_CATEGORIES, DEMOS, getDemoCategoryMeta, type DemoCategory } from '@/data/demos'
+import { DEMOS, getDemoCategoryMeta, type DemoCategory } from '@/data/demos'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
 
 export const revalidate = 60
+
+export async function generateMetadata({ params }: { params: Promise<{ category: string }> }) {
+  const { category } = await params
+  const meta = getDemoCategoryMeta(category)
+  if (!meta) return { title: 'Demo Not Found' }
+  return buildRouteMetadata({
+    title: `${meta.label} Demos — DevSnack`,
+    description: meta.description,
+    canonicalPath: `/demos/${category}`,
+  })
+}
 
 const CATEGORY_ICON: Record<string, any> = {
   html: FileCode2,

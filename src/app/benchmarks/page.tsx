@@ -1,17 +1,18 @@
-import type { Metadata } from 'next'
 import Link from 'next/link'
 import { BarChart3, BookOpen, FlaskConical } from 'lucide-react'
 import { BenchmarkResultCard } from '@/components/benchmark-result-card'
 import { HubHeader } from '@/components/hub-header'
 import { RelatedAssets } from '@/components/related-assets'
 import { BENCHMARK_PROJECTIONS, getBenchmarksByCategory, getRelatedAssets } from '@/lib/ia/hub-projections'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
 
 export const revalidate = 60
 
-export const metadata: Metadata = {
+export const metadata = buildRouteMetadata({
   title: 'Benchmarks — DevSnack',
   description: '실행 조건과 측정 프로토콜을 공개한 DevSnack Benchmark 결과 모음',
-}
+  canonicalPath: '/benchmarks',
+})
 
 const CATEGORY_META = [
   { id: 'llm' as const, label: 'LLM', description: '모델·양자화·실사용 성능' },

@@ -1,8 +1,15 @@
 import Link from 'next/link'
 import { DEMO_CATEGORIES, DEMOS } from '@/data/demos'
 import { ExternalLink } from 'lucide-react'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
 
 export const revalidate = 60
+
+export const metadata = buildRouteMetadata({
+  title: 'Demos — DevSnack',
+  description: '로컬 AI로 직접 만든 HTML·이미지·음악·영상 결과물 Showcase',
+  canonicalPath: '/demos',
+})
 
 export default function DemosPage() {
   let total = 0

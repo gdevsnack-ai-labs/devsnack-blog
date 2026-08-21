@@ -9,6 +9,7 @@ import { supabase } from '@/lib/supabase'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { postHref } from '@/config/site-catalog'
 import type { BlogId, BlogColor } from '@/lib/colors'
+import { buildRouteMetadata, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 
 export const revalidate = 60
 export const dynamicParams = true
@@ -28,6 +29,17 @@ const STATUS_BADGE: Record<string, string> = {
   '미정':   'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400',
 }
 
+async function getLabPost(slug: string) {
+  const { data } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('slug', slug)
+    .eq('status', 'live')
+    .eq('blog_id', 'lab')
+    .single()
+  return data
+}
+
 async function getBlogPosts(slugs: string[]) {
   if (!slugs.length) return []
   const { data } = await supabase
@@ -41,13 +53,7 @@ async function getBlogPosts(slugs: string[]) {
 
 /** Render a lab blog post (blog_id='lab') */
 async function LabPostPage({ slug }: { slug: string }) {
-  const { data: post } = await supabase
-    .from('posts')
-    .select('*')
-    .eq('slug', slug)
-    .eq('status', 'live')
-    .eq('blog_id', 'lab')
-    .single()
+  const post = await getLabPost(slug)
 
   if (!post) notFound()
 
@@ -95,7 +101,7 @@ async function LabPostPage({ slug }: { slug: string }) {
         </div>
 
         {/* 본문 — 마크다운 렌더링 */}
-        <MarkdownRenderer content={post.content || ''} />
+        <MarkdownRenderer content={stripImportedHeadArtifacts(post.content || '')} />
       </article>
     </div>
   )
@@ -294,6 +300,33 @@ async function ExperimentDetailPage({ id }: { id: string }) {
       </div>
     </div>
   )
+}
+
+// ── Metadata: legacy lab content and legacy experiment route ──
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const experiment = experiments.find(e => e.id === id)
+  if (experiment) {
+    return buildRouteMetadata({
+      title: `${experiment.name} — DevSnack Lab`,
+      description: experiment.description,
+      canonicalPath: `/labs/${id}`,
+      kind: 'website',
+    })
+  }
+
+  const post = await getLabPost(id)
+  if (!post) return { title: 'Lab Not Found' }
+  const description = post.seo_desc ?? post.excerpt ?? post.title
+  return buildRouteMetadata({
+    title: post.title,
+    description,
+    canonicalPath: `/lab/${id}`,
+    kind: 'article',
+    image: post.cover_image,
+    publishedTime: post.published,
+    modifiedTime: post.updated,
+  })
 }
 
 // ── Main: experiment first, fallback to lab blog post ──

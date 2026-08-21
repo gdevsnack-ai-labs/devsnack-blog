@@ -1,4 +1,3 @@
-import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, FlaskConical, Hammer, Play, Sparkles } from 'lucide-react'
 import { HubHeader } from '@/components/hub-header'
@@ -8,13 +7,15 @@ import { experiments, type ExperimentCategory } from '@/data/experiments'
 import { DEMO_ASSETS } from '@/lib/ia'
 import { getLabCollectionProjects, getRelatedAssets } from '@/lib/ia/hub-projections'
 import { getFeaturedExperiment, getKeyFinding, getLatestResult, getRecentFindings, LAB_FILTERS, parseLabFilter, type LabFilter } from '@/lib/labs'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
 
 export const revalidate = 60
 
-export const metadata: Metadata = {
+export const metadata = buildRouteMetadata({
   title: 'Lab — DevSnack',
   description: '직접 만들고, 돌려보고, 실패하면서 확인한 DevSnack의 Experiment·Build·System·Creative Test 기록',
-}
+  canonicalPath: '/labs',
+})
 
 type SearchParams = Promise<{ status?: string | string[] }>
 

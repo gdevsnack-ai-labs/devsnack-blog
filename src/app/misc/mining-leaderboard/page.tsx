@@ -1,8 +1,13 @@
 import Link from 'next/link'
 import { ArrowLeft, Zap, Flame, Thermometer, Fan, Gauge, Timer, Trophy, TrendingUp, TrendingDown, Minus, Share2 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
 
-export const revalidate = 60
+export const metadata = buildRouteMetadata({
+  title: 'Mining Leaderboard — DevSnack',
+  description: 'Bitaxe Gamma 601의 해시레이트·온도·전력·난이도 측정 기록',
+  canonicalPath: '/misc/mining-leaderboard',
+})
 
 interface MiningScore {
   id: number

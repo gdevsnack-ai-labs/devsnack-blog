@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import type { MetadataRoute } from 'next'
 import { postHref } from '@/config/site-catalog'
+import { isIndexableSitemapRoute } from '@/lib/seo/sitemap-policy'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }]
   })
 
-  return [
+  const staticEntries: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -124,6 +125,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.4,
     },
-    ...blogEntries,
   ]
+
+  const indexableStaticEntries = staticEntries.filter(entry => isIndexableSitemapRoute(new URL(entry.url).pathname))
+  return [...indexableStaticEntries, ...blogEntries]
 }

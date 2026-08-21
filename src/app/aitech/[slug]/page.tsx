@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Calendar, Clock } from 'lucide-react'
 import { ViewCounter } from '@/components/view-counter'
 import { BlogHeader } from '@/components/blog-header'
+import { buildRouteMetadata, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 
 export const revalidate = 60
 
@@ -19,19 +20,20 @@ async function getPost(slug: string): Promise<Post | null> {
   return data
 }
 
-function cleanContent(html: string): string {
-  return html.replace(/<script[^>]*type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/gi, '')
-}
-
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const post = await getPost(slug)
   if (!post) return { title: 'Not Found' }
-  return {
-    title: `${post.title} — AI Tech Insight`,
-    description: post.seo_desc ?? post.excerpt ?? post.title,
-    openGraph: post.cover_image ? { images: [post.cover_image] } : undefined,
-  }
+  const description = post.seo_desc ?? post.excerpt ?? post.title
+  return buildRouteMetadata({
+    title: post.title,
+    description,
+    canonicalPath: `/aitech/${slug}`,
+    kind: 'article',
+    image: post.cover_image,
+    publishedTime: post.published,
+    modifiedTime: post.updated,
+  })
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -76,7 +78,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           )}
         </div>
         <div className="border-t mb-8" />
-        <div className="prose-devsnack" dangerouslySetInnerHTML={{ __html: cleanContent(post.content || '') }} />
+        <div className="prose-devsnack" dangerouslySetInnerHTML={{ __html: stripImportedHeadArtifacts(post.content || '') }} />
       </article>
       <footer className="border-t mt-16">
         <div className="max-w-3xl mx-auto px-4 py-8 flex justify-center gap-6 text-sm">
