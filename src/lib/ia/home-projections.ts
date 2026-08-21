@@ -14,6 +14,11 @@ import { assetFromLegacyPost, projectRef, type AssetRef } from '@/lib/ia'
 import { getKeyFinding, getRecentFindings } from '@/lib/labs'
 
 export const HOME_CURATED_OVERRIDES = {
+  featured: {
+    aiOmokProjectId: 'ai-omok',
+    benchmarkAssetId: 'post:lab:local-llm-benchmark-report',
+    knowledgeAssetId: 'post:research:qwen3-8-27b-nvfp4-mtp-gguf-gb10',
+  },
   knowledge: 'post:research:qwen3-8-27b-nvfp4-mtp-gguf-gb10',
 } as const
 
@@ -44,8 +49,8 @@ export interface HomeDataService {
   type: 'Feed' | 'Tracker'
   href: string
   description: string
-  status: string
-  updated: string
+  status?: string
+  updated?: string
 }
 
 export interface HomeProjection {
@@ -63,10 +68,10 @@ function compactText(value: string, limit = 180): string {
   return normalized.length > limit ? `${normalized.slice(0, limit - 1)}…` : normalized
 }
 
-function formatDate(value?: string | null): string {
-  if (!value) return '업데이트 기록 없음'
+function formatDate(value?: string | null): string | undefined {
+  if (!value) return undefined
   const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return '업데이트 기록 없음'
+  if (Number.isNaN(date.getTime())) return undefined
   return date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
@@ -92,11 +97,11 @@ export function selectHomeKnowledge(posts: KnowledgeProjection[], limit = 2): Kn
   return ordered.slice(0, limit)
 }
 
-function toFindingProjection(project: LabProjectProjection): HomeFeaturedItem {
+function toFindingProjection(project: LabProjectProjection, eyebrow = 'Lab · Finding'): HomeFeaturedItem {
   const related = getRelatedAssets(projectRef(project.id)).find(link => link.kind === 'story' || link.kind === 'showcase')
   return {
     kind: 'finding',
-    eyebrow: 'Lab · Latest Finding',
+    eyebrow,
     title: project.title,
     summary: compactText(getKeyFinding(project.experiment) || project.latestResult || project.description),
     href: project.href,
@@ -137,7 +142,7 @@ export function projectHomeDataServices(snapshot: DataHubSnapshot): HomeDataServ
       type: 'Feed',
       href: '/aitech',
       description: 'Automated AI news feed',
-      status: snapshot.aiTech?.title || '최신 발행 기록 없음',
+      status: snapshot.aiTech?.title,
       updated: formatDate(snapshot.aiTech?.updated || snapshot.aiTech?.published),
     },
     {
@@ -145,7 +150,7 @@ export function projectHomeDataServices(snapshot: DataHubSnapshot): HomeDataServ
       type: 'Feed',
       href: '/stock',
       description: 'Automated market analysis',
-      status: snapshot.stockPulse?.title || '최신 리포트 기록 없음',
+      status: snapshot.stockPulse?.title,
       updated: formatDate(snapshot.stockPulse?.updated || snapshot.stockPulse?.published),
     },
     {
@@ -153,15 +158,15 @@ export function projectHomeDataServices(snapshot: DataHubSnapshot): HomeDataServ
       type: 'Tracker',
       href: '/realestate',
       description: 'Public transaction data tracker',
-      status: snapshot.realEstate.latestData ? `최근 데이터 ${snapshot.realEstate.latestData}` : '데이터 날짜 확인 필요',
-      updated: snapshot.realEstate.available ? `${snapshot.realEstate.recordCount.toLocaleString('ko-KR')}개 집계 row` : '데이터 확인 필요',
+      status: snapshot.realEstate.latestData ? `최근 데이터 ${snapshot.realEstate.latestData}` : undefined,
+      updated: snapshot.realEstate.available ? `${snapshot.realEstate.recordCount.toLocaleString('ko-KR')}개 집계 row` : undefined,
     },
     {
       title: 'Mining',
       type: 'Tracker',
       href: '/misc/mining-leaderboard',
       description: 'Automated device telemetry',
-      status: snapshot.mining?.score == null ? '최근 측정 기록 없음' : `최근 score ${Number(snapshot.mining.score).toLocaleString('ko-KR')}`,
+      status: snapshot.mining?.score == null ? undefined : `최근 score ${Number(snapshot.mining.score).toLocaleString('ko-KR')}`,
       updated: formatDate(snapshot.mining?.measured_at),
     },
   ]
@@ -186,10 +191,13 @@ export function createHomeProjection({
   const labItems = recentFindingProjects.slice(1, 3)
   const benchmark = BENCHMARK_PROJECTIONS[0]
   const recentKnowledge = selectHomeKnowledge(knowledge, 2)
+  const curatedAiOmok = labProjects.find(project => project.id === HOME_CURATED_OVERRIDES.featured.aiOmokProjectId)
+  const curatedBenchmark = BENCHMARK_PROJECTIONS.find(item => item.asset.assetId === HOME_CURATED_OVERRIDES.featured.benchmarkAssetId) || benchmark
+  const curatedKnowledge = knowledge.find(post => post.asset.assetId === HOME_CURATED_OVERRIDES.featured.knowledgeAssetId) || recentKnowledge[0]
   const featured = [
-    ...(labFinding ? [toFindingProjection(labFinding)] : []),
-    ...(benchmark ? [toBenchmarkProjection(benchmark)] : []),
-    ...(recentKnowledge[0] ? [toKnowledgeProjection(recentKnowledge[0])] : []),
+    ...(curatedAiOmok ? [toFindingProjection(curatedAiOmok, 'Lab · Featured Finding')] : []),
+    ...(curatedBenchmark ? [toBenchmarkProjection(curatedBenchmark)] : []),
+    ...(curatedKnowledge ? [toKnowledgeProjection(curatedKnowledge)] : []),
   ]
 
   return {

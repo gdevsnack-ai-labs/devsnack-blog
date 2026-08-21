@@ -61,8 +61,8 @@ export function HomeDataStrip({ services }: { services: HomeDataService[] }) {
           <div className="flex items-center justify-between gap-2"><span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-300">{service.type === 'Feed' ? <Radio className="h-3.5 w-3.5" aria-hidden="true" /> : <Database className="h-3.5 w-3.5" aria-hidden="true" />}{service.type}</span><ArrowRight className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" /></div>
           <h3 className="mt-3 text-sm font-bold group-hover:text-emerald-700 dark:group-hover:text-emerald-300">{service.title}</h3>
           <p className="mt-1 line-clamp-1 text-xs text-muted-foreground">{service.description}</p>
-          <p className="mt-3 line-clamp-2 text-xs leading-relaxed">{service.status}</p>
-          <p className="mt-2 text-[11px] text-muted-foreground">{service.updated}</p>
+          {service.status && <p className="mt-3 line-clamp-2 text-xs leading-relaxed">{service.status}</p>}
+          {service.updated && <p className="mt-2 text-[11px] text-muted-foreground">{service.updated}</p>}
         </Link>
       ))}
     </div>

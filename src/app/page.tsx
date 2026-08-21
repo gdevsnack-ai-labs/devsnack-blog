@@ -4,7 +4,7 @@ import { BarChart3, BookOpen, FlaskConical, Info, Play, Search, Terminal } from 
 import { HomeDataStrip, HomeExploreLink, HomeFeatureCard, HomeFindingItem, HomeKnowledgeItem, HomeRelationNote, HomeStoryCard } from '@/components/home-projection'
 import { experiments } from '@/data/experiments'
 import { getDataHubSnapshot, getKnowledgePosts, getRecentStories } from '@/lib/ia/hub-data'
-import { createHomeProjection, projectHomeDataServices } from '@/lib/ia/home-projections'
+import { createHomeProjection } from '@/lib/ia/home-projections'
 import { projectKnowledgePosts } from '@/lib/ia/hub-projections'
 
 export const revalidate = 60
@@ -37,7 +37,7 @@ export default async function Home() {
     data: dataSnapshot,
   })
   const featuredRelations = projection.featured.filter(item => item.related)
-  const dataServices = projection.dataServices || projectHomeDataServices(dataSnapshot)
+  const dataServices = projection.dataServices
 
   return (
     <div className="min-h-screen bg-background">

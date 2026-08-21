@@ -1,6 +1,6 @@
 import { experiments } from '@/data/experiments'
 import { projectKnowledgePost } from './hub-projections'
-import { createHomeProjection } from './home-projections'
+import { createHomeProjection, projectHomeDataServices } from './home-projections'
 
 function expectEqual(actual: unknown, expected: unknown, message: string) {
   if (actual !== expected) throw new Error(`${message}: expected ${String(expected)}, got ${String(actual)}`)
@@ -45,7 +45,10 @@ const projection = createHomeProjection({
 })
 
 expectEqual(projection.featured.length, 3, 'Home should keep Featured compact')
-expectEqual(projection.featured[0].kind, 'finding', 'Lab finding should lead Featured')
+expectEqual(projection.featured[0].project?.id, 'ai-omok', 'Featured should use the curated AI Omok representative')
+expectEqual(projection.featured[1].benchmark?.asset.assetId, 'post:lab:local-llm-benchmark-report', 'Featured should use the curated published Benchmark')
+expectEqual(projection.featured[2].knowledge?.asset.assetId, 'post:research:qwen3-8-27b-nvfp4-mtp-gguf-gb10', 'Featured should use the curated Qwen Knowledge')
+expectEqual(projection.labFinding?.id, 'isekai-instagram-mage-experiment', 'Latest Lab Finding should remain automatic and independent from Featured')
 expectEqual(projection.featured[1].kind, 'benchmark', 'published Benchmark should be Featured')
 expectEqual(projection.featured[1].benchmark?.asset.primaryType, 'benchmark', 'Home Benchmark must retain benchmark primary type')
 expectEqual(projection.featured[2].kind, 'knowledge', 'Knowledge should be Featured from the shared selector')
@@ -57,5 +60,13 @@ expectEqual(projection.dataServices.filter(service => service.type === 'Tracker'
 expectEqual(projection.stories.length, 2, 'Home Stories should stay compact')
 expectTrue(projection.stories.every(story => story.href.startsWith('/devsnack/')), 'Home Stories must use existing DevSnack detail URLs')
 expectTrue(projection.labItems.length <= 2, 'Home Lab section must not become a project dashboard')
+
+const unknownDataServices = projectHomeDataServices({
+  aiTech: null,
+  stockPulse: null,
+  realEstate: { available: false, recordCount: 0, latestData: null },
+  mining: null,
+})
+expectTrue(unknownDataServices.every(service => service.status === undefined && service.updated === undefined), 'unknown Home freshness must be omitted instead of rendered as an error-like message')
 
 console.log(`home projection tests passed: featured=${projection.featured.length}, labItems=${projection.labItems.length}, knowledge=${projection.knowledge.length}, data=${projection.dataServices.length}, stories=${projection.stories.length}`)
