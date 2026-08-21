@@ -320,6 +320,14 @@ export function getRelatedAssets(sourceId: string): RelatedAssetLink[] {
     .filter((link): link is RelatedAssetLink => Boolean(link))
 }
 
+/** Returns explicitly registered relations pointing into a target asset/project. */
+export function getIncomingRelatedAssets(targetId: string): RelatedAssetLink[] {
+  return ASSET_RELATIONS
+    .filter(relation => relation.to === targetId)
+    .map(relation => endpointToRelatedLink(relation.from, relation.relation))
+    .filter((link): link is RelatedAssetLink => Boolean(link))
+}
+
 export function getRelatedFindingCount(experiments: Experiment[]): number {
   return getRecentFindings(experiments.filter(experiment => experiment.id !== 'local-llm-benchmark')).length
 }

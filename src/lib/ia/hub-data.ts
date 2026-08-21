@@ -3,6 +3,24 @@ import path from 'node:path'
 import { supabase } from '@/lib/supabase'
 import type { KnowledgePostInput } from '@/lib/ia/hub-projections'
 
+export interface StoryPostInput {
+  slug: string
+  title: string
+  excerpt?: string | null
+  published: string
+  updated?: string | null
+  cover_image?: string | null
+  blog_id: 'devsnack'
+  status: 'live'
+}
+
+export interface DataHubSnapshot {
+  aiTech: { slug: string; title: string; published?: string | null; updated?: string | null } | null
+  stockPulse: { slug: string; title: string; published?: string | null; updated?: string | null } | null
+  realEstate: { available: boolean; recordCount: number; latestData: string | null }
+  mining: { measured_at?: string | null; score?: number | null } | null
+}
+
 export async function getKnowledgePosts(): Promise<KnowledgePostInput[]> {
   const { data } = await supabase
     .from('posts')
@@ -13,6 +31,18 @@ export async function getKnowledgePosts(): Promise<KnowledgePostInput[]> {
     .limit(200)
 
   return (data || []) as KnowledgePostInput[]
+}
+
+export async function getRecentStories(limit = 3): Promise<StoryPostInput[]> {
+  const { data } = await supabase
+    .from('posts')
+    .select('slug, title, excerpt, published, updated, cover_image, blog_id, status')
+    .eq('blog_id', 'devsnack')
+    .eq('status', 'live')
+    .order('published', { ascending: false })
+    .limit(limit)
+
+  return (data || []) as StoryPostInput[]
 }
 
 export async function getLatestPost(blogId: 'aitech' | 'stockpulse') {
@@ -63,7 +93,7 @@ export async function getRealEstateSnapshot() {
   }
 }
 
-export async function getDataHubSnapshot() {
+export async function getDataHubSnapshot(): Promise<DataHubSnapshot> {
   const [aiTech, stockPulse, realEstate, mining] = await Promise.all([
     getLatestPost('aitech'),
     getLatestPost('stockpulse'),
