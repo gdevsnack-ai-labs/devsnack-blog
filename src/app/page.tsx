@@ -12,6 +12,16 @@ export const revalidate = 60
 export const metadata: Metadata = {
   title: 'DevSnack — AI·개발 작업 기록과 결과',
   description: 'AI와 개발을 직접 조사하고, 만들고, 측정하고, 기록하는 DevSnack의 작업 공간과 결과 아카이브입니다.',
+  openGraph: {
+    title: 'DevSnack — AI·개발 작업 기록과 결과',
+    description: 'AI와 개발을 직접 조사하고, 만들고, 측정하고, 기록하는 DevSnack의 작업 공간과 결과 아카이브입니다.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'DevSnack — AI·개발 작업 기록과 결과',
+    description: 'AI와 개발을 직접 조사하고, 만들고, 측정하고, 기록하는 DevSnack의 작업 공간과 결과 아카이브입니다.',
+  },
 }
 
 export default async function Home() {
