@@ -42,6 +42,14 @@ arXiv Scout
 5. 로컬 build·통합 검증·Vercel 배포
 6. wiki/log 기록 및 push
 
+## 실행
+
+```bash
+bash ~/.hermes/scripts/research-poc-agent.sh "large language model memory" cardnews 6
+```
+
+실행 로그는 `~/.hermes/logs/research-poc-agent.log`에만 기록한다. 현재는 별도 Hermes 크론 스케줄을 만들지 않고 수동 실행으로 POC 흐름을 검증한다.
+
 ## 다음 페이즈
 
 - Supabase Auth + Google OAuth
