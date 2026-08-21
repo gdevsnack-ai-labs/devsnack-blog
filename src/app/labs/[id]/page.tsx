@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, Calendar, CheckCircle2, ExternalLink, FileText, FlaskConical, PlayCircle } from 'lucide-react'
+import { ArrowLeft, Calendar, CheckCircle2, ExternalLink, FileText, FlaskConical, PlayCircle } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import { experiments } from '@/data/experiments'
 import { ProgressBar } from '@/components/progress-bar'
@@ -161,11 +161,6 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
             </div>
           </section>
 
-          <div className="border-t border-border pt-6">
-            <Link href={`/lab/${experiment.id}`} className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground no-underline hover:text-foreground">
-              기존 Lab 상세 노트와 특수 위젯 보기 <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
         </main>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, CheckCircle2, FlaskConical, ListFilter, Lightbulb } from 'lucide-react'
+import { CheckCircle2, FlaskConical, ListFilter, Lightbulb } from 'lucide-react'
 import { LabsProjectCard } from '@/components/labs-project-card'
 import { experiments, type ExperimentCategory } from '@/data/experiments'
 import { LAB_FILTERS, parseLabFilter, type LabFilter } from '@/lib/labs'
@@ -119,12 +119,6 @@ export default async function LabsPage({ searchParams }: { searchParams: SearchP
           )}
         </section>
 
-        <div className="mt-10 flex items-center justify-between gap-3 rounded-xl border border-border bg-muted/20 px-4 py-3 text-sm text-muted-foreground">
-          <span>기존 `/lab`은 비교 기준으로 그대로 유지됩니다.</span>
-          <Link href="/lab" className="inline-flex shrink-0 items-center gap-1 font-medium text-foreground no-underline hover:text-blue-600 dark:hover:text-blue-400">
-            기존 Lab 보기 <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
       </div>
     </div>
   )
