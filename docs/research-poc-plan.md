@@ -57,3 +57,4 @@ bash ~/.hermes/scripts/research-poc-agent.sh "large language model memory" cardn
 - SSR session/middleware 보호
 - authenticated RLS 정책
 - 검토 완료 후에만 live 전환하는 Publisher 활성화
+- 인계 문서: `docs/HANDOFF_RESEARCH_MANAGER_POC.md`
