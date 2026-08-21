@@ -64,10 +64,8 @@ export const NAV_GROUP_REGISTRY: NavGroup[] = [
     id: 'benchmarks',
     label: 'Benchmarks',
     icon: 'fileText',
-    enabled: false,
-    disabledReason: 'The /benchmarks hub is planned for Phase 3 and does not exist yet.',
     items: [
-      { id: 'benchmarks-hub', href: '/benchmarks', label: 'Benchmarks Hub', enabled: false },
+      { id: 'benchmarks-hub', href: '/benchmarks', label: 'Benchmarks Hub' },
     ],
   },
   {
@@ -88,6 +86,7 @@ export const NAV_GROUP_REGISTRY: NavGroup[] = [
     label: 'Data',
     icon: 'server',
     items: [
+      { id: 'data-hub', href: '/data', label: 'Data Hub' },
       { id: 'data-aitech', href: BLOG_PATH.aitech, label: 'AI Tech', blogId: 'aitech' },
       { id: 'data-stockpulse', href: BLOG_PATH.stockpulse, label: 'StockPulse', blogId: 'stockpulse' },
       { id: 'data-realestate', href: BLOG_PATH.realestate, label: 'Real Estate', blogId: 'realestate' },
@@ -114,8 +113,18 @@ export const NAV_GROUP_REGISTRY: NavGroup[] = [
 /** Enabled desktop groups only. Disabled destinations never become dead links. */
 export const NAV_GROUPS: NavGroup[] = NAV_GROUP_REGISTRY.filter(group => group.enabled !== false)
 
-/** Mobile keeps the same semantic source but omits the unavailable Benchmarks group. */
-export const MOBILE_NAV_GROUPS: NavGroup[] = NAV_GROUPS.filter(group => group.id !== 'benchmarks')
+/** Mobile keeps the same semantic source but places Benchmarks inside More if tabs would be crowded. */
+export const MOBILE_NAV_GROUPS: NavGroup[] = NAV_GROUPS
+  .filter(group => group.id !== 'benchmarks')
+  .map(group => group.id === 'more'
+    ? {
+        ...group,
+        items: [
+          { id: 'more-benchmarks', href: '/benchmarks', label: 'Benchmarks' },
+          ...group.items,
+        ],
+      }
+    : group)
 
 export const SINGLE_NAV_ITEMS: NavItem[] = [
   { id: 'home', href: '/', label: 'Home', icon: 'house' },
@@ -125,9 +134,9 @@ export const NAV_DESTINATIONS: NavigationDestination[] = [
   { id: 'home', href: '/', label: 'Home', layer: 'hub', enabled: true },
   { id: 'stories', href: BLOG_PATH.devsnack, label: 'Stories', layer: 'collection', enabled: true },
   { id: 'lab', href: '/labs', label: 'Lab', layer: 'hub', enabled: true },
-  { id: 'benchmarks', href: '/benchmarks', label: 'Benchmarks', layer: 'hub', enabled: false },
+  { id: 'benchmarks', href: '/benchmarks', label: 'Benchmarks', layer: 'hub', enabled: true },
   { id: 'knowledge', href: BLOG_PATH.research, label: 'Knowledge', layer: 'collection', enabled: true },
-  { id: 'data', href: '/aitech', label: 'Data', layer: 'collection', enabled: true },
+  { id: 'data', href: '/data', label: 'Data', layer: 'collection', enabled: true },
   { id: 'more', href: '/search', label: 'More', layer: 'utility', enabled: true },
 ]
 

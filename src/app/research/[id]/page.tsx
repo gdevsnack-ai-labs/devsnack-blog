@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const canonical = `${SITE_URL}/research/${id}`
 
   return {
-    title: `${post.title} | DevSnack Research`,
+    title: `${post.title} | DevSnack Knowledge`,
     description,
     keywords,
     authors: [{ name: 'DevSnack' }],
@@ -138,7 +138,7 @@ export default async function ResearchPostPage({ params }: { params: Promise<{ i
       <div className="max-w-3xl mx-auto px-4 py-8">
         <Link href="/research" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground no-underline mb-6">
           <ArrowLeft className="w-4 h-4" />
-          Research 목록으로
+          Knowledge 목록으로
         </Link>
 
         <article className="content-article min-w-0">

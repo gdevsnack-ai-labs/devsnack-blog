@@ -18,6 +18,7 @@ const fixturePosts = [
   { slug: 'dflash-fixture', title: 'DFlash knowledge', blog_id: 'research', status: 'live' },
   { slug: 'mining-leaderboard', title: 'Mining tracker', blog_id: 'misc', status: 'live' },
   { slug: 'devsnack-fixture', title: 'DevSnack story', blog_id: 'devsnack', status: 'live' },
+  { slug: 'dflash-2-qwen3-8-27b-vs-mtp', title: 'DFlash knowledge', blog_id: 'research', status: 'live' },
   { slug: 'qwen3-8-27b-nvfp4-mtp-gguf-gb10', title: 'Qwen knowledge', blog_id: 'research', status: 'live' },
   { slug: 'ai-llm-omok-experiment', title: 'Omok story', blog_id: 'devsnack', status: 'live' },
   { slug: 'ai-built-gomoku-engine-vs-rapfi', title: 'Omok engine story', blog_id: 'devsnack', status: 'live' },

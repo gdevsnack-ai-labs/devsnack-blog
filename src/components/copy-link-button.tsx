@@ -50,7 +50,8 @@ export function CopyLinkButton({ variant = 'inline' }: { variant?: 'inline' | 'f
         onClick={handleCopy}
         title={copied ? '복사됨!' : '링크 복사'}
         aria-label="링크 복사"
-        className={`fixed right-6 z-40 md:right-6 md:z-50 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all cursor-pointer bottom-20 md:bottom-6 ${
+        style={{ right: 'calc(1.5rem + (100% - 100vw))' }}
+        className={`fixed z-40 md:z-50 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all cursor-pointer bottom-20 md:bottom-6 ${
           copied
             ? 'bg-green-500 text-white scale-105'
             : 'bg-foreground text-background hover:scale-105'

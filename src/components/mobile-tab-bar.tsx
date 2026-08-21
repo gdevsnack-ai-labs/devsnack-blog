@@ -71,23 +71,24 @@ export function MobileTabBar() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-[60] border-t border-border bg-background md:hidden"
+      className="fixed bottom-0 left-0 z-[60] w-[100vw] border-t border-border bg-background md:hidden"
       data-mobile-nav
       aria-label="모바일 주 메뉴"
       onClick={e => e.stopPropagation()}
+      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      <div className="flex items-stretch gap-0.5 px-1 py-1.5">
+      <div className="grid grid-cols-6 items-stretch gap-0 px-1 py-1.5">
         {tabs.map(tab => {
           const Icon = tab.icon ? ICONS[tab.icon] : House
           const active = tab.group ? groupActive(tab.group) : isActive(tab.href)
           const open = openMenu === tab.id
           const hasSub = !!tab.group
-          const itemClass = `flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-1 py-1 rounded-lg no-underline transition-colors cursor-pointer ${
+          const itemClass = `flex w-full min-w-0 flex-col items-center justify-center gap-0.5 px-1 py-1 rounded-lg no-underline transition-colors cursor-pointer ${
             active ? 'text-blue-600 dark:text-blue-400' : 'text-muted-foreground hover:text-foreground'
           }`
 
           return (
-            <div key={tab.id} className="relative min-w-0 flex-1">
+            <div key={tab.id} className="relative min-w-0 w-full">
               {hasSub ? (
                 <button
                   type="button"

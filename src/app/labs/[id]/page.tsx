@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation'
 import { experiments } from '@/data/experiments'
 import { ProgressBar } from '@/components/progress-bar'
 import { getCurrentStage, getDomainLabel, getKeyFinding, getKeyMetrics, getKeyResults, getLatestResult, getNature, getSortedTimeline } from '@/lib/labs'
+import { getRelatedAssets } from '@/lib/ia/hub-projections'
+import { RelatedAssets } from '@/components/related-assets'
 
 const STATUS_CLASS: Record<string, string> = {
   진행중: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
@@ -177,6 +179,7 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
             </div>
           </section>
 
+          <RelatedAssets links={getRelatedAssets(`project:${id}`)} title="Registered Relations" />
         </main>
       </div>
     </div>
