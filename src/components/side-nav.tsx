@@ -39,12 +39,12 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({})
   const [userToggled, setUserToggled] = useState<Record<string, boolean>>({})
 
-  const isActive = (href: string): boolean => {
-    if (href === '/') return pathname === '/'
-    return pathname.startsWith(href)
+  const isActive = (href: string, activeHrefs: string[] = []): boolean => {
+    const prefixes = [href, ...activeHrefs]
+    return prefixes.some(prefix => prefix === '/' ? pathname === '/' : pathname.startsWith(prefix))
   }
 
-  const groupHasActiveItem = (group: NavGroup) => group.items.some(item => isActive(item.href))
+  const groupHasActiveItem = (group: NavGroup) => group.items.some(item => isActive(item.href, item.activeHrefs))
 
   const groupOpen = (group: NavGroup): boolean => {
     if (userToggled[group.id]) return !!openGroups[group.id]
@@ -58,7 +58,7 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
   }
 
   const renderSubItem = (item: NavItem) => {
-    const active = isActive(item.href)
+    const active = isActive(item.href, item.activeHrefs)
     const ItemIcon = item.icon ? ICONS[item.icon] : null
     const countableBlogIds = new Set(['devsnack', 'stockpulse', 'realestate', 'aitech'])
     const count = item.blogId && countableBlogIds.has(item.blogId)

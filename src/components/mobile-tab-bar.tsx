@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { House, FileText, FlaskConical, Telescope, Wrench, Server, Info, Play, Search, Link as LinkIcon, Rss, ChevronUp, Sun, Moon } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { NAV_GROUPS, SINGLE_NAV_ITEMS, type IconKey, type NavGroup } from '@/config/site-catalog'
+import { MOBILE_NAV_GROUPS, SINGLE_NAV_ITEMS, type IconKey, type NavGroup } from '@/config/site-catalog'
 import { trackSiteEvent } from '@/lib/analytics'
 
 const ICONS: Record<IconKey, LucideIcon> = {
@@ -50,12 +50,12 @@ export function MobileTabBar() {
     return () => window.removeEventListener('click', close)
   }, [])
 
-  const isActive = (href: string): boolean => {
-    if (href === '/') return pathname === '/'
-    return pathname.startsWith(href)
+  const isActive = (href: string, activeHrefs: string[] = []): boolean => {
+    const prefixes = [href, ...activeHrefs]
+    return prefixes.some(prefix => prefix === '/' ? pathname === '/' : pathname.startsWith(prefix))
   }
 
-  const groupActive = (group: NavGroup) => group.items.some(item => isActive(item.href))
+  const groupActive = (group: NavGroup) => group.items.some(item => isActive(item.href, item.activeHrefs))
 
   const toggleTheme = () => {
     const next = !document.documentElement.classList.contains('dark')
@@ -66,7 +66,7 @@ export function MobileTabBar() {
 
   const tabs = [
     { id: 'home', label: home.label, href: home.href, icon: home.icon, group: null },
-    ...NAV_GROUPS.map(group => ({ id: group.id, label: group.label, href: group.items[0]?.href || '/', icon: group.icon, group })),
+    ...MOBILE_NAV_GROUPS.map(group => ({ id: group.id, label: group.label, href: group.items[0]?.href || '/', icon: group.icon, group })),
   ]
 
   return (
@@ -118,10 +118,12 @@ export function MobileTabBar() {
                 <div
                   role="menu"
                   aria-label={`${tab.label} 하위 메뉴`}
-                  className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 min-w-[148px] max-w-[calc(100vw-16px)] bg-white dark:bg-gray-900 border border-border rounded-xl shadow-xl p-1.5 z-50"
+                  className={`absolute bottom-full mb-1.5 min-w-[148px] max-w-[calc(100vw-16px)] bg-white dark:bg-gray-900 border border-border rounded-xl shadow-xl p-1.5 z-50 ${
+                    tab.id === 'more' ? 'right-0 left-auto translate-x-0' : 'left-1/2 -translate-x-1/2'
+                  }`}
                 >
                   {tab.group!.items.map(item => {
-                    const itemActive = isActive(item.href)
+                    const itemActive = isActive(item.href, item.activeHrefs)
                     return (
                       <Link
                         key={item.id}
