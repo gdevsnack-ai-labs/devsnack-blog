@@ -3,7 +3,7 @@ import { ArrowLeft, Calendar, CheckCircle2, ExternalLink, FileText, FlaskConical
 import { notFound } from 'next/navigation'
 import { experiments } from '@/data/experiments'
 import { ProgressBar } from '@/components/progress-bar'
-import { getCurrentStage, getDomainLabel, getKeyResults, getLatestResult, getNature, getSortedTimeline } from '@/lib/labs'
+import { getCurrentStage, getDomainLabel, getKeyFinding, getKeyMetrics, getKeyResults, getLatestResult, getNature, getSortedTimeline } from '@/lib/labs'
 
 const STATUS_CLASS: Record<string, string> = {
   진행중: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
@@ -28,7 +28,9 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
   if (!experiment) notFound()
 
   const nature = getNature(experiment)
-  const latestResult = getLatestResult(experiment)
+  const keyFinding = getKeyFinding(experiment)
+  const latestActivity = getLatestResult(experiment)
+  const keyMetrics = getKeyMetrics(experiment)
   const keyResults = getKeyResults(experiment)
   const timeline = getSortedTimeline(experiment)
 
@@ -71,31 +73,45 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
         </header>
 
         <main className="mt-8 space-y-8">
-          {latestResult && (
+          {(keyFinding || latestActivity) && (
             <section className="rounded-xl border border-blue-200 bg-blue-50/60 p-5 dark:border-blue-900/50 dark:bg-blue-950/20" aria-labelledby="current-finding-heading">
               <h2 id="current-finding-heading" className="text-sm font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Current Finding</h2>
-              <p className="mt-3 text-base leading-relaxed">{latestResult.result}</p>
-              <p className="mt-3 text-xs text-muted-foreground">
-                {latestResult.date || '날짜 미기록'} · {latestResult.name}
-              </p>
+              <p className="mt-3 text-base leading-relaxed">{keyFinding || latestActivity?.result}</p>
+              {latestActivity && (
+                <p className="mt-3 text-xs text-muted-foreground">
+                  Latest Activity · {latestActivity.date || '날짜 미기록'} · {latestActivity.name}
+                </p>
+              )}
             </section>
           )}
 
-          {keyResults.length > 0 && (
+          {(keyMetrics.length > 0 || keyResults.length > 0) && (
             <section aria-labelledby="key-results-heading">
               <div className="mb-4 flex items-center gap-2">
                 <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
                 <h2 id="key-results-heading" className="text-xl font-bold">Key Results</h2>
               </div>
-              <div className="grid gap-3 md:grid-cols-3">
-                {keyResults.map(item => (
-                  <div key={`${item.date}-${item.name}`} className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900">
-                    <p className="text-xs text-muted-foreground">{item.date || '날짜 미기록'}</p>
-                    <h3 className="mt-2 text-sm font-semibold leading-snug">{item.name}</h3>
-                    <p className="mt-2 line-clamp-4 text-sm leading-relaxed text-muted-foreground">{item.result}</p>
-                  </div>
-                ))}
-              </div>
+              {keyMetrics.length > 0 ? (
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  {keyMetrics.map(metric => (
+                    <div key={metric.label} className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900">
+                      <p className="text-xs text-muted-foreground">{metric.label}</p>
+                      <p className="mt-2 text-xl font-bold tracking-tight">{metric.value}</p>
+                      {metric.note && <p className="mt-1 text-xs text-muted-foreground">{metric.note}</p>}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid gap-3 md:grid-cols-3">
+                  {keyResults.map(item => (
+                    <div key={`${item.date}-${item.name}`} className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900">
+                      <p className="text-xs text-muted-foreground">{item.date || '날짜 미기록'}</p>
+                      <h3 className="mt-2 text-sm font-semibold leading-snug">{item.name}</h3>
+                      <p className="mt-2 line-clamp-4 text-sm leading-relaxed text-muted-foreground">{item.result}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </section>
           )}
 

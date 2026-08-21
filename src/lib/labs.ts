@@ -34,6 +34,51 @@ const NATURE_BY_ID: Record<string, ExperimentNature> = {
   },
 }
 
+export interface LabMetric {
+  label: string
+  value: string
+  note?: string
+}
+
+interface LabKnowledge {
+  keyFinding: string
+  metrics?: LabMetric[]
+  showInFindings: boolean
+}
+
+/**
+ * Activity 로그에서 자동 계산할 수 없는 "가장 중요한 발견"을 관리합니다.
+ * 원본 experiments.ts를 복제하지 않고, 공개 화면용 의미 레이어만 별도로 둡니다.
+ */
+const LAB_KNOWLEDGE: Record<string, LabKnowledge> = {
+  'local-llm-benchmark': {
+    keyFinding: 'DGX Spark에서 Qwen3.8-27B를 테스트한 결과, 단일 실행은 프리필 680~930 t/s와 디코드 17~19.5 t/s를 기록했고 4슬롯 장문 서빙에서는 18~22 t/s와 평균 MTP acceptance 약 94%를 유지했습니다.',
+    metrics: [
+      { label: 'Prefill', value: '680~930 t/s', note: '단일 실행' },
+      { label: 'Decode', value: '17~19.5 t/s', note: '단일 실행' },
+      { label: 'MTP acceptance', value: '93.1%', note: '단일 테스트' },
+      { label: '4-slot 장문 생성', value: '18~22 t/s', note: '평균 acceptance 약 94%' },
+    ],
+    showInFindings: true,
+  },
+  'ai-omok': {
+    keyFinding: 'ThreatAnalyzer를 연결하자 LLM은 22턴까지 방어했지만, AI가 만든 Minimax 엔진은 Rapfi(NNUE)에 5:0으로 패배했고 자율 개선 루프 69판에서도 승률 0%였습니다.',
+    showInFindings: true,
+  },
+  'stockpulse-ai-self-improvement': {
+    keyFinding: 'StockPulse는 예측→평가→실패 분석→프롬프트·ML 파라미터·피처 적용 루프를 실제 운영 중이며, 분석 결과가 다음 예측 파이프라인에 반영되는 자기개선 실험입니다.',
+    showInFindings: true,
+  },
+  'isekai-instagram-mage-experiment': {
+    keyFinding: 'GPT Image 2 기준 시트를 모든 장면에 참조해도 개별 프레임의 해부학적 품질과 장면 간 얼굴 identity는 별개였고, 최종 영상에서 다른 얼굴로 변하는 현상을 확인했습니다.',
+    showInFindings: true,
+  },
+  blog: {
+    keyFinding: 'Hermes Agent와 로컬 LLM을 연결한 발행·분석 파이프라인이 실제 운영 중이며, 반복 작업 자동화와 Lab 결과 기록을 함께 검증하고 있습니다.',
+    showInFindings: false,
+  },
+}
+
 export function getDomainLabel(experiment: Experiment): string {
   return DOMAIN_BY_ID[experiment.id] || 'AI Experiment'
 }
@@ -78,6 +123,39 @@ export function getLatestResult(experiment: Experiment): TimelineItem | undefine
 
 export function getKeyResults(experiment: Experiment, limit = 3): TimelineItem[] {
   return getSortedTimeline(experiment).filter(isActualResult).slice(0, limit)
+}
+
+export function getKeyFinding(experiment: Experiment): string | undefined {
+  return LAB_KNOWLEDGE[experiment.id]?.keyFinding
+}
+
+export function getKeyMetrics(experiment: Experiment): LabMetric[] {
+  return LAB_KNOWLEDGE[experiment.id]?.metrics || []
+}
+
+function sortByImportanceAndActivity(a: Experiment, b: Experiment): number {
+  const dateDiff = getTimelineDateKey(getLatestResult(b)?.date) - getTimelineDateKey(getLatestResult(a)?.date)
+  if (dateDiff) return dateDiff
+
+  const activeDiff = Number(b.category === 'running') - Number(a.category === 'running')
+  if (activeDiff) return activeDiff
+
+  return Number(Boolean(getKeyFinding(b))) - Number(Boolean(getKeyFinding(a)))
+}
+
+/** 최신 활동을 우선하되, 같은 날짜에는 현재 진행 중인 실험을 대표 실험으로 선택합니다. */
+export function getFeaturedExperiment(experiments: Experiment[]): Experiment | undefined {
+  return experiments
+    .filter(experiment => !experiment.isDummy && Boolean(getLatestResult(experiment)))
+    .sort(sortByImportanceAndActivity)[0]
+}
+
+/** 핵심 발견이 별도로 정리된 실험만 결과 피드에 노출합니다. */
+export function getRecentFindings(experiments: Experiment[], limit = 4): Experiment[] {
+  return experiments
+    .filter(experiment => !experiment.isDummy && LAB_KNOWLEDGE[experiment.id]?.showInFindings)
+    .sort(sortByImportanceAndActivity)
+    .slice(0, limit)
 }
 
 /** 카드에 표시할 현재 단계. 진행중 항목을 우선하고, 없으면 다음 계획을 표시합니다. */

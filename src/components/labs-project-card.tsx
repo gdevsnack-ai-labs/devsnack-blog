@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight, FlaskConical } from 'lucide-react'
-import { ProgressBar } from './progress-bar'
 import type { Experiment } from '@/data/experiments'
-import { getCurrentStage, getDomainLabel, getLatestResult, getNature } from '@/lib/labs'
+import { getDomainLabel, getKeyFinding, getLatestResult } from '@/lib/labs'
 
 const STATUS_CLASS: Record<string, string> = {
   진행중: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
@@ -20,15 +19,14 @@ const CATEGORY_CLASS: Record<string, string> = {
 }
 
 export function LabsProjectCard({ experiment }: { experiment: Experiment }) {
-  const latestResult = getLatestResult(experiment)
-  const currentStage = getCurrentStage(experiment)
-  const nature = getNature(experiment)
+  const keyFinding = getKeyFinding(experiment)
+  const latestActivity = getLatestResult(experiment)
   const categoryClass = CATEGORY_CLASS[experiment.color] || CATEGORY_CLASS.blue
 
   return (
     <Link
       href={`/labs/${experiment.id}`}
-      className="group flex h-full min-h-[352px] flex-col rounded-xl border border-border bg-white p-5 no-underline transition-all hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md dark:bg-gray-900 dark:hover:border-blue-700"
+      className="group flex h-full min-h-[286px] flex-col rounded-xl border border-border bg-white p-5 no-underline transition-all hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md dark:bg-gray-900 dark:hover:border-blue-700"
     >
       <div className="flex items-start justify-between gap-3">
         <div className={`flex min-w-0 items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide ${categoryClass}`}>
@@ -47,40 +45,20 @@ export function LabsProjectCard({ experiment }: { experiment: Experiment }) {
         {experiment.description}
       </p>
 
-      <div className="mt-4 space-y-2 rounded-lg bg-muted/35 p-3">
-        <div className="flex items-start justify-between gap-3 text-xs">
-          <span className="shrink-0 text-muted-foreground">현재 단계</span>
-          <span className="line-clamp-2 text-right font-medium">{currentStage}</span>
-        </div>
-        {nature.openEnded && (
-          <div className="flex items-start justify-between gap-3 text-xs">
-            <span className="shrink-0 text-muted-foreground">실험 성격</span>
-            <span className="line-clamp-2 text-right text-muted-foreground">{nature.label}</span>
-          </div>
-        )}
+      <div className="mt-4 flex-1 rounded-lg border-l-2 border-blue-400 bg-blue-50/60 px-3 py-2.5 dark:border-blue-600 dark:bg-blue-950/20">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Key Finding</p>
+        <p className="mt-1 line-clamp-4 text-sm leading-relaxed text-foreground">
+          {keyFinding || '핵심 발견을 정리 중인 실험입니다.'}
+        </p>
       </div>
 
-      <div className="mt-4 min-h-[68px]">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">최근 결과</p>
-        {latestResult ? (
-          <p className="mt-1 line-clamp-2 text-sm leading-relaxed">{latestResult.result}</p>
-        ) : (
-          <p className="mt-1 text-sm text-muted-foreground">아직 결과 기록이 없습니다.</p>
-        )}
-      </div>
-
-      <div className="mt-auto border-t border-border pt-4">
-        <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
-          <span>진행률</span>
-          <span className="font-semibold text-foreground">{experiment.progress}%</span>
-        </div>
-        <ProgressBar value={experiment.progress} color={experiment.color} size="sm" />
-        <div className="mt-3 flex items-center justify-between gap-3 text-xs text-muted-foreground">
-          <span>{experiment.startedAt ? `${experiment.startedAt} 시작` : '시작일 미정'}</span>
-          <span className="inline-flex items-center gap-1 font-medium text-foreground transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400">
-            실험 보기 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-          </span>
-        </div>
+      <div className="mt-4 flex items-center justify-between gap-3 border-t border-border pt-3 text-xs text-muted-foreground">
+        <span>
+          {latestActivity?.date ? `최근 활동 ${latestActivity.date}` : experiment.startedAt ? `${experiment.startedAt} 시작` : '기록 준비 중'}
+        </span>
+        <span className="inline-flex shrink-0 items-center gap-1 font-medium text-foreground transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400">
+          실험 보기 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+        </span>
       </div>
     </Link>
   )
