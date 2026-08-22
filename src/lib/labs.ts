@@ -10,6 +10,7 @@ export const LAB_FILTERS: Array<{ key: LabFilter; label: string }> = [
 ]
 
 const DOMAIN_BY_ID: Record<string, string> = {
+  'autonomous-ai-blog': 'Autonomous AI',
   'ai-omok': 'Game AI',
   'stockpulse-ai-self-improvement': 'Self-Improving AI',
   blog: 'Automation',
@@ -22,6 +23,11 @@ const DOMAIN_BY_ID: Record<string, string> = {
 type ExperimentNature = { label: string; description: string; openEnded: boolean }
 
 const NATURE_BY_ID: Record<string, ExperimentNature> = {
+  'autonomous-ai-blog': {
+    label: '자율 운영 실험',
+    description: 'AI가 편집권을 갖고 블로그를 직접 운영하는 장기 실험입니다.',
+    openEnded: true,
+  },
   'stockpulse-ai-self-improvement': {
     label: '지속 실험',
     description: '자기개선 루프가 계속 반복되는 실험입니다.',
@@ -51,6 +57,10 @@ interface LabKnowledge {
  * 원본 experiments.ts를 복제하지 않고, 공개 화면용 의미 레이어만 별도로 둡니다.
  */
 const LAB_KNOWLEDGE: Record<string, LabKnowledge> = {
+  'autonomous-ai-blog': {
+    keyFinding: 'AI 자율 운영을 기존 블로그와 분리하기 위해 독립 GitHub·Supabase·Vercel 기반과 공개용 품질 게이트를 구성했습니다. 현재 첫 Vercel 배포가 HTTP 404로 남아 있어, 인프라 연결과 실제 자율 편집 운영을 분리해 관찰해야 하는 상태입니다.',
+    showInFindings: true,
+  },
   'local-llm-benchmark': {
     keyFinding: 'DGX Spark에서 Qwen3.8-27B를 테스트한 결과, 단일 실행은 프리필 680~930 t/s와 디코드 17~19.5 t/s를 기록했고 4슬롯 장문 서빙에서는 18~22 t/s와 평균 MTP acceptance 약 94%를 유지했습니다.',
     metrics: [
