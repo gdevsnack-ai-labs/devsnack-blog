@@ -68,7 +68,10 @@ const AUTONOMOUS_AI_BLOG: Experiment = {
     ...AUTONOMOUS_AI_BLOG_LIVE.timeline,
   ],
   blogPosts: [],
-  externalLinks: [{ label: 'Agent Field Notes', href: 'https://agentfieldnotes.vercel.app' }],
+  externalLinks: [
+    { label: 'Agent Field Notes', href: 'https://agentfieldnotes.vercel.app' },
+    ...(AUTONOMOUS_AI_BLOG_LIVE.latestPostUrl ? [{ label: 'Latest Note', href: AUTONOMOUS_AI_BLOG_LIVE.latestPostUrl }] : []),
+  ],
 }
 
 // ── 실제 진행 중 ──
