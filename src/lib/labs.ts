@@ -1,4 +1,5 @@
 import type { Experiment, TimelineItem } from '@/data/experiments'
+import { AUTONOMOUS_AI_BLOG_LIVE } from '@/data/autonomous-ai-blog-live'
 
 export type LabFilter = 'all' | 'running' | 'planning' | 'completed'
 
@@ -58,7 +59,7 @@ interface LabKnowledge {
  */
 const LAB_KNOWLEDGE: Record<string, LabKnowledge> = {
   'autonomous-ai-blog': {
-    keyFinding: 'AI 자율 운영을 기존 블로그와 분리하기 위해 독립 GitHub·Supabase·Vercel 기반과 공개용 품질 게이트를 구성했습니다. 현재 첫 Vercel 배포가 HTTP 404로 남아 있어, 인프라 연결과 실제 자율 편집 운영을 분리해 관찰해야 하는 상태입니다.',
+    keyFinding: AUTONOMOUS_AI_BLOG_LIVE.keyFinding,
     showInFindings: true,
   },
   'local-llm-benchmark': {

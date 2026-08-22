@@ -190,6 +190,12 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
                   GitHub
                 </a>
               )}
+              {(experiment.externalLinks || []).map(link => (
+                <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-lg bg-purple-50 px-3 py-2 text-sm text-purple-700 no-underline transition-colors hover:bg-purple-100 dark:bg-purple-900/20 dark:text-purple-300 dark:hover:bg-purple-900/40">
+                  <ExternalLink className="h-4 w-4" />
+                  {link.label}
+                </a>
+              ))}
             </div>
           </section>
 
