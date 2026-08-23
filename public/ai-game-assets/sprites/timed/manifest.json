@@ -1,0 +1,52 @@
+{
+  "motions": [
+    {
+      "name": "walk_2s",
+      "source_video": "assets/videos/walk_2s.mp4",
+      "duration_target_sec": 2,
+      "fps": 24,
+      "frames": 48,
+      "frame_dir": "assets/frames/timed/walk_2s",
+      "sprite_sheet": "assets/sprites/timed/walk_2s.png",
+      "sheet_layout": [
+        24,
+        2
+      ],
+      "canvas": [
+        192,
+        192
+      ],
+      "source_bbox": [
+        82,
+        104,
+        524,
+        618
+      ],
+      "transparent_pixels_first": 25720
+    },
+    {
+      "name": "walk_3s",
+      "source_video": "assets/videos/walk_3s.mp4",
+      "duration_target_sec": 3,
+      "fps": 24,
+      "frames": 72,
+      "frame_dir": "assets/frames/timed/walk_3s",
+      "sprite_sheet": "assets/sprites/timed/walk_3s.png",
+      "sheet_layout": [
+        24,
+        3
+      ],
+      "canvas": [
+        192,
+        192
+      ],
+      "source_bbox": [
+        77,
+        102,
+        520,
+        618
+      ],
+      "transparent_pixels_first": 25791
+    }
+  ]
+}
