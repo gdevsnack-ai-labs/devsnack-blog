@@ -43,6 +43,7 @@ export interface LabProjectProjection {
 const LAB_COLLECTION_BY_PROJECT: Record<string, Exclude<LabCollectionId, 'showcase'>> = {
   'ai-omok': 'experiments',
   'stockpulse-ai-self-improvement': 'experiments',
+  'hermes-memory': 'experiments',
   blog: 'builds-systems',
   'music-qa': 'builds-systems',
   hook: 'builds-systems',
@@ -52,6 +53,7 @@ const LAB_COLLECTION_BY_PROJECT: Record<string, Exclude<LabCollectionId, 'showca
 const LAB_TYPE_BY_PROJECT: Record<string, LabDisplayType> = {
   'ai-omok': 'Experiment',
   'stockpulse-ai-self-improvement': 'Experiment',
+  'hermes-memory': 'Experiment',
   blog: 'System',
   'music-qa': 'Build',
   hook: 'Build',
@@ -240,6 +242,7 @@ const KNOWN_POST_TITLES: Record<string, string> = {
   'post:devsnack:ai-built-gomoku-engine-vs-rapfi': 'AI가 만든 Gomoku 엔진 이야기',
   'post:lab:stockpulse-self-2026-08-21': 'StockPulse 자기개선 실험 — 2026-08-21',
   'post:lab:isekai-instagram-mage-prologue': 'GPT Image 2 + LTX 2.5 숏 무비 실험',
+  'post:lab:hermes-memory-experiment': 'Hermes Memory Experiment — Phase 1',
 }
 
 const RELATION_LABEL: Record<RelationType, string> = {

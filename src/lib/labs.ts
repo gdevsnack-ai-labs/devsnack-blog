@@ -16,6 +16,7 @@ const DOMAIN_BY_ID: Record<string, string> = {
   'stockpulse-ai-self-improvement': 'Self-Improving AI',
   blog: 'Automation',
   'local-llm-benchmark': 'Local AI',
+  'hermes-memory': 'Agent Memory',
   'isekai-instagram-mage-experiment': 'Content AI',
   'music-qa': 'Content AI',
   hook: 'Content AI',
@@ -37,6 +38,11 @@ const NATURE_BY_ID: Record<string, ExperimentNature> = {
   'local-llm-benchmark': {
     label: '확장형 벤치마크',
     description: '모델별 하위 실험을 계속 추가할 수 있는 실험군입니다.',
+    openEnded: true,
+  },
+  'hermes-memory': {
+    label: '장기 실험',
+    description: 'Phase별 결과를 하나의 Lab 기록에 계속 쌓아가는 실험입니다.',
     openEnded: true,
   },
 }
@@ -78,6 +84,10 @@ const LAB_KNOWLEDGE: Record<string, LabKnowledge> = {
   },
   'stockpulse-ai-self-improvement': {
     keyFinding: 'StockPulse는 예측→평가→실패 분석→프롬프트·ML 파라미터·피처 적용 루프를 실제 운영 중이며, 분석 결과가 다음 예측 파이프라인에 반영되는 자기개선 실험입니다.',
+    showInFindings: true,
+  },
+  'hermes-memory': {
+    keyFinding: 'Phase 1 implementation complete / evaluation pending — USER.md와 MEMORY.md의 역할을 분리했지만, 실제 기억 경험의 변화는 새 세션 평가 후 판단합니다.',
     showInFindings: true,
   },
   'isekai-instagram-mage-experiment': {

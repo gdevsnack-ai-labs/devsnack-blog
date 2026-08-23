@@ -27,6 +27,11 @@ const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
     lifecycle: 'testing',
     isOpenEnded: true,
   },
+  'hermes-memory': {
+    domain: ['agent_memory', 'automation'],
+    lifecycle: 'active',
+    isOpenEnded: true,
+  },
   'isekai-instagram-mage-experiment': {
     domain: ['creative_ai', 'media'],
     lifecycle: 'completed',

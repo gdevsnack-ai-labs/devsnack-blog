@@ -85,4 +85,14 @@ export const ASSET_RELATIONS: AssetRelation[] = [
     relation: 'outputs',
     to: demoRef('shortmovie', 'isekai-instagram-mage-prologue'),
   },
+  {
+    from: projectRef('hermes-memory'),
+    relation: 'produces',
+    to: findingRef('hermes-memory'),
+  },
+  {
+    from: projectRef('hermes-memory'),
+    relation: 'published_as',
+    to: postRef('lab', 'hermes-memory-experiment'),
+  },
 ]

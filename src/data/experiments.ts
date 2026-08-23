@@ -222,6 +222,31 @@ const ISEKAI_MAGE: Experiment = {
   githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
 }
 
+// ── Hermes Memory Experiment — 장기 메모리 구조 개선 실험 (2026.08.23 시작) ──
+const HERMES_MEMORY: Experiment = {
+  id: 'hermes-memory',
+  name: 'Hermes Memory Experiment',
+  description: '기억을 더 많이 저장하는 대신, 항상 알고 있어야 하는 기억부터 정리하면 AI 에이전트의 기억 경험이 달라지는지 검증하는 장기 실험',
+  progress: 17,
+  color: 'blue',
+  status: '진행중',
+  category: 'running',
+  startedAt: '2026.08.23',
+  whyText: 'Hermes를 실제 비서처럼 사용하면서 Hindsight에 기억은 계속 쌓이는데도 나를 기억한다기보다 매번 검색하는 느낌을 받았다. 이번 실험은 Hindsight를 더 크게 만드는 대신 SOUL·USER·MEMORY·Hindsight·Wiki가 무엇을 항상 알고 있어야 하는지부터 나누고, 새 세션의 실제 사용 데이터로 기억 경험이 달라지는지 확인한다.',
+  nextGoals: ['새 Hermes 세션에서 Phase 1 사용 데이터 수집', 'Phase 2 Recall Diet A/B', 'Phase 3 Current-turn Recall 비교', 'Phase 4 Cross-layer Consolidation', 'Phase 5 Forgetting', 'Phase 6 Blind Memory Test'],
+  timeline: [
+    { name: 'Memory diagnosis와 Before 기준선 확인', status: '완료', date: '2026.08.23', result: 'Hindsight facts·observations·links와 USER/MEMORY 사용량을 역사적 Before 스냅샷으로 고정' },
+    { name: 'Phase 1 — Working Memory Restructure', status: '완료', date: '2026.08.23', result: 'USER.md는 안정적 사용자 모델, MEMORY.md는 현재 working memory로 재정의. Hindsight bank·container·backend는 변경하지 않음' },
+    { name: 'Phase 1 평가 — 새 세션 사용 데이터', status: '진행중', date: '2026.08.23', result: '구조 변경은 완료했지만 기억 경험의 개선 여부는 새 Hermes 세션의 실제 질문·recall·stale memory 관찰 후 판단' },
+    { name: 'Phase 2 — Recall Diet', status: '예정', result: 'recall 양·관련성·stale intrusion·noise·latency·토큰량을 동일 질문 세트로 비교' },
+    { name: 'Phase 3 — Current-turn Recall', status: '예정', result: 'previous-turn prefetch와 current-query synchronous·topic-change fallback 비교' },
+    { name: 'Phase 4 — Memory Consolidation', status: '예정', result: '반복성·proof count·최근성·충돌을 평가해 안정적인 User Model과 Current State 후보 생성' },
+    { name: 'Phase 5 — Forgetting', status: '예정', result: 'Stable·Current·Episodic·Transient·Expired lifecycle로 오래된 상태와 일회성 노이즈 분리' },
+    { name: 'Phase 6 — Blind Memory Test', status: '예정', result: '30문항으로 user model·current state·episode recall·conflict·stale·noise를 Before/After 비교' },
+  ],
+  blogPosts: ['/lab/hermes-memory-experiment'],
+}
+
 const AI_GAME_ASSETS: Experiment = {
   id: 'ai-game-assets-sprite-lab',
   name: 'AI Game Assets — GPT Image vs LTX 2.5',
@@ -250,4 +275,4 @@ const AI_GAME_ASSETS: Experiment = {
   ],
 }
 
-export const experiments: Experiment[] = [AUTONOMOUS_AI_BLOG, STOCKPULSE_SELF, AI_OMOK, BLOG_AUTO, LLM_BENCH, ISEKAI_MAGE, AI_GAME_ASSETS, ...DUMMIES]
+export const experiments: Experiment[] = [AUTONOMOUS_AI_BLOG, STOCKPULSE_SELF, AI_OMOK, BLOG_AUTO, LLM_BENCH, ISEKAI_MAGE, HERMES_MEMORY, AI_GAME_ASSETS, ...DUMMIES]

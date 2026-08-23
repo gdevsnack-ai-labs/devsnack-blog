@@ -4,11 +4,10 @@ import { ArrowLeft, FileText, Video, ExternalLink, CheckCircle2, Sparkles, Calen
 import { ProgressBar } from '@/components/progress-bar'
 import { StockPulsePredictionWidget } from '@/components/stock-pulse-prediction-widget'
 import { BenchPromptLibrary } from '@/components/bench-prompt-library'
-import { experiments, type PartStatus } from '@/data/experiments'
+import { experiments } from '@/data/experiments'
 import { supabase } from '@/lib/supabase'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { postHref } from '@/config/site-catalog'
-import type { BlogId, BlogColor } from '@/lib/colors'
 import { buildRouteMetadata, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 
 export const revalidate = 60
@@ -45,10 +44,18 @@ async function getBlogPosts(slugs: string[]) {
   const { data } = await supabase
     .from('posts')
     .select('slug, blog_id, title, published')
-    .in('slug', slugs.map(s => s.replace('/devsnack/', '').replace('/stock/', '')))
+    .in('slug', slugs.map(s => s.replace('/devsnack/', '').replace('/stock/', '').replace('/lab/', '')))
     .eq('status', 'live')
     .order('published', { ascending: false })
   return data || []
+}
+
+type DailyReport = {
+  slug: string
+  blog_id: string
+  title: string
+  published: string | null
+  excerpt: string | null
 }
 
 /** Render a lab blog post (blog_id='lab') */
@@ -115,7 +122,7 @@ async function ExperimentDetailPage({ id }: { id: string }) {
   const relatedPosts = await getBlogPosts(exp.blogPosts || [])
 
   // StockPulse 자기개선 실험: 일별 분석 리포트 동적 조회
-  let dailyReports: any[] = []
+  let dailyReports: DailyReport[] = []
   if (id === 'stockpulse-ai-self-improvement') {
     const { data } = await supabase
       .from('posts')
@@ -234,7 +241,7 @@ async function ExperimentDetailPage({ id }: { id: string }) {
           <section className="mb-8 border border-border rounded-xl p-5 bg-white dark:bg-gray-900">
             <h2 className="text-lg font-bold mb-4">📋 일별 분석 리포트</h2>
             <div className="space-y-2">
-              {dailyReports.map((post: any) => (
+              {dailyReports.map(post => (
                 <Link
                   key={post.slug}
                   href={`/lab/${post.slug}`}
