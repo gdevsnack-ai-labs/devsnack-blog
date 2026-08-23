@@ -73,7 +73,7 @@ export const DEMOS: Record<DemoCategory, Demo[]> = {
       embeddable: true,
       model: 'GPT Image 2 Medium + LTX 2.5 22B (local GB10)',
       createdAt: '2026.08.23',
-      note: '로컬 AI 마법사 idle·walk·jump·attack 비교. GPT Image 8프레임, LTX 12프레임·24프레임. 정사각 704×704 I2V에서 추출.',
+      note: '로컬 AI 마법사 idle·walk·jump·attack 비교. GPT Image 8프레임, LTX 12프레임·24프레임, Walk 전체 프레임 테스트 2초 48장·3초 72장(24fps). 정사각 704×704 I2V에서 추출.',
     },
   ],
   music: [],

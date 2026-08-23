@@ -240,6 +240,7 @@ const AI_GAME_ASSETS: Experiment = {
     { name: 'LTX 정사각 I2V', status: '완료', date: '2026.08.23', result: '720·720 요청 → 실제 704×704, 24fps, 5.041667초, H.264/AAC 영상 4개 생성' },
     { name: '스프라이트 후처리', status: '완료', date: '2026.08.23', result: 'LTX 12·24프레임과 GPT Image 8프레임을 192×192 RGBA로 정규화하고 크로마 키·spill 제거' },
     { name: '비교 데모 공개', status: '완료', date: '2026.08.23', result: 'GPT Image·LTX 12f·LTX 24f를 같은 모션 버튼으로 비교하는 HTML Showcase 제작' },
+    { name: 'Walk 24fps 전체 프레임 테스트', status: '완료', date: '2026.08.23', result: '2초 영상에서 48장, 3초 영상에서 72장을 추출해 24fps·원본 시간으로 재생하는 전용 Showcase 레인 추가' },
   ],
   blogPosts: [],
   externalLinks: [
