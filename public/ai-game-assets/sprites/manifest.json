@@ -1,0 +1,172 @@
+{
+  "motions": [
+    {
+      "name": "idle",
+      "variant": "default",
+      "video": "assets/videos/idle.mp4",
+      "fps_source": 12,
+      "raw_frames": 61,
+      "frames": 12,
+      "canvas": [
+        192,
+        192
+      ],
+      "sheet": "assets/sprites/idle.png",
+      "frame_dir": "assets/frames/processed/idle",
+      "bbox_source": [
+        86,
+        85,
+        503,
+        596
+      ],
+      "transparent_pixels_first": 26745
+    },
+    {
+      "name": "walk",
+      "variant": "default",
+      "video": "assets/videos/walk.mp4",
+      "fps_source": 12,
+      "raw_frames": 61,
+      "frames": 12,
+      "canvas": [
+        192,
+        192
+      ],
+      "sheet": "assets/sprites/walk.png",
+      "frame_dir": "assets/frames/processed/walk",
+      "bbox_source": [
+        120,
+        112,
+        520,
+        617
+      ],
+      "transparent_pixels_first": 25364
+    },
+    {
+      "name": "jump",
+      "variant": "default",
+      "video": "assets/videos/jump.mp4",
+      "fps_source": 12,
+      "raw_frames": 61,
+      "frames": 12,
+      "canvas": [
+        192,
+        192
+      ],
+      "sheet": "assets/sprites/jump.png",
+      "frame_dir": "assets/frames/processed/jump",
+      "bbox_source": [
+        77,
+        100,
+        552,
+        598
+      ],
+      "transparent_pixels_first": 25505
+    },
+    {
+      "name": "attack",
+      "variant": "default",
+      "video": "assets/videos/attack.mp4",
+      "fps_source": 12,
+      "raw_frames": 61,
+      "frames": 12,
+      "canvas": [
+        192,
+        192
+      ],
+      "sheet": "assets/sprites/attack.png",
+      "frame_dir": "assets/frames/processed/attack",
+      "bbox_source": [
+        27,
+        150,
+        600,
+        539
+      ],
+      "transparent_pixels_first": 30018
+    },
+    {
+      "name": "idle",
+      "variant": "24",
+      "video": "assets/videos/idle.mp4",
+      "fps_source": 24,
+      "raw_frames": 121,
+      "frames": 24,
+      "canvas": [
+        192,
+        192
+      ],
+      "sheet": "assets/sprites/idle_24.png",
+      "frame_dir": "assets/frames/processed/idle_24",
+      "bbox_source": [
+        86,
+        86,
+        503,
+        596
+      ],
+      "transparent_pixels_first": 26716
+    },
+    {
+      "name": "walk",
+      "variant": "24",
+      "video": "assets/videos/walk.mp4",
+      "fps_source": 24,
+      "raw_frames": 121,
+      "frames": 24,
+      "canvas": [
+        192,
+        192
+      ],
+      "sheet": "assets/sprites/walk_24.png",
+      "frame_dir": "assets/frames/processed/walk_24",
+      "bbox_source": [
+        120,
+        92,
+        520,
+        617
+      ],
+      "transparent_pixels_first": 26173
+    },
+    {
+      "name": "jump",
+      "variant": "24",
+      "video": "assets/videos/jump.mp4",
+      "fps_source": 24,
+      "raw_frames": 121,
+      "frames": 24,
+      "canvas": [
+        192,
+        192
+      ],
+      "sheet": "assets/sprites/jump_24.png",
+      "frame_dir": "assets/frames/processed/jump_24",
+      "bbox_source": [
+        74,
+        94,
+        552,
+        603
+      ],
+      "transparent_pixels_first": 26051
+    },
+    {
+      "name": "attack",
+      "variant": "24",
+      "video": "assets/videos/attack.mp4",
+      "fps_source": 24,
+      "raw_frames": 121,
+      "frames": 24,
+      "canvas": [
+        192,
+        192
+      ],
+      "sheet": "assets/sprites/attack_24.png",
+      "frame_dir": "assets/frames/processed/attack_24",
+      "bbox_source": [
+        0,
+        150,
+        600,
+        539
+      ],
+      "transparent_pixels_first": 30578
+    }
+  ]
+}

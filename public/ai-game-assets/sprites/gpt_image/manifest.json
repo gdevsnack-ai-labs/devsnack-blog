@@ -1,0 +1,252 @@
+{
+  "motions": [
+    {
+      "name": "idle",
+      "source": "assets/gpt_image_sheets/idle_sheet_source.png",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "frames": 8,
+      "frame_dir": "assets/frames/gpt_image/idle",
+      "sheet": "assets/sprites/gpt_image/idle.png",
+      "cell_boxes": [
+        [
+          0,
+          0,
+          384,
+          512
+        ],
+        [
+          384,
+          0,
+          768,
+          512
+        ],
+        [
+          768,
+          0,
+          1152,
+          512
+        ],
+        [
+          1152,
+          0,
+          1536,
+          512
+        ],
+        [
+          0,
+          512,
+          384,
+          1024
+        ],
+        [
+          384,
+          512,
+          768,
+          1024
+        ],
+        [
+          768,
+          512,
+          1152,
+          1024
+        ],
+        [
+          1152,
+          512,
+          1536,
+          1024
+        ]
+      ],
+      "transparent_pixels_first": 25343
+    },
+    {
+      "name": "walk",
+      "source": "assets/gpt_image_sheets/walk_sheet_source.png",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "frames": 8,
+      "frame_dir": "assets/frames/gpt_image/walk",
+      "sheet": "assets/sprites/gpt_image/walk.png",
+      "cell_boxes": [
+        [
+          0,
+          0,
+          384,
+          512
+        ],
+        [
+          384,
+          0,
+          768,
+          512
+        ],
+        [
+          768,
+          0,
+          1152,
+          512
+        ],
+        [
+          1152,
+          0,
+          1536,
+          512
+        ],
+        [
+          0,
+          512,
+          384,
+          1024
+        ],
+        [
+          384,
+          512,
+          768,
+          1024
+        ],
+        [
+          768,
+          512,
+          1152,
+          1024
+        ],
+        [
+          1152,
+          512,
+          1536,
+          1024
+        ]
+      ],
+      "transparent_pixels_first": 24997
+    },
+    {
+      "name": "jump",
+      "source": "assets/gpt_image_sheets/jump_sheet_source.png",
+      "source_size": [
+        1774,
+        887
+      ],
+      "frames": 8,
+      "frame_dir": "assets/frames/gpt_image/jump",
+      "sheet": "assets/sprites/gpt_image/jump.png",
+      "cell_boxes": [
+        [
+          0,
+          0,
+          444,
+          444
+        ],
+        [
+          444,
+          0,
+          887,
+          444
+        ],
+        [
+          887,
+          0,
+          1330,
+          444
+        ],
+        [
+          1330,
+          0,
+          1774,
+          444
+        ],
+        [
+          0,
+          444,
+          444,
+          887
+        ],
+        [
+          444,
+          444,
+          887,
+          887
+        ],
+        [
+          887,
+          444,
+          1330,
+          887
+        ],
+        [
+          1330,
+          444,
+          1774,
+          887
+        ]
+      ],
+      "transparent_pixels_first": 23727
+    },
+    {
+      "name": "attack",
+      "source": "assets/gpt_image_sheets/attack_sheet_source.png",
+      "source_size": [
+        1774,
+        887
+      ],
+      "frames": 8,
+      "frame_dir": "assets/frames/gpt_image/attack",
+      "sheet": "assets/sprites/gpt_image/attack.png",
+      "cell_boxes": [
+        [
+          0,
+          0,
+          444,
+          444
+        ],
+        [
+          444,
+          0,
+          887,
+          444
+        ],
+        [
+          887,
+          0,
+          1330,
+          444
+        ],
+        [
+          1330,
+          0,
+          1774,
+          444
+        ],
+        [
+          0,
+          444,
+          444,
+          887
+        ],
+        [
+          444,
+          444,
+          887,
+          887
+        ],
+        [
+          887,
+          444,
+          1330,
+          887
+        ],
+        [
+          1330,
+          444,
+          1774,
+          887
+        ]
+      ],
+      "transparent_pixels_first": 23494
+    }
+  ]
+}

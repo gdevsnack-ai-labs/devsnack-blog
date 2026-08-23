@@ -222,4 +222,29 @@ const ISEKAI_MAGE: Experiment = {
   githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
 }
 
-export const experiments: Experiment[] = [AUTONOMOUS_AI_BLOG, STOCKPULSE_SELF, AI_OMOK, BLOG_AUTO, LLM_BENCH, ISEKAI_MAGE, ...DUMMIES]
+const AI_GAME_ASSETS: Experiment = {
+  id: 'ai-game-assets-sprite-lab',
+  name: 'AI Game Assets — GPT Image vs LTX 2.5',
+  description: '같은 2D 픽셀 캐릭터를 GPT Image 직접 스프라이트와 LTX 2.5 I2V 프레임으로 각각 만들고 게임 에셋으로 쓸 수 있는지 비교하는 실험',
+  progress: 100,
+  color: 'blue',
+  status: '완료',
+  category: 'completed',
+  startedAt: '2026.08.23',
+  whyText: '이미지 한 장을 게임 캐릭터로 쓰는 것과, 실제로 움직이는 스프라이트를 만드는 것은 다른 문제다. 같은 로컬 AI 마법사를 기준으로 GPT Image에는 연속 포즈 시트를 직접 요청하고, LTX 2.5에는 1:1 시작 이미지와 단일 동작을 넣어 영상에서 프레임을 추출했다. 두 레인의 캐릭터 일관성·프레임 연결성·배경 제거·캔버스 설정 문제를 직접 비교한다.',
+  nextGoals: ['공격 모션의 수동 프레임 보정', 'Unity·Godot용 메타데이터 포맷 추가', '다른 캐릭터 실루엣으로 재현성 확인'],
+  timeline: [
+    { name: 'GPT Image 캐릭터 기준 시트', status: '완료', date: '2026.08.23', result: '로컬 AI 마법사의 정면·3/4·전신·측면 픽셀 아트 기준 시트 생성' },
+    { name: 'GPT Image 직접 스프라이트', status: '완료', date: '2026.08.23', result: 'idle·walk·jump·attack 4×2 시트 생성, 모션당 8프레임으로 분할' },
+    { name: 'LTX 직사각 출력 실패 기록', status: '완료', date: '2026.08.23', result: '1280·720 설정에서 실제 704×1280 출력. 사이드뷰 지팡이 경계 잘림 확인' },
+    { name: 'LTX 정사각 I2V', status: '완료', date: '2026.08.23', result: '720·720 요청 → 실제 704×704, 24fps, 5.041667초, H.264/AAC 영상 4개 생성' },
+    { name: '스프라이트 후처리', status: '완료', date: '2026.08.23', result: 'LTX 12·24프레임과 GPT Image 8프레임을 192×192 RGBA로 정규화하고 크로마 키·spill 제거' },
+    { name: '비교 데모 공개', status: '완료', date: '2026.08.23', result: 'GPT Image·LTX 12f·LTX 24f를 같은 모션 버튼으로 비교하는 HTML Showcase 제작' },
+  ],
+  blogPosts: [],
+  externalLinks: [
+    { label: 'Sprite Motion Demo', href: '/ai-game-assets.html' },
+  ],
+}
+
+export const experiments: Experiment[] = [AUTONOMOUS_AI_BLOG, STOCKPULSE_SELF, AI_OMOK, BLOG_AUTO, LLM_BENCH, ISEKAI_MAGE, AI_GAME_ASSETS, ...DUMMIES]
