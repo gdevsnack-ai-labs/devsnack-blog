@@ -103,6 +103,6 @@ export const ASSET_RELATIONS: AssetRelation[] = [
   {
     from: projectRef('luna-agentic-game-dev'),
     relation: 'published_as',
-    to: postRef('lab', 'luna-agentic-game-dev'),
+    to: postRef('lab', 'luna-agentic-game-dev-e2e'),
   },
 ]

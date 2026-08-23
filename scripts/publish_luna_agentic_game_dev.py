@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ENV_FILE = ROOT / '.env.local'
 MARKDOWN_FILE = ROOT / 'docs/lab/luna-agentic-game-dev.md'
-SLUG = 'luna-agentic-game-dev'
+SLUG = 'luna-agentic-game-dev-e2e'
 BLOG_ID = 'lab'
 
 

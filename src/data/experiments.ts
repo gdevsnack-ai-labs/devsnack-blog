@@ -244,7 +244,7 @@ const LUNA_AGENTIC_GAME_DEV: Experiment = {
     { name: 'Phase 5 — Parallel Workers', status: '예정', result: 'worker 계정 분리와 두 모델 resource probe 이후 시작' },
     { name: 'Phase 6 — Conflict Recovery', status: '예정', result: '의도적인 rebase conflict와 다음 세션 복구를 검증' },
   ],
-  blogPosts: ['/lab/luna-agentic-game-dev'],
+  blogPosts: ['/lab/luna-agentic-game-dev-e2e'],
 }
 
 // ── Hermes Memory Experiment — 장기 메모리 구조 개선 실험 (2026.08.23 시작) ──
