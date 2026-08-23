@@ -95,4 +95,14 @@ export const ASSET_RELATIONS: AssetRelation[] = [
     relation: 'published_as',
     to: postRef('lab', 'hermes-memory-experiment'),
   },
+  {
+    from: projectRef('luna-agentic-game-dev'),
+    relation: 'produces',
+    to: findingRef('luna-agentic-game-dev'),
+  },
+  {
+    from: projectRef('luna-agentic-game-dev'),
+    relation: 'published_as',
+    to: postRef('lab', 'luna-agentic-game-dev'),
+  },
 ]

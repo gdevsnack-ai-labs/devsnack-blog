@@ -121,6 +121,16 @@ function classifyLabPost(slug: string): Partial<PostClassification> {
       classification: 'confirmed',
     }
   }
+  if (slug === 'luna-agentic-game-dev') {
+    return {
+      primaryType: 'experiment',
+      role: 'report',
+      projectId: 'luna-agentic-game-dev',
+      domain: ['infrastructure', 'automation', 'llm'],
+      provenance: 'ai_assisted',
+      classification: 'confirmed',
+    }
+  }
   return {}
 }
 
@@ -255,6 +265,19 @@ export const CURATED_FINDING_ASSETS: AssetRef[] = [
     role: 'finding',
     projectId: 'hermes-memory',
     domain: ['agent_memory', 'automation'],
+    provenance: 'ai_assisted',
+    lifecycle: 'active',
+    source: 'manual',
+    classification: 'confirmed',
+  },
+  {
+    assetId: 'finding:luna-agentic-game-dev:key',
+    route: '/labs/luna-agentic-game-dev',
+    title: 'Luna Agentic Game Development Lab key finding',
+    primaryType: 'knowledge',
+    role: 'finding',
+    projectId: 'luna-agentic-game-dev',
+    domain: ['infrastructure', 'automation', 'llm'],
     provenance: 'ai_assisted',
     lifecycle: 'active',
     source: 'manual',

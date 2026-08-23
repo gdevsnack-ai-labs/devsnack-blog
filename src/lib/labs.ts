@@ -17,6 +17,7 @@ const DOMAIN_BY_ID: Record<string, string> = {
   blog: 'Automation',
   'local-llm-benchmark': 'Local AI',
   'hermes-memory': 'Agent Memory',
+  'luna-agentic-game-dev': 'Agentic Game Development',
   'isekai-instagram-mage-experiment': 'Content AI',
   'music-qa': 'Content AI',
   hook: 'Content AI',
@@ -43,6 +44,11 @@ const NATURE_BY_ID: Record<string, ExperimentNature> = {
   'hermes-memory': {
     label: '장기 실험',
     description: 'Phase별 결과를 하나의 Lab 기록에 계속 쌓아가는 실험입니다.',
+    openEnded: true,
+  },
+  'luna-agentic-game-dev': {
+    label: '장기 실험',
+    description: 'AI 개발팀의 책임 분리와 실제 PR lifecycle을 단계별로 검증하는 실험입니다.',
     openEnded: true,
   },
 }
@@ -88,6 +94,16 @@ const LAB_KNOWLEDGE: Record<string, LabKnowledge> = {
   },
   'hermes-memory': {
     keyFinding: 'Phase 1 implementation complete / evaluation pending — USER.md와 MEMORY.md의 역할을 분리했지만, 실제 기억 경험의 변화는 새 세션 평가 후 판단합니다.',
+    showInFindings: true,
+  },
+  'luna-agentic-game-dev': {
+    keyFinding: '첫 번째 trivial Godot task가 Qwen worker의 독립 branch·Forgejo PR·Luna review·protected merge·post-merge smoke까지 통과했지만, 더 어려운 task와 장기 운영은 아직 검증되지 않았습니다.',
+    metrics: [
+      { label: 'Local tests', value: '25 passed', note: '첫 E2E 기준선' },
+      { label: 'Godot smoke', value: 'PASS', note: 'merge 후 clean checkout' },
+      { label: 'Protected main', value: 'Direct push rejected', note: 'Forgejo pre-receive hook' },
+      { label: 'Session dry-run', value: '15 states', note: 'WAKE → COMPLETE' },
+    ],
     showInFindings: true,
   },
   'isekai-instagram-mage-experiment': {

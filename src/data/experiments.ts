@@ -222,6 +222,31 @@ const ISEKAI_MAGE: Experiment = {
   githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
 }
 
+// ── Luna Agentic Game Development Lab — AI 개발팀 E2E 실험 (2026.08.23 시작) ──
+const LUNA_AGENTIC_GAME_DEV: Experiment = {
+  id: 'luna-agentic-game-dev',
+  name: 'Luna Agentic Game Development Lab',
+  description: 'Hermes Agent와 GPT-5.6 Luna가 로컬 LLM worker·Godot·Forgejo를 연결해 실제 AI 개발팀의 PR·review·merge 루프를 수행할 수 있는지 검증하는 장기 실험',
+  progress: 35,
+  color: 'blue',
+  status: '진행중',
+  category: 'running',
+  startedAt: '2026.08.23',
+  whyText: 'AI에게 게임 기능을 한 번 만들어보게 하는 것이 아니라, 실제 소프트웨어 프로젝트의 책임 구조를 나누고 결과를 다음 세션에 이어받을 수 있는지 확인한다. Luna는 계획·검토·merge를 담당하고 worker는 독립 workspace와 branch에서 구현한다. 첫 단계는 작은 Godot task로 시작해 server-side main 보호, PR review, post-merge test까지 실제로 연결하는 것이다.',
+  nextGoals: ['worker-qwen과 Luna 계정 분리 후 공식 APPROVED review 검증', 'non-trivial Godot task-002', 'worker metrics/profile 영속화', 'live safe-stop/watchdog', '두 번째 worker와 resource budget 검증', 'conflict recovery 실험'],
+  timeline: [
+    { name: 'Phase 0 — Environment Audit', status: '완료', date: '2026.08.23', result: 'Hermes·GB10·Qwen·Godot·Forgejo·Git·delegation을 실제 환경에서 확인하고 Orinith unavailable 상태를 분리' },
+    { name: 'Phase 1 — Repository & Godot Baseline', status: '완료', date: '2026.08.23', result: '빈 저장소를 local main으로 초기화하고 deterministic Godot smoke scene과 handoff/session 기록 구축' },
+    { name: 'Phase 2 — Worker Registry & Workspace', status: '완료', date: '2026.08.23', result: 'Qwen registry, workspace/branch guard, health probe, 독립 clone 준비' },
+    { name: 'Phase 3 — Protected Forgejo E2E', status: '완료', date: '2026.08.23', result: 'worker task → PR #1 → Luna review → protected merge → post-merge Godot smoke를 실제 실행. direct main push 거부도 확인' },
+    { name: 'Phase 4 — Session Manager Foundation', status: '진행중', date: '2026.08.23', result: 'WAKE부터 COMPLETE까지 15개 상태 전이와 60분 new-task lock 정책을 dry-run. live watchdog과 scheduled session은 미검증' },
+    { name: 'Sol 설계 검수', status: '진행중', date: '2026.08.23', result: '설계·구현·검증 사실과 다음 결정이 필요한 경계를 별도 검수 문서로 정리' },
+    { name: 'Phase 5 — Parallel Workers', status: '예정', result: 'worker 계정 분리와 두 모델 resource probe 이후 시작' },
+    { name: 'Phase 6 — Conflict Recovery', status: '예정', result: '의도적인 rebase conflict와 다음 세션 복구를 검증' },
+  ],
+  blogPosts: ['/lab/luna-agentic-game-dev'],
+}
+
 // ── Hermes Memory Experiment — 장기 메모리 구조 개선 실험 (2026.08.23 시작) ──
 const HERMES_MEMORY: Experiment = {
   id: 'hermes-memory',
@@ -275,4 +300,4 @@ const AI_GAME_ASSETS: Experiment = {
   ],
 }
 
-export const experiments: Experiment[] = [AUTONOMOUS_AI_BLOG, STOCKPULSE_SELF, AI_OMOK, BLOG_AUTO, LLM_BENCH, ISEKAI_MAGE, HERMES_MEMORY, AI_GAME_ASSETS, ...DUMMIES]
+export const experiments: Experiment[] = [AUTONOMOUS_AI_BLOG, STOCKPULSE_SELF, AI_OMOK, BLOG_AUTO, LLM_BENCH, ISEKAI_MAGE, HERMES_MEMORY, LUNA_AGENTIC_GAME_DEV, AI_GAME_ASSETS, ...DUMMIES]
