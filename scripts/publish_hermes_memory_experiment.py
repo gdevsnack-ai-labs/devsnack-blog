@@ -41,6 +41,7 @@ HEADERS = {
     "apikey": TOKEN,
     "Authorization": f"Bearer {TOKEN}",
     "Content-Type": "application/json",
+    "Prefer": "resolution=merge-duplicates",
 }
 
 MARKDOWN_CONTENT = r"""## 기억이 늘고 있는데, 왜 덜 기억하는 것처럼 느껴질까
@@ -349,20 +350,15 @@ def md_to_html(markdown: str) -> str:
 
         if line.startswith("|") and i + 1 < len(lines) and re.match(r"^\|[\s:\-|]+\|?$", lines[i + 1].strip()):
             close_lists()
+            header_index = i
             out.append("<table>")
-            for row_index in range(i, len(lines)):
-                row = lines[row_index].strip()
-                if not row.startswith("|"):
-                    i = row_index
-                    break
-                if row_index == i + 1:
-                    continue
-                cells = [cell.strip() for cell in row.strip("|").split("|")]
-                tag = "th" if row_index == i else "td"
-                out.append("<tr>" + "".join(f"<{tag}>{inline(cell)}</{tag}>" for cell in cells) + "</tr>")
-                i = row_index + 1
-            else:
-                i = len(lines)
+            header_cells = [cell.strip() for cell in lines[header_index].strip("|").split("|")]
+            out.append("<tr>" + "".join(f"<th>{inline(cell)}</th>" for cell in header_cells) + "</tr>")
+            i = header_index + 2  # skip the Markdown separator row
+            while i < len(lines) and lines[i].strip().startswith("|"):
+                cells = [cell.strip() for cell in lines[i].strip().strip("|").split("|")]
+                out.append("<tr>" + "".join(f"<td>{inline(cell)}</td>" for cell in cells) + "</tr>")
+                i += 1
             out.append("</table>")
             continue
 
