@@ -46,7 +46,7 @@ const projection = createHomeProjection({
 
 expectEqual(projection.featured.length, 3, 'Home should keep Featured compact')
 expectEqual(projection.featured[0].project?.id, 'ai-omok', 'Featured should use the curated AI Omok representative')
-expectEqual(projection.featured[1].benchmark?.asset.assetId, 'post:lab:local-llm-benchmark-report', 'Featured should use the curated published Benchmark')
+expectEqual(projection.featured[1].benchmark?.asset.assetId, 'post:lab:qwen36-youtube-script-reliability-benchmark', 'Featured should use the newest curated published Benchmark')
 expectEqual(projection.featured[2].knowledge?.asset.assetId, 'post:research:qwen3-8-27b-nvfp4-mtp-gguf-gb10', 'Featured should use the curated Qwen Knowledge')
 expectEqual(projection.labFinding?.id, 'autonomous-ai-blog', 'Latest Lab Finding should preserve the newest autonomous record when dates tie')
 expectEqual(projection.featured[1].kind, 'benchmark', 'published Benchmark should be Featured')

@@ -16,7 +16,7 @@ import { getKeyFinding, getRecentFindings } from '@/lib/labs'
 export const HOME_CURATED_OVERRIDES = {
   featured: {
     aiOmokProjectId: 'ai-omok',
-    benchmarkAssetId: 'post:lab:local-llm-benchmark-report',
+    benchmarkAssetId: 'post:lab:qwen36-youtube-script-reliability-benchmark',
     knowledgeAssetId: 'post:research:qwen3-8-27b-nvfp4-mtp-gguf-gb10',
   },
   knowledge: 'post:research:qwen3-8-27b-nvfp4-mtp-gguf-gb10',

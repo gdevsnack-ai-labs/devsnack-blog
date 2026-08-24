@@ -122,6 +122,30 @@ export interface BenchmarkProjection {
 export const BENCHMARK_PROJECTIONS: BenchmarkProjection[] = [
   {
     asset: assetFromLegacyPost({
+      slug: 'qwen36-youtube-script-reliability-benchmark',
+      title: 'Qwen3.6 YouTube Script Reliability Benchmark — 실제 자동화 대본 생성 재현성 측정',
+      blog_id: 'lab',
+      status: 'live',
+    }),
+    title: 'Qwen3.6 YouTube Script Reliability Benchmark — 실제 자동화 대본 생성 재현성 측정',
+    categoryIds: ['llm', 'inference', 'hardware'],
+    target: 'Qwen3.6-35B-A3B NVFP4 MTP HQ · YouTube Shorts script stage',
+    environment: 'DGX Spark GB10 · 121GiB unified memory · llama.cpp llama-cli · 64K context',
+    method: '실제 Science/History fixture 2개 × 2회 반복, production prompt/validator, 최대 5회 재생성, 각 시도는 llama-cli --single-turn',
+    baseline: '실제 production 기준 대본 2개 모두 validator 통과',
+    result: '1차 통과 2/4 (50%), 5회 내 최종 통과 3/4 (75%), 평균 시도 2.5회, 인프라 오류 0건',
+    comparison: 'Science는 최종 통과 1/2·평균 3회, History는 최종 통과 2/2·평균 2회로 프로필별 편차를 확인',
+    interpretation: 'Qwen3.6은 실제 대본 생성에는 충분하지만 단어 수·fact_refs·video_prompt 조건을 첫 시도에 안정적으로 동시에 만족시키지는 못했다',
+    limitations: '고정 fixture 2개와 4회 반복, 단일 모델·양자화·MTP 설정이며 사람의 의미 품질 평가와 downstream 이미지/영상 품질은 포함하지 않음',
+    contentHref: '/lab/qwen36-youtube-script-reliability-benchmark',
+    projectHref: '/labs/local-llm-benchmark',
+    relatedKnowledge: [
+      { title: 'Qwen3.8-27B NVFP4 MTP — GB10 로컬 테스트', href: '/research/qwen3-8-27b-nvfp4-mtp-gguf-gb10' },
+      { title: 'Local LLM Benchmark 실험 프로젝트', href: '/labs/local-llm-benchmark' },
+    ],
+  },
+  {
+    asset: assetFromLegacyPost({
       slug: 'local-llm-benchmark-report',
       title: 'Local LLM Benchmark — Qwen3.8-27B Ridge 3.7bpw 실측 리포트',
       blog_id: 'lab',
@@ -240,6 +264,7 @@ const KNOWN_POST_TITLES: Record<string, string> = {
   'post:research:qwen3-8-27b-nvfp4-mtp-gguf-gb10': 'Qwen3.8-27B NVFP4 MTP — GB10 로컬 테스트',
   'post:research:dflash-2-qwen3-8-27b-vs-mtp': 'DFlash 2 + Qwen3.8-27B 비교 조사',
   'post:lab:local-llm-benchmark-report': 'Local LLM Benchmark 실측 리포트',
+  'post:lab:qwen36-youtube-script-reliability-benchmark': 'Qwen3.6 YouTube Script Reliability Benchmark',
   'post:devsnack:ai-llm-omok-experiment': 'AI Omok 실험 이야기',
   'post:devsnack:ai-built-gomoku-engine-vs-rapfi': 'AI가 만든 Gomoku 엔진 이야기',
   'post:lab:stockpulse-self-2026-08-21': 'StockPulse 자기개선 실험 — 2026-08-21',
@@ -310,7 +335,7 @@ function endpointToRelatedLink(endpoint: string, relation: RelationType): Relate
       relationLabel: RELATION_LABEL[relation],
       title: KNOWN_POST_TITLES[endpoint] || `${blogId} content`,
       href,
-      kind: blogId === 'research' ? 'knowledge' : blogId === 'devsnack' ? 'story' : blogId === 'lab' ? 'experiment' : 'knowledge',
+      kind: blogId === 'research' ? 'knowledge' : blogId === 'devsnack' ? 'story' : blogId === 'lab' && (slug === 'local-llm-benchmark-report' || slug === 'qwen36-youtube-script-reliability-benchmark') ? 'benchmark' : blogId === 'lab' ? 'experiment' : 'knowledge',
     }
   }
 

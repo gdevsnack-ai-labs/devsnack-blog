@@ -32,6 +32,11 @@ export const ASSET_RELATIONS: AssetRelation[] = [
   },
   {
     from: projectRef('local-llm-benchmark'),
+    relation: 'published_as',
+    to: postRef('lab', 'qwen36-youtube-script-reliability-benchmark'),
+  },
+  {
+    from: projectRef('local-llm-benchmark'),
     relation: 'outputs',
     to: demoRef('html', 'ragdoll-playground-qwen3.8'),
   },

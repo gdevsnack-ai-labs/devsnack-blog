@@ -9,7 +9,8 @@ function expectTrue(value: boolean, message: string) {
   if (!value) throw new Error(message)
 }
 
-expectEqual(BENCHMARK_PROJECTIONS.length, 1, 'only the curated published Benchmark should be exposed')
+expectEqual(BENCHMARK_PROJECTIONS.length, 2, 'curated published Benchmarks should be exposed')
+expectEqual(BENCHMARK_PROJECTIONS[0].asset.assetId, 'post:lab:qwen36-youtube-script-reliability-benchmark', 'newest YouTube reliability Benchmark should lead the collection')
 expectEqual(BENCHMARK_PROJECTIONS[0].asset.primaryType, 'benchmark', 'Benchmark Hub assets must keep benchmark primary type')
 expectEqual(getLabCollection('local-llm-benchmark'), undefined, 'Local LLM Benchmark must not be duplicated as a generic Lab Experiment')
 expectEqual(getLabCollection('ai-omok'), 'experiments', 'AI Omok must remain an Experiment')

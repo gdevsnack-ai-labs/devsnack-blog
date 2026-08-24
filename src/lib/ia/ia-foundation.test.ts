@@ -15,6 +15,7 @@ const fixturePosts = [
   { slug: 'stock-fixture', title: 'StockPulse fixture', blog_id: 'stockpulse', status: 'live' },
   { slug: 'stockpulse-self-2026-08-21', title: 'StockPulse finding', blog_id: 'lab', status: 'live' },
   { slug: 'local-llm-benchmark-report', title: 'Benchmark report', blog_id: 'lab', status: 'live' },
+  { slug: 'qwen36-youtube-script-reliability-benchmark', title: 'Qwen3.6 YouTube benchmark', blog_id: 'lab', status: 'live' },
   { slug: 'dflash-fixture', title: 'DFlash knowledge', blog_id: 'research', status: 'live' },
   { slug: 'mining-leaderboard', title: 'Mining tracker', blog_id: 'misc', status: 'live' },
   { slug: 'devsnack-fixture', title: 'DevSnack story', blog_id: 'devsnack', status: 'live' },
