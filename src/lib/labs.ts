@@ -1,18 +1,30 @@
 import type { Experiment, TimelineItem } from '@/data/experiments'
 import { AUTONOMOUS_AI_BLOG_LIVE } from '@/data/autonomous-ai-blog-live'
 
-export type LabFilter = 'all' | 'running' | 'planning' | 'completed'
+export type LabBoardStatus = 'active' | 'next' | 'backlog' | 'paused' | 'completed'
+export type LabStatusConfidence = 'confirmed' | 'inferred' | 'ambiguous'
+export type LabFilter = 'all' | LabBoardStatus
 
 export const LAB_FILTERS: Array<{ key: LabFilter; label: string }> = [
   { key: 'all', label: '전체' },
-  { key: 'running', label: '진행중' },
-  { key: 'planning', label: '계획' },
-  { key: 'completed', label: '완료' },
+  { key: 'active', label: 'Active' },
+  { key: 'next', label: 'Next' },
+  { key: 'backlog', label: 'Backlog' },
+  { key: 'paused', label: 'Paused' },
+  { key: 'completed', label: 'Completed' },
 ]
+
+export interface LabBoardMetadata {
+  status: LabBoardStatus
+  confidence: LabStatusConfidence
+  lastActivity?: string
+  nextAction?: string
+}
 
 const DOMAIN_BY_ID: Record<string, string> = {
   'autonomous-ai-blog': 'Autonomous AI',
   'ai-omok': 'Game AI',
+  'ai-game-assets-sprite-lab': 'Creative AI',
   'stockpulse-ai-self-improvement': 'Self-Improving AI',
   blog: 'Automation',
   'local-llm-benchmark': 'Local AI',
@@ -51,6 +63,20 @@ const NATURE_BY_ID: Record<string, ExperimentNature> = {
     description: 'AI 개발팀의 책임 분리와 실제 PR lifecycle을 단계별로 검증하는 실험입니다.',
     openEnded: true,
   },
+  'ai-game-assets-sprite-lab': {
+    label: 'Creative Test',
+    description: '생성형 AI 결과물을 실제 게임 에셋으로 사용할 수 있는지 비교한 테스트입니다.',
+    openEnded: false,
+  },
+}
+
+/**
+ * AI Omok has completed its recorded runs and only has future experiments.
+ * Keep this as an inferred projection instead of mutating the legacy source
+ * status until the project is explicitly resumed.
+ */
+const LAB_BOARD_STATUS_OVERRIDES: Record<string, { status: LabBoardStatus; confidence: LabStatusConfidence }> = {
+  'ai-omok': { status: 'paused', confidence: 'inferred' },
 }
 
 export interface LabMetric {
@@ -209,9 +235,57 @@ export function getCurrentStage(experiment: Experiment): string {
   return '상태 기록 중'
 }
 
+function deriveLabBoardStatus(experiment: Experiment): LabBoardStatus {
+  if (experiment.isDummy || experiment.category === 'planning') return 'backlog'
+  if (experiment.status === '보류') return 'paused'
+  if (experiment.category === 'completed' || experiment.status === '완료') return 'completed'
+  if (experiment.status === '진행중' || experiment.timeline?.some(item => item.status === '진행중')) return 'active'
+  return 'next'
+}
+
+function getNextAction(experiment: Experiment): string | undefined {
+  const explicitGoal = experiment.nextGoals?.find(goal => goal.trim())
+  if (explicitGoal) return explicitGoal
+
+  return getSortedTimeline(experiment).find(item => item.status === '예정' || item.status === '예약')?.name
+}
+
+export function getLabBoardMetadata(experiment: Experiment): LabBoardMetadata {
+  const override = LAB_BOARD_STATUS_OVERRIDES[experiment.id]
+  const latestActivity = getLatestResult(experiment)
+
+  return {
+    status: override?.status || deriveLabBoardStatus(experiment),
+    confidence: override?.confidence || 'confirmed',
+    lastActivity: latestActivity?.date || experiment.startedAt || undefined,
+    nextAction: getNextAction(experiment),
+  }
+}
+
+export function getLabStatusCounts(experiments: Experiment[]): Record<LabBoardStatus, number> {
+  const counts: Record<LabBoardStatus, number> = {
+    active: 0,
+    next: 0,
+    backlog: 0,
+    paused: 0,
+    completed: 0,
+  }
+
+  for (const experiment of experiments) counts[getLabBoardMetadata(experiment).status] += 1
+  return counts
+}
+
 export function parseLabFilter(value?: string | string[]): LabFilter {
   const candidate = Array.isArray(value) ? value[0] : value
-  return candidate === 'running' || candidate === 'planning' || candidate === 'completed'
-    ? candidate
-    : 'all'
+  const aliases: Record<string, LabFilter> = {
+    active: 'active',
+    next: 'next',
+    backlog: 'backlog',
+    paused: 'paused',
+    completed: 'completed',
+    // Preserve old non-canonical filter URLs as query compatibility aliases.
+    running: 'active',
+    planning: 'backlog',
+  }
+  return candidate && aliases[candidate] ? aliases[candidate] : 'all'
 }

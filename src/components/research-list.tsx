@@ -96,11 +96,11 @@ export async function ResearchList({ category }: { category: string | null }) {
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* 페이지 타이틀 */}
         <div className="mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">🔬 Research Backlog</h1>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">📚 Knowledge</h1>
           <p className="text-sm text-muted-foreground mt-1">
             {activeTitle
               ? `${activeTitle} 카테고리 — ${visiblePosts.length}건`
-              : '조사는 끝냈지만 아직 적용하지 못한 기술들 — 상태를 추적합니다'}
+              : '다시 찾아볼 기술 지식을 카테고리와 상태별로 정리합니다'}
           </p>
         </div>
 

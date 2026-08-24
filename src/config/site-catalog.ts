@@ -41,7 +41,7 @@ export const DESTINATION_META: Record<DestinationId, {
   realestate: { path: BLOG_PATH.realestate, label: BLOG_LABEL.realestate, kind: 'tool', navGroup: 'data' },
   misc: { path: BLOG_PATH.misc, label: BLOG_LABEL.misc, kind: 'tool', navGroup: 'more' },
   operations: { path: '/tools/operations', label: '운영중인 시스템', kind: 'tool', navGroup: 'more' },
-  demos: { path: '/demos', label: 'Demos', kind: 'demo', navGroup: 'lab' },
+  demos: { path: '/demos', label: 'Showcase', kind: 'demo', navGroup: 'lab' },
 }
 
 export function getDestinationPath(id: string): string | null {

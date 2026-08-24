@@ -3,7 +3,7 @@ import { ArrowLeft, Calendar, CheckCircle2, ExternalLink, FileText, FlaskConical
 import { notFound } from 'next/navigation'
 import { experiments } from '@/data/experiments'
 import { ProgressBar } from '@/components/progress-bar'
-import { getCurrentStage, getDomainLabel, getKeyFinding, getKeyMetrics, getKeyResults, getLatestResult, getNature, getSortedTimeline } from '@/lib/labs'
+import { getCurrentStage, getDomainLabel, getKeyFinding, getKeyMetrics, getKeyResults, getLabBoardMetadata, getLatestResult, getNature, getSortedTimeline, LAB_FILTERS } from '@/lib/labs'
 import { getRelatedAssets } from '@/lib/ia/hub-projections'
 import { RelatedAssets } from '@/components/related-assets'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
@@ -16,10 +16,18 @@ const STATUS_CLASS: Record<string, string> = {
   미정: 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400',
 }
 
+const BOARD_STATUS_CLASS: Record<string, string> = {
+  active: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+  next: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+  backlog: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
+  paused: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
+  completed: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+}
+
 function relatedLabel(href: string): string {
-  if (href.startsWith('/research/')) return 'Research'
-  if (href.startsWith('/devsnack/')) return 'Blog'
-  if (href.startsWith('/lab/')) return 'Lab Note'
+  if (href.startsWith('/research/')) return 'Knowledge'
+  if (href.startsWith('/devsnack/')) return 'Stories'
+  if (href.startsWith('/lab/')) return 'Lab'
   return 'Related'
 }
 
@@ -49,6 +57,9 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
   const keyMetrics = getKeyMetrics(experiment)
   const keyResults = getKeyResults(experiment)
   const timeline = getSortedTimeline(experiment)
+  const board = getLabBoardMetadata(experiment)
+  const boardLabel = LAB_FILTERS.find(item => item.key === board.status)?.label || board.status
+  const boardConfidenceLabel = board.confidence === 'inferred' ? '기록 기반 추정' : undefined
 
   return (
     <div className="min-h-screen bg-background">
@@ -69,9 +80,10 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
             <div className="min-w-0">
               <h1 className="text-3xl font-bold leading-tight tracking-tight md:text-4xl">{experiment.name}</h1>
               <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                <span className={`rounded px-2 py-0.5 text-xs font-medium ${STATUS_CLASS[experiment.status] || STATUS_CLASS.미정}`}>
-                  {experiment.status}
+                <span className={`rounded px-2 py-0.5 text-xs font-medium ${BOARD_STATUS_CLASS[board.status] || STATUS_CLASS.미정}`}>
+                  {boardLabel}
                 </span>
+                {boardConfidenceLabel && <span className="text-xs text-muted-foreground">{boardConfidenceLabel}</span>}
                 <span>현재 단계: {getCurrentStage(experiment)}</span>
                 {experiment.startedAt && <span>· {experiment.startedAt} 시작</span>}
               </div>

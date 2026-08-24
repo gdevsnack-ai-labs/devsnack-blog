@@ -1,5 +1,17 @@
-import { getCurrentStage, getFeaturedExperiment, getKeyFinding, getLatestResult, getRecentFindings, getSortedTimeline } from './labs'
-import type { Experiment } from '@/data/experiments'
+import { experiments, type Experiment } from '@/data/experiments'
+import {
+  getCurrentStage,
+  getDomainLabel,
+  getFeaturedExperiment,
+  getKeyFinding,
+  getLabBoardMetadata,
+  getLabStatusCounts,
+  getLatestResult,
+  getNature,
+  getRecentFindings,
+  getSortedTimeline,
+  parseLabFilter,
+} from './labs'
 
 function expectEqual(actual: unknown, expected: unknown, message: string) {
   if (actual !== expected) throw new Error(`${message}: expected ${String(expected)}, got ${String(actual)}`)
@@ -48,4 +60,18 @@ const completedSameDate: Experiment = {
 expectEqual(getFeaturedExperiment([completedSameDate, activeSameDate])?.id, 'active-same-date', 'featured experiment must prefer active work on a date tie')
 expectEqual(getKeyFinding({ ...experiment, id: 'local-llm-benchmark' })?.includes('Qwen3.8-27B'), true, 'key finding must use curated verified knowledge')
 expectEqual(getRecentFindings([experiment, activeSameDate]).length, 0, 'findings feed must exclude projects without curated findings')
+
+const aiOmok = experiments.find(item => item.id === 'ai-omok')!
+const aiGameAssets = experiments.find(item => item.id === 'ai-game-assets-sprite-lab')!
+expectEqual(getLabBoardMetadata(aiOmok).status, 'paused', 'AI Omok with completed runs and only planned next steps should project as Paused')
+expectEqual(getLabBoardMetadata(aiOmok).confidence, 'inferred', 'AI Omok status must retain inferred confidence')
+expectEqual(getLabBoardMetadata(aiGameAssets).status, 'completed', 'completed AI Game Assets experiment should project as Completed')
+expectEqual(getLabBoardMetadata(aiGameAssets).confidence, 'confirmed', 'explicitly completed AI Game Assets status should not be marked inferred')
+expectEqual(getLabBoardMetadata(aiOmok).nextAction, 'MCTS 탐색 적용 (알파고 방식)', 'next action should use the first explicit next goal')
+expectEqual(getLabStatusCounts([aiOmok, aiGameAssets]).paused, 1, 'status counts must include Paused projects')
+expectEqual(getLabStatusCounts([aiOmok, aiGameAssets]).completed, 1, 'status counts must include Completed projects')
+expectEqual(getDomainLabel(aiGameAssets), 'Creative AI', 'AI Game Assets detail should use its Creative AI domain')
+expectEqual(getNature(aiGameAssets).label, 'Creative Test', 'AI Game Assets detail should use its Creative Test nature')
+expectEqual(parseLabFilter('running'), 'active', 'legacy running filter must remain compatible')
+expectEqual(parseLabFilter('planning'), 'backlog', 'legacy planning filter must remain compatible')
 console.log('labs helper tests passed')

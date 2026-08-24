@@ -81,7 +81,7 @@ export default async function Home({
 
   return (
     <div className="min-h-screen">
-      <BlogHeader title="DevSnack Blog" subtitle="개발자의 시선으로 보는 AI" icon="terminal" color="blue" />
+      <BlogHeader title="DevSnack Stories" subtitle="개발자의 시선으로 보는 AI" icon="terminal" color="blue" />
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex gap-8">
           <div className="flex-1 min-w-0">

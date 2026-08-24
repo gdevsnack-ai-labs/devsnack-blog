@@ -186,6 +186,7 @@ const DEMO_PROJECTS: Record<string, string | undefined> = {
   'ragdoll-playground-qwen3.8': 'local-llm-benchmark',
   'stock-dashboard-qwen3.8': 'local-llm-benchmark',
   'html-in-canvas': 'local-llm-benchmark',
+  'ai-game-assets-sprite-lab': 'ai-game-assets-sprite-lab',
   'hero-intro-30s': undefined,
   'isekai-instagram-mage-prologue': 'isekai-instagram-mage-experiment',
 }
@@ -213,6 +214,19 @@ export const DEMO_ASSETS: AssetRef[] = DEMO_CATEGORIES.flatMap(category =>
 
 /** Curated findings are Knowledge assets with a finding role, not a new Type. */
 export const CURATED_FINDING_ASSETS: AssetRef[] = [
+  {
+    assetId: 'finding:autonomous-ai-blog:key',
+    route: '/labs/autonomous-ai-blog',
+    title: 'Autonomous AI Blog key finding',
+    primaryType: 'knowledge',
+    role: 'finding',
+    projectId: 'autonomous-ai-blog',
+    domain: ['automation', 'infrastructure'],
+    provenance: 'automated',
+    lifecycle: 'active',
+    source: 'manual',
+    classification: 'confirmed',
+  },
   {
     assetId: 'finding:ai-omok:key',
     route: '/labs/ai-omok',
@@ -288,6 +302,19 @@ export const CURATED_FINDING_ASSETS: AssetRef[] = [
     domain: ['infrastructure', 'automation', 'llm'],
     provenance: 'ai_assisted',
     lifecycle: 'active',
+    source: 'manual',
+    classification: 'confirmed',
+  },
+  {
+    assetId: 'finding:ai-game-assets-sprite-lab:key',
+    route: '/labs/ai-game-assets-sprite-lab',
+    title: 'AI Game Assets key finding',
+    primaryType: 'knowledge',
+    role: 'finding',
+    projectId: 'ai-game-assets-sprite-lab',
+    domain: ['creative_ai', 'media'],
+    provenance: 'ai_assisted',
+    lifecycle: 'completed',
     source: 'manual',
     classification: 'confirmed',
   },

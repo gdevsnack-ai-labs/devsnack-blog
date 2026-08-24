@@ -4,7 +4,7 @@ import { ProgressBar } from './progress-bar'
 import type { Experiment } from '@/data/experiments'
 
 export function LabProjectCard({ experiment }: { experiment: Experiment }) {
-  const { id, name, description, progress, color, status, category, startedAt, whyText, nextGoals, timeline, blogPosts, youtubeVideos, githubUrl } = experiment
+  const { id, name, description, progress, color, status, startedAt, whyText, timeline, blogPosts, youtubeVideos, githubUrl } = experiment
 
   const statusColors: Record<string, string> = {
     '진행중': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
@@ -85,7 +85,7 @@ export function LabProjectCard({ experiment }: { experiment: Experiment }) {
         {blogPosts && blogPosts.length > 0 && (
           <Link href={blogPosts[0]} className="inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:underline no-underline">
             <FileText className="w-3 h-3" />
-            Blog
+            Stories
             {blogPosts.length > 1 && <span className="text-muted-foreground">+{blogPosts.length - 1}</span>}
           </Link>
         )}

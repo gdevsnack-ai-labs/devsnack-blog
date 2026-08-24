@@ -8,6 +8,11 @@ type ProjectOverride = {
 }
 
 const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
+  'autonomous-ai-blog': {
+    domain: ['automation', 'infrastructure'],
+    lifecycle: 'active',
+    isOpenEnded: true,
+  },
   'ai-omok': {
     domain: ['game_ai', 'inference'],
     isOpenEnded: true,
@@ -31,6 +36,11 @@ const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
     domain: ['agent_memory', 'automation'],
     lifecycle: 'active',
     isOpenEnded: true,
+  },
+  'ai-game-assets-sprite-lab': {
+    domain: ['creative_ai', 'media'],
+    lifecycle: 'completed',
+    isOpenEnded: false,
   },
   'isekai-instagram-mage-experiment': {
     domain: ['creative_ai', 'media'],

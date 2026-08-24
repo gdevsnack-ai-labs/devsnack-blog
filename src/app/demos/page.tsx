@@ -6,7 +6,7 @@ import { buildRouteMetadata } from '@/lib/seo/metadata'
 export const revalidate = 60
 
 export const metadata = buildRouteMetadata({
-  title: 'Demos — DevSnack',
+  title: 'Showcase — DevSnack',
   description: '로컬 AI로 직접 만든 HTML·이미지·음악·영상 결과물 Showcase',
   canonicalPath: '/demos',
 })
@@ -19,9 +19,9 @@ export default function DemosPage() {
     <div className="min-h-screen bg-background">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">🧪 Demos</h1>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">🧪 Showcase</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            로컬 AI(GB10)로 생성한 결과물 데모 — 총 {total}개
+            로컬 AI(GB10)로 생성한 결과물 Showcase — 총 {total}개
           </p>
         </div>
 

@@ -3,6 +3,7 @@ import type { Experiment } from '@/data/experiments'
 import {
   getDomainLabel,
   getKeyFinding,
+  getLabBoardMetadata,
   getLatestResult,
   getRecentFindings,
 } from '@/lib/labs'
@@ -32,15 +33,19 @@ export interface LabProjectProjection {
   displayType: LabDisplayType
   domain: Domain[]
   projectLifecycle: string
+  boardStatus: ReturnType<typeof getLabBoardMetadata>['status']
+  statusConfidence: ReturnType<typeof getLabBoardMetadata>['confidence']
   isDummy: boolean
   href: string
   finding?: string
   latestResult?: string
   latestDate?: string
+  nextAction?: string
   experiment: Experiment
 }
 
 const LAB_COLLECTION_BY_PROJECT: Record<string, Exclude<LabCollectionId, 'showcase'>> = {
+  'autonomous-ai-blog': 'experiments',
   'ai-omok': 'experiments',
   'stockpulse-ai-self-improvement': 'experiments',
   'hermes-memory': 'experiments',
@@ -48,10 +53,12 @@ const LAB_COLLECTION_BY_PROJECT: Record<string, Exclude<LabCollectionId, 'showca
   blog: 'builds-systems',
   'music-qa': 'builds-systems',
   hook: 'builds-systems',
+  'ai-game-assets-sprite-lab': 'creative-tests',
   'isekai-instagram-mage-experiment': 'creative-tests',
 }
 
 const LAB_TYPE_BY_PROJECT: Record<string, LabDisplayType> = {
+  'autonomous-ai-blog': 'Experiment',
   'ai-omok': 'Experiment',
   'stockpulse-ai-self-improvement': 'Experiment',
   'hermes-memory': 'Experiment',
@@ -59,6 +66,7 @@ const LAB_TYPE_BY_PROJECT: Record<string, LabDisplayType> = {
   blog: 'System',
   'music-qa': 'Build',
   hook: 'Build',
+  'ai-game-assets-sprite-lab': 'Creative Test',
   'isekai-instagram-mage-experiment': 'Creative Test',
 }
 
@@ -73,6 +81,7 @@ export function getLabProjectProjections(experiments: Experiment[]): LabProjectP
     const project = PROJECT_CATALOG.find(item => item.id === experiment.id)
     if (!collection || !project) return []
     const latest = getLatestResult(experiment)
+    const board = getLabBoardMetadata(experiment)
     return [{
       id: experiment.id,
       title: experiment.name,
@@ -81,11 +90,14 @@ export function getLabProjectProjections(experiments: Experiment[]): LabProjectP
       displayType: LAB_TYPE_BY_PROJECT[experiment.id] || 'Build',
       domain: project.domain,
       projectLifecycle: project.lifecycle,
+      boardStatus: board.status,
+      statusConfidence: board.confidence,
       isDummy: Boolean(experiment.isDummy),
       href: `/labs/${experiment.id}`,
       finding: getKeyFinding(experiment),
       latestResult: latest?.result,
-      latestDate: latest?.date,
+      latestDate: board.lastActivity,
+      nextAction: board.nextAction,
       experiment,
     }]
   })

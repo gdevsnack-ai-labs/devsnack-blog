@@ -3,10 +3,10 @@ import { ArrowRight, FlaskConical, Hammer, Play, Sparkles } from 'lucide-react'
 import { HubHeader } from '@/components/hub-header'
 import { LabHubProjectCard } from '@/components/lab-hub-project-card'
 import { RelatedAssets } from '@/components/related-assets'
-import { experiments, type ExperimentCategory } from '@/data/experiments'
+import { experiments } from '@/data/experiments'
 import { DEMO_ASSETS } from '@/lib/ia'
 import { getLabCollectionProjects, getRelatedAssets } from '@/lib/ia/hub-projections'
-import { getFeaturedExperiment, getKeyFinding, getLatestResult, getRecentFindings, LAB_FILTERS, parseLabFilter, type LabFilter } from '@/lib/labs'
+import { getFeaturedExperiment, getKeyFinding, getLabBoardMetadata, getLabStatusCounts, getLatestResult, getRecentFindings, LAB_FILTERS, parseLabFilter, type LabFilter } from '@/lib/labs'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
 
 export const revalidate = 60
@@ -19,27 +19,23 @@ export const metadata = buildRouteMetadata({
 
 type SearchParams = Promise<{ status?: string | string[] }>
 
-const FILTER_TO_CATEGORY: Record<Exclude<LabFilter, 'all'>, ExperimentCategory> = {
-  running: 'running',
-  planning: 'planning',
-  completed: 'completed',
-}
-
 const COLLECTION_META = {
   experiments: { label: 'Experiments', description: '질문을 세우고 실제로 검증한 Project', icon: FlaskConical },
   'builds-systems': { label: 'Builds & Systems', description: '직접 만들고 반복적으로 운영하는 Build와 System', icon: Hammer },
   'creative-tests': { label: 'Creative Tests', description: '생성형 AI의 가능성과 한계를 시험한 Project', icon: Sparkles },
 } as const
 
-function filterProjects<T extends { experiment: { category: ExperimentCategory } }>(projects: T[], filter: LabFilter): T[] {
+function filterProjects<T extends { boardStatus: Exclude<LabFilter, 'all'> }>(projects: T[], filter: LabFilter): T[] {
   if (filter === 'all') return projects
-  return projects.filter(project => project.experiment.category === FILTER_TO_CATEGORY[filter])
+  return projects.filter(project => project.boardStatus === filter)
 }
 
 function LatestFinding({ experiment }: { experiment: ReturnType<typeof getFeaturedExperiment> }) {
   if (!experiment) return null
   const finding = getKeyFinding(experiment) || getLatestResult(experiment)?.result
   if (!finding) return null
+  const boardStatus = getLabBoardMetadata(experiment).status
+  const boardStatusLabel = LAB_FILTERS.find(item => item.key === boardStatus)?.label || boardStatus
 
   return (
     <section className="mt-8 overflow-hidden rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 via-white to-white dark:border-blue-900/60 dark:from-blue-950/30 dark:via-gray-900 dark:to-gray-900" aria-labelledby="latest-finding-heading">
@@ -48,7 +44,7 @@ function LatestFinding({ experiment }: { experiment: ReturnType<typeof getFeatur
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-blue-700 dark:text-blue-300"><Sparkles className="h-4 w-4" aria-hidden="true" />Latest Finding</div>
           <h2 id="latest-finding-heading" className="mt-3 text-2xl font-bold leading-tight md:text-3xl">{experiment.name}</h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{finding}</p>
-          <p className="mt-4 text-xs text-muted-foreground">Project Context · {experiment.status} · {getLatestResult(experiment)?.date || '날짜 미기록'}</p>
+          <p className="mt-4 text-xs text-muted-foreground">Project Context · {boardStatusLabel} · {getLatestResult(experiment)?.date || '날짜 미기록'}</p>
         </div>
         <div className="flex items-end md:justify-end"><Link href={`/labs/${experiment.id}`} className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-foreground px-4 py-3 text-sm font-medium text-background no-underline transition-opacity hover:opacity-80 md:w-auto">Finding과 Run 보기 <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link></div>
       </div>
@@ -78,13 +74,15 @@ function CollectionSection({ collection, projects }: { collection: keyof typeof 
 export default async function LabsPage({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams
   const filter = parseLabFilter(params.status)
-  const projections = getLabCollectionProjects(experiments, 'experiments').concat(getLabCollectionProjects(experiments, 'builds-systems'), getLabCollectionProjects(experiments, 'creative-tests'))
+  const labProjects = getLabCollectionProjects(experiments, 'experiments').concat(getLabCollectionProjects(experiments, 'builds-systems'), getLabCollectionProjects(experiments, 'creative-tests'))
   const featured = getFeaturedExperiment(experiments.filter(experiment => experiment.id !== 'local-llm-benchmark'))
   const recentFindings = getRecentFindings(experiments.filter(experiment => experiment.id !== 'local-llm-benchmark'), 3)
-  const visibleExperiments = filterProjects(getLabCollectionProjects(experiments, 'experiments'), filter)
-  const visibleBuilds = filterProjects(getLabCollectionProjects(experiments, 'builds-systems'), filter)
-  const visibleCreativeTests = filterProjects(getLabCollectionProjects(experiments, 'creative-tests'), filter)
+  const statusCounts = getLabStatusCounts(labProjects.map(project => project.experiment))
+  const visibleExperiments = filterProjects(labProjects.filter(project => project.collection === 'experiments'), filter)
+  const visibleBuilds = filterProjects(labProjects.filter(project => project.collection === 'builds-systems'), filter)
+  const visibleCreativeTests = filterProjects(labProjects.filter(project => project.collection === 'creative-tests'), filter)
   const activeFilter = LAB_FILTERS.find(item => item.key === filter)?.label || '전체'
+  const boardFilters = LAB_FILTERS.slice(1) as Array<{ key: Exclude<LabFilter, 'all'>; label: string }>
   const showcase = DEMO_ASSETS.slice(0, 4)
 
   return (
@@ -96,7 +94,26 @@ export default async function LabsPage({ searchParams }: { searchParams: SearchP
 
         {recentFindings.length > 0 && <section className="mt-10" aria-labelledby="recent-findings-heading"><div className="mb-4 flex items-end justify-between gap-3"><div><h2 id="recent-findings-heading" className="text-xl font-bold">Recent Findings</h2><p className="mt-1 text-sm text-muted-foreground">상태나 진행률보다 최근에 확인한 결과를 먼저 봅니다.</p></div><span className="text-xs text-muted-foreground">{recentFindings.length} findings</span></div><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{recentFindings.map(experiment => <FindingStrip key={experiment.id} experimentId={experiment.id} />)}</div></section>}
 
-        <section className="mt-10 rounded-xl border border-border bg-white p-4 dark:bg-gray-900" aria-labelledby="lab-filter-heading"><div className="flex flex-wrap items-center gap-2"><h2 id="lab-filter-heading" className="mr-2 text-sm font-semibold">Project filter</h2>{LAB_FILTERS.map(item => { const active = item.key === filter; const href = item.key === 'all' ? '/labs' : `/labs?status=${item.key}`; return <Link key={item.key} href={href} aria-current={active ? 'page' : undefined} className={`rounded-full px-3 py-1.5 text-xs no-underline ${active ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground hover:text-foreground'}`}>{item.label}</Link> })}<span className="ml-auto text-xs text-muted-foreground">{activeFilter} · {projections.filter(project => filter === 'all' || project.experiment.category === FILTER_TO_CATEGORY[filter]).length} projects</span></div></section>
+        <section className="mt-10 rounded-xl border border-border bg-white p-5 dark:bg-gray-900" aria-labelledby="lab-board-heading">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 id="lab-board-heading" className="text-xl font-bold">Lab Board</h2>
+              <p className="mt-1 text-sm text-muted-foreground">기존 Project metadata에서 현재 상태와 다음 작업을 읽어 보여줍니다.</p>
+            </div>
+            <span className="text-xs text-muted-foreground">{labProjects.length} projects · {activeFilter}</span>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-5">
+            {boardFilters.map(item => {
+              const active = item.key === filter
+              const href = `/labs?status=${item.key}`
+              return <Link key={item.key} href={href} aria-current={active ? 'page' : undefined} className={`rounded-lg border px-3 py-2.5 no-underline transition-colors ${active ? 'border-foreground bg-foreground text-background' : 'border-border bg-muted/40 text-muted-foreground hover:text-foreground'}`}><span className="block text-xs">{item.label}</span><strong className="mt-1 block text-lg leading-none">{statusCounts[item.key]}</strong></Link>
+            })}
+          </div>
+          <div className="mt-3 flex items-center justify-between gap-3 text-xs text-muted-foreground">
+            <span>전체 Project를 상태별로 필터링합니다.</span>
+            {filter !== 'all' && <Link href="/labs" className="no-underline hover:text-foreground">전체 보기</Link>}
+          </div>
+        </section>
 
         <CollectionSection collection="experiments" projects={visibleExperiments} />
         <CollectionSection collection="builds-systems" projects={visibleBuilds} />

@@ -11,6 +11,11 @@ const findingRef = (projectId: string) => `finding:${projectId}:key`
  */
 export const ASSET_RELATIONS: AssetRelation[] = [
   {
+    from: projectRef('autonomous-ai-blog'),
+    relation: 'produces',
+    to: findingRef('autonomous-ai-blog'),
+  },
+  {
     from: 'post:research:dflash-2-qwen3-8-27b-vs-mtp',
     relation: 'informs',
     to: projectRef('local-llm-benchmark'),
@@ -109,5 +114,15 @@ export const ASSET_RELATIONS: AssetRelation[] = [
     from: projectRef('luna-agentic-game-dev'),
     relation: 'published_as',
     to: postRef('lab', 'luna-agentic-game-dev-e2e'),
+  },
+  {
+    from: projectRef('ai-game-assets-sprite-lab'),
+    relation: 'produces',
+    to: findingRef('ai-game-assets-sprite-lab'),
+  },
+  {
+    from: projectRef('ai-game-assets-sprite-lab'),
+    relation: 'outputs',
+    to: demoRef('html', 'ai-game-assets-sprite-lab'),
   },
 ]

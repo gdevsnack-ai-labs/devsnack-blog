@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, ExternalLink, FileCode2, Music2, Image, Film } from 'lucide-react'
+import { ArrowLeft, ExternalLink, FileCode2, Music2, Image, Film, type LucideIcon } from 'lucide-react'
 import { DEMOS, getDemoCategoryMeta, type DemoCategory } from '@/data/demos'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
 
@@ -9,15 +9,15 @@ export const revalidate = 60
 export async function generateMetadata({ params }: { params: Promise<{ category: string }> }) {
   const { category } = await params
   const meta = getDemoCategoryMeta(category)
-  if (!meta) return { title: 'Demo Not Found' }
+  if (!meta) return { title: 'Showcase Not Found' }
   return buildRouteMetadata({
-    title: `${meta.label} Demos — DevSnack`,
+    title: `${meta.label} Showcase — DevSnack`,
     description: meta.description,
     canonicalPath: `/demos/${category}`,
   })
 }
 
-const CATEGORY_ICON: Record<string, any> = {
+const CATEGORY_ICON: Record<string, LucideIcon> = {
   html: FileCode2,
   music: Music2,
   image: Image,
@@ -36,13 +36,13 @@ export default async function DemoCategoryPage({ params }: { params: Promise<{ c
       <div className="max-w-4xl mx-auto px-4 py-8">
         <Link href="/demos" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground no-underline mb-6">
           <ArrowLeft className="w-4 h-4" />
-          Demos로 돌아가기
+          Showcase로 돌아가기
         </Link>
 
         <div className="mb-8">
           <div className="flex items-center gap-3">
             <span className="text-3xl">{meta.emoji}</span>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{meta.label} Demos</h1>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{meta.label} Showcase</h1>
           </div>
           <p className="text-sm text-muted-foreground mt-2">{meta.description}</p>
         </div>

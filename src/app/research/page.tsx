@@ -38,7 +38,7 @@ export default async function KnowledgePage() {
         />
 
         <section className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-labelledby="knowledge-domains-heading">
-          <div className="sm:col-span-2 lg:col-span-3"><h2 id="knowledge-domains-heading" className="text-xl font-bold">Knowledge Domains</h2><p className="mt-1 text-sm text-muted-foreground">기존 `/research/category/*` route는 유지하고, 화면에서는 Phase 3 taxonomy로 투영합니다.</p></div>
+          <div className="sm:col-span-2 lg:col-span-3"><h2 id="knowledge-domains-heading" className="text-xl font-bold">Knowledge Domains</h2><p className="mt-1 text-sm text-muted-foreground">기존 `/research/category/*` route는 유지하고, 화면에서는 Knowledge 분류로 보여줍니다.</p></div>
           {DOMAIN_ORDER.filter(domain => counts[domain] > 0).map(domain => (
             <div key={domain} className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900">
               <div className="flex items-center justify-between gap-3"><span className="text-sm font-bold">{KNOWLEDGE_DOMAIN_LABEL[domain]}</span><Layers3 className="h-4 w-4 text-muted-foreground" aria-hidden="true" /></div>

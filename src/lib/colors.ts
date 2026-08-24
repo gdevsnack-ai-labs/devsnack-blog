@@ -63,12 +63,12 @@ export const BLOG_COLORS: Record<BlogId, {
 }
 
 export const BLOG_LABEL: Record<BlogId, string> = {
-  devsnack: 'DevSnack',
+  devsnack: 'Stories',
   stockpulse: 'StockPulse',
   realestate: '부동산',
   aitech: 'AI Tech',
   lab: 'Lab',
-  research: 'Research',
+  research: 'Knowledge',
   misc: '잡동사니',
 }
 

@@ -1,4 +1,4 @@
-import { BENCHMARK_PROJECTIONS, getLabCollection, getLabProjectProjections, projectKnowledgePost } from './hub-projections'
+import { BENCHMARK_PROJECTIONS, getLabCollection, getLabProjectProjections, getRelatedAssets, projectKnowledgePost } from './hub-projections'
 import { experiments } from '@/data/experiments'
 
 function expectEqual(actual: unknown, expected: unknown, message: string) {
@@ -13,15 +13,22 @@ expectEqual(BENCHMARK_PROJECTIONS.length, 2, 'curated published Benchmarks shoul
 expectEqual(BENCHMARK_PROJECTIONS[0].asset.assetId, 'post:lab:qwen36-youtube-script-reliability-benchmark', 'newest YouTube reliability Benchmark should lead the collection')
 expectEqual(BENCHMARK_PROJECTIONS[0].asset.primaryType, 'benchmark', 'Benchmark Hub assets must keep benchmark primary type')
 expectEqual(getLabCollection('local-llm-benchmark'), undefined, 'Local LLM Benchmark must not be duplicated as a generic Lab Experiment')
+expectEqual(getLabCollection('autonomous-ai-blog'), 'experiments', 'autonomous AI project must appear in the Lab board')
 expectEqual(getLabCollection('ai-omok'), 'experiments', 'AI Omok must remain an Experiment')
 expectEqual(getLabCollection('blog'), 'builds-systems', 'Blog Automation must project to Builds & Systems')
 expectEqual(getLabCollection('hook'), 'builds-systems', 'Hook Engine must project to Builds & Systems')
 expectEqual(getLabCollection('isekai-instagram-mage-experiment'), 'creative-tests', 'Isekai must project to Creative Tests')
+expectEqual(getLabCollection('ai-game-assets-sprite-lab'), 'creative-tests', 'AI Game Assets must project to Creative Tests')
 
 const labProjects = getLabProjectProjections(experiments)
+expectEqual(labProjects.length, 10, 'Lab board should expose all non-Benchmark projects')
 expectEqual(labProjects.find(project => project.id === 'blog')?.displayType, 'System', 'Blog Automation must be labeled System')
 expectEqual(labProjects.find(project => project.id === 'hook')?.displayType, 'Build', 'Hook Engine must be labeled Build')
 expectEqual(labProjects.find(project => project.id === 'isekai-instagram-mage-experiment')?.displayType, 'Creative Test', 'Isekai must be labeled Creative Test')
+expectEqual(labProjects.find(project => project.id === 'autonomous-ai-blog')?.displayType, 'Experiment', 'autonomous AI project must be labeled Experiment')
+expectEqual(labProjects.find(project => project.id === 'ai-game-assets-sprite-lab')?.displayType, 'Creative Test', 'AI Game Assets must be labeled Creative Test')
+expectEqual(labProjects.find(project => project.id === 'ai-omok')?.boardStatus, 'paused', 'AI Omok board projection must expose the reviewed Paused state')
+expectEqual(getRelatedAssets('project:ai-game-assets-sprite-lab').some(link => link.href === '/demos/html'), true, 'AI Game Assets must retain its Showcase relation')
 
 const knowledge = projectKnowledgePost({
   slug: 'dflash-2-qwen3-8-27b-vs-mtp',
