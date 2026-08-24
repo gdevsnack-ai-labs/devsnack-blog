@@ -54,6 +54,13 @@ DISPLAY_SYSTEMD_SERVICES = {
     "real-estate-monitor.service",
 }
 
+# 사용자 세션에서 직접 관리하는 Hindsight GPU sidecar와 묶음 target.
+DISPLAY_USER_SYSTEMD_UNITS = {
+    "hindsight-embed.service",
+    "hindsight-rerank.service",
+    "hindsight-sidecars.target",
+}
+
 
 def run_command(command: list[str], timeout: int = 10) -> str:
     try:
@@ -90,7 +97,7 @@ def collect_ports() -> list[dict[str, Any]]:
             continue
         if port in EXCLUDED_PORTS:
             continue
-        process_text = " ".join(columns[6:]) if len(columns) > 6 else ""
+        process_text = " ".join(columns[5:]) if len(columns) > 5 else ""
         process_match = re.search(r'\(\("([^"]+)', process_text)
         process = process_match.group(1) if process_match else ""
         bind = parse_bind(local)
@@ -134,28 +141,40 @@ def collect_docker() -> list[dict[str, Any]]:
     return containers
 
 
-def collect_systemd() -> list[dict[str, Any]]:
-    output = run_command([
-        "systemctl", "list-units", "--type=service", "--state=running", "--no-legend", "--no-pager",
-    ])
+def parse_systemd_units(output: str, allowed: set[str], scope: str) -> list[dict[str, Any]]:
     services: list[dict[str, Any]] = []
     for line in output.splitlines():
         columns = line.split(None, 4)
         if len(columns) < 4:
             continue
         name, load, active, sub = columns[:4]
-        if name not in DISPLAY_SYSTEMD_SERVICES:
+        name = name.lstrip("●")
+        if name not in allowed:
             continue
         description = columns[4] if len(columns) == 5 else ""
         services.append({
             "name": name,
+            "scope": scope,
+            "unitType": "target" if name.endswith(".target") else "service",
             "load": load,
             "active": active,
             "sub": sub,
             "description": description,
-            "health": "ok" if active == "active" and sub == "running" else "warning",
+            "health": "ok" if active == "active" and (sub == "running" or name.endswith(".target") and sub == "active") else "warning",
         })
-    return sorted(services, key=lambda item: (item["active"] != "active", item["name"]))
+    return services
+
+
+def collect_systemd() -> list[dict[str, Any]]:
+    system_output = run_command([
+        "systemctl", "list-units", "--type=service", "--all", "--no-legend", "--no-pager",
+    ])
+    user_output = run_command([
+        "systemctl", "--user", "list-units", "--type=service", "--type=target", "--all", "--no-legend", "--no-pager",
+    ])
+    services = parse_systemd_units(system_output, DISPLAY_SYSTEMD_SERVICES, "system")
+    services.extend(parse_systemd_units(user_output, DISPLAY_USER_SYSTEMD_UNITS, "user"))
+    return sorted(services, key=lambda item: (item["health"] != "ok", item["scope"], item["name"]))
 
 
 def load_cron_jobs() -> list[dict[str, Any]]:
@@ -280,13 +299,22 @@ def check_url(name: str, url: str) -> dict[str, Any]:
         }
 
 
+def health_host_for_port(port: int, ports: list[dict[str, Any]]) -> str:
+    bind = next((item["bind"] for item in ports if item["port"] == port), "")
+    if not bind or bind in {"0.0.0.0", "::", "*"}:
+        return "127.0.0.1"
+    return f"[{bind}]" if ":" in bind and not bind.startswith("[") else bind
+
+
 def collect_health_checks(ports: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    candidates = {3333, 8080, 8188, 8888, 9080, 18888, 19999}
+    candidates = {3333, 8080, 8082, 8083, 8188, 8888, 9080, 18888, 19999}
+    paths = {8080: "/health", 8082: "/health", 8083: "/health", 18888: "/health"}
     listening = {item["port"] for item in ports}
     checks = []
     for port in sorted(candidates & listening):
         label = PORT_LABELS.get(port, (f"Port {port}", "other"))[0]
-        checks.append(check_url(label, f"http://127.0.0.1:{port}/"))
+        host = health_host_for_port(port, ports)
+        checks.append(check_url(label, f"http://{host}:{port}{paths.get(port, '/')}"))
     return checks
 
 

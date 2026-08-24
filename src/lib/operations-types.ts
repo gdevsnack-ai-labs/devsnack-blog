@@ -20,6 +20,8 @@ export interface DockerContainer {
 
 export interface SystemdService {
   name: string
+  scope: 'system' | 'user'
+  unitType: 'service' | 'target'
   load: string
   active: string
   sub: string
@@ -99,7 +101,11 @@ export function normalizeOperationsSnapshot(value: unknown): OperationsSnapshot 
     host: typeof raw.host === 'string' ? raw.host : 'DGX Spark GB10',
     ports: arrayOrEmpty<OperationPort>(raw.ports),
     docker: arrayOrEmpty<DockerContainer>(raw.docker),
-    systemd: arrayOrEmpty<SystemdService>(raw.systemd),
+    systemd: arrayOrEmpty<SystemdService>(raw.systemd).map((service) => ({
+      ...service,
+      scope: service.scope === 'user' ? 'user' : 'system',
+      unitType: service.unitType === 'target' ? 'target' : 'service',
+    })),
     cronjobs: arrayOrEmpty<CronJob>(raw.cronjobs),
     tools: arrayOrEmpty<InstalledTool>(raw.tools),
     healthChecks: arrayOrEmpty<HealthCheck>(raw.healthChecks),

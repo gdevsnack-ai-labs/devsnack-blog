@@ -184,6 +184,8 @@ function SystemdTable({ services }: { services: SystemdService[] }) {
         <thead className="bg-muted/60 text-xs text-muted-foreground">
           <tr>
             <th className="px-4 py-3 font-medium">서비스</th>
+            <th className="px-4 py-3 font-medium">범위</th>
+            <th className="px-4 py-3 font-medium">유형</th>
             <th className="px-4 py-3 font-medium">상태</th>
             <th className="px-4 py-3 font-medium">Load</th>
             <th className="px-4 py-3 font-medium">설명</th>
@@ -193,6 +195,8 @@ function SystemdTable({ services }: { services: SystemdService[] }) {
           {services.map((service) => (
             <tr key={service.name} className="hover:bg-muted/30">
               <td className="px-4 py-3 font-mono text-xs font-medium">{service.name}</td>
+              <td className="px-4 py-3"><span className="rounded bg-muted px-2 py-1 text-xs">{service.scope === 'user' ? 'user' : 'system'}</span></td>
+              <td className="px-4 py-3 text-xs text-muted-foreground">{service.unitType}</td>
               <td className="px-4 py-3"><HealthBadge health={service.health} label={`${service.active} / ${service.sub}`} /></td>
               <td className="px-4 py-3 text-xs text-muted-foreground">{service.load}</td>
               <td className="px-4 py-3 text-xs text-muted-foreground">{service.description || '—'}</td>
@@ -299,7 +303,7 @@ function ArchitectureDiagram() {
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-center dark:border-amber-900 dark:bg-amber-950/30">
           <Terminal className="mx-auto h-6 w-6 text-amber-600 dark:text-amber-400" />
           <p className="mt-2 font-semibold">Local Collector</p>
-          <p className="mt-1 text-xs text-muted-foreground">ss · Docker · systemd · cron</p>
+          <p className="mt-1 text-xs text-muted-foreground">ss · Docker · systemd system/user · cron</p>
         </div>
         <div className="hidden text-center text-2xl text-muted-foreground md:block">→</div>
         <div className="rounded-xl border border-purple-200 bg-purple-50 p-4 text-center dark:border-purple-900 dark:bg-purple-950/30">
@@ -323,7 +327,7 @@ export function OperationsDashboard({ snapshot, available }: OperationsDashboard
 
   const filteredPorts = useMemo(() => snapshot.ports.filter(port => !normalizedQuery || [port.port, port.service, port.process, port.bind, port.category].some(value => String(value ?? '').toLowerCase().includes(normalizedQuery))), [snapshot.ports, normalizedQuery])
   const filteredDocker = useMemo(() => snapshot.docker.filter(container => !normalizedQuery || [container.name, container.image, container.status, container.ports].some(value => String(value ?? '').toLowerCase().includes(normalizedQuery))), [snapshot.docker, normalizedQuery])
-  const filteredSystemd = useMemo(() => snapshot.systemd.filter(service => !normalizedQuery || [service.name, service.active, service.sub, service.description].some(value => String(value ?? '').toLowerCase().includes(normalizedQuery))), [snapshot.systemd, normalizedQuery])
+  const filteredSystemd = useMemo(() => snapshot.systemd.filter(service => !normalizedQuery || [service.name, service.scope, service.unitType, service.active, service.sub, service.description].some(value => String(value ?? '').toLowerCase().includes(normalizedQuery))), [snapshot.systemd, normalizedQuery])
   const filteredCron = useMemo(() => snapshot.cronjobs.filter(job => !normalizedQuery || [job.name, job.schedule, job.script, job.model, job.provider, job.state].some(value => String(value ?? '').toLowerCase().includes(normalizedQuery))), [snapshot.cronjobs, normalizedQuery])
   const filteredTools = useMemo(() => snapshot.tools.filter(tool => !normalizedQuery || [tool.name, tool.path, tool.version, tool.description, tool.status].some(value => String(value ?? '').toLowerCase().includes(normalizedQuery))), [snapshot.tools, normalizedQuery])
 
@@ -399,7 +403,7 @@ export function OperationsDashboard({ snapshot, available }: OperationsDashboard
         </section>
 
         <section className="space-y-4">
-          <SectionHeading id="systemd" icon={Server} title="Systemd 서비스" count={filteredSystemd.length} description="systemctl에서 수집한 서비스 상태입니다." />
+          <SectionHeading id="systemd" icon={Server} title="Systemd 서비스" count={filteredSystemd.length} description="systemctl과 systemctl --user에서 수집한 서비스·target 상태입니다." />
           <SystemdTable services={filteredSystemd} />
         </section>
 
