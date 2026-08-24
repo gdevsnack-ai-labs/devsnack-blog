@@ -1,4 +1,4 @@
-import { BENCHMARK_PROJECTIONS, getLabCollection, getLabProjectProjections, getRelatedAssets, projectKnowledgePost } from './hub-projections'
+import { BENCHMARK_OVERVIEW, BENCHMARK_PROJECTIONS, getLabCollection, getLabProjectProjections, getRelatedAssets, projectKnowledgePost } from './hub-projections'
 import { experiments } from '@/data/experiments'
 
 function expectEqual(actual: unknown, expected: unknown, message: string) {
@@ -10,6 +10,9 @@ function expectTrue(value: boolean, message: string) {
 }
 
 expectEqual(BENCHMARK_PROJECTIONS.length, 3, 'curated published Benchmarks should be exposed')
+expectEqual(BENCHMARK_OVERVIEW.protocol.fixtureCount, 2, 'Benchmark overview must expose the fixed fixture count')
+expectEqual(BENCHMARK_OVERVIEW.calibration.external.firstPass, '1/1', 'Benchmark overview must expose external one-shot calibration')
+expectEqual(BENCHMARK_OVERVIEW.calibration.local.find(item => item.model === 'Ornith Q6_K')?.afterFirst, '1/2', 'Benchmark overview must expose corrected local matrix')
 expectEqual(BENCHMARK_PROJECTIONS[0].asset.assetId, 'post:lab:ornith15-server-quality-speed-benchmark', 'newest Ornith server Benchmark should lead the collection')
 expectEqual(BENCHMARK_PROJECTIONS[0].asset.primaryType, 'benchmark', 'Benchmark Hub assets must keep benchmark primary type')
 expectEqual(BENCHMARK_PROJECTIONS[0].family, 'Ornith-1.5', 'Ornith result should be grouped under its model family')

@@ -1,9 +1,9 @@
 import Link from 'next/link'
-import { BarChart3, BookOpen, FlaskConical } from 'lucide-react'
+import { BarChart3, BookOpen, CheckCircle2, FlaskConical } from 'lucide-react'
 import { BenchmarkResultCard } from '@/components/benchmark-result-card'
 import { HubHeader } from '@/components/hub-header'
 import { RelatedAssets } from '@/components/related-assets'
-import { BENCHMARK_PROJECTIONS, getBenchmarksByCategory, getRelatedAssets } from '@/lib/ia/hub-projections'
+import { BENCHMARK_OVERVIEW, BENCHMARK_PROJECTIONS, getBenchmarksByCategory, getRelatedAssets } from '@/lib/ia/hub-projections'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
 
 export const revalidate = 60
@@ -28,6 +28,9 @@ function familyAnchor(family: string): string {
 export default function BenchmarksPage() {
   const availableCategories = CATEGORY_META.filter(category => getBenchmarksByCategory(category.id).length > 0)
   const related = getRelatedAssets('project:local-llm-benchmark')
+  const relatedKnowledge = Array.from(
+    new Map(BENCHMARK_PROJECTIONS.flatMap(benchmark => benchmark.relatedKnowledge).map(knowledge => [knowledge.href, knowledge])).values(),
+  )
   const benchmarkFamilies = Array.from(
     BENCHMARK_PROJECTIONS.reduce((groups, benchmark) => {
       const current = groups.get(benchmark.family) || []
@@ -54,6 +57,61 @@ export default function BenchmarksPage() {
               <h2 id="benchmark-start-heading" className="text-lg font-bold">정식 Benchmark의 기준</h2>
               <p className="mt-1 text-sm leading-relaxed text-muted-foreground">Target, Environment, Method / Protocol, Baseline, Result, Comparison, Interpretation, Limitations가 확인되는 경우에만 이 영역에 올립니다.</p>
             </div>
+          </div>
+        </section>
+
+        <section className="mt-8 rounded-2xl border border-border bg-white p-5 dark:bg-gray-900 md:p-6" aria-labelledby="benchmark-overview-heading">
+          <div className="flex items-start gap-3">
+            <div className="rounded-xl bg-emerald-100 p-2.5 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"><CheckCircle2 className="h-5 w-5" aria-hidden="true" /></div>
+            <div>
+              <h2 id="benchmark-overview-heading" className="text-lg font-bold">Evaluation Overview</h2>
+              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">실제 production 입력을 고정하고, hard contract와 외부 one-shot calibration을 분리해 읽는 총괄 페이지입니다.</p>
+            </div>
+          </div>
+          <dl className="mt-5 grid gap-3 sm:grid-cols-3">
+            <div className="rounded-xl bg-muted/40 p-4"><dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Target</dt><dd className="mt-1 text-sm font-semibold">{BENCHMARK_OVERVIEW.protocol.target}</dd></div>
+            <div className="rounded-xl bg-muted/40 p-4"><dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Fixed fixtures</dt><dd className="mt-1 text-sm font-semibold">{BENCHMARK_OVERVIEW.protocol.fixtureCount} · {BENCHMARK_OVERVIEW.protocol.fixtures.join(' / ')}</dd></div>
+            <div className="rounded-xl bg-muted/40 p-4"><dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">External lane</dt><dd className="mt-1 text-sm font-semibold">1-shot JSON injection</dd></div>
+          </dl>
+          <div className="mt-3 grid gap-3 md:grid-cols-2">
+            <div className="rounded-xl border border-border p-4"><p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Hard gate</p><p className="mt-1 text-sm leading-relaxed">{BENCHMARK_OVERVIEW.protocol.hardGate}</p></div>
+            <div className="rounded-xl border border-border p-4"><p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">What is not a hard score</p><p className="mt-1 text-sm leading-relaxed">{BENCHMARK_OVERVIEW.protocol.softQuality}</p></div>
+          </div>
+        </section>
+
+        <section className="mt-8 rounded-2xl border border-amber-200 bg-amber-50/60 p-5 dark:border-amber-900/60 dark:bg-amber-950/20 md:p-6" aria-labelledby="benchmark-calibration-heading">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">{BENCHMARK_OVERVIEW.calibration.date} · Contract calibration</p>
+              <h2 id="benchmark-calibration-heading" className="mt-1 text-lg font-bold">{BENCHMARK_OVERVIEW.calibration.title}</h2>
+              <p className="mt-1 max-w-4xl text-sm leading-relaxed text-muted-foreground">{BENCHMARK_OVERVIEW.calibration.summary}</p>
+            </div>
+            <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200">{BENCHMARK_OVERVIEW.calibration.status}</span>
+          </div>
+          <div className="mt-5 grid gap-4 lg:grid-cols-[0.8fr_1.2fr]">
+            <div className="rounded-xl border border-amber-200 bg-white/70 p-4 dark:border-amber-900/60 dark:bg-gray-950/30">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">External one-shot</p>
+              <p className="mt-2 text-sm font-bold">{BENCHMARK_OVERVIEW.calibration.external.model}</p>
+              <p className="mt-3 text-3xl font-bold text-emerald-700 dark:text-emerald-300">{BENCHMARK_OVERVIEW.calibration.external.firstPass}</p>
+              <p className="mt-1 text-xs text-muted-foreground">first-pass contract result</p>
+              <p className="mt-3 text-sm leading-relaxed">{BENCHMARK_OVERVIEW.calibration.external.note}</p>
+              <Link href={BENCHMARK_OVERVIEW.calibration.projectHref} className="mt-4 inline-flex rounded-lg border border-border px-3 py-2 text-sm no-underline hover:border-blue-300 hover:text-blue-600 dark:hover:border-blue-700 dark:hover:text-blue-400">Project timeline →</Link>
+            </div>
+            <div className="overflow-x-auto rounded-xl border border-border bg-white/70 dark:bg-gray-950/30">
+              <table className="min-w-[720px] w-full text-left text-xs">
+                <caption className="sr-only">Hook contract calibration before and after matrix</caption>
+                <thead className="border-b border-border text-muted-foreground">
+                  <tr><th className="px-3 py-3 font-semibold">Model</th><th className="px-3 py-3 font-semibold">1st before</th><th className="px-3 py-3 font-semibold">1st after</th><th className="px-3 py-3 font-semibold">Final before</th><th className="px-3 py-3 font-semibold">Final after</th><th className="px-3 py-3 font-semibold">Attempts after</th><th className="px-3 py-3 font-semibold">Generation</th></tr>
+                </thead>
+                <tbody>
+                  {BENCHMARK_OVERVIEW.calibration.local.map(row => <tr key={row.model} className="border-b border-border/70 last:border-0"><th scope="row" className="px-3 py-3 font-semibold">{row.model}</th><td className="px-3 py-3 text-muted-foreground">{row.beforeFirst}</td><td className="px-3 py-3 font-semibold text-emerald-700 dark:text-emerald-300">{row.afterFirst}</td><td className="px-3 py-3 text-muted-foreground">{row.beforeEventual}</td><td className="px-3 py-3 font-semibold text-emerald-700 dark:text-emerald-300">{row.afterEventual}</td><td className="px-3 py-3">{row.afterAttempts}</td><td className="px-3 py-3">{row.generationSpeed}</td></tr>)}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-2">
+            <div><p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Remaining failure patterns</p><ul className="mt-2 list-disc space-y-1 pl-5 text-sm">{BENCHMARK_OVERVIEW.calibration.remaining.map(item => <li key={item}>{item}</li>)}</ul></div>
+            <p className="text-sm leading-relaxed text-muted-foreground">{BENCHMARK_OVERVIEW.calibration.limitation}</p>
           </div>
         </section>
 
@@ -132,7 +190,7 @@ export default function BenchmarksPage() {
         <section className="mt-10 rounded-2xl border border-border bg-muted/30 p-5 md:p-6" aria-labelledby="benchmark-knowledge-heading">
           <div className="flex items-center gap-2"><BookOpen className="h-5 w-5 text-muted-foreground" aria-hidden="true" /><h2 id="benchmark-knowledge-heading" className="text-lg font-bold">Related Knowledge</h2></div>
           <div className="mt-4 flex flex-wrap gap-2">
-            {BENCHMARK_PROJECTIONS.flatMap(benchmark => benchmark.relatedKnowledge).map(knowledge => (
+            {relatedKnowledge.map(knowledge => (
               <Link key={knowledge.href} href={knowledge.href} className="rounded-lg border border-border bg-white px-3 py-2 text-sm no-underline hover:border-blue-300 hover:text-blue-600 dark:bg-gray-900 dark:hover:border-blue-700 dark:hover:text-blue-400">{knowledge.title}</Link>
             ))}
           </div>

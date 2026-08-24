@@ -129,6 +129,47 @@ export interface BenchmarkProjection {
   relatedKnowledge: Array<{ title: string; href: string }>
 }
 
+export interface BenchmarkOverviewMatrixRow {
+  model: string
+  beforeFirst: string
+  afterFirst: string
+  beforeEventual: string
+  afterEventual: string
+  beforeAttempts: string
+  afterAttempts: string
+  generationSpeed: string
+}
+
+export const BENCHMARK_OVERVIEW = {
+  protocol: {
+    target: 'YouTube Shorts script stage',
+    fixtureCount: 2,
+    fixtures: ['Science facts', 'History mystery'],
+    hardGate: 'Production JSON contract: scenes, word budget, fact_refs, image_prompt, video_prompt, time beats',
+    externalLane: 'External LLM one-shot JSON injection; no retry and no validator feedback',
+    softQuality: 'Semantic factuality, storytelling, creativity, and visual quality are not included in the hard pass',
+  },
+  calibration: {
+    title: 'Production contract calibration — pure hook `fact_refs`',
+    date: '2026.08.24',
+    status: 'Corrected',
+    summary: 'Prompt와 validator가 순수 hook의 빈 fact_refs를 다르게 해석하던 충돌을 수정했습니다. 첫 장면의 rhetorical/hypothetical hook은 concrete factual claim이 없으면 refs 없이 허용하고, factual hook과 일반 narration은 계속 근거를 요구합니다.',
+    external: {
+      model: 'Codex Subscription · gpt-5.6-luna',
+      firstPass: '1/1',
+      note: '첫 hook은 fact_refs=[]로 통과했습니다. 의미 없는 ref를 넣어 validator를 회피하지 않은 calibration 결과입니다.',
+    },
+    local: [
+      { model: 'Ornith Q5_K_M', beforeFirst: '0/2', afterFirst: '0/2', beforeEventual: '2/2', afterEventual: '1/2', beforeAttempts: '4.0', afterAttempts: '3.5', generationSpeed: '67.6 tok/s' },
+      { model: 'Ornith Q6_K', beforeFirst: '0/2', afterFirst: '1/2', beforeEventual: '2/2', afterEventual: '2/2', beforeAttempts: '3.0', afterAttempts: '1.5', generationSpeed: '60.9 tok/s' },
+      { model: 'Ornith Q8_0', beforeFirst: '0/2', afterFirst: '1/2', beforeEventual: '0/2', afterEventual: '1/2', beforeAttempts: '5.0', afterAttempts: '3.0', generationSpeed: '52.5 tok/s' },
+    ] satisfies BenchmarkOverviewMatrixRow[],
+    remaining: ['factual/non-hook scene의 refs 누락', '94–120단어 narration budget 변동', 'single repeat 기반의 높은 stochastic variance'],
+    limitation: '수정 전후 fresh matrix는 모델당 repeat 1회라 방향성으로만 해석합니다. 동일 candidate 재판정에서는 Q5·Q8의 hook 오류가 실제로 제거됐습니다.',
+    projectHref: '/labs/local-llm-benchmark',
+  },
+} as const
+
 /**
  * Curated published Benchmark assets only. Research records are never
  * promoted here merely because they carry a legacy `benchmark` label.
