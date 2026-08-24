@@ -205,6 +205,9 @@ const LLM_BENCH: Experiment = {
     '/lab/ornith15-server-quality-speed-benchmark',
   ],
   githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
+  externalLinks: [
+    { label: 'Public Prompt Packs', href: 'https://github.com/gdevsnack-ai-labs/llm-bench-prompt-packs' },
+  ],
 }
 
 const ISEKAI_MAGE: Experiment = {
