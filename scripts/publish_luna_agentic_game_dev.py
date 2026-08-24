@@ -64,6 +64,11 @@ def markdown_to_html(markdown: str) -> str:
 
     while i < len(lines):
         line = lines[i].rstrip()
+        if re.match(r'^\s*(?:</?details(?:\s[^>]*)?>|<summary>.*</summary>)\s*$', line):
+            close_list()
+            output.append(line.strip())
+            i += 1
+            continue
         if line.startswith('```'):
             if in_code:
                 output.append('<pre><code>' + html.escape('\n'.join(code_lines)) + '</code></pre>')

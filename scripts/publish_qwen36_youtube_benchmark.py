@@ -80,6 +80,7 @@ def main() -> int:
         'title': row.get('title') == TITLE,
         'content_marker': 'Qwen3.6 YouTube Script Reliability Benchmark' in row.get('content', ''),
         'table_marker': '<table>' in row.get('content', ''),
+        'collapsible_details': row.get('content', '').count('<details>') >= 9 and row.get('content', '').count('<summary>') >= 9,
         'content_length': len(row.get('content', '')) > 5000,
         'seo_desc': bool(row.get('seo_desc')),
         'private_leak': not any(token in row.get('content', '') for token in forbidden),
