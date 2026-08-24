@@ -18,11 +18,15 @@ ROUTES = [
     "/stock",
     "/aitech",
     "/realestate",
+    "/labs",
     "/lab",
+    "/benchmarks",
+    "/data",
     "/demos",
     "/demos/shortmovie",
     "/research",
     "/misc",
+    "/misc/mining-leaderboard",
     "/tools/operations",
     "/search",
     "/sitemap.xml",
@@ -89,17 +93,25 @@ def check_http(failures: list[str]) -> None:
     if not results:
         failures.append("/api/search: no results for known query")
 
-    for route in ("/sitemap.xml", "/rss.xml"):
-        _, body = fetch(route)
-        for required in (
-            "/research/dflash-2-qwen3-8-27b-vs-mtp",
-            "/lab/local-llm-benchmark-report",
-            "/misc/mining-leaderboard",
-        ):
-            if required not in body:
-                failures.append(f"{route}: missing {required}")
-            if f"/devsnack/{required.rsplit('/', 1)[-1]}" in body:
-                failures.append(f"{route}: stale devsnack fallback for {required}")
+    _, sitemap_body = fetch("/sitemap.xml")
+    _, rss_body = fetch("/rss.xml")
+    sitemap_required = (
+        "/research/dflash-2-qwen3-8-27b-vs-mtp",
+        "/lab/local-llm-benchmark-report",
+        "/misc/mining-leaderboard",
+    )
+    for required in sitemap_required:
+        if required not in sitemap_body:
+            failures.append(f"/sitemap.xml: missing {required}")
+        if f"/devsnack/{required.rsplit('/', 1)[-1]}" in sitemap_body:
+            failures.append(f"/sitemap.xml: stale devsnack fallback for {required}")
+
+    # RSS is intentionally a latest-50 feed, so an older valid item may be
+    # absent. Validate resolver correctness only when the representative item
+    # is present; require complete discovery from sitemap instead.
+    for required in sitemap_required:
+        if f"/devsnack/{required.rsplit('/', 1)[-1]}" in rss_body:
+            failures.append(f"/rss.xml: stale devsnack fallback for {required}")
 
     _, aitech_page = fetch("/aitech")
     _, aitech_page_two = fetch("/aitech?page=2")
@@ -169,14 +181,14 @@ async def check_browser(failures: list[str]) -> None:
         page = await browser.new_page(viewport={"width": 1440, "height": 900})
         await page.goto(f"{BASE_URL}/", wait_until="networkidle", timeout=60_000)
         aside = page.locator("aside")
-        await aside.get_by_role("button", name="Lab").click(force=True)
-        if "Demos" not in await aside.inner_text():
-            failures.append("desktop Lab group: Demos missing")
-        await aside.get_by_role("button", name="Tools").click(force=True)
-        if "운영중인 시스템" not in await aside.inner_text():
-            failures.append("desktop Tools group: Operations missing")
-        await aside.get_by_role("button", name="More").click(force=True)
-        if "검색" not in await aside.inner_text():
+        await aside.get_by_role("button", name="Lab", exact=True).click(force=True)
+        if "Showcase" not in await aside.inner_text():
+            failures.append("desktop Lab group: Showcase missing")
+        await aside.get_by_role("button", name="Data", exact=True).click(force=True)
+        if "Mining" not in await aside.inner_text():
+            failures.append("desktop Data group: Mining missing")
+        await aside.get_by_role("button", name="More", exact=True).click(force=True)
+        if "Search" not in await aside.inner_text():
             failures.append("desktop More group: Search missing")
         await page.close()
 
@@ -184,9 +196,9 @@ async def check_browser(failures: list[str]) -> None:
         await page.goto(f"{BASE_URL}/research", wait_until="networkidle", timeout=60_000)
         nav = page.locator("nav[data-mobile-nav]")
         await nav.get_by_role("button", name="More 메뉴").click(force=True)
-        if not await nav.get_by_role("menuitem", name="검색").is_visible():
+        if not await nav.get_by_role("menuitem", name="Search").is_visible():
             failures.append("mobile More menu: Search missing")
-        await nav.get_by_role("menuitem", name="검색").click(force=True)
+        await nav.get_by_role("menuitem", name="Search").click(force=True)
         await page.wait_for_timeout(500)
         if not page.url.endswith("/search"):
             failures.append(f"mobile More → Search route: {page.url}")
@@ -226,7 +238,7 @@ def main() -> int:
             print(f"- {failure}")
         return 1
     print(f"SITE AUDIT PASSED: {BASE_URL}")
-    print("- HTTP routes: 14/14")
+    print(f"- HTTP routes: {len(ROUTES)}/{len(ROUTES)}")
     print("- Search canonical mapping: passed")
     print("- Sitemap/RSS stale fallback: 0")
     print("- Pagination smoke: passed")
