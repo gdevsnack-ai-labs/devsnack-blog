@@ -69,7 +69,7 @@ async function LabPostPage({ slug }: { slug: string }) {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-4 py-4">
-        <Link href="/lab" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground no-underline mb-6">
+        <Link href="/labs" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground no-underline mb-6">
           <ArrowLeft className="w-4 h-4" />
           Lab으로 돌아가기
         </Link>
@@ -137,7 +137,7 @@ async function ExperimentDetailPage({ id }: { id: string }) {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto min-w-0 px-4 py-8">
-        <Link href="/lab" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground no-underline mb-6">
+        <Link href="/labs" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground no-underline mb-6">
           <ArrowLeft className="w-4 h-4" />
           Lab으로 돌아가기
         </Link>
