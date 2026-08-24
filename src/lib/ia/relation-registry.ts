@@ -42,6 +42,16 @@ export const ASSET_RELATIONS: AssetRelation[] = [
   },
   {
     from: projectRef('local-llm-benchmark'),
+    relation: 'published_as',
+    to: postRef('lab', 'ornith15-server-quality-speed-benchmark'),
+  },
+  {
+    from: postRef('research', 'ornith-1-5-gguf-gb10'),
+    relation: 'informs',
+    to: projectRef('local-llm-benchmark'),
+  },
+  {
+    from: projectRef('local-llm-benchmark'),
     relation: 'outputs',
     to: demoRef('html', 'ragdoll-playground-qwen3.8'),
   },

@@ -21,9 +21,21 @@ const CATEGORY_META = [
   { id: 'generative-ai' as const, label: 'Generative AI', description: '이미지·영상·음악 생성 측정' },
 ]
 
+function familyAnchor(family: string): string {
+  return `benchmark-family-${family.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
+}
+
 export default function BenchmarksPage() {
   const availableCategories = CATEGORY_META.filter(category => getBenchmarksByCategory(category.id).length > 0)
   const related = getRelatedAssets('project:local-llm-benchmark')
+  const benchmarkFamilies = Array.from(
+    BENCHMARK_PROJECTIONS.reduce((groups, benchmark) => {
+      const current = groups.get(benchmark.family) || []
+      current.push(benchmark)
+      groups.set(benchmark.family, current)
+      return groups
+    }, new Map<string, typeof BENCHMARK_PROJECTIONS>()),
+  )
 
   return (
     <div className="min-h-screen bg-background">
@@ -71,14 +83,46 @@ export default function BenchmarksPage() {
           )}
         </section>
 
+        <section className="mt-10 rounded-2xl border border-border bg-muted/30 p-5 md:p-6" aria-labelledby="benchmark-family-heading">
+          <div className="mb-4">
+            <h2 id="benchmark-family-heading" className="text-lg font-bold">Model Families</h2>
+            <p className="mt-1 text-sm text-muted-foreground">모델이 늘어나도 결과를 패밀리별로 찾아볼 수 있습니다.</p>
+          </div>
+          <nav aria-label="Benchmark model families" className="flex flex-wrap gap-2">
+            {benchmarkFamilies.map(([family, items]) => (
+              <a
+                key={family}
+                href={`#${familyAnchor(family)}`}
+                className="inline-flex items-center gap-2 rounded-lg border border-border bg-white px-3 py-2 text-sm no-underline hover:border-blue-300 hover:text-blue-600 dark:bg-gray-900 dark:hover:border-blue-700 dark:hover:text-blue-400"
+              >
+                <span className="font-semibold">{family}</span>
+                <span className="text-xs text-muted-foreground">{items.length} result</span>
+              </a>
+            ))}
+          </nav>
+        </section>
+
         <section className="mt-10" aria-labelledby="recent-benchmarks-heading">
           <div className="mb-4">
             <h2 id="recent-benchmarks-heading" className="text-xl font-bold">Latest Result</h2>
             <p className="mt-1 text-sm text-muted-foreground">가장 최근에 검증된 Benchmark Asset입니다.</p>
           </div>
-          {BENCHMARK_PROJECTIONS.length > 0 ? (
-            <div className="space-y-4">
-              {BENCHMARK_PROJECTIONS.map(benchmark => <BenchmarkResultCard key={benchmark.asset.assetId} benchmark={benchmark} />)}
+          {benchmarkFamilies.length > 0 ? (
+            <div className="space-y-8">
+              {benchmarkFamilies.map(([family, items]) => (
+                <section key={family} id={familyAnchor(family)} className="scroll-mt-6" aria-labelledby={`${familyAnchor(family)}-heading`}>
+                  <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+                    <div>
+                      <h3 id={`${familyAnchor(family)}-heading`} className="text-lg font-bold">{family}</h3>
+                      <p className="mt-1 text-xs text-muted-foreground">{items.map(item => item.measurement).join(' · ')}</p>
+                    </div>
+                    <span className="text-xs text-muted-foreground">{items.length} published result</span>
+                  </div>
+                  <div className="space-y-4">
+                    {items.map(benchmark => <BenchmarkResultCard key={benchmark.asset.assetId} benchmark={benchmark} />)}
+                  </div>
+                </section>
+              ))}
             </div>
           ) : (
             <div className="rounded-xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">No published benchmark yet</div>

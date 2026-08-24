@@ -9,6 +9,8 @@ export function BenchmarkResultCard({ benchmark }: { benchmark: BenchmarkProject
         <Gauge className="h-4 w-4" aria-hidden="true" />
         Published Benchmark Result
         <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] normal-case text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">{benchmark.asset.primaryType}</span>
+        <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] normal-case text-muted-foreground">{benchmark.family}</span>
+        <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] normal-case text-muted-foreground">{benchmark.measurement}</span>
       </div>
       <h2 className="mt-3 text-xl font-bold leading-tight md:text-2xl">{benchmark.title}</h2>
       <div className="mt-5 grid gap-3 sm:grid-cols-2">

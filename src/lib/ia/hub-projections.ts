@@ -113,6 +113,8 @@ export function getLabCollectionProjects(
 export interface BenchmarkProjection {
   asset: AssetRef
   title: string
+  family: string
+  measurement: string
   categoryIds: Array<'llm' | 'inference' | 'hardware' | 'generative-ai'>
   target: string
   environment: string
@@ -134,16 +136,45 @@ export interface BenchmarkProjection {
 export const BENCHMARK_PROJECTIONS: BenchmarkProjection[] = [
   {
     asset: assetFromLegacyPost({
+      slug: 'ornith15-server-quality-speed-benchmark',
+      title: 'Ornith-1.5 서버 품질·실사용 속도 Benchmark — Q5/Q6/Q8 비교',
+      blog_id: 'lab',
+      status: 'live',
+    }),
+    title: 'Ornith-1.5 서버 품질·실사용 속도 Benchmark — Q5/Q6/Q8 비교',
+    family: 'Ornith-1.5',
+    measurement: 'Quality + Real-use Speed',
+    categoryIds: ['llm', 'inference', 'hardware'],
+    target: 'Ornith-1.5-35B-A3B-MTP Q5_K_M / Q6_K / Q8_0',
+    environment: 'DGX Spark GB10 · 121GiB unified memory · llama-server · 64K context',
+    method: '모델당 서버를 한 번 로드하고 실제 Science·History production 품질 prompt를 스트리밍 실행; 별도 synthetic speed lane 없이 prompt/generation tok/s·TTFT·MTP acceptance를 함께 측정',
+    baseline: '동일한 production validator와 최대 5회 재생성 조건을 모든 모델에 적용',
+    result: 'Q5는 64.6 tok/s·5회 내 품질 2/2, Q6은 59.8 tok/s·2/2, Q8은 54.4 tok/s·0/2; 세 모델 모두 OOM·인프라 오류 없음',
+    comparison: 'Q5는 속도·용량 균형, Q6은 더 적은 재시도로 수렴, Q8은 가장 큰 파일에도 품질 게이트 우위 미확인',
+    interpretation: '실제 긴 대본 요청에서 품질과 속도를 함께 보면 Q5_K_M이 가장 실용적인 첫 후보였고, Q6_K은 품질 우선 후보로 남았다. Q8_0은 현재 structured output 계약과 맞지 않았다.',
+    limitations: '모델당 두 fixture·반복 1회, reasoning on/off·MTP off·coding/tool call·사람의 의미 품질 평가는 포함하지 않음',
+    contentHref: '/lab/ornith15-server-quality-speed-benchmark',
+    projectHref: '/labs/local-llm-benchmark',
+    relatedKnowledge: [
+      { title: 'Ornith-1.5 GGUF — 공식 양자화와 GB10 실측', href: '/research/ornith-1-5-gguf-gb10' },
+      { title: 'Qwen3.6 YouTube 대본 품질 Benchmark', href: '/lab/qwen36-youtube-script-reliability-benchmark' },
+      { title: 'Local LLM Benchmark 실험 프로젝트', href: '/labs/local-llm-benchmark' },
+    ],
+  },
+  {
+    asset: assetFromLegacyPost({
       slug: 'qwen36-youtube-script-reliability-benchmark',
       title: 'Qwen3.6 YouTube Script Reliability Benchmark — 실제 자동화 대본 생성 재현성 측정',
       blog_id: 'lab',
       status: 'live',
     }),
     title: 'Qwen3.6 YouTube Script Reliability Benchmark — 실제 자동화 대본 생성 재현성 측정',
+    family: 'Qwen3.6',
+    measurement: 'Quality / Reliability',
     categoryIds: ['llm', 'inference', 'hardware'],
-    target: 'Qwen3.6-35B-A3B NVFP4 MTP HQ · YouTube Shorts script stage',
+    target: 'Qwen3.6-35B-A3B variants · YouTube Shorts script stage',
     environment: 'DGX Spark GB10 · 121GiB unified memory · llama.cpp llama-cli · 64K context',
-    method: '기존 HQ 2 fixture × 2회 반복에 더해 외장 미디어의 6개 모델을 fixture당 1회씩 측정; production prompt/validator, 최대 5회 재생성, 각 시도는 llama-cli --single-turn',
+    method: 'HQ 기준선과 외장 미디어의 6개 모델을 Science·History fixture당 1회씩 측정; production prompt/validator, 최대 5회 재생성, 각 시도는 llama-cli --single-turn',
     baseline: '실제 production 기준 대본 2개 모두 validator 통과',
     result: '추가 6종 품질 벤치: 12회 fixture 실행에서 1차 통과 2/12 (16.7%), 5회 내 최종 통과 9/12 (75%), 평균 3.1회; 기존 HQ 기준선 4회는 1차 50%, 최종 75%',
     comparison: 'NVFP4 TURBO·Q8_0·Qwopus Balanced/Quality는 최종 100%, APEX Balanced는 50%, UD-Q6_K_XL은 0%; 모델당 2 fixture라 방향성 비교로 해석',
@@ -164,6 +195,8 @@ export const BENCHMARK_PROJECTIONS: BenchmarkProjection[] = [
       status: 'live',
     }),
     title: 'Local LLM Benchmark — Qwen3.8-27B Ridge 3.7bpw 실측 리포트',
+    family: 'Qwen3.8',
+    measurement: 'Serving / Speed',
     categoryIds: ['llm', 'inference'],
     target: 'Qwen3.8-27B Ridge 3.7bpw',
     environment: 'NVIDIA DGX Spark GB10 · 128GB unified memory',
@@ -276,6 +309,7 @@ const KNOWN_POST_TITLES: Record<string, string> = {
   'post:research:qwen3-8-27b-nvfp4-mtp-gguf-gb10': 'Qwen3.8-27B NVFP4 MTP — GB10 로컬 테스트',
   'post:research:dflash-2-qwen3-8-27b-vs-mtp': 'DFlash 2 + Qwen3.8-27B 비교 조사',
   'post:lab:local-llm-benchmark-report': 'Local LLM Benchmark 실측 리포트',
+  'post:lab:ornith15-server-quality-speed-benchmark': 'Ornith-1.5 서버 품질·실사용 속도 Benchmark',
   'post:lab:qwen36-youtube-script-reliability-benchmark': 'Qwen3.6 YouTube Script Reliability Benchmark',
   'post:devsnack:ai-llm-omok-experiment': 'AI Omok 실험 이야기',
   'post:devsnack:ai-built-gomoku-engine-vs-rapfi': 'AI가 만든 Gomoku 엔진 이야기',
@@ -347,7 +381,7 @@ function endpointToRelatedLink(endpoint: string, relation: RelationType): Relate
       relationLabel: RELATION_LABEL[relation],
       title: KNOWN_POST_TITLES[endpoint] || `${blogId} content`,
       href,
-      kind: blogId === 'research' ? 'knowledge' : blogId === 'devsnack' ? 'story' : blogId === 'lab' && (slug === 'local-llm-benchmark-report' || slug === 'qwen36-youtube-script-reliability-benchmark') ? 'benchmark' : blogId === 'lab' ? 'experiment' : 'knowledge',
+      kind: blogId === 'research' ? 'knowledge' : blogId === 'devsnack' ? 'story' : blogId === 'lab' && (slug === 'local-llm-benchmark-report' || slug === 'qwen36-youtube-script-reliability-benchmark' || slug === 'ornith15-server-quality-speed-benchmark') ? 'benchmark' : blogId === 'lab' ? 'experiment' : 'knowledge',
     }
   }
 

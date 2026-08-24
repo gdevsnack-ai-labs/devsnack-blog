@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
-"""Publish the Qwen3.6 YouTube script reliability benchmark to Supabase."""
+"""Publish the Ornith-1.5 server quality/speed benchmark to the Lab."""
 
 from __future__ import annotations
 
 import json
-import re
 import sys
 import urllib.parse
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-MARKDOWN_FILE = ROOT / 'docs/benchmarks/qwen36-youtube-script-reliability.md'
-SLUG = 'qwen36-youtube-script-reliability-benchmark'
+MARKDOWN_FILE = ROOT / 'docs/benchmarks/ornith15-server-quality-speed.md'
+SLUG = 'ornith15-server-quality-speed-benchmark'
 BLOG_ID = 'lab'
-TITLE = 'Qwen3.6 YouTube Script Reliability Benchmark — 실제 자동화 대본 생성 재현성 측정'
+TITLE = 'Ornith-1.5 서버 품질·실사용 속도 Benchmark — Q5/Q6/Q8 비교'
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from publish_luna_agentic_game_dev import load_env, markdown_to_html, request_json  # noqa: E402
@@ -34,36 +33,26 @@ def main() -> int:
     content_html = markdown_to_html(markdown)
     forbidden = (
         '/home/', '~/content-factory', '192.168.', '127.0.0.1', 'localhost',
-        'FORGEJO_TOKEN', 'SUPABASE_SERVICE_ROLE', '사장님', '글쓴이의 내부 경로',
+        'FORGEJO_TOKEN', 'SUPABASE_SERVICE_ROLE', '사장님', '[로컬]', '[IP]',
     )
     leaked = [token for token in forbidden if token in markdown or token in content_html]
     if leaked:
         raise SystemExit(f'public safety scan failed: {leaked}')
 
     now = datetime.now(timezone(timedelta(hours=9))).isoformat(timespec='seconds')
-    encoded_slug = urllib.parse.quote(SLUG, safe='')
-    existing_url = (
-        f'{supabase_url}/rest/v1/posts?slug=eq.{encoded_slug}'
-        f'&blog_id=eq.{BLOG_ID}&select=published,blogger_id,cover_image&limit=1'
-    )
-    existing_status, existing_rows = request_json(existing_url, {
-        'apikey': anon_key,
-        'Authorization': f'Bearer {service_key}',
-    })
-    existing = existing_rows[0] if existing_status == 200 and isinstance(existing_rows, list) and existing_rows else {}
     body = {
         'slug': SLUG,
         'title': TITLE,
         'content': content_html,
-        'excerpt': 'Qwen3.6-35B-A3B NVFP4 MTP HQ를 실제 YouTube Shorts 대본 생성에 넣고, 첫 시도 통과율과 5회 재시도 수렴성을 측정한 운영형 로컬 모델 벤치마크입니다.',
-        'seo_desc': 'DGX Spark GB10에서 Qwen3.6-35B-A3B NVFP4 MTP HQ의 실제 YouTube 대본 생성 재현성과 재시도 안정성을 측정한 로컬 모델 벤치마크 결과입니다.',
-        'labels': ['benchmark', 'llm', 'inference', 'Qwen3.6', 'GGUF', 'NVFP4', 'MTP', 'DGX Spark', 'YouTube automation'],
-        'published': existing.get('published') or now,
+        'excerpt': 'Ornith-1.5-35B-A3B Q5_K_M·Q6_K·Q8_0을 실제 YouTube 대본 품질 요청에서 비교하고, 같은 요청의 prompt 처리·생성 속도·TTFT·MTP acceptance를 측정한 GB10 로컬 Benchmark입니다.',
+        'seo_desc': 'DGX Spark GB10에서 Ornith-1.5-35B-A3B Q5/Q6/Q8 GGUF를 실제 YouTube 대본 품질과 실사용 속도로 비교한 로컬 Benchmark 결과입니다.',
+        'labels': ['benchmark', 'llm', 'inference', 'Ornith-1.5', 'GGUF', 'Q5_K_M', 'Q6_K', 'Q8_0', 'MTP', 'DGX Spark'],
+        'published': now,
         'updated': now,
         'status': 'live',
         'blog_id': BLOG_ID,
-        'cover_image': existing.get('cover_image'),
-        'blogger_id': existing.get('blogger_id') or 'benchmark-qwen36-youtube-20260824',
+        'cover_image': None,
+        'blogger_id': 'benchmark-ornith15-server-quality-speed-20260824',
     }
     headers = {
         'apikey': anon_key,
@@ -88,9 +77,8 @@ def main() -> int:
         'blog_id': row.get('blog_id') == BLOG_ID,
         'status': row.get('status') == 'live',
         'title': row.get('title') == TITLE,
-        'content_marker': 'Qwen3.6 YouTube Script Reliability Benchmark' in row.get('content', ''),
+        'content_marker': 'Ornith-1.5 서버 품질·실사용 속도 Benchmark' in row.get('content', ''),
         'table_marker': '<table>' in row.get('content', ''),
-        'collapsible_details': row.get('content', '').count('<details>') >= 9 and row.get('content', '').count('<summary>') >= 9,
         'content_length': len(row.get('content', '')) > 5000,
         'seo_desc': bool(row.get('seo_desc')),
         'private_leak': not any(token in row.get('content', '') for token in forbidden),

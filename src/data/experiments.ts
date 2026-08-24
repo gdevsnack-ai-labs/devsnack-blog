@@ -184,7 +184,7 @@ const LLM_BENCH: Experiment = {
   category: 'running',
   startedAt: '2026.08.18',
   whyText: 'GB10(128GB 통합 메모리, Blackwell sm_120)에서 27B급 dense 모델의 현실적 로컬 라인이 어디까지인지 실측한다. GPU 메모리 여유가 커서 NVFP4 같은 고밀도 양자화를 그대로 활용할 수 있고, MTP 헤드 내장 모델은 별도 드래프터 없이 스펙 디코딩을 켤 수 있다. 스펙만 보면 되는 게 아니라 실제 서빙 부하(4슬롯 동시)와 생성 품질(단일 프롬프트 → 산출물)까지 봐야 판단할 수 있다.',
-  nextGoals: ['thinking ON/OFF 품질 차이 검증', 'Self Bench Pack 24종 에이전트 실행 (8080 qwen3.5-35b)', '벤치마크 자동화 스크립트 구축', 'Ridge vs NVFP4HIGH 속도·품질 비교'],
+  nextGoals: ['Qwen3.6 HQ·TURBO·Q8_0 서버 속도 반복 측정', 'Ornith reasoning ON/OFF 및 coding/tool-call lane 분리 측정', 'Self Bench Pack 24종 에이전트 실행 (8080 qwen3.5-35b)', '벤치마크 자동화 스크립트와 모델 패밀리 메뉴 확장'],
   timeline: [
     { name: '실행 스크립트 4종 작성',     status: '완료',   date: '2026.08.18', result: 'HIGH/VERY-HIGH × thinking ON/OFF, MTP n-max 6 + p-min 0.75' },
     { name: '단일 테스트 실측',            status: '완료',   date: '2026.08.18', result: '프리필 680~930 t/s, 디코드 17~19.5 t/s, 수락률 93.1%' },
@@ -193,10 +193,16 @@ const LLM_BENCH: Experiment = {
     { name: 'Self Bench Pack 자체 설계 (24종)', status: '완료', date: '2026.08.18', result: 'TokenChaser 84개 참고·한영 이중언어 + 자기검증 루프 내장, 오픈코드 에이전트 실행기 구축' },
     { name: '실사용 데모 — Stock Dashboard (Ridge 3.7bpw)', status: '완료', date: '2026.08.19', result: 'Qwen3.8-27B Ridge 3.7bpw로 KOSPI/KOSDAQ 대시보드 1회 생성. 디코드 ~29 t/s, MTP 수락률 ~88%, worklog+llama_log 기록', blogSlug: '/lab/local-llm-benchmark-report' },
     { name: 'HTML in Canvas 데모', status: '완료', date: '2026.08.20', result: 'Canvas bitmap + HTML DOM overlay + html2canvas snapshot을 단일 HTML로 공개', blogSlug: '/research/html-in-canvas-dom-overlay-rasterization' },
+    { name: 'Qwen3.6 YouTube 대본 품질 비교', status: '완료', date: '2026.08.24', result: '6종 파생 모델을 같은 Science·History production fixture로 비교. 12회 실행에서 5회 내 최종 통과 9/12, 평균 3.1회', blogSlug: '/lab/qwen36-youtube-script-reliability-benchmark' },
+    { name: 'Ornith-1.5 서버 품질·실사용 속도', status: '완료', date: '2026.08.24', result: 'Q5/Q6/Q8을 모델당 한 번 로드해 실제 긴 품질 prompt에서 속도 측정. Q5 64.6 tok/s·2/2, Q6 59.8 tok/s·2/2, Q8 54.4 tok/s·0/2', blogSlug: '/lab/ornith15-server-quality-speed-benchmark' },
     { name: '벤치 프롬프트 에이전트 실행', status: '예정',   result: '8080 qwen3.5-35b 백본, 생성→테스트→수정 루프' },
     { name: '다른 모델과 비교 (Muse Glimmer 30B 등)', status: '예정' },
   ],
-  blogPosts: ['/research/qwen3-8-27b-nvfp4-mtp-gguf-gb10'],
+  blogPosts: [
+    '/research/qwen3-8-27b-nvfp4-mtp-gguf-gb10',
+    '/lab/qwen36-youtube-script-reliability-benchmark',
+    '/lab/ornith15-server-quality-speed-benchmark',
+  ],
   githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
 }
 

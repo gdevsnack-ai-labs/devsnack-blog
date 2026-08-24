@@ -45,6 +45,7 @@ CONTENT_ROUTES = [
     "/devsnack/gemma-4-mtp-drafter-dgx-spark-3-31b",
     "/aitech/ai-mistral",
     "/lab/local-llm-benchmark-report",
+    "/lab/ornith15-server-quality-speed-benchmark",
     "/lab/isekai-instagram-mage-experiment",
     "/lab/isekai-instagram-mage-prologue",
     "/research/dflash-2-qwen3-8-27b-vs-mtp",
@@ -98,6 +99,7 @@ def check_http(failures: list[str]) -> None:
     sitemap_required = (
         "/research/dflash-2-qwen3-8-27b-vs-mtp",
         "/lab/local-llm-benchmark-report",
+        "/lab/ornith15-server-quality-speed-benchmark",
         "/misc/mining-leaderboard",
     )
     for required in sitemap_required:

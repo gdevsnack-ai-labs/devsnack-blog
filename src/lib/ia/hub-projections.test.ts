@@ -9,9 +9,11 @@ function expectTrue(value: boolean, message: string) {
   if (!value) throw new Error(message)
 }
 
-expectEqual(BENCHMARK_PROJECTIONS.length, 2, 'curated published Benchmarks should be exposed')
-expectEqual(BENCHMARK_PROJECTIONS[0].asset.assetId, 'post:lab:qwen36-youtube-script-reliability-benchmark', 'newest YouTube reliability Benchmark should lead the collection')
+expectEqual(BENCHMARK_PROJECTIONS.length, 3, 'curated published Benchmarks should be exposed')
+expectEqual(BENCHMARK_PROJECTIONS[0].asset.assetId, 'post:lab:ornith15-server-quality-speed-benchmark', 'newest Ornith server Benchmark should lead the collection')
 expectEqual(BENCHMARK_PROJECTIONS[0].asset.primaryType, 'benchmark', 'Benchmark Hub assets must keep benchmark primary type')
+expectEqual(BENCHMARK_PROJECTIONS[0].family, 'Ornith-1.5', 'Ornith result should be grouped under its model family')
+expectEqual(BENCHMARK_PROJECTIONS[0].measurement, 'Quality + Real-use Speed', 'Ornith result should expose its measurement lane')
 expectEqual(getLabCollection('local-llm-benchmark'), undefined, 'Local LLM Benchmark must not be duplicated as a generic Lab Experiment')
 expectEqual(getLabCollection('autonomous-ai-blog'), 'experiments', 'autonomous AI project must appear in the Lab board')
 expectEqual(getLabCollection('ai-omok'), 'experiments', 'AI Omok must remain an Experiment')

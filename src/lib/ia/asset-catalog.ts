@@ -84,6 +84,14 @@ const POST_OVERRIDES: Record<string, Partial<PostClassification>> = {
     provenance: 'ai_assisted',
     classification: 'confirmed',
   },
+  'lab:ornith15-server-quality-speed-benchmark': {
+    primaryType: 'benchmark',
+    role: 'report',
+    projectId: 'local-llm-benchmark',
+    domain: ['llm', 'inference', 'hardware'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
   'lab:qwen36-youtube-script-reliability-benchmark': {
     primaryType: 'benchmark',
     role: 'report',

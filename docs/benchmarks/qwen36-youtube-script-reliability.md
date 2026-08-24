@@ -1089,7 +1089,7 @@ RULES:
 </details>
 ## Additional Quantization Quality Comparison
 
-기존 HQ 기준선에 이어 외장 미디어에 보관된 Qwen3.6 35B 파생 모델 5종을 같은 production 품질 게이트로 추가 측정했다. 품질만 비교하기 위해 토큰 속도나 이미지 생성은 평가하지 않았고, Science·History fixture를 모델마다 1회씩 실행했다.
+기존 HQ 기준선에 이어 외장 미디어에 보관된 Qwen3.6 35B 파생 모델 6종을 같은 production 품질 게이트로 추가 측정했다. 품질만 비교하기 위해 토큰 속도나 이미지 생성은 평가하지 않았고, Science·History fixture를 모델마다 1회씩 실행했다.
 
 ### Protocol
 
@@ -1134,3 +1134,4 @@ RULES:
 - `/benchmarks` — 공개 Benchmark 모음
 - `/labs/local-llm-benchmark` — 로컬 LLM 실험 프로젝트
 - `/research/qwen3-8-27b-nvfp4-mtp-gguf-gb10` — 관련 모델 조사 자료
+- `/lab/ornith15-server-quality-speed-benchmark` — Ornith-1.5 서버 품질·실사용 속도 비교
