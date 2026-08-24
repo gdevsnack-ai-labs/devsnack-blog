@@ -133,6 +133,46 @@ PYTHONPATH=. python3 run_benchmark.py report --run-dir results/<timestamp>
 
 `--allow-coresident`는 기존 Qwen/Hindsight 서버를 유지한 채 실행하는 옵션이다. 이미지 생성 등 GPU-heavy 단계는 이 벤치마크에 포함하지 않는다.
 
+## Additional Quantization Quality Comparison
+
+기존 HQ 기준선에 이어 외장 미디어에 보관된 Qwen3.6 35B 파생 모델 5종을 같은 production 품질 게이트로 추가 측정했다. 품질만 비교하기 위해 토큰 속도나 이미지 생성은 평가하지 않았고, Science·History fixture를 모델마다 1회씩 실행했다.
+
+### Protocol
+
+- 모델당 2개 fixture: Science + History
+- 모델당 반복: 1회
+- 최대 재생성: 5회
+- Context: 65,536
+- KV cache: Q8_0 / Q8_0
+- GPU offload: 999 layers
+- 기존 8080 Qwen 서버와 동시 실행
+- Q8_0은 모델 파일에 MTP 표기가 없어 `draft-mtp` 없이 실행
+- 나머지 MTP 모델은 `--spec-type draft-mtp` 사용
+
+### Model quality results
+
+| 모델 | 파일 크기 | 1차 통과 | 5회 내 통과 | 평균 시도 | 평균 validator penalty |
+|---|---:|---:|---:|---:|---:|
+| Qwen3.6 NVFP4 MTP TURBO | 19.01GiB | 1/2 (50%) | 2/2 (100%) | 1.5 | 5.33 |
+| Qwen3.6 Q8_0 | 35.21GiB | 0/2 (0%) | 2/2 (100%) | 2.0 | 8.00 |
+| Qwen3.6 APEX MTP-I Balanced | 24.27GiB | 1/2 (50%) | 1/2 (50%) | 3.0 | 6.83 |
+| Qwopus3.6 APEX MTP-I Balanced | 24.27GiB | 0/2 (0%) | 2/2 (100%) | 4.0 | 5.62 |
+| Qwopus3.6 APEX MTP-I Quality | 21.87GiB | 0/2 (0%) | 2/2 (100%) | 3.0 | 6.67 |
+
+`validator penalty`는 production validator가 반환한 문제 수 기반 점수이며 **0점이 가장 좋다**. 완성된 후보만 보는 점수가 아니라, 각 모델의 첫 결과와 재시도 결과를 모두 포함한 평균이다.
+
+### Reading the result
+
+추가 5종 전체는 10회 fixture 실행에서 1차 통과 **2/10 (20%)**, 5회 내 최종 통과 **9/10 (90%)**, 평균 시도 **2.7회**였다. 인프라 오류는 없었다.
+
+- **NVFP4 TURBO**: 최종 통과율 100%, 평균 시도 1.5회로 이번 추가 비교에서 가장 안정적이었다.
+- **Q8_0**: 최종 통과율은 100%였지만 첫 시도는 0/2였고, 모델 크기 때문에 생성 시간도 가장 길었다.
+- **APEX Balanced**: Science fixture가 5회 후에도 128단어로 남아 최종 실패했다. History는 첫 시도에 통과했다.
+- **Qwopus Balanced**: 두 fixture 모두 최종 통과했지만 History가 5회까지 필요해 재시도 의존도가 높았다.
+- **Qwopus Quality**: 두 fixture 모두 최종 통과했지만 첫 시도 통과는 없었고, 평균 3회가 필요했다.
+
+이번 결과만으로 “Quality”라는 이름의 변형이 production 품질이 더 좋다고 결론 내릴 수는 없다. 현재 표본은 모델당 2개 fixture뿐이며, 실제 차이는 더 많은 반복과 사람의 의미·사실성 평가를 함께 해야 한다.
+
 ## Related
 
 - `/benchmarks` — 공개 Benchmark 모음
