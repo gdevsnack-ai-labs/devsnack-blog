@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation'
 import { experiments } from '@/data/experiments'
 import { ProgressBar } from '@/components/progress-bar'
 import { getCurrentStage, getDomainLabel, getKeyFinding, getKeyMetrics, getKeyResults, getLabBoardMetadata, getLatestResult, getNature, getSortedTimeline, LAB_FILTERS } from '@/lib/labs'
+import { getPublishedLabNotes } from '@/lib/lab-notes'
+import { mergePublishedLabNotes } from '@/lib/lab-note-projection'
 import { getRelatedAssets } from '@/lib/ia/hub-projections'
 import { RelatedAssets } from '@/components/related-assets'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
@@ -48,8 +50,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function LabsDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const experiment = experiments.find(item => item.id === id)
-  if (!experiment) notFound()
+  const sourceExperiment = experiments.find(item => item.id === id)
+  if (!sourceExperiment) notFound()
+
+  const experiment = id === 'stockpulse-ai-self-improvement'
+    ? mergePublishedLabNotes(sourceExperiment, await getPublishedLabNotes('stockpulse-self-'))
+    : sourceExperiment
 
   const nature = getNature(experiment)
   const keyFinding = getKeyFinding(experiment)
@@ -162,6 +168,7 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
                     <div className="flex shrink-0 items-center gap-2 pl-5 text-xs text-muted-foreground sm:pl-0">
                       <span>{item.date || '날짜 미기록'}</span>
                       <span>{item.status}</span>
+                      {item.blogSlug && <Link href={item.blogSlug} className="text-blue-600 no-underline hover:underline dark:text-blue-400">Lab Note</Link>}
                     </div>
                   </div>
                 </article>
