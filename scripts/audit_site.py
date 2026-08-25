@@ -17,7 +17,7 @@ ROUTES = [
     "/devsnack",
     "/stock",
     "/aitech",
-    "/realestate",
+
     "/labs",
     "/lab",
     "/benchmarks",
@@ -36,7 +36,7 @@ BLOG_PATHS = {
     "devsnack": "/devsnack/",
     "stockpulse": "/stock/",
     "aitech": "/aitech/",
-    "realestate": "/realestate/",
+
     "lab": "/lab/",
     "research": "/research/",
     "misc": "/misc/",

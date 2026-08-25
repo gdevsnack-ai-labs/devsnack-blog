@@ -4,7 +4,7 @@ const INDEX_ROUTES = new Set([
   '/',
   '/devsnack',
   '/stock',
-  '/realestate',
+
   '/aitech',
   '/labs',
   '/benchmarks',

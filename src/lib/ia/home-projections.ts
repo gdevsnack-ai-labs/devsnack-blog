@@ -153,14 +153,7 @@ export function projectHomeDataServices(snapshot: DataHubSnapshot): HomeDataServ
       status: snapshot.stockPulse?.title,
       updated: formatDate(snapshot.stockPulse?.updated || snapshot.stockPulse?.published),
     },
-    {
-      title: 'Real Estate',
-      type: 'Tracker',
-      href: '/realestate',
-      description: 'Public transaction data tracker',
-      status: snapshot.realEstate.latestData ? `최근 데이터 ${snapshot.realEstate.latestData}` : undefined,
-      updated: snapshot.realEstate.available ? `${snapshot.realEstate.recordCount.toLocaleString('ko-KR')}개 집계 row` : undefined,
-    },
+
     {
       title: 'Mining',
       type: 'Tracker',

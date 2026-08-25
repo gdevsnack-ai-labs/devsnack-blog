@@ -70,10 +70,7 @@ export default function LinksPage() {
             <div className="font-medium group-hover:text-green-600 transition-colors">StockPulse</div>
             <div className="text-xs text-muted-foreground">AI 기반 주식 시장 분석</div>
           </Link>
-          <Link href="/realestate" className="p-4 rounded-xl border bg-white dark:bg-gray-900 hover:shadow-md transition-all no-underline group">
-            <div className="font-medium group-hover:text-orange-600 transition-colors">부동산 실거래</div>
-            <div className="text-xs text-muted-foreground">아파트 실거래가 동향</div>
-          </Link>
+
           <Link href="/aitech" className="p-4 rounded-xl border bg-white dark:bg-gray-900 hover:shadow-md transition-all no-underline group">
             <div className="font-medium group-hover:text-purple-600 transition-colors">AI Tech Insight</div>
             <div className="text-xs text-muted-foreground">AI 뉴스 및 산업 분석</div>

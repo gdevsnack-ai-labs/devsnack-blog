@@ -53,12 +53,7 @@ const POST_DEFAULTS: Record<string, PostClassification> = {
     provenance: 'automated',
     classification: 'ambiguous',
   },
-  realestate: {
-    primaryType: 'tracker',
-    domain: ['real_estate'],
-    provenance: 'data_generated',
-    classification: 'confirmed',
-  },
+
   misc: {
     primaryType: 'knowledge',
     domain: ['other'],

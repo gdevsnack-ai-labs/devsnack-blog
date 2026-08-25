@@ -43,8 +43,7 @@
 | `/devsnack/[slug]` | Dynamic | DevSnack 개별 글 |
 | `/stock` | ISR 60s | StockPulse 주식 분석 |
 | `/stock/[slug]` | Dynamic | StockPulse 개별 리포트 |
-| `/realestate` | Static | 부동산 실거래 대시보드 |
-| `/realestate/[slug]` | Dynamic | 부동산 개별 글 |
+
 | `/aitech` | ISR 60s | AI Tech Insight 목록 |
 | `/aitech/[slug]` | Dynamic | AI Tech 개별 글 |
 | `/lab` | ISR 60s | Lab 대시보드 (실험 목록) |
@@ -101,8 +100,7 @@ src/
   → 리포트 읽기
   → 로컬 Qwen3.5-35B (제목 생성)
   → matplotlib (차트 썸네일)
-  → Blogger API (발행)
-  → Supabase REST API (INSERT)
+  → Supabase REST API (direct INSERT)
   → Vercel ISR 60초 내 반영
 ```
 
@@ -117,5 +115,5 @@ src/
 ## 🔐 보안
 
 - Supabase 키: Vercel 환경변수 (`NEXT_PUBLIC_SUPABASE_*`)
-- OAuth 토큰: GitHub Secret (Blogger API)
+- OAuth 토큰: Google Drive image upload only (Blogger publishing removed)
 - `.env*.local` → `.gitignore` (`.env.example`만 공개)

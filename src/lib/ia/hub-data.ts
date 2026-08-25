@@ -1,5 +1,3 @@
-import { readFile } from 'node:fs/promises'
-import path from 'node:path'
 import { supabase } from '@/lib/supabase'
 import type { KnowledgePostInput } from '@/lib/ia/hub-projections'
 
@@ -17,7 +15,6 @@ export interface StoryPostInput {
 export interface DataHubSnapshot {
   aiTech: { slug: string; title: string; published?: string | null; updated?: string | null } | null
   stockPulse: { slug: string; title: string; published?: string | null; updated?: string | null } | null
-  realEstate: { available: boolean; recordCount: number; latestData: string | null }
   mining: { measured_at?: string | null; score?: number | null } | null
 }
 
@@ -67,39 +64,12 @@ export async function getLatestMiningMeasurement() {
   return data?.[0] || null
 }
 
-interface RealEstateRegionRow {
-  region_name?: string
-  year_month?: string
-}
-
-export async function getRealEstateSnapshot() {
-  try {
-    const file = path.join(process.cwd(), 'public', 'data', 'realestate', 'regions.json')
-    const raw = await readFile(file, 'utf8')
-    const rows = JSON.parse(raw) as RealEstateRegionRow[]
-    const latestYearMonth = rows
-      .map(row => row.year_month || '')
-      .filter(Boolean)
-      .sort()
-      .at(-1)
-
-    return {
-      available: true,
-      recordCount: rows.length,
-      latestData: latestYearMonth ? `${latestYearMonth.slice(0, 4)}.${latestYearMonth.slice(4)}` : null,
-    }
-  } catch {
-    return { available: false, recordCount: 0, latestData: null }
-  }
-}
-
 export async function getDataHubSnapshot(): Promise<DataHubSnapshot> {
-  const [aiTech, stockPulse, realEstate, mining] = await Promise.all([
+  const [aiTech, stockPulse, mining] = await Promise.all([
     getLatestPost('aitech'),
     getLatestPost('stockpulse'),
-    getRealEstateSnapshot(),
     getLatestMiningMeasurement(),
   ])
 
-  return { aiTech, stockPulse, realEstate, mining }
+  return { aiTech, stockPulse, mining }
 }

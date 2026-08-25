@@ -1,10 +1,10 @@
 import Link from 'next/link'
-import { Search, Terminal, TrendingUp, Home, Bot } from 'lucide-react'
+import { Search, Terminal, TrendingUp, Bot } from 'lucide-react'
 
 export function BlogHeader({ title, subtitle, icon, color }: {
   title: string
   subtitle: string
-  icon: 'terminal' | 'trending' | 'realestate' | 'aitech'
+  icon: 'terminal' | 'trending' | 'aitech'
   color: 'blue' | 'green' | 'orange' | 'purple'
 }) {
   return (
@@ -13,7 +13,7 @@ export function BlogHeader({ title, subtitle, icon, color }: {
         <div className="flex items-center gap-3">
           {icon === 'terminal' && <Terminal className="w-5 h-5 text-blue-600" />}
           {icon === 'trending' && <TrendingUp className="w-5 h-5 text-green-600" />}
-          {icon === 'realestate' && <Home className="w-5 h-5 text-orange-500" />}
+
           {icon === 'aitech' && <Bot className="w-5 h-5 text-purple-500" />}
           <div>
             <Link href="/" className="no-underline">

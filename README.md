@@ -20,14 +20,15 @@
 
 ## 🧪 구성
 
-### 블로그 4개 (Supabase 단일 DB, `blog_id`로 분리)
+### 공개 콘텐츠 3개 (Supabase 단일 DB, `blog_id`로 분리)
 
 | 블로그 | URL | blog_id | 성격 |
 |:-------|:----|:--------|:-----|
 | **DevSnack** | `/devsnack` | `devsnack` | AI 인프라 실험, LLM 벤치마크, 기술 칼럼 |
 | **StockPulse** | `/stock` | `stockpulse` | AI 기반 KOSPI/KOSDAQ 일일 분석 |
-| **부동산** | `/realestate` | `realestate` | 아파트 실거래가 동향 |
 | **AI Tech Insight** | `/aitech` | `aitech` | AI 기술/산업 뉴스 분석 |
+
+부동산 수집·계산 pipeline은 별도 서비스로 유지하지만 DevSnack 공개 route, asset, navigation, sitemap에서는 분리되어 있습니다.
 
 ### Lab (진행 중인 실험)
 
@@ -68,7 +69,6 @@ src/
 │   ├── page.tsx           # 랜딩 페이지
 │   ├── devsnack/          # DevSnack 블로그
 │   ├── stock/             # StockPulse
-│   ├── realestate/        # 부동산
 │   ├── aitech/            # AI Tech Insight
 │   ├── lab/               # ⭐ Lab (진행 중인 실험)
 │   ├── search/            # 통합 검색

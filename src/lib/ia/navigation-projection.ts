@@ -89,7 +89,7 @@ export const NAV_GROUP_REGISTRY: NavGroup[] = [
       { id: 'data-hub', href: '/data', label: 'Data Hub' },
       { id: 'data-aitech', href: BLOG_PATH.aitech, label: 'AI Tech', blogId: 'aitech' },
       { id: 'data-stockpulse', href: BLOG_PATH.stockpulse, label: 'StockPulse', blogId: 'stockpulse' },
-      { id: 'data-realestate', href: BLOG_PATH.realestate, label: 'Real Estate', blogId: 'realestate' },
+
       { id: 'data-mining', href: '/misc/mining-leaderboard', label: 'Mining' },
     ],
   },

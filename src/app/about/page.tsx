@@ -52,7 +52,7 @@ const areas = [
     title: 'Data',
     href: '/data',
     icon: Database,
-    description: 'AI Tech·StockPulse Feed와 부동산·Mining Tracker처럼 자동 갱신되는 정보를 보여줍니다.',
+    description: 'AI Tech·StockPulse Feed와 Mining Tracker처럼 자동 갱신되는 정보를 보여줍니다.',
     action: 'Data Hub 보기',
   },
   {

@@ -8,7 +8,7 @@ interface AppLayoutProps {
   counts?: {
     devsnack?: number
     stockpulse?: number
-    realestate?: number
+
     aitech?: number
   }
 }

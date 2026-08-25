@@ -10,7 +10,7 @@ export const revalidate = 60
 
 export const metadata = buildRouteMetadata({
   title: 'Data — DevSnack',
-  description: 'AI Tech·StockPulse 피드와 부동산·채굴 Tracker를 한 곳에서 확인하는 DevSnack Data Hub',
+  description: 'AI Tech·StockPulse 피드와 Mining Tracker를 한 곳에서 확인하는 DevSnack Data Hub',
   canonicalPath: '/data',
 })
 
@@ -35,7 +35,7 @@ export default async function DataPage() {
 
         <section className="mt-8 grid gap-3 sm:grid-cols-3" aria-label="Data principles">
           <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Radio className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Feeds</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">계속 발행되는 AI Tech와 시장 분석 정보</p></div>
-          <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Radar className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Trackers</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">실거래와 채굴 상태처럼 계속 갱신해 보는 데이터 서비스</p></div>
+          <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Radar className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Trackers</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">채굴 상태처럼 계속 갱신해 보는 데이터 서비스</p></div>
           <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Database className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Project → Assets</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">StockPulse처럼 하나의 Project가 Feed·Dataset·Experiment를 함께 만듭니다.</p></div>
         </section>
 
@@ -72,15 +72,7 @@ export default async function DataPage() {
         <section className="mt-10" aria-labelledby="data-trackers-heading">
           <div className="mb-4"><h2 id="data-trackers-heading" className="text-xl font-bold">Trackers</h2><p className="mt-1 text-sm text-muted-foreground">데이터를 계속 갱신해 편하게 보는 서비스</p></div>
           <div className="grid gap-4 lg:grid-cols-2">
-            <DataServiceCard
-              title="Real Estate"
-              type="Tracker"
-              description="MOLIT 실거래 데이터를 수집·집계해 지역·단지별 거래와 가격 흐름을 보는 데이터 서비스입니다. AI/ML 예측 콘텐츠가 아니라 Public transaction data tracker입니다."
-              updateDescription="MOLIT API → SQLite/JSON export → Dashboard"
-              lastUpdated={snapshot.realEstate.latestData ? `최근 데이터 ${snapshot.realEstate.latestData} · ${snapshot.realEstate.recordCount.toLocaleString('ko-KR')}개 집계 row` : '데이터 확인 필요'}
-              href="/realestate"
-              provenance="Public transaction data tracker"
-            />
+
             <DataServiceCard
               title="Mining"
               type="Tracker"

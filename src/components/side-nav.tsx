@@ -15,7 +15,7 @@ import { trackSiteEvent } from '@/lib/analytics'
 interface SideNavCounts {
   devsnack?: number
   stockpulse?: number
-  realestate?: number
+
   aitech?: number
 }
 
@@ -60,7 +60,7 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
   const renderSubItem = (item: NavItem) => {
     const active = isActive(item.href, item.activeHrefs)
     const ItemIcon = item.icon ? ICONS[item.icon] : null
-    const countableBlogIds = new Set(['devsnack', 'stockpulse', 'realestate', 'aitech'])
+    const countableBlogIds = new Set(['devsnack', 'stockpulse', 'aitech'])
     const count = item.blogId && countableBlogIds.has(item.blogId)
       ? counts?.[item.blogId as keyof SideNavCounts]
       : undefined

@@ -1,7 +1,7 @@
 // DevSnack Blog — 블로그별 색상 토큰
 // docs/DESIGN.md 참조
 
-export type BlogId = 'devsnack' | 'stockpulse' | 'realestate' | 'aitech' | 'lab' | 'research' | 'misc'
+export type BlogId = 'devsnack' | 'stockpulse' | 'aitech' | 'lab' | 'research' | 'misc'
 export type BlogColor = 'blue' | 'green' | 'orange' | 'purple' | 'amber'
 
 export const BLOG_COLORS: Record<BlogId, {
@@ -25,13 +25,7 @@ export const BLOG_COLORS: Record<BlogId, {
     border: 'border-green-200 dark:border-green-800',
     hover: 'hover:border-green-300 dark:hover:border-green-700',
   },
-  realestate: {
-    primary: 'orange',
-    text: 'text-orange-500 dark:text-orange-400',
-    bg: 'bg-orange-100 dark:bg-orange-900/30',
-    border: 'border-orange-200 dark:border-orange-800',
-    hover: 'hover:border-orange-300 dark:hover:border-orange-700',
-  },
+
   aitech: {
     primary: 'purple',
     text: 'text-purple-600 dark:text-purple-400',
@@ -65,7 +59,7 @@ export const BLOG_COLORS: Record<BlogId, {
 export const BLOG_LABEL: Record<BlogId, string> = {
   devsnack: 'Stories',
   stockpulse: 'StockPulse',
-  realestate: '부동산',
+
   aitech: 'AI Tech',
   lab: 'Lab',
   research: 'Knowledge',
@@ -75,7 +69,7 @@ export const BLOG_LABEL: Record<BlogId, string> = {
 export const BLOG_PATH: Record<BlogId, string> = {
   devsnack: '/devsnack',
   stockpulse: '/stock',
-  realestate: '/realestate',
+
   aitech: '/aitech',
   lab: '/lab',
   research: '/research',

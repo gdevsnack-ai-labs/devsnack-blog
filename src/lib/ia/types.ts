@@ -24,7 +24,6 @@ export const DOMAINS = [
   'infrastructure',
   'automation',
   'finance',
-  'real_estate',
   'hardware',
   'web',
   'other',
