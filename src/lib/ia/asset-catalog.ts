@@ -111,14 +111,7 @@ const POST_OVERRIDES: Record<string, Partial<PostClassification>> = {
     provenance: 'ai_assisted',
     classification: 'confirmed',
   },
-  'misc:mining-leaderboard': {
-    primaryType: 'tracker',
-    projectId: undefined,
-    domain: ['hardware'],
-    provenance: 'data_generated',
-    classification: 'confirmed',
-    routeOverride: '/misc/mining-leaderboard',
-  },
+
 }
 
 function classifyLabPost(slug: string): Partial<PostClassification> {

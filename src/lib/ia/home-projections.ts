@@ -154,14 +154,7 @@ export function projectHomeDataServices(snapshot: DataHubSnapshot): HomeDataServ
       updated: formatDate(snapshot.stockPulse?.updated || snapshot.stockPulse?.published),
     },
 
-    {
-      title: 'Mining',
-      type: 'Tracker',
-      href: '/misc/mining-leaderboard',
-      description: 'Automated device telemetry',
-      status: snapshot.mining?.score == null ? undefined : `최근 score ${Number(snapshot.mining.score).toLocaleString('ko-KR')}`,
-      updated: formatDate(snapshot.mining?.measured_at),
-    },
+
   ]
 }
 

@@ -39,7 +39,7 @@ const projection = createHomeProjection({
   data: {
     aiTech: { slug: 'ai-tech', title: 'AI Tech latest', published: '2026-08-20T15:00:00+00:00', updated: null },
     stockPulse: { slug: 'stock-latest', title: 'StockPulse latest', published: '2026-08-20T15:00:00+00:00', updated: null },
-    mining: { measured_at: '2026-08-20T15:00:00+00:00', score: 123 },
+
   },
 })
 
@@ -53,9 +53,9 @@ expectEqual(projection.featured[1].benchmark?.asset.primaryType, 'benchmark', 'H
 expectEqual(projection.featured[2].kind, 'knowledge', 'Knowledge should be Featured from the shared selector')
 expectEqual(projection.featured[2].knowledge?.asset.primaryType, 'knowledge', 'Knowledge must not be promoted to Benchmark')
 expectEqual(projection.knowledge[0].slug, 'qwen3-8-27b-nvfp4-mtp-gguf-gb10', 'curated Knowledge override should win when present')
-expectEqual(projection.dataServices.length, 3, 'Home Data strip should represent the remaining services')
+expectEqual(projection.dataServices.length, 2, 'Home Data strip should represent the remaining feeds')
 expectEqual(projection.dataServices.filter(service => service.type === 'Feed').length, 2, 'AI Tech and StockPulse must remain Feeds')
-expectEqual(projection.dataServices.filter(service => service.type === 'Tracker').length, 1, 'Mining must remain a Tracker')
+
 expectEqual(projection.stories.length, 2, 'Home Stories should stay compact')
 expectTrue(projection.stories.every(story => story.href.startsWith('/devsnack/')), 'Home Stories must use existing DevSnack detail URLs')
 expectTrue(projection.labItems.length <= 2, 'Home Lab section must not become a project dashboard')
@@ -63,7 +63,7 @@ expectTrue(projection.labItems.length <= 2, 'Home Lab section must not become a 
 const unknownDataServices = projectHomeDataServices({
   aiTech: null,
   stockPulse: null,
-  mining: null,
+
 })
 expectTrue(unknownDataServices.every(service => service.status === undefined && service.updated === undefined), 'unknown Home freshness must be omitted instead of rendered as an error-like message')
 

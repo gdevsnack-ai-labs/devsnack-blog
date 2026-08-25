@@ -26,7 +26,6 @@ ROUTES = [
     "/demos/shortmovie",
     "/research",
     "/misc",
-    "/misc/mining-leaderboard",
     "/tools/operations",
     "/search",
     "/sitemap.xml",
@@ -100,8 +99,7 @@ def check_http(failures: list[str]) -> None:
         "/research/dflash-2-qwen3-8-27b-vs-mtp",
         "/lab/local-llm-benchmark-report",
         "/lab/ornith15-server-quality-speed-benchmark",
-        "/misc/mining-leaderboard",
-    )
+        )
     for required in sitemap_required:
         if required not in sitemap_body:
             failures.append(f"/sitemap.xml: missing {required}")

@@ -15,7 +15,7 @@ export interface StoryPostInput {
 export interface DataHubSnapshot {
   aiTech: { slug: string; title: string; published?: string | null; updated?: string | null } | null
   stockPulse: { slug: string; title: string; published?: string | null; updated?: string | null } | null
-  mining: { measured_at?: string | null; score?: number | null } | null
+
 }
 
 export async function getKnowledgePosts(): Promise<KnowledgePostInput[]> {
@@ -54,22 +54,11 @@ export async function getLatestPost(blogId: 'aitech' | 'stockpulse') {
   return data?.[0] || null
 }
 
-export async function getLatestMiningMeasurement() {
-  const { data } = await supabase
-    .from('mining_scores')
-    .select('measured_at, score')
-    .order('id', { ascending: false })
-    .limit(1)
-
-  return data?.[0] || null
-}
-
 export async function getDataHubSnapshot(): Promise<DataHubSnapshot> {
-  const [aiTech, stockPulse, mining] = await Promise.all([
+  const [aiTech, stockPulse] = await Promise.all([
     getLatestPost('aitech'),
     getLatestPost('stockpulse'),
-    getLatestMiningMeasurement(),
   ])
 
-  return { aiTech, stockPulse, mining }
+  return { aiTech, stockPulse }
 }
