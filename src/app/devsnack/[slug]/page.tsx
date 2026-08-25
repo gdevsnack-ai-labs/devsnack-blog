@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Calendar, Clock } from 'lucide-react'
 import { ViewCounter } from '@/components/view-counter'
 import { BlogHeader } from '@/components/blog-header'
+import { EnglishSourceSwitch } from '@/components/english-source-switch'
 import { buildRouteMetadata, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 
 export const revalidate = 60
@@ -55,6 +56,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           <ArrowLeft className="w-4 h-4" />
           DevSnack 목록으로
         </Link>
+        <div className="mt-3"><EnglishSourceSwitch postId={post.id} englishHref={`/en/devsnack/${post.slug}`} koreanHref={`/devsnack/${post.slug}`} /></div>
       </div>
 
       <article className="content-article max-w-3xl mx-auto min-w-0 px-4 py-8">

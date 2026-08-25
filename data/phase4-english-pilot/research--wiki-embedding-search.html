@@ -1,0 +1,65 @@
+<h3>Overview</h3>
+<p>Semantic search for the wiki using <strong>sqlite-vec + BGE-M3 + bge-reranker-v2-m3</strong>, entirely local, following a Hindsight/TencentDB hybrid + RRF pattern.</p>
+<h3>Memo</h3>
+<p><strong>Applied (2026-08-13)</strong> — ① registered the <code>wiki-embed-search</code> skill; ② integrated automatic indexing into <code>wiki-sync.sh</code> (09:00/21:00: start the servers → re-index; new wiki documents are reflected automatically); ③ PoC measurement: 58 documents → 512 chunks in about two minutes, with accurate semantic search (muse-glimmer ranked first for the relevant query, and “mining pool configuration” ranked the bitaxe document first); ④ wrote a bitaxe entity document to fix data coverage. ARM64 was measured with the sqlite-vec aarch64 wheel. Usage: <code>python3 [local path] "query"</code>.</p>
+<h3>Detailed Research</h3>
+<h1>Wiki Embedding Search — Research and Design for Local Hybrid Search</h1>
+<h2>1. Current State (Measured 2026-08-13)</h2>
+<table><tr><th>Item</th><th>Current state</th></tr><tr><td>Search tool</td><td><code>search_files</code> — <strong>ripgrep keyword/regex search</strong>, with no embeddings</td></tr><tr><td>Index</td><td><code>log_index.md</code> generated monthly plus the existing structure</td></tr><tr><td>Vector DB / embedding / reranker</td><td>❌ None</td></tr><tr><td>Wiki size</td><td><strong>75 Markdown files</strong> (46 entities / 12 concepts / the rest logs and designs)</td></tr></table>
+<p><strong>Limitation</strong>: keyword matching only. A document written with a synonym, or a document where the exact words are forgotten—such as “that model we investigated back then”—cannot be found. This leaves room for semantic search.</p>
+<h2>2. Patterns from Existing Memory-System Research</h2>
+<p>The existing research documents use a common search structure:</p>
+<table><tr><th>System</th><th>Storage</th><th>Embedding</th><th>Reranker</th><th>Fusion</th></tr><tr><td>Hindsight</td><td>PostgreSQL + <strong>pgvector</strong></td><td>bge-small-en-v1.5</td><td>ms-marco-MiniLM-L-6-v2 cross-encoder</td><td>Semantic + BM25 + Graph + Temporal → <strong>RRF</strong> + reranking</td></tr><tr><td>TencentDB Agent Memory</td><td><strong>SQLite + sqlite-vec</strong></td><td>BGE-M3 and other local/remote models</td><td>—</td><td><strong>BM25 + vector + RRF</strong></td></tr></table>
+<p>→ Shared conclusion: <strong>hybrid keyword + vector retrieval, RRF fusion, and a cross-encoder reranker</strong> are the standard pattern for local search quality. Both systems assume a fully local deployment.</p>
+<h2>3. Systems That Can Be Served Locally</h2>
+<h3>Vector storage</h3>
+<table><tr><th>System</th><th>Form</th><th>ARM64</th><th>Fit for a 75-document wiki</th></tr><tr><td><strong>sqlite-vec</strong> (Mozilla Builders)</td><td>SQLite extension, <strong>file-embedded</strong></td><td>✅ <strong>aarch64 wheel measured</strong> (0.1.9)</td><td>✅ <strong>Good fit</strong> — zero infrastructure, one database file</td></tr><tr><td>ChromaDB</td><td>Embedded Python database</td><td>✅</td><td>✅ Simple, but metadata-filter recall issues at larger scale; irrelevant for this wiki</td></tr><tr><td>LanceDB</td><td>Embedded Lance format</td><td>✅</td><td>✅ Designed for scale; excessive for this wiki</td></tr><tr><td>Qdrant</td><td><strong>Server-based</strong>, Rust</td><td>✅ <strong>arm64 image measured</strong></td><td>⚠️ Strong scalability, but adds one process to operate</td></tr><tr><td>pgvector</td><td>PostgreSQL extension</td><td>✅</td><td>❌ Requires DB infrastructure; excessive for this wiki even though Hindsight already uses it</td></tr></table>
+<h3>Embedding models</h3>
+<table><tr><th>Model</th><th>Size</th><th>Features</th></tr><tr><td><strong>BGE-M3</strong> (BAAI)</td><td>568M (~2.3 GB)</td><td><strong>100+ languages and strong Korean performance</strong>; dense + sparse + multi-vector in one model</td></tr><tr><td>bge-reranker-v2-m3</td><td>~568M</td><td>Cross-encoder <strong>reranker</strong>, scoring query/document pairs</td></tr><tr><td>nomic-embed-text</td><td>137M</td><td>Lightweight and English-oriented</td></tr><tr><td>Qwen3-Embedding</td><td>Various</td><td>Newer candidate, for later review</td></tr></table>
+<p><strong>Serving paths on GB10</strong>: ① llama.cpp embedding server, already available on GB10 with a native ARM64 build; ② Ollama embedding API; ③ an <code>embedding_api</code> open-source server optimized for BGE-M3 + reranker on CPU and compatible with the OpenAI API shape.</p>
+<h2>4. Recommended Design — Wiki Hybrid Search</h2>
+<pre><code>[Indexing — integrated into wiki-sync.sh, automatic at 09:00/21:00]
+Scan wiki Markdown files
+ → chunk by section (## headings, about 500 characters)
+ → local BGE-M3 embeddings (llama.cpp server, OpenAI-compatible)
+ → store in sqlite-vec: path / section / vector / metadata (tags, date)
+ → one index database (tens of MB) + incremental updates only
+
+[Search — wiki-search script]
+① Query → BGE-M3 embedding → vector top-K (semantic search)
+② ripgrep/BM25 keyword top-K (preserve exact matching)
+③ RRF (Reciprocal Rank Fusion)
+④ optional bge-reranker-v2-m3 reranking → output top 5
+ → Hermes reads the result documents and answers
+
+[Operations]
+- Entirely local on GB10 — no external API, zero external cost
+- Hermes integration: expose `wiki-search "question"` as a skill
+- Keep existing ripgrep search as a fallback</code></pre>
+<h3>Why These Components</h3>
+<ul><li><strong>sqlite-vec</strong>: a server such as Qdrant is excessive for a 75-document wiki. TencentDB validated the same combination. One file makes backup and movement simple.</li><li><strong>BGE-M3</strong>: strong Korean and multilingual performance for a wiki mixing Korean and English, plus sparse retrieval that can supplement keyword search.</li><li><strong>Reranker</strong>: reranking runs only at search time, so indexing adds no cost. Re-score the top 20–30 candidates and return the top 5; BGE reranking is feasible on the GB10 CPU.</li><li><strong>RRF</strong>: a standard fusion approach used by both Hindsight and TencentDB, without requiring weight tuning.</li></ul>
+<h2>5. Expected Effects and Risks</h2>
+<p><strong>Effects</strong></p><ul><li>Semantic search: “the agent memory system we investigated back then” can automatically connect to Hindsight/TencentDB documents.</li><li>Synonyms and mixed Korean/English documents become searchable, closing ripgrep's blind spots.</li><li>Better wiki exploration at the start of research should reduce duplicate investigations and missed documents.</li></ul>
+<p><strong>Risks / cost</strong></p><ul><li>BGE-M3 stays resident at about 2.5 GB, which is negligible on a 128 GB GB10.</li><li>When integrated with wiki-sync, indexing can update only changed documents in seconds.</li><li>The reranker costs CPU inference only at search time, roughly a few hundred milliseconds for 20 candidates.</li><li>Initial setup requires one or two scripts (indexer and searcher) plus embedding-server startup.</li></ul>
+<h2>6. Adoption Decision</h2>
+<ul><li>For a 75-document wiki, <strong>sqlite-vec + BGE-M3 + optional reranker</strong> is the best fit: zero infrastructure, fully local, and measured on ARM64.</li><li>Hindsight/TencentDB validated the same pattern in benchmarks (WideSearch +51%, PersonaMem 48→76%).</li><li><strong>PoC sequence</strong>: ① start the llama.cpp embedding server; ② prototype the indexer and searcher; ③ index the entire wiki; ④ register the Hermes skill; ⑤ integrate into wiki-sync after review.</li></ul>
+<h2>7. PoC Measurement (2026-08-13, GB10)</h2>
+<h3>Configuration</h3>
+<ul><li>Embedding: llama.cpp llama-server + <strong>BGE-M3 Q8 (634 MB)</strong>, port 8082; <code>--ubatch-size 2048</code> is required because the default 512 returns a 500 error on long chunks.</li><li>Reranker: llama.cpp + <strong>bge-reranker-v2-m3 FP16 (1.16 GB)</strong>, port 8083 with <code>--reranking</code>.</li><li>Storage: SQLite + sqlite-vec v0.1.9 (aarch64 wheel).</li><li>Scripts: <code>wiki-index.py</code>, <code>wiki-search.py</code>, and <code>start-embed-server.sh</code>.</li></ul>
+<h3>Indexing</h3><ul><li>Target: 58 entity documents, excluding navigation documents → <strong>503 chunks</strong>, indexed in about two minutes with batch size 8.</li></ul>
+<h3>Search Quality Test (Vector + Keyword RRF + Reranker)</h3>
+<table><tr><th>Query</th><th>Top result</th><th>Judgment</th></tr><tr><td>“A local agent model made by Meta”</td><td>muse-glimmer-30b</td><td>✅ Correct</td></tr><tr><td>“The agent memory system we investigated back then”</td><td>tencentdb/hindsight</td><td>✅ Correct</td></tr><tr><td>“A Korean speech synthesis model”</td><td>qwen3-tts</td><td>✅ Correct</td></tr><tr><td>“Mining pool configuration”</td><td>No related document</td><td>⚠️ Data missing</td></tr></table>
+<h3>Findings During the PoC</h3>
+<ol><li><strong>Vector-only search was very accurate</strong>; keyword OR fallback added noise under RRF, which was fixed with AND-first retrieval and vector weight 2.0.</li><li><strong>Document-level deduplication was necessary</strong>; chunks from one document could dominate the results, so only the best chunk per document is kept.</li><li><strong>Navigation documents must be excluded</strong>; list documents such as research-backlog scored too highly in the reranker, so a skip list is required.</li><li><strong>Data coverage is a real limit</strong>: bitaxe/miner knowledge was not in the wiki, only in skills and logs. It was correct for search to return nothing; the wiki needed an entity document such as bitaxe.</li><li>The llama.cpp embedding server uses a default <code>--ubatch-size</code> of 512; long inputs need 2048 to avoid a 500 error.</li></ol>
+<h3>Usage</h3>
+<pre><code># Start/stop the embedding and reranker servers
+bash [local path]
+bash [local path] stop
+
+# Index after wiki changes
+python3 [local path]
+
+# Search
+python3 [local path] "query"</code></pre>
+<h2>Sources</h2>
+<ul><li>sqlite-vec: https://github.com/asg017/sqlite-vec (aarch64 wheel measured, v0.1.9)</li><li>Qdrant: https://qdrant.tech (arm64 image measured)</li><li>BGE-M3: https://huggingface.co/BAAI/bge-m3</li><li>bge-reranker-v2-m3: https://huggingface.co/BAAI/bge-reranker-v2-m3</li><li>embedding_api: https://github.com/smallOpenSource/embedding_api</li><li>Local vector database comparison (2026): https://aliteq.com/best-vector-database-for-local-rag-2026</li><li>Reference: the local hybrid + RRF + reranker pattern</li></ul>

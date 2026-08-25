@@ -1,0 +1,26 @@
+<h2>StockPulse AI Self-Improvement Experiment — Daily Analysis</h2>
+<p><strong>Date:</strong> 2026-08-25</p>
+<hr>
+<h3>🧠 LLM Forecast Analysis</h3>
+<p><strong>Forecast:</strong> Down / 6,600–6,700</p>
+<p><strong>Forecast summary:</strong> The previous day's combined foreign and institutional selling and large-cap weakness had pushed the KOSPI below 6,700, weakening the earlier bullish expectation. A sharp fall in top market-cap stocks such as Samsung Electronics added downside pressure, so the forecast expected the correction to continue at the open. Individual investors were still buying, but a reversal in foreign flows was identified as the key variable.</p>
+<p><strong>Actual KOSPI close:</strong> 6743<br/><strong>Actual direction:</strong> Up<br/><strong>Accuracy:</strong> 0.35/1.0</p>
+<p><strong>Analysis:</strong><br/>The forecast focused on the early selloff and incorrectly predicted the final closing direction (up). Institutional and individual bargain buying and a rebound in large caps produced an intraday recovery. The system underestimated how quickly market sentiment could recover after the previous day's selling.</p>
+<p><strong>Improvement:</strong><br/>The morning forecast should explicitly consider intraday volatility and rebound potential. It should analyze the possibility of a “weak-open, strong-close” pattern in which an early low is followed by a rebound, even after heavy selling on the previous day.</p>
+<hr>
+<h3>🤖 ML Model Forecast Analysis</h3>
+<p><strong>Model:</strong> LGB + XGB + LSTM three-model ensemble (AUC=0.7755, Acc=0.7086)<br/>Market bias: Down (-1.9%)<br/>Bullish candidate: Entotek<br/>Bearish candidates: Hana Financial Group, Shinhan Financial Group</p>
+<p><strong>Forecast:</strong> Down (-1.9%)</p>
+<p><strong>Evaluation:</strong> ❌ Failure<br/><strong>Accuracy:</strong> 0.0/1.0</p>
+<p><strong>Analysis:</strong><br/>The model expected the market to fall -1.9%, but the KOSPI rose +0.68%, so the direction was completely wrong. Despite heavy foreign net selling, institutional and individual buying and a rebound in selected sectors, including semiconductors, lifted the index. The model missed this weak-open, strong-close regime.</p>
+<p><strong>Improvement:</strong><br/>In addition to index direction, the model should include foreign and institutional flow data and weighted sector leaders as features. Volatility and momentum indicators should also be strengthened so the time-series model can learn V-shaped reversals after an intraday selloff.</p>
+<hr>
+<p><em>This analysis was produced by AI (Qwen3.5-35B) as an evaluation of forecast performance. It is not investment advice; it is an AI performance measurement experiment.</em></p>
+<hr>
+<h3>📝 Applied Improvement Actions</h3>
+<p><strong>🧠 LLM: Prompt improvement</strong></p>
+<p>The morning analysis prompt now includes: “Even after an early selloff, check institutional and individual buying and technical rebound signals in large caps. Evaluate the possibility of a weak-open, strong-close pattern or a V-shaped rebound. Make a combined judgment that considers intraday volatility and rebound capacity rather than only the direction.”</p>
+<blockquote><p>The change is applied from the next morning forecast.</p></blockquote>
+<p><strong>🤖 ML: Feature engineering</strong></p>
+<p>New flow and sector features are added: foreign net buying/selling amount, institutional buying share, and the semiconductor sector index. Volatility indicators are also introduced.</p>
+<blockquote><p>The change is applied to the next data-collection pipeline.</p></blockquote>

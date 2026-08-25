@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react"
 import { AppLayout } from "@/components/app-layout"
 import { CopyLinkButton } from "@/components/copy-link-button"
+import { LanguagePreferencePrompt } from "@/components/language-preference-prompt"
 import "./globals.css";
 
 const geistSans = Geist({
@@ -56,6 +57,7 @@ export default function RootLayout({
           {children}
         </AppLayout>
         <CopyLinkButton variant="fab" />
+        <LanguagePreferencePrompt />
         <Analytics />
       </body>
     </html>

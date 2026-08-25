@@ -1,0 +1,26 @@
+<h2>StockPulse AI Self-Improvement Experiment — Daily Analysis</h2>
+<p><strong>Date:</strong> 2026-08-21</p>
+<hr>
+<h3>🧠 LLM Forecast Analysis</h3>
+<p><strong>Forecast:</strong> Up / 6,900–7,000</p>
+<p><strong>Forecast summary:</strong> Net spot buying by foreign investors and institutions on the previous day, together with strength in large caps such as SK hynix and Samsung Electronics, drove a sharp KOSPI rebound. With expectations of easing U.S. long-term yields and a buying-sidecar activation during the session confirming upward momentum, the forecast expected the uptrend to continue and aimed for a break above 6,900.</p>
+<p><strong>Actual KOSPI close:</strong> 6913<br/><strong>Actual direction:</strong> Up<br/><strong>Accuracy:</strong> 0.85/1.0</p>
+<p><strong>Analysis:</strong><br/>The forecast direction (up) and target zone (a break above 6,900) matched the actual result (+0.88%, closing at 6912.95). However, although the KOSPI rose, the number of declining stocks exceeded the number of advancing stocks, creating a quantitative divergence. Continued foreign selling weakened the quality and durability of the rebound.</p>
+<p><strong>Improvement:</strong><br/>The system should evaluate not only the index direction but also the ratio of advancing stocks to declining stocks and the degree of large-cap dependence. It should also set a quantitative limit for rebounds while foreign selling continues and strengthen risk-management instructions that temper excessive optimism.</p>
+<hr>
+<h3>🤖 ML Model Forecast Analysis</h3>
+<p><strong>Model:</strong> LGB + XGB + LSTM three-model ensemble (AUC=0.7691, Acc=0.7002)<br/>Market bias: Down (-2.3%)<br/>Bullish candidates: Entotek, Alteogen, KB Financial, SK Square, S</p>
+<p><strong>Forecast:</strong> Down (-2.3%)</p>
+<p><strong>Evaluation:</strong> ❌ Failure<br/><strong>Accuracy:</strong> 0.0/1.0</p>
+<p><strong>Analysis:</strong><br/>The model forecast a -2.3% decline, but the KOSPI rose +0.88%, so the direction was completely wrong. The model failed to represent the structural difference between a broad risk-off market and an index rising because large caps defended the benchmark.</p>
+<p><strong>Improvement:</strong><br/>The system should move from predicting only index returns to multi-target learning that considers stock-level flows and sector dispersion. It should also add the weighted index contribution of large caps as a feature to resolve the divergence between the index and individual stocks.</p>
+<hr>
+<p><em>This analysis was produced by AI (Qwen3.5-35B) as an evaluation of forecast performance. It is not investment advice; it is an AI performance measurement experiment.</em></p>
+<hr>
+<h3>📝 Applied Improvement Actions</h3>
+<p><strong>🧠 LLM: Prompt improvement</strong></p>
+<p>The morning analysis prompt now includes: “Even when the KOSPI rises, if declining stocks outnumber advancing stocks by 2:1 or more, treat the move as a possible large-cap-driven index distortion. Be cautious when raising the target, and include a warning that continued foreign net selling may weaken the rebound momentum.”</p>
+<blockquote><p>The change is applied from the next morning forecast.</p></blockquote>
+<p><strong>🤖 ML: Feature engineering</strong></p>
+<p>New sector-level flow indicators and large-cap weighted contribution features are added alongside index-return prediction. A hybrid labeling strategy separates index and individual-stock predictions.</p>
+<blockquote><p>The change is applied to the next data-collection pipeline.</p></blockquote>

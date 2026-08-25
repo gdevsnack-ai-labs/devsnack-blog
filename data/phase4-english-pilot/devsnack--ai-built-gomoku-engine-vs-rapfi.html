@@ -1,0 +1,74 @@
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://lh3.googleusercontent.com/d/1duHGGFrfMlF-LVg9ST9YG7QbHEVTOAqq" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img src="https://lh3.googleusercontent.com/d/1duHGGFrfMlF-LVg9ST9YG7QbHEVTOAqq" width="600" style="max-width: 100%; height: auto;" alt="A digital scene of two AI entities playing Gomoku on a holographic board" loading="lazy" /></a></div><br/>
+<h1>Did AI Build the World's Strongest Gomoku Engine? Not Until We Read the Logs</h1>
+<blockquote><p>I asked AI to build a Gomoku engine.</p><p>It completed a 780-line Minimax engine in just one hour.</p><p>Then I made it play against Rapfi, one of the strongest Gomoku engines in existence.</p><p><strong>The result was too perfect to believe.</strong></p></blockquote>
+<hr>
+<h2>Continued from Part 1</h2>
+<p>Part 1 established one fact: <strong>an LLM by itself is not good at playing Gomoku.</strong> It has to read the board as text, and it lacks search algorithms such as Alpha-Beta or MCTS. The result was not surprising.</p>
+<p>But I decided to change the question:</p>
+<blockquote><p><strong>If generative AI cannot play Gomoku well, can it build an engine that can?</strong></p></blockquote>
+<p>What happens if AI becomes the <strong>developer</strong> instead of the player?</p>
+<hr>
+<h2>1. AI Built the Engine</h2>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://lh3.googleusercontent.com/d/1zNqovpWYtWG3jQwmC-vpfHf6PsenIWF7" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img src="https://lh3.googleusercontent.com/d/1zNqovpWYtWG3jQwmC-vpfHf6PsenIWF7" width="600" style="max-width: 100%; height: auto;" alt="A digital illustration of AI programming a Gomoku engine" loading="lazy" /></a></div><br/>
+<p>I asked Deepseek v4 Flash to build a Python Gomoku engine using Alpha-Beta Pruning and Iterative Deepening.</p>
+<p>In about one hour, it produced a working Minimax engine.</p>
+<p>The code structure was cleaner than I expected. It was time to play against Rapfi.</p>
+<h2>2. First Test — The Result Was Too Perfect</h2>
+<p>The opponent was <strong>Rapfi</strong>, one of the strongest open-source Gomoku engines. It uses Alpha-Beta plus <strong>NNUE</strong>, a neural-network evaluation function, and plays at professional level.</p>
+<p>Environment: 15×15 board, black Minimax at depth 4 with a 10-second limit, white Rapfi with a 10-second limit, five games.</p>
+<pre><code>Game 1 : Win
+Game 2 : Win
+Game 3 : Win</code></pre>
+<p><strong>Minimax 3–0.</strong> It had swept Rapfi.</p>
+<p>For a moment, I thought I had built something extraordinary. But it did not make sense. Rapfi is a top engine; a simple pattern evaluator with depth-4 search should not beat it. I checked the logs before trusting the result.</p>
+<h2>3. First Problem — NNUE Was Disabled</h2>
+<p>The logs showed that Rapfi had not loaded its NNUE weights.</p>
+<p>The cause was the file-format handling in the AI-generated code. Rapfi can decompress LZ4 internally, but the code treated the file as a normal compressed archive and decompressed it in advance. Rapfi then tried to decompress it again, failed, and ran with NNUE disabled.</p>
+<p>Without NNUE, Rapfi falls back to a classical evaluation function. Its playing strength had dropped significantly.</p>
+<p>Request a fix → AI edits the code → run the match again.</p>
+<pre><code>Game 1 : Win
+Game 2 : Win
+Game 3 : Lose</code></pre>
+<p><strong>Minimax won 2–1.</strong> It was still ahead. Something was still wrong.</p>
+<h2>4. Second Problem — The Ghost Stone</h2>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://lh3.googleusercontent.com/d/1zJyTC-YinOMY70aINkKw-0gAuYa1Xg_I" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img src="https://lh3.googleusercontent.com/d/1zJyTC-YinOMY70aINkKw-0gAuYa1Xg_I" width="600" style="max-width: 100%; height: auto;" alt="A ghost stone floating over a Gomoku board with a red debugging error marker" loading="lazy" /></a></div><br/>
+<p>The logs contained another suspicious pattern:</p>
+<pre><code>Rapfi played invalid move G8
+Rapfi played invalid move J8
+Rapfi played invalid move K7</code></pre>
+<p>Rapfi appeared to play on occupied positions. At first I suspected a Rapfi bug. Following the logs led to my own engine instead.</p>
+<p>I showed the logs to the AI and asked it to find the cause.</p>
+<p><strong>The cause was missing timeout cleanup.</strong></p>
+<p>Minimax's Alpha-Beta search places a stone <strong>virtually, then removes it</strong> while searching:</p>
+<pre><code>for row, col in moves:
+    board.grid[row][col] = color
+    value = self._alpha_beta(...)
+    board.grid[row][col] = Board.EMPTY    # not executed after timeout</code></pre>
+<p>When a timeout exception occurred, <code>Board.EMPTY</code> was never executed and the stone remained on the board forever. Because of this ghost stone, Rapfi made a legal move, but the Python board already contained a stone there and reported an "invalid move." Rapfi was unfairly marked as the loser.</p>
+<p>The AI found the cause and fixed the code itself. The solution was three lines:</p>
+<pre><code>try:
+    value = self._alpha_beta(...)
+finally:
+    board.grid[row][col] = Board.EMPTY</code></pre>
+<p>Request a fix → AI edits the code → run the match again.</p>
+<h2>5. The Proper Result</h2>
+<p>At last, the normal result appeared.</p>
+<p><strong>Minimax (depth 4, 10 seconds) vs Rapfi (NNUE, 10 seconds) — five games</strong></p>
+<table><tr><th style="text-align:center">Game</th><th style="text-align:center">Winner</th><th style="text-align:center">Turns</th><th>Note</th></tr><tr><td style="text-align:center">1</td><td style="text-align:center">Rapfi</td><td style="text-align:center">22</td><td>L5 five-in-a-row</td></tr><tr><td style="text-align:center">2</td><td style="text-align:center">Rapfi</td><td style="text-align:center">22</td><td>Same sequence</td></tr><tr><td style="text-align:center">3</td><td style="text-align:center">Rapfi</td><td style="text-align:center">22</td><td></td></tr><tr><td style="text-align:center">4</td><td style="text-align:center">Rapfi</td><td style="text-align:center">22</td><td></td></tr><tr><td style="text-align:center">5</td><td style="text-align:center">Rapfi</td><td style="text-align:center">22</td><td></td></tr><tr><td style="text-align:center"><strong>Total</strong></td><td style="text-align:center"><strong>Rapfi 5–0</strong></td><td style="text-align:center"><strong>22 turns</strong></td><td><strong>Invalid moves: 0</strong></td></tr></table>
+<p>Minimax was deterministic because its random seed was fixed, so all five games followed the same sequence.</p>
+<pre><code>Turn  1: ● Minimax  H8
+Turn  2: ○ Rapfi    G7  [5.0s]
+...
+Turn 22: ○ Rapfi    L5  [5.0s] 5-in-a-row!</code></pre>
+<h2>6. Summary</h2>
+<table><tr><th style="text-align:center">Stage</th><th>Status</th><th style="text-align:center">Result</th><th>Cause</th></tr><tr><td style="text-align:center">Stage 1</td><td>Rapfi NNUE disabled</td><td style="text-align:center">Minimax 3–0</td><td>AI-generated LZ4 handling</td></tr><tr><td style="text-align:center">Stage 2</td><td>Ghost-stone bug</td><td style="text-align:center">Minimax 2–1</td><td>Missing timeout cleanup in AI-generated code</td></tr><tr><td style="text-align:center">Stage 3</td><td>All bugs fixed</td><td style="text-align:center">Rapfi 5–0</td><td>Correct result</td></tr></table>
+<p>AI implemented the normal code path quickly. But edge cases such as file-format compatibility and exception cleanup required a human to inspect the environment and logs with it.</p>
+<blockquote><p><strong>When a result looks too good, inspect the environment.</strong></p></blockquote>
+<p>If performance suddenly doubles, a developer's first thought should not be "Am I a genius?" It should be <strong>"Did something break?"</strong> This experiment made that habit feel concrete.</p>
+<h2>7. The Real Start</h2>
+<p>Now the task is no longer fixing bugs. It is time to <strong>make the engine stronger</strong>.</p>
+<p>Can the AI-built Gomoku engine win even one game against Rapfi?</p>
+<p>That experiment continues in the next part.</p>
+<hr>
+<p style="color:#666;font-size:0.9em;"><em>Experimental engine: Deepseek v4 Flash (OpenCode)<br/>Opponent engine: Rapfi by dhbloo (github.com/dhbloo/rapfi)<br/>Hardware: NVIDIA DGX Spark (ARM64, Grace ARM CPU, 128GB RAM)<br/>Full code: planned for a future open-source release<br/>DevSnack AI Lab — not a channel that merely consumes AI, but a lab that experiments with it. Failures and iterations are recorded too.</em></p>

@@ -4,6 +4,7 @@ import { ArrowLeft, FileText, Video, ExternalLink, CheckCircle2, Sparkles, Calen
 import { ProgressBar } from '@/components/progress-bar'
 import { StockPulsePredictionWidget } from '@/components/stock-pulse-prediction-widget'
 import { BenchPromptLibrary } from '@/components/bench-prompt-library'
+import { EnglishSourceSwitch } from '@/components/english-source-switch'
 import { experiments } from '@/data/experiments'
 import { supabase } from '@/lib/supabase'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
@@ -73,6 +74,7 @@ async function LabPostPage({ slug }: { slug: string }) {
           <ArrowLeft className="w-4 h-4" />
           Lab으로 돌아가기
         </Link>
+        <div className="mt-3"><EnglishSourceSwitch postId={post.id} englishHref={`/en/lab/${post.slug}`} koreanHref={`/lab/${post.slug}`} /></div>
       </div>
 
       <article className="content-article max-w-3xl mx-auto min-w-0 px-4 py-8">
