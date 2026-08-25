@@ -2,7 +2,7 @@ import { supabase } from '@/lib/supabase'
 import type { MetadataRoute } from 'next'
 import { postHref } from '@/config/site-catalog'
 import { isIndexableSitemapRoute } from '@/lib/seo/sitemap-policy'
-import { absoluteSiteUrl } from '@/lib/seo/metadata'
+import { absoluteSiteUrl, SITE_URL } from '@/lib/seo/metadata'
 import { sourceContentHash } from '@/lib/translation-core'
 
 export const dynamic = 'force-dynamic'
@@ -36,7 +36,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .eq('translation_status', 'published'),
   ])
 
-  const baseUrl = absoluteSiteUrl('/')
+  const baseUrl = SITE_URL
   const translationByPost = new Map((translations ?? []).map(row => [row.post_id, row]))
 
   const blogEntries = (posts ?? []).flatMap((post) => {

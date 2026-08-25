@@ -22,10 +22,10 @@ export const revalidate = 3600
 export async function GET() {
   const { data: translations } = await supabase
     .from('post_translations')
-    .select('post_id,title,excerpt,updated,translation_status')
+    .select('post_id,title,excerpt,updated_at,translation_status')
     .eq('locale', 'en')
     .eq('translation_status', 'published')
-    .order('updated', { ascending: false })
+    .order('updated_at', { ascending: false })
     .limit(50)
 
   const postIds = (translations ?? []).map(row => row.post_id)
