@@ -94,6 +94,12 @@ export function EnglishPostArticle({
         </div>
 
         <div className="mt-8 border-t border-border pt-8 prose-devsnack" dangerouslySetInnerHTML={{ __html: stripImportedHeadArtifacts(translation.content || '') }} />
+        {isKnowledge && (
+          <section className="mt-8 rounded-xl border border-border bg-muted/30 p-4" aria-labelledby="related-material-heading">
+            <h2 id="related-material-heading" className="text-sm font-semibold text-muted-foreground">Related material</h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">This section mirrors the Korean Knowledge route's related-material boundary. Source links in the translated article remain unchanged unless a verified internal equivalent exists.</p>
+          </section>
+        )}
       </article>
 
       <footer className="mt-12 border-t border-border pt-6 text-sm text-muted-foreground">
