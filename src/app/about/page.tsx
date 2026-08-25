@@ -90,7 +90,7 @@ export default function AboutPage() {
             직접 조사하고, 만들고, 측정합니다.
           </h1>
           <p className="mt-5 text-base leading-relaxed text-muted-foreground md:text-lg">
-            DevSnack은 로컬 AI와 개발 도구를 직접 다뤄보고, 그 과정에서 나온 실험·측정 결과·기술 지식·자동 갱신 데이터를 남기는 개인 작업 기록입니다.
+            DevSnack은 AI와 개발 도구를 직접 다뤄보고, 그 과정에서 나온 실험·측정 결과·기술 지식·자동 갱신 데이터를 남기는 개인 작업 기록입니다.
             완성된 정답만 모으기보다, 무엇을 확인했고 어디서 막혔으며 다음에 무엇을 바꿀지까지 기록하려고 합니다.
           </p>
         </header>
