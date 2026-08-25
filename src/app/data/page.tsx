@@ -51,6 +51,8 @@ export default async function DataPage() {
               latestTitle={snapshot.aiTech?.title}
               href="/aitech"
               provenance="Automated AI news feed"
+              relatedHref="/labs/blog"
+              relatedLabel="AI Tech Automation System"
             />
             <DataServiceCard
               title="StockPulse"

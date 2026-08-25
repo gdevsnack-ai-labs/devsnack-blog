@@ -129,7 +129,7 @@ const STOCKPULSE_SELF: Experiment = {
 const BLOG_AUTO: Experiment = {
   id: 'blog',
   name: 'Blog Automation',
-  description: 'AI 기반 블로그 발행 자동화 파이프라인',
+  description: 'AI Tech와 StockPulse Feed를 수집·분석·검증·발행하고, 실제 Output을 DevSnack Data와 Lab으로 연결하는 자동화 시스템',
   progress: 85,
   color: 'green',
   status: '진행중',
@@ -140,8 +140,8 @@ const BLOG_AUTO: Experiment = {
   timeline: [
     { name: 'AI Tech 뉴스 자동 발행',    status: '완료',   date: '2026.04' },
     { name: 'StockPulse 리포트 자동화',  status: '완료',   date: '2026.05' },
-    { name: 'Supabase/Vercel 연동',     status: '완료',   date: '2026.07' },
-    { name: 'Lab 메트릭 대시보드',      status: '진행중', date: '2026.07' },
+    { name: 'Vercel/Supabase 직접 발행', status: '완료', date: '2026.08', result: 'AI Tech·StockPulse가 Blogger 없이 Supabase에 직접 발행되고 production route read-back으로 검증됨' },
+    { name: 'Lab Output 관계 연결', status: '진행중', date: '2026.08', result: 'Project/System에서 실제 Feed Output을 탐색하고 Feed 상세에서 생성 Project로 돌아가는 양방향 연결을 구축 중' },
   ],
   blogPosts: [],
   githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',

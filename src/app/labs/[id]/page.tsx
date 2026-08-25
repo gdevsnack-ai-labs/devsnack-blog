@@ -7,6 +7,8 @@ import { getCurrentStage, getDomainLabel, getKeyFinding, getKeyMetrics, getKeyRe
 import { getPublishedLabNotes } from '@/lib/lab-notes'
 import { mergePublishedLabNotes } from '@/lib/lab-note-projection'
 import { getRelatedAssets } from '@/lib/ia/hub-projections'
+import { getProjectFeedOutputs } from '@/lib/ia/feed-output-projection'
+import { ProjectFeedOutputs } from '@/components/project-feed-outputs'
 import { RelatedAssets } from '@/components/related-assets'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
 
@@ -56,6 +58,7 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
   const experiment = id === 'stockpulse-ai-self-improvement'
     ? mergePublishedLabNotes(sourceExperiment, await getPublishedLabNotes('stockpulse-self-'))
     : sourceExperiment
+  const feedOutputs = await getProjectFeedOutputs(id)
 
   const nature = getNature(experiment)
   const keyFinding = getKeyFinding(experiment)
@@ -148,6 +151,8 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
               )}
             </section>
           )}
+
+          <ProjectFeedOutputs projectId={id} outputs={feedOutputs} />
 
           <section aria-labelledby="experiment-log-heading">
             <div className="mb-4 flex items-center gap-2">

@@ -15,6 +15,7 @@ import {
   normalizeProvenance,
   sourceCountLabel,
 } from '@/lib/provenance'
+import { feedProjectForBlog } from '@/lib/ia/feed-projects'
 
 export type StockPulsePredictionSummary = {
   date: string
@@ -55,6 +56,7 @@ function AITechProvenance({ provenance, published }: Omit<FeedProvenanceProps, '
   const generatedAt = formatGeneratedAt(normalized?.generated_at) || dateLabel(published)
   const review = humanReviewLabel(normalized)
   const sourceUrls = normalized?.source_urls || []
+  const project = feedProjectForBlog('aitech')
 
   return (
     <aside className="mb-8 rounded-xl border border-purple-200 bg-purple-50/60 p-4 dark:border-purple-900/50 dark:bg-purple-950/20" aria-label="AI Tech Feed provenance">
@@ -80,6 +82,13 @@ function AITechProvenance({ provenance, published }: Omit<FeedProvenanceProps, '
                   출처 {index + 1}<ExternalLink className="h-3 w-3 shrink-0" />
                 </a>
               ))}
+            </div>
+          )}
+          {project && (
+            <div className="mt-3 border-t border-purple-200/70 pt-3 text-xs dark:border-purple-900/50">
+              <Link href={project.href} className="inline-flex items-center gap-1 font-medium text-purple-700 no-underline hover:underline dark:text-purple-300">
+                <Bot className="h-3.5 w-3.5" /> 이 Feed를 생성한 자동화 시스템 보기 <ExternalLink className="h-3 w-3" />
+              </Link>
             </div>
           )}
         </div>
