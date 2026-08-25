@@ -29,6 +29,7 @@ import type {
   OperationsSnapshot,
   SystemdService,
 } from '@/lib/operations-types'
+import { formatCronSchedule, sortCronJobs } from '@/lib/cron-schedule'
 
 interface OperationsDashboardProps {
   snapshot: OperationsSnapshot
@@ -46,6 +47,20 @@ function formatDate(value: string | null): string {
     hour: '2-digit',
     minute: '2-digit',
   }).format(date)
+}
+
+function formatDuration(seconds: number | null | undefined): string {
+  if (typeof seconds !== 'number' || !Number.isFinite(seconds)) return '—'
+  if (seconds < 60) return `${seconds < 10 ? seconds.toFixed(1) : Math.round(seconds)}초`
+
+  const totalSeconds = Math.round(seconds)
+  const minutes = Math.floor(totalSeconds / 60)
+  const remainingSeconds = totalSeconds % 60
+  if (minutes < 60) return remainingSeconds ? `${minutes}분 ${remainingSeconds}초` : `${minutes}분`
+
+  const hours = Math.floor(minutes / 60)
+  const remainingMinutes = minutes % 60
+  return remainingMinutes ? `${hours}시간 ${remainingMinutes}분` : `${hours}시간`
 }
 
 function healthLabel(health: OperationsHealth | string): string {
@@ -217,6 +232,7 @@ function CronTable({ jobs }: { jobs: CronJob[] }) {
           <tr>
             <th className="px-4 py-3 font-medium">작업</th>
             <th className="px-4 py-3 font-medium">스케줄</th>
+            <th className="px-4 py-3 font-medium">실행시간</th>
             <th className="px-4 py-3 font-medium">방식</th>
             <th className="px-4 py-3 font-medium">모델</th>
             <th className="px-4 py-3 font-medium">최근 실행</th>
@@ -231,7 +247,18 @@ function CronTable({ jobs }: { jobs: CronJob[] }) {
                 <p className="truncate font-medium">{job.name || job.id}</p>
                 <p className="mt-1 truncate font-mono text-[10px] text-muted-foreground">{job.script || job.id}</p>
               </td>
-              <td className="px-4 py-3 font-mono text-xs">{job.schedule || '—'}</td>
+              <td className="px-4 py-3">
+                <p className="font-mono text-xs">{job.schedule || '—'}</p>
+                <p className="mt-1 whitespace-nowrap text-xs font-medium text-blue-700 dark:text-blue-300">{formatCronSchedule(job.schedule)}</p>
+              </td>
+              <td className="px-4 py-3 text-xs">
+                <p className="whitespace-nowrap font-medium">평균 {formatDuration(job.avgDurationSec)}</p>
+                <p className="mt-1 whitespace-nowrap text-muted-foreground">최대 {formatDuration(job.maxDurationSec)}</p>
+                <p className="mt-1 whitespace-nowrap text-[10px] text-muted-foreground">
+                  {job.executionCount ? `${job.executionCount}회 실행` : '실행 기록 없음'}
+                  {job.failedRuns ? ` · 실패 ${job.failedRuns}` : ''}
+                </p>
+              </td>
               <td className="px-4 py-3"><span className="rounded bg-muted px-2 py-1 text-xs">{job.noAgent ? 'script' : 'agent'}</span></td>
               <td className="max-w-[180px] truncate px-4 py-3 text-xs text-muted-foreground">{job.model || '—'}</td>
               <td className="px-4 py-3 text-xs text-muted-foreground">{formatDate(job.lastRunAt)}</td>
@@ -328,7 +355,7 @@ export function OperationsDashboard({ snapshot, available }: OperationsDashboard
   const filteredPorts = useMemo(() => snapshot.ports.filter(port => !normalizedQuery || [port.port, port.service, port.process, port.bind, port.category].some(value => String(value ?? '').toLowerCase().includes(normalizedQuery))), [snapshot.ports, normalizedQuery])
   const filteredDocker = useMemo(() => snapshot.docker.filter(container => !normalizedQuery || [container.name, container.image, container.status, container.ports].some(value => String(value ?? '').toLowerCase().includes(normalizedQuery))), [snapshot.docker, normalizedQuery])
   const filteredSystemd = useMemo(() => snapshot.systemd.filter(service => !normalizedQuery || [service.name, service.scope, service.unitType, service.active, service.sub, service.description].some(value => String(value ?? '').toLowerCase().includes(normalizedQuery))), [snapshot.systemd, normalizedQuery])
-  const filteredCron = useMemo(() => snapshot.cronjobs.filter(job => !normalizedQuery || [job.name, job.schedule, job.script, job.model, job.provider, job.state].some(value => String(value ?? '').toLowerCase().includes(normalizedQuery))), [snapshot.cronjobs, normalizedQuery])
+  const filteredCron = useMemo(() => sortCronJobs(snapshot.cronjobs.filter(job => !normalizedQuery || [job.name, job.schedule, job.script, job.model, job.provider, job.state].some(value => String(value ?? '').toLowerCase().includes(normalizedQuery)))), [snapshot.cronjobs, normalizedQuery])
   const filteredTools = useMemo(() => snapshot.tools.filter(tool => !normalizedQuery || [tool.name, tool.path, tool.version, tool.description, tool.status].some(value => String(value ?? '').toLowerCase().includes(normalizedQuery))), [snapshot.tools, normalizedQuery])
 
   const activeDocker = snapshot.docker.filter(container => container.health === 'ok').length
@@ -408,7 +435,7 @@ export function OperationsDashboard({ snapshot, available }: OperationsDashboard
         </section>
 
         <section className="space-y-4">
-          <SectionHeading id="cron" icon={Clock3} title="Hermes 크론잡" count={filteredCron.length} description="활성/일시정지 여부, 스케줄, 모델, 최근 실행 결과를 표시합니다." />
+          <SectionHeading id="cron" icon={Clock3} title="Hermes 크론잡" count={filteredCron.length} description="이벤트성 작업을 먼저 표시한 뒤, 나머지는 등록된 절대 시각 기준으로 새벽부터 저녁까지 정렬합니다. 실행 DB 기준 평균·최대 소요시간도 함께 표시합니다." />
           <CronTable jobs={filteredCron} />
         </section>
 

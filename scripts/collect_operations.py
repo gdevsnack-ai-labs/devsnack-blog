@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 import re
+import sqlite3
 import subprocess
 import time
 import urllib.error
@@ -19,6 +20,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 TOOLS_ROOT = HOME / "tools"
 LOCAL_TOOLS = HOME / "LOCAL_TOOLS.md"
 CRON_JOBS = HOME / ".hermes" / "cron" / "jobs.json"
+CRON_EXECUTIONS = HOME / ".hermes" / "cron" / "executions.db"
 
 PORT_LABELS = {
     22: ("SSH", "system"),
@@ -177,6 +179,66 @@ def collect_systemd() -> list[dict[str, Any]]:
     return sorted(services, key=lambda item: (item["health"] != "ok", item["scope"], item["name"]))
 
 
+def parse_execution_datetime(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def load_execution_metrics() -> dict[str, dict[str, Any]]:
+    if not CRON_EXECUTIONS.exists():
+        return {}
+
+    try:
+        connection = sqlite3.connect(CRON_EXECUTIONS)
+        rows = connection.execute(
+            "SELECT job_id, status, started_at, finished_at FROM executions"
+        ).fetchall()
+        connection.close()
+    except (OSError, sqlite3.Error):
+        return {}
+
+    metrics: dict[str, dict[str, Any]] = {}
+    for job_id, status, started_at, finished_at in rows:
+        item = metrics.setdefault(job_id, {
+            "executionCount": 0,
+            "successfulRuns": 0,
+            "failedRuns": 0,
+            "unknownRuns": 0,
+            "durationSampleCount": 0,
+            "durationTotalSec": 0.0,
+            "maxDurationSec": None,
+        })
+        item["executionCount"] += 1
+        if status == "completed":
+            item["successfulRuns"] += 1
+        elif status == "failed":
+            item["failedRuns"] += 1
+        else:
+            item["unknownRuns"] += 1
+
+        started = parse_execution_datetime(started_at)
+        finished = parse_execution_datetime(finished_at)
+        if not started or not finished or finished < started:
+            continue
+        duration = (finished - started).total_seconds()
+        item["durationSampleCount"] += 1
+        item["durationTotalSec"] += duration
+        item["maxDurationSec"] = max(item["maxDurationSec"] or 0.0, duration)
+
+    for item in metrics.values():
+        samples = item.pop("durationSampleCount")
+        total = item.pop("durationTotalSec")
+        item["durationSampleCount"] = samples
+        item["avgDurationSec"] = round(total / samples, 1) if samples else None
+        item["maxDurationSec"] = round(item["maxDurationSec"], 1) if item["maxDurationSec"] is not None else None
+
+    return metrics
+
+
 def load_cron_jobs() -> list[dict[str, Any]]:
     if not CRON_JOBS.exists():
         return []
@@ -185,10 +247,12 @@ def load_cron_jobs() -> list[dict[str, Any]]:
     except (OSError, json.JSONDecodeError):
         return []
     jobs = payload.get("jobs", []) if isinstance(payload, dict) else []
+    execution_metrics = load_execution_metrics()
     result: list[dict[str, Any]] = []
     for job in jobs:
         if not isinstance(job, dict):
             continue
+        metrics = execution_metrics.get(job.get("id", ""), {})
         result.append({
             "id": job.get("id", ""),
             "name": job.get("name", ""),
@@ -203,6 +267,13 @@ def load_cron_jobs() -> list[dict[str, Any]]:
             "model": job.get("model"),
             "provider": job.get("provider"),
             "workdir": job.get("workdir"),
+            "executionCount": metrics.get("executionCount", 0),
+            "successfulRuns": metrics.get("successfulRuns", 0),
+            "failedRuns": metrics.get("failedRuns", 0),
+            "unknownRuns": metrics.get("unknownRuns", 0),
+            "durationSampleCount": metrics.get("durationSampleCount", 0),
+            "avgDurationSec": metrics.get("avgDurationSec"),
+            "maxDurationSec": metrics.get("maxDurationSec"),
         })
     return sorted(result, key=lambda item: (not item["enabled"], item["name"]))
 

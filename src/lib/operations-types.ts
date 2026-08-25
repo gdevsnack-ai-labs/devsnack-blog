@@ -43,6 +43,13 @@ export interface CronJob {
   model: string | null
   provider: string | null
   workdir: string | null
+  executionCount?: number
+  successfulRuns?: number
+  failedRuns?: number
+  unknownRuns?: number
+  durationSampleCount?: number
+  avgDurationSec?: number | null
+  maxDurationSec?: number | null
 }
 
 export interface InstalledTool {
