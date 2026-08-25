@@ -39,7 +39,8 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        {/* Google AdSense */}
+        <link rel="alternate" type="application/rss+xml" title="DevSnack Blog (한국어)" href="/rss.xml" />
+        <link rel="alternate" type="application/rss+xml" title="DevSnack Blog (English pilot)" href="/en/rss.xml" />
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4720187903290730"

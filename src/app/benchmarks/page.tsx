@@ -5,7 +5,8 @@ import { HubHeader } from '@/components/hub-header'
 import { RelatedAssets } from '@/components/related-assets'
 import { LanguageSwitch } from '@/components/language-switch'
 import { BENCHMARK_OVERVIEW, BENCHMARK_PROJECTIONS, getBenchmarksByCategory, getRelatedAssets } from '@/lib/ia/hub-projections'
-import { buildRouteMetadata } from '@/lib/seo/metadata'
+import { buildRouteMetadata, absoluteSiteUrl } from '@/lib/seo/metadata'
+import { buildBreadcrumbJsonLd, buildCollectionPageJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 
 export const revalidate = 60
 
@@ -13,6 +14,10 @@ export const metadata = buildRouteMetadata({
   title: 'Benchmarks — DevSnack',
   description: '실행 조건과 측정 프로토콜을 공개한 DevSnack Benchmark 결과 모음',
   canonicalPath: '/benchmarks',
+  language: 'ko',
+  koreanPath: '/benchmarks',
+  englishPath: '/en/benchmarks',
+  section: 'Benchmarks',
 })
 
 const CATEGORY_META = [
@@ -40,9 +45,25 @@ export default function BenchmarksPage() {
       return groups
     }, new Map<string, typeof BENCHMARK_PROJECTIONS>()),
   )
+  const jsonLd = buildJsonLdGraph(
+    buildCollectionPageJsonLd({
+      name: 'DevSnack Benchmarks',
+      description: '실행 조건과 측정 프로토콜을 공개한 DevSnack Benchmark 결과 모음',
+      url: absoluteSiteUrl('/benchmarks'),
+      language: 'ko',
+      section: 'Benchmarks',
+      breadcrumbs: [],
+      parts: BENCHMARK_PROJECTIONS.map((benchmark, index) => ({ name: benchmark.title, url: absoluteSiteUrl(benchmark.contentHref), position: index + 1 })),
+    }),
+    buildBreadcrumbJsonLd([
+      { name: '홈', url: absoluteSiteUrl('/') },
+      { name: 'Benchmarks', url: absoluteSiteUrl('/benchmarks') },
+    ], 'ko'),
+  )
 
   return (
     <div className="min-h-screen bg-background">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-6xl px-4 py-8 md:py-10">
         <HubHeader
           eyebrow="Measured Results"

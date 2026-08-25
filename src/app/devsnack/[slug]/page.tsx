@@ -6,7 +6,9 @@ import { ArrowLeft, Calendar, Clock } from 'lucide-react'
 import { ViewCounter } from '@/components/view-counter'
 import { BlogHeader } from '@/components/blog-header'
 import { EnglishSourceSwitch } from '@/components/english-source-switch'
-import { buildRouteMetadata, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
+import { getPublishedEnglishTranslation } from '@/lib/translation'
+import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
+import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 
 export const revalidate = 60
 
@@ -28,11 +30,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!post) return { title: 'Not Found' }
 
   const description = post.seo_desc ?? post.excerpt ?? post.title
+  const translation = await getPublishedEnglishTranslation(post.id)
   return buildRouteMetadata({
     title: post.title,
     description,
     canonicalPath: `/devsnack/${slug}`,
     kind: 'article',
+    language: 'ko',
+    ...(translation ? { koreanPath: `/devsnack/${slug}`, englishPath: `/en/devsnack/${slug}` } : {}),
+    section: 'Stories',
     image: post.cover_image,
     publishedTime: post.published,
     modifiedTime: post.updated,
@@ -47,8 +53,31 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
   const readingTime = Math.max(1, Math.ceil((post.content?.length || 0) / 2000))
 
+  const jsonLd = buildJsonLdGraph(
+    buildArticleJsonLd({
+      type: 'Article',
+      title: post.title,
+      description: post.seo_desc ?? post.excerpt ?? post.title,
+      url: absoluteSiteUrl(`/devsnack/${slug}`),
+      language: 'ko',
+      section: 'Stories',
+      published: post.published,
+      modified: post.updated,
+      image: post.cover_image,
+      keywords: post.labels || [],
+      citations: extractSourceUrls(post.content || ''),
+      about: { '@type': 'Thing', name: 'AI와 개발자 경험' },
+    }),
+    buildBreadcrumbJsonLd([
+      { name: '홈', url: absoluteSiteUrl('/') },
+      { name: 'Stories', url: absoluteSiteUrl('/devsnack') },
+      { name: post.title, url: absoluteSiteUrl(`/devsnack/${slug}`) },
+    ], 'ko'),
+  )
+
   return (
     <div className="min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <BlogHeader title="DevSnack Blog" subtitle="개발자의 시선으로 보는 AI" icon="terminal" color="blue" />
 
       <div className="max-w-3xl mx-auto px-4 py-4">

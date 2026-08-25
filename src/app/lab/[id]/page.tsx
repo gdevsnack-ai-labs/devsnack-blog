@@ -9,7 +9,9 @@ import { experiments } from '@/data/experiments'
 import { supabase } from '@/lib/supabase'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { postHref } from '@/config/site-catalog'
-import { buildRouteMetadata, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
+import { getPublishedEnglishTranslation } from '@/lib/translation'
+import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
+import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildCollectionPageJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 
 export const revalidate = 60
 export const dynamicParams = true
@@ -66,9 +68,36 @@ async function LabPostPage({ slug }: { slug: string }) {
   if (!post) notFound()
 
   const readingTime = Math.max(1, Math.ceil((post.content?.length || 0) / 2000))
+  const isBenchmark = slug === 'ornith15-server-quality-speed-benchmark'
+  const section = isBenchmark ? 'Benchmark' : 'Lab Notes'
+  const jsonLd = buildJsonLdGraph(
+    buildArticleJsonLd({
+      type: 'TechArticle',
+      title: post.title,
+      description: post.seo_desc ?? post.excerpt ?? post.title,
+      url: absoluteSiteUrl(`/lab/${slug}`),
+      language: 'ko',
+      section,
+      published: post.published,
+      modified: post.updated,
+      image: post.cover_image,
+      keywords: post.labels || [],
+      citations: extractSourceUrls(post.content || ''),
+      about: { '@type': 'Thing', name: isBenchmark ? '측정된 로컬 Benchmark 결과' : 'StockPulse AI 실험 기록' },
+      isPartOf: isBenchmark
+        ? { '@type': 'CollectionPage', name: 'Benchmarks', url: absoluteSiteUrl('/benchmarks') }
+        : { '@type': 'CollectionPage', name: 'StockPulse AI 자기개선 실험', url: absoluteSiteUrl('/labs/stockpulse-ai-self-improvement') },
+    }),
+    buildBreadcrumbJsonLd([
+      { name: '홈', url: absoluteSiteUrl('/') },
+      { name: section, url: absoluteSiteUrl(isBenchmark ? '/benchmarks' : '/labs/stockpulse-ai-self-improvement') },
+      { name: post.title, url: absoluteSiteUrl(`/lab/${slug}`) },
+    ], 'ko'),
+  )
 
   return (
     <div className="min-h-screen bg-background">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="max-w-4xl mx-auto px-4 py-4">
         <Link href="/labs" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground no-underline mb-6">
           <ArrowLeft className="w-4 h-4" />
@@ -327,11 +356,15 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const post = await getLabPost(id)
   if (!post) return { title: 'Lab Not Found' }
   const description = post.seo_desc ?? post.excerpt ?? post.title
+  const translation = await getPublishedEnglishTranslation(post.id)
   return buildRouteMetadata({
     title: post.title,
     description,
     canonicalPath: `/lab/${id}`,
     kind: 'article',
+    language: 'ko',
+    ...(translation ? { koreanPath: `/lab/${id}`, englishPath: `/en/lab/${id}` } : {}),
+    section: id === 'ornith15-server-quality-speed-benchmark' ? 'Benchmark' : 'Lab Notes',
     image: post.cover_image,
     publishedTime: post.published,
     modifiedTime: post.updated,

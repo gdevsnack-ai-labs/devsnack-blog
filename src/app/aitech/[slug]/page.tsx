@@ -6,7 +6,8 @@ import { ArrowLeft, Calendar, Clock } from 'lucide-react'
 import { ViewCounter } from '@/components/view-counter'
 import { BlogHeader } from '@/components/blog-header'
 import { FeedProvenance } from '@/components/feed-provenance'
-import { buildRouteMetadata, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
+import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
+import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 
 export const revalidate = 60
 
@@ -31,6 +32,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description,
     canonicalPath: `/aitech/${slug}`,
     kind: 'article',
+    language: 'ko',
+    section: 'AI Tech',
     image: post.cover_image,
     publishedTime: post.published,
     modifiedTime: post.updated,
@@ -43,9 +46,32 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   if (!post) notFound()
 
   const readingTime = Math.max(1, Math.ceil((post.content?.length || 0) / 2000))
+  const jsonLd = buildJsonLdGraph(
+    buildArticleJsonLd({
+      type: 'TechArticle',
+      title: post.title,
+      description: post.seo_desc ?? post.excerpt ?? post.title,
+      url: absoluteSiteUrl(`/aitech/${slug}`),
+      language: 'ko',
+      section: 'AI Tech',
+      published: post.published,
+      modified: post.updated,
+      image: post.cover_image,
+      keywords: [...(post.labels || []), 'AI Tech', 'automated feed'],
+      citations: extractSourceUrls(post.content || ''),
+      about: { '@type': 'CreativeWork', name: 'AI Tech Automation System', url: absoluteSiteUrl('/labs/blog') },
+      isPartOf: { '@type': 'CollectionPage', name: 'AI Tech Automation System', url: absoluteSiteUrl('/labs/blog') },
+    }),
+    buildBreadcrumbJsonLd([
+      { name: '홈', url: absoluteSiteUrl('/') },
+      { name: 'AI Tech', url: absoluteSiteUrl('/aitech') },
+      { name: post.title, url: absoluteSiteUrl(`/aitech/${slug}`) },
+    ], 'ko'),
+  )
 
   return (
     <div className="min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <BlogHeader title="AI Tech Insight" subtitle="AI 기술과 산업 동향" icon="aitech" color="purple" />
       <div className="max-w-3xl mx-auto px-4 py-4">
         <Link href="/aitech" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground no-underline">

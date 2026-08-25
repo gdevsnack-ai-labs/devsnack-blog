@@ -17,6 +17,9 @@ const INDEX_ROUTES = new Set([
   '/privacy',
   '/contact',
   '/links',
+  '/en',
+  '/en/benchmarks',
+  '/en/labs/stockpulse-ai-self-improvement',
 ])
 
 const NAVIGATION_ONLY_PREFIXES = [
@@ -33,6 +36,7 @@ const UTILITY_PREFIXES = [
   '/api/',
   '/robots.txt',
   '/rss.xml',
+  '/en/rss.xml',
 ]
 
 export function routePolicy(pathname: string): SitemapRoutePolicy {

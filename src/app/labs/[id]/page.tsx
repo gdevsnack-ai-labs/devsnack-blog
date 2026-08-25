@@ -11,7 +11,8 @@ import { getProjectFeedOutputs } from '@/lib/ia/feed-output-projection'
 import { ProjectFeedOutputs } from '@/components/project-feed-outputs'
 import { RelatedAssets } from '@/components/related-assets'
 import { LanguageSwitch } from '@/components/language-switch'
-import { buildRouteMetadata } from '@/lib/seo/metadata'
+import { buildRouteMetadata, absoluteSiteUrl } from '@/lib/seo/metadata'
+import { buildBreadcrumbJsonLd, buildCollectionPageJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 
 const STATUS_CLASS: Record<string, string> = {
   진행중: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
@@ -48,6 +49,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     description: experiment.description,
     canonicalPath: `/labs/${id}`,
     kind: 'website',
+    language: 'ko',
+    ...(id === 'stockpulse-ai-self-improvement' ? { koreanPath: `/labs/${id}`, englishPath: `/en/labs/${id}` } : {}),
+    section: 'Lab Project',
   })
 }
 
@@ -60,6 +64,22 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
     ? mergePublishedLabNotes(sourceExperiment, await getPublishedLabNotes('stockpulse-self-'))
     : sourceExperiment
   const feedOutputs = await getProjectFeedOutputs(id)
+  const jsonLd = buildJsonLdGraph(
+    buildCollectionPageJsonLd({
+      name: experiment.name,
+      description: experiment.description,
+      url: absoluteSiteUrl(`/labs/${id}`),
+      language: 'ko',
+      section: 'Lab Project',
+      breadcrumbs: [],
+      parts: feedOutputs.map((output, index) => ({ name: output.title, url: absoluteSiteUrl(output.href), position: index + 1 })),
+    }),
+    buildBreadcrumbJsonLd([
+      { name: '홈', url: absoluteSiteUrl('/') },
+      { name: 'Lab Projects', url: absoluteSiteUrl('/labs') },
+      { name: experiment.name, url: absoluteSiteUrl(`/labs/${id}`) },
+    ], 'ko'),
+  )
 
   const nature = getNature(experiment)
   const keyFinding = getKeyFinding(experiment)
@@ -73,6 +93,7 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
 
   return (
     <div className="min-h-screen bg-background">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-4xl px-4 py-8 md:py-10">
         <Link href="/labs" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground no-underline hover:text-foreground">
           <ArrowLeft className="h-4 w-4" />

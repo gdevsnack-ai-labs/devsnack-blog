@@ -5,7 +5,8 @@ import { LanguageSwitch } from '@/components/language-switch'
 import { EnglishStockPulseEvaluation } from '@/components/english-stockpulse-evaluation'
 import { EN_PROJECT_PROJECTIONS } from '@/lib/i18n/english-pilot'
 import { getEnglishPost } from '@/lib/translation'
-import { buildRouteMetadata } from '@/lib/seo/metadata'
+import { buildRouteMetadata, absoluteSiteUrl } from '@/lib/seo/metadata'
+import { buildBreadcrumbJsonLd, buildCollectionPageJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 
 export const revalidate = 60
 
@@ -16,14 +17,36 @@ export const metadata = buildRouteMetadata({
   title: `${project.name} — DevSnack English Pilot`,
   description: project.description,
   canonicalPath: '/en/labs/stockpulse-ai-self-improvement',
+  language: 'en',
+  koreanPath: '/labs/stockpulse-ai-self-improvement',
+  englishPath: '/en/labs/stockpulse-ai-self-improvement',
+  section: 'Lab Project',
 })
 
 export default async function EnglishStockPulseProjectPage() {
   const notes = (await Promise.all(NOTE_SLUGS.map(slug => getEnglishPost('lab', slug)))).filter(Boolean)
   if (notes.length === 0) notFound()
 
+  const jsonLd = buildJsonLdGraph(
+    buildCollectionPageJsonLd({
+      name: project.name,
+      description: project.description,
+      url: absoluteSiteUrl('/en/labs/stockpulse-ai-self-improvement'),
+      language: 'en',
+      section: 'Lab Project',
+      breadcrumbs: [],
+      parts: notes.map((entry, index) => ({ name: entry!.translation.title, url: absoluteSiteUrl(`/en/lab/${entry!.source.slug}`), position: index + 1 })),
+    }),
+    buildBreadcrumbJsonLd([
+      { name: 'Home', url: absoluteSiteUrl('/en') },
+      { name: 'Lab Projects', url: absoluteSiteUrl('/en/labs') },
+      { name: project.name, url: absoluteSiteUrl('/en/labs/stockpulse-ai-self-improvement') },
+    ], 'en'),
+  )
+
   return (
     <div className="min-h-screen bg-background">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-4xl px-4 py-8 md:py-12">
         <header className="border-b border-border pb-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">

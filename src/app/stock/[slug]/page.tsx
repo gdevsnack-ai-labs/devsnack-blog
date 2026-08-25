@@ -6,7 +6,8 @@ import { ArrowLeft, Calendar, Clock, TrendingUp } from 'lucide-react'
 import { ViewCounter } from '@/components/view-counter'
 import { BlogHeader } from '@/components/blog-header'
 import { FeedProvenance, type StockPulsePredictionSummary } from '@/components/feed-provenance'
-import { buildRouteMetadata, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
+import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
+import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 import { normalizeProvenance } from '@/lib/provenance'
 
 export const revalidate = 60
@@ -51,6 +52,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description,
     canonicalPath: `/stock/${slug}`,
     kind: 'article',
+    language: 'ko',
+    section: 'StockPulse Experiment',
     image: post.cover_image,
     publishedTime: post.published,
     modifiedTime: post.updated,
@@ -64,9 +67,32 @@ export default async function StockPostPage({ params }: { params: Promise<{ slug
 
   const prediction = await getPredictionForPost(post)
   const readingTime = Math.max(1, Math.ceil((post.content?.length || 0) / 2000))
+  const jsonLd = buildJsonLdGraph(
+    buildArticleJsonLd({
+      type: 'TechArticle',
+      title: post.title,
+      description: `${post.seo_desc ?? post.excerpt ?? post.title} StockPulse AI experiment output; not investment advice.`,
+      url: absoluteSiteUrl(`/stock/${slug}`),
+      language: 'ko',
+      section: 'StockPulse Experiment',
+      published: post.published,
+      modified: post.updated,
+      image: post.cover_image,
+      keywords: [...(post.labels || []), 'StockPulse', 'prediction evaluation', 'AI experiment'],
+      citations: extractSourceUrls(post.content || ''),
+      about: { '@type': 'CreativeWork', name: 'StockPulse AI Self-Improvement Experiment', url: absoluteSiteUrl('/labs/stockpulse-ai-self-improvement') },
+      isPartOf: { '@type': 'CollectionPage', name: 'StockPulse AI Self-Improvement Experiment', url: absoluteSiteUrl('/labs/stockpulse-ai-self-improvement') },
+    }),
+    buildBreadcrumbJsonLd([
+      { name: '홈', url: absoluteSiteUrl('/') },
+      { name: 'StockPulse', url: absoluteSiteUrl('/stock') },
+      { name: post.title, url: absoluteSiteUrl(`/stock/${slug}`) },
+    ], 'ko'),
+  )
 
   return (
     <div className="min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <BlogHeader title="StockPulse AI Lab" subtitle="AI가 분석한 한국 주식 시장" icon="trending" color="green" />
 
       <div className="max-w-3xl mx-auto px-4 py-4">

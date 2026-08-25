@@ -1,7 +1,17 @@
-import type { Metadata } from 'next'
+// @ts-expect-error Node's strip-types runner requires the explicit extension.
+import { absoluteSiteUrl, SITE_URL } from './site.ts'
 
-export const SITE_URL = 'https://devsnack-blog.vercel.app'
+function decodeHtmlEntities(value: string): string {
+  return value
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+}
 
+export type SeoLanguage = 'ko' | 'en'
 export type RouteMetadataKind = 'website' | 'article'
 
 export interface RouteMetadataInput {
@@ -12,11 +22,34 @@ export interface RouteMetadataInput {
   image?: string | null
   publishedTime?: string | null
   modifiedTime?: string | null
+  language?: SeoLanguage
+  koreanPath?: string
+  englishPath?: string
+  indexable?: boolean
+  section?: string
 }
 
-export function absoluteSiteUrl(path: string): string {
-  const normalized = path.startsWith('/') ? path : `/${path}`
-  return `${SITE_URL}${normalized}`
+export function cleanMetaText(value: string | null | undefined, maxLength = 160): string {
+  const normalized = decodeHtmlEntities(String(value || ''))
+    .replace(/<br\s*\/?\s*>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+  if (normalized.length <= maxLength) return normalized
+  return `${normalized.slice(0, Math.max(0, maxLength - 1)).trimEnd()}…`
+}
+
+export function buildLocaleAlternates(koreanPath: string, englishPath: string) {
+  const ko = absoluteSiteUrl(koreanPath)
+  const en = absoluteSiteUrl(englishPath)
+  return {
+    canonical: ko,
+    languages: {
+      ko,
+      en,
+      'x-default': ko,
+    },
+  }
 }
 
 export function buildRouteMetadata({
@@ -27,34 +60,53 @@ export function buildRouteMetadata({
   image,
   publishedTime,
   modifiedTime,
-}: RouteMetadataInput): Metadata {
+  language = 'ko',
+  koreanPath,
+  englishPath,
+  indexable = true,
+  section,
+}: RouteMetadataInput) {
   const canonical = absoluteSiteUrl(canonicalPath)
+  const cleanTitle = cleanMetaText(title, 75)
+  const cleanDescription = cleanMetaText(description, 160)
   const openGraph = {
     type: kind,
-    locale: 'ko_KR',
+    locale: language === 'en' ? 'en_US' : 'ko_KR',
     url: canonical,
-    title,
-    description,
+    title: cleanTitle,
+    description: cleanDescription,
     siteName: 'DevSnack Blog',
+    ...(section ? { section } : {}),
     ...(publishedTime ? { publishedTime } : {}),
     ...(modifiedTime ? { modifiedTime } : {}),
     ...(image ? { images: [image] } : {}),
   }
 
   return {
-    title,
-    description,
-    alternates: { canonical },
-    robots: { index: true, follow: true },
+    title: cleanTitle,
+    description: cleanDescription,
+    alternates: koreanPath && englishPath
+      ? {
+          canonical,
+          languages: {
+            ko: absoluteSiteUrl(koreanPath),
+            en: absoluteSiteUrl(englishPath),
+            'x-default': absoluteSiteUrl(koreanPath),
+          },
+        }
+      : { canonical },
+    robots: { index: indexable, follow: true },
     openGraph,
     twitter: {
       card: image ? 'summary_large_image' : 'summary',
-      title,
-      description,
+      title: cleanTitle,
+      description: cleanDescription,
       ...(image ? { images: [image] } : {}),
     },
   }
 }
+
+export { SITE_URL, absoluteSiteUrl }
 
 const SOURCE_HEADING = /(?:출처|참고문헌|참고 자료|sources?|references?)/i
 const HEADING_BOUNDARY = /(?:<h[1-6]\b|^#{1,6}\s+)/gim
@@ -95,6 +147,7 @@ export interface ResearchJsonLdInput {
   keywords?: string
   published?: string | null
   updated?: string | null
+  language?: SeoLanguage
 }
 
 export function buildResearchJsonLd({
@@ -106,15 +159,16 @@ export function buildResearchJsonLd({
   keywords,
   published,
   updated,
+  language = 'ko',
 }: ResearchJsonLdInput): Record<string, unknown> {
   const jsonLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'TechArticle',
     headline: title,
-    description,
+    description: cleanMetaText(description),
     url: canonical,
     mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
-    inLanguage: 'ko-KR',
+    inLanguage: language === 'en' ? 'en-US' : 'ko-KR',
     isAccessibleForFree: true,
     articleSection: categoryLabel,
     author: { '@type': 'Organization', name: 'DevSnack' },
@@ -130,11 +184,6 @@ export function buildResearchJsonLd({
   return jsonLd
 }
 
-/**
- * Blogger content sometimes contains head-only tags from the source page.
- * They are not part of the visible article body and must not compete with
- * Next.js route metadata.
- */
 export function stripImportedHeadArtifacts(content: string): string {
   return content
     .replace(/<head\b[^>]*>[\s\S]*?<\/head>/gi, '')

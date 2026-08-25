@@ -3,8 +3,10 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Calendar, Clock, ExternalLink } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
-import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { EnglishSourceSwitch } from '@/components/english-source-switch'
+import { getPublishedEnglishTranslation } from '@/lib/translation'
+import { MarkdownRenderer } from '@/components/markdown-renderer'
+import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 
 export const revalidate = 60
 export const dynamicParams = true
@@ -15,7 +17,7 @@ import {
   RESEARCH_CATEGORY_LABEL,
   RESEARCH_STATUS_META,
 } from '@/lib/content-taxonomy'
-import { buildResearchJsonLd, SITE_URL, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
+import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 
 async function getResearchPost(id: string) {
   const { data } = await supabase
@@ -51,44 +53,22 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
   const description = getDescription(post)
   const keywords = getKeywords(post)
-  const canonical = `${SITE_URL}/research/${id}`
-
+  const translation = await getPublishedEnglishTranslation(post.id)
   return {
-    title: `${post.title} | DevSnack Knowledge`,
-    description,
+    ...buildRouteMetadata({
+      title: `${post.title} | DevSnack Knowledge`,
+      description,
+      canonicalPath: `/research/${id}`,
+      kind: 'article',
+      language: 'ko',
+      ...(translation ? { koreanPath: `/research/${id}`, englishPath: `/en/research/${id}` } : {}),
+      section: 'Knowledge',
+      image: post.cover_image,
+      publishedTime: post.published,
+      modifiedTime: post.updated,
+    }),
     keywords,
     authors: [{ name: 'DevSnack' }],
-    alternates: { canonical },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-        'max-video-preview': -1,
-      },
-    },
-    openGraph: {
-      type: 'article',
-      locale: 'ko_KR',
-      url: canonical,
-      title: post.title,
-      description,
-      siteName: 'DevSnack Blog',
-      publishedTime: post.published || undefined,
-      modifiedTime: post.updated || undefined,
-      section: 'AI 모델 리서치',
-      authors: ['DevSnack'],
-      images: post.cover_image ? [post.cover_image] : undefined,
-    },
-    twitter: {
-      card: post.cover_image ? 'summary_large_image' : 'summary',
-      title: post.title,
-      description,
-      images: post.cover_image ? [post.cover_image] : undefined,
-    },
   }
 }
 
@@ -103,18 +83,30 @@ export default async function ResearchPostPage({ params }: { params: Promise<{ i
   const readingTime = Math.max(1, Math.ceil((post.content?.length || 0) / 2000))
   const description = getDescription(post)
   const keywords = getKeywords(post)
-  const canonical = `${SITE_URL}/research/${id}`
+  const canonical = absoluteSiteUrl(`/research/${id}`)
   const content = stripImportedHeadArtifacts(post.content || '')
-  const jsonLd = buildResearchJsonLd({
-    title: post.title,
-    description,
-    canonical,
-    categoryLabel: RESEARCH_CATEGORY_LABEL[category],
-    keywords: keywords.join(', '),
-    content,
-    published: post.published,
-    updated: post.updated,
-  })
+  const jsonLd = buildJsonLdGraph(
+    buildArticleJsonLd({
+      type: 'TechArticle',
+      title: post.title,
+      description,
+      url: canonical,
+      language: 'ko',
+      section: 'Knowledge',
+      published: post.published,
+      modified: post.updated,
+      image: post.cover_image,
+      keywords,
+      citations: extractSourceUrls(content),
+      about: { '@type': 'Thing', name: 'AI 모델 및 인프라 리서치' },
+      isPartOf: { '@type': 'CollectionPage', name: 'DevSnack Knowledge', url: absoluteSiteUrl('/research') },
+    }),
+    buildBreadcrumbJsonLd([
+      { name: '홈', url: absoluteSiteUrl('/') },
+      { name: 'Knowledge', url: absoluteSiteUrl('/research') },
+      { name: post.title, url: canonical },
+    ], 'ko'),
+  )
 
   return (
     <div className="min-h-screen bg-background">
