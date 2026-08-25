@@ -5,7 +5,9 @@ import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Calendar, Clock, TrendingUp } from 'lucide-react'
 import { ViewCounter } from '@/components/view-counter'
 import { BlogHeader } from '@/components/blog-header'
+import { FeedProvenance, type StockPulsePredictionSummary } from '@/components/feed-provenance'
 import { buildRouteMetadata, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
+import { normalizeProvenance } from '@/lib/provenance'
 
 export const revalidate = 60
 
@@ -19,6 +21,24 @@ async function getPost(slug: string): Promise<Post | null> {
     .single()
 
   return data
+}
+
+async function getPredictionForPost(post: Post): Promise<StockPulsePredictionSummary | null> {
+  const metadataDate = normalizeProvenance(post.provenance)?.report_date
+  const slugDate = post.slug.match(/^\d{4}-\d{2}-\d{2}/)?.[0]
+  const reportDate = metadataDate || slugDate
+  if (!reportDate) return null
+
+  const { data } = await supabase
+    .from('predictions')
+    .select('date, direction, kospi_target, actual_direction, actual_kospi_close, accuracy_score, is_correct')
+    .eq('date', reportDate)
+    .eq('session', 'morning')
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  return (data ?? null) as StockPulsePredictionSummary | null
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -42,6 +62,7 @@ export default async function StockPostPage({ params }: { params: Promise<{ slug
   const post = await getPost(slug)
   if (!post) notFound()
 
+  const prediction = await getPredictionForPost(post)
   const readingTime = Math.max(1, Math.ceil((post.content?.length || 0) / 2000))
 
   return (
@@ -84,6 +105,8 @@ export default async function StockPostPage({ params }: { params: Promise<{ slug
             </div>
           )}
         </div>
+
+        <FeedProvenance blogId="stockpulse" provenance={post.provenance} prediction={prediction} />
 
         <div className="border-t mb-8" />
 

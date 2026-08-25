@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import type { FeedProvenance } from './provenance'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -18,6 +19,7 @@ export type Post = {
   seo_desc: string | null
   cover_image: string | null
   blogger_id: string | null
+  provenance: FeedProvenance | null
   blog_id: string
   views: number
 }

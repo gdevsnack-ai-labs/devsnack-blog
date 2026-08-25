@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Calendar, Clock } from 'lucide-react'
 import { ViewCounter } from '@/components/view-counter'
 import { BlogHeader } from '@/components/blog-header'
+import { FeedProvenance } from '@/components/feed-provenance'
 import { buildRouteMetadata, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 
 export const revalidate = 60
@@ -77,6 +78,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             </div>
           )}
         </div>
+        <FeedProvenance blogId="aitech" provenance={post.provenance} published={post.published} />
         <div className="border-t mb-8" />
         <div className="prose-devsnack" dangerouslySetInnerHTML={{ __html: stripImportedHeadArtifacts(post.content || '') }} />
       </article>
