@@ -53,13 +53,13 @@ Scan wiki Markdown files
 <ol><li><strong>Vector-only search was very accurate</strong>; keyword OR fallback added noise under RRF, which was fixed with AND-first retrieval and vector weight 2.0.</li><li><strong>Document-level deduplication was necessary</strong>; chunks from one document could dominate the results, so only the best chunk per document is kept.</li><li><strong>Navigation documents must be excluded</strong>; list documents such as research-backlog scored too highly in the reranker, so a skip list is required.</li><li><strong>Data coverage is a real limit</strong>: bitaxe/miner knowledge was not in the wiki, only in skills and logs. It was correct for search to return nothing; the wiki needed an entity document such as bitaxe.</li><li>The llama.cpp embedding server uses a default <code>--ubatch-size</code> of 512; long inputs need 2048 to avoid a 500 error.</li></ol>
 <h3>Usage</h3>
 <pre><code># Start/stop the embedding and reranker servers
-bash [local path]
-bash [local path] stop
+bash [로컬]
+bash [로컬] stop
 
 # Index after wiki changes
-python3 [local path]
+python3 [로컬]
 
 # Search
-python3 [local path] "query"</code></pre>
+python3 [로컬] "query"</code></pre>
 <h2>Sources</h2>
 <ul><li>sqlite-vec: https://github.com/asg017/sqlite-vec (aarch64 wheel measured, v0.1.9)</li><li>Qdrant: https://qdrant.tech (arm64 image measured)</li><li>BGE-M3: https://huggingface.co/BAAI/bge-m3</li><li>bge-reranker-v2-m3: https://huggingface.co/BAAI/bge-reranker-v2-m3</li><li>embedding_api: https://github.com/smallOpenSource/embedding_api</li><li>Local vector database comparison (2026): https://aliteq.com/best-vector-database-for-local-rag-2026</li><li>Reference: the local hybrid + RRF + reranker pattern</li></ul>
