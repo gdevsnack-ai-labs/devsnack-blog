@@ -51,8 +51,10 @@ SearXNG search / Google News RSS fallback
 | Decision | 기준 | 생성 방식 |
 |---|---|---|
 | `FULL_REPORT` | 유효 source URL + crawl evidence가 configurable minimum 이상 | 원문 evidence 범위 안에서 장문 Report |
-| `NEWS_BRIEF` | 유효 source URL + bounded RSS/short-crawl evidence | 500~900자 내외의 보수적 Brief, 장문 summary 호출 생략 |
+| `NEWS_BRIEF` | 유효 source URL + bounded RSS/short-crawl evidence | 500~900자 내외를 목표로 한 보수적 Brief, 장문 summary 호출 생략 |
 | `REJECT` | source URL이 없거나 evidence가 brief minimum 미만 | generation/publish 중단 |
+
+NEWS_BRIEF에는 deterministic upper bound를 둔다. 기본 hard cap은 1,400자이며, 실제 허용 상한은 `min(1,400, max(900, evidence_chars × 6))`으로 evidence보다 과도하게 긴 Report가 되지 않게 한다.
 
 현재 기본 threshold:
 
@@ -69,7 +71,7 @@ SearXNG search / Google News RSS fallback
 - `UNSUPPORTED`: source에서 확인할 근거가 없음
 - `CONTRADICTED`: source가 반대 사실을 말하거나 주장을 부정함
 
-`UNSUPPORTED`·`CONTRADICTED`는 blocking claim으로 취급한다. regeneration maximum 이후에도 남으면 `REJECT`한다. fact-check 응답 배열에 포함되지 않은 claim도 보수적으로 `UNSUPPORTED`로 보완한다.
+`UNSUPPORTED`·`CONTRADICTED`는 blocking claim으로 취급한다. regeneration maximum 이후에도 남으면 `REJECT`한다. fact-check 응답 배열에 포함되지 않은 claim도 source claim identity/index를 1:1로 대조해 누락되면 보수적으로 `UNSUPPORTED`로 보완한다. 동일 claim의 중복 evaluator 응답이 개수를 채워도 다른 source claim을 덮어쓸 수 없다.
 
 ### Article structure
 
@@ -81,7 +83,7 @@ SearXNG search / Google News RSS fallback
 <h2>출처</h2>
 ```
 
-`확인된 사실`에는 source에 명시된 내용만, 의미·전망·추론은 `AI의 해석` 아래에만 둔다. FULL_REPORT만 `필자의 생각` 장문 섹션을 유지한다.
+`확인된 사실`에는 source에 명시된 내용만, 의미·전망·추론은 `AI의 해석` 아래에만 둔다. assessment된 source URL이 본문 출처에 실제로 포함되는지도 검사한다. FULL_REPORT만 `필자의 생각` 장문 섹션을 유지한다.
 
 ## 4. Persisted telemetry
 
@@ -107,7 +109,9 @@ Claim 원문과 evidence excerpt는 내부 history DB에만 저장한다. direct
 
 ## 5. Real shadow verification
 
-실제 local LLM (`localhost:8080`)과 SearXNG (`localhost:8888`) health check 후 `main.py --dry-run`을 실행했다.
+실제 local LLM (`localhost:8080`)과 SearXNG (`localhost:8888`) health check 후 `main.py --dry-run`을 두 차례 실행했다.
+
+### Initial shadow run
 
 ```text
 실행 시간: 152.9초
@@ -116,24 +120,19 @@ public publish: 0건
 실패: 0건
 ```
 
-대표적인 실제 결과:
+### Final hardened shadow run
 
-### Shadow article A
+```text
+실행 시간: 225.4초
+shadow validation: 0건
+public publish: 0건
+pipeline reject: 2건
+history mutation: 0건
+```
 
-- source quality: `NEWS_BRIEF`
-- evidence basis: `rss_summary`
-- claim counts: `INFERENCE 4`, `SUPPORTED 0`, `UNSUPPORTED 0`, `CONTRADICTED 0`
-- final outcome: `shadow_validated`
+Final run에서는 RSS-only 126자 source의 장문 summary 호출을 생략했고, claim 검증 후 `UNSUPPORTED`가 남은 두 article을 regeneration 3회 뒤 `REJECT`했다. 최종 history read-back은 전체 835개와 status counts `failed 56 / pending 136 / published 499 / skipped 144`로 실행 전과 동일했다. quality telemetry는 2건에서 4건으로 증가했고, 두 신규 row 모두 source evidence와 supported/inference lane을 저장했다.
 
-### Shadow article B
-
-- source quality: `NEWS_BRIEF`
-- evidence basis: `short_crawl`
-- crawl evidence excerpt persisted
-- claim counts: `SUPPORTED 11`, `INFERENCE 0`, `UNSUPPORTED 0`, `CONTRADICTED 0`
-- final outcome: `shadow_validated`
-
-이 결과는 새 분류가 실제 generation 결과에 적용되고, source evidence와 supported/inference lane이 SQLite read-back되는 것을 확인한다. 단, 2건은 public publish 재개를 판단하기에는 작은 표본이다.
+이 결과는 새 분류가 실제 generation 결과에 적용되고, evidence 부족 content를 publish하지 않는 것을 확인한다. 단, 누적 shadow 표본은 4건이므로 public publish 재개를 판단하기에는 작다.
 
 ## 6. Historical Weekly editorial compression
 
@@ -163,7 +162,7 @@ Selection:
 evidence quality + AI Tech relevance + event significance
 ```
 
-Historical period는 crawl 전문이 없기 때문에 evidence quality는 모두 `NEWS_BRIEF`였다. 따라서 relevance/significance가 core selection의 차이를 만들었다. 확인된 core event는 다음과 같다.
+Historical period는 crawl 전문이 없기 때문에 evidence quality는 모두 `NEWS_BRIEF`였다. 따라서 relevance/significance가 core selection의 차이를 만들었다. core event selection 결과는 다음과 같다.
 
 1. Patton Township, 데이터센터 조닝 조례 개정
 2. Fortinet, Virtue AI 인수
@@ -191,7 +190,8 @@ Stripe의 OpenRouter 인수설: AI 시대의 '데이터 관세'와 개발자 생
 
 Historical source summary에는 publisher-side interpretation이 혼입돼 있을 수 있으므로, Weekly는 이를 독립적으로 확인된 사실이라고 표시하지 않는다.
 
-- core: source-summary evidence 수준의 짧은 fact record
+- section title: `사건별 source-summary record`로 유지해 historical record를 independently confirmed facts로 오인하지 않게 함
+- core: source-summary evidence 수준의 짧은 record이며 사실·해석 혼입 가능성을 표시
 - core: 사건별 DevSnack/AI interpretation을 별도 줄에 배치
 - roundup: source-summary 단서 한 줄 + source reference만 배치
 - claim support rate: historical data에서 생성하지 않음
@@ -202,9 +202,9 @@ Historical source summary에는 publisher-side interpretation이 혼입돼 있�
 |---|---:|---:|
 | 14개 daily generated content | 44,194 chars | baseline |
 | persisted source summaries | 9,518 chars | historical evidence baseline |
-| revised Weekly Digest | 8,946 chars | core 5 + roundup 9 |
-| daily generated content 대비 | — | **79.76% 감소** |
-| source summary 대비 | — | **6.01% 감소** |
+| revised Weekly Digest | 8,912 chars | core 5 + roundup 9 |
+| daily generated content 대비 | — | **79.83% 감소** |
+| source summary 대비 | — | **6.37% 감소** |
 
 Artifact:
 
@@ -238,7 +238,7 @@ Gateway가 꺼져 있어 현재 즉시 자동 실행 중인 job은 없다. 재�
 
 ### Manual publish hard gate
 
-`AI_TECH_PUBLIC_PUBLISH_ENABLED=false`가 기본값이다. `main.py`를 직접 실행해도 `--dry-run`이 아니면 public publisher 전에 fail-closed한다.
+`AI_TECH_PUBLIC_PUBLISH_ENABLED=false`가 기본값이다. `main.py`를 직접 실행해도 `--dry-run`이 아니면 public publisher 전에 fail-closed한다. `VercelPublisher.publish()`도 같은 flag를 직접 검사해 호출 경로 우회를 막는다. shadow에서는 `news_history`의 pending/failed 상태도 변경하지 않고 quality telemetry만 기록한다.
 
 ### Weekly publish hard gate
 
@@ -255,17 +255,17 @@ Weekly pipeline도 기본 publish를 막고 다음 명시적 flag가 있어야�
 Passed:
 
 ```text
-AI Tech quality policy tests
-AI Tech quality telemetry tests
-AI Tech quality-aware BlogPost tests
+AI Tech quality policy tests (identity-based omission handling)
+AI Tech quality telemetry tests (legacy migration/read-back)
+AI Tech quality-aware BlogPost tests (Brief ceiling/source URL)
 AI Tech main quality recording tests
 AI Tech public quality provenance tests
-AI Tech public publish gate tests
+AI Tech public publish gate tests (direct publisher + CLI)
 17 passed, 1 skipped — existing search flow
-AI Tech weekly digest tests
-AI Tech lifecycle rollback tests
+AI Tech weekly digest tests (production-sized 4–6 core invariant)
+AI Tech lifecycle rollback tests (PATCH/verify/refresh failures)
 Python compile
-Real shadow run: exit 0, public publish 0
+Final real shadow run: exit 0, public publish 0, REJECT 2, history mutation 0
 ```
 
 ## 9. Not performed
@@ -286,7 +286,7 @@ Real shadow run: exit 0, public publish 0
 
 ## 10. Resume recommendation
 
-현재 shadow 표본은 2건이다. 한 건은 `INFERENCE` 중심, 한 건은 `SUPPORTED` 중심으로 결과가 갈렸고, source quality는 모두 `NEWS_BRIEF`였다. 이 자체는 pipeline이 작동한다는 증거이지만, public publish 재개를 승인할 만큼 충분한 품질 표본은 아니다.
+현재 누적 shadow 표본은 4건이다. 초기 2건은 `INFERENCE` 중심/`SUPPORTED` 중심으로 통과했고, 최종 hardening 실행의 2건은 blocking `UNSUPPORTED`가 남아 REJECT됐다. source quality는 모두 `NEWS_BRIEF`였다. pipeline이 fail-closed로 작동한다는 근거는 확보했지만, public publish 재개를 승인할 만큼 충분한 품질 표본은 아니다.
 
 권고:
 

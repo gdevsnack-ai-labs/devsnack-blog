@@ -52,12 +52,14 @@ assert sorted(len(cluster['articles']) for cluster in clusters) == [1, 1, 2]
 core, roundup = select_core_events(articles, clusters, core_limit=2)
 assert len(core) == 2
 assert len(roundup) == 1
-assert neutral_event_title(articles[0]) == 'OpenAI, 보안 사고 이후 학습·테스트 일시 중단 보도'
+assert neutral_event_title(articles[0]) == 'OpenAI, AI 보안 기준 공개'
+assert neutral_event_title({'title': 'OpenAI, 허깅페이스 해킹 이후 학습·테스트 중단'}) == 'OpenAI, 보안 사고 이후 학습·테스트 일시 중단 보도'
 
 html = build_weekly_digest('2026-08-18', '2026-08-24', articles, clusters, core_limit=2)
 assert '## 핵심 사건' in html
 assert '## Compact roundup' in html
-assert '## 사건별 확인된 source facts' in html
+assert '## 사건별 source-summary record' in html
+assert '## 사건별 확인된 source facts' not in html
 assert '## 의미와 해석' in html
 assert '## 다음 주 watch items' in html
 assert '## Sources' in html
@@ -65,5 +67,24 @@ assert '중복 사건 1건 병합' in html
 assert '핵심 사건 2개' in html
 assert 'roundup 1개' in html
 assert validate_weekly_digest(html, expected_article_count=4, expected_cluster_count=3, expected_core_count=2, expected_roundup_count=1) == []
+
+production_articles = [
+    {'id': 10, 'title': 'OpenAI 보안 사고 대응', 'summary': 'source summary ' * 30, 'source_url': 'https://example.com/10', 'published': '2026-08-18', 'source_quality': 'NEWS_BRIEF'},
+    {'id': 11, 'title': 'Patton 데이터센터 조닝 조례', 'summary': 'source summary ' * 30, 'source_url': 'https://example.com/11', 'published': '2026-08-19', 'source_quality': 'NEWS_BRIEF'},
+    {'id': 12, 'title': 'Fortinet Virtue AI 인수', 'summary': 'source summary ' * 30, 'source_url': 'https://example.com/12', 'published': '2026-08-20', 'source_quality': 'NEWS_BRIEF'},
+    {'id': 13, 'title': 'Mistral 공공 조달', 'summary': 'source summary ' * 30, 'source_url': 'https://example.com/13', 'published': '2026-08-21', 'source_quality': 'NEWS_BRIEF'},
+    {'id': 14, 'title': 'Anthropic Google TPU 인력 영입', 'summary': 'source summary ' * 30, 'source_url': 'https://example.com/14', 'published': '2026-08-22', 'source_quality': 'NEWS_BRIEF'},
+    {'id': 15, 'title': 'KT 초등학생 AI 교육', 'summary': 'source summary ' * 30, 'source_url': 'https://example.com/15', 'published': '2026-08-23', 'source_quality': 'NEWS_BRIEF'},
+    {'id': 16, 'title': 'GIST 대학생 AX 챌린지', 'summary': 'source summary ' * 30, 'source_url': 'https://example.com/16', 'published': '2026-08-24', 'source_quality': 'NEWS_BRIEF'},
+]
+production_clusters = cluster_events(production_articles)
+production_core, production_roundup = select_core_events(production_articles, production_clusters)
+assert len(production_clusters) == 7
+assert 4 <= len(production_core) <= 6
+assert len(production_core) == 5
+assert len(production_roundup) == 2
+assert any('Patton Township' in neutral_event_title(item['articles'][0]) for item in production_core)
+production_html = build_weekly_digest('2026-08-18', '2026-08-24', production_articles, production_clusters)
+assert validate_weekly_digest(production_html, 7, 7, expected_core_count=5, expected_roundup_count=2) == []
 
 print('AI Tech weekly digest tests passed')

@@ -62,4 +62,36 @@ assert len(snapshot_calls) == 2
 assert verify_calls[-1] == ((1, 2), 'live')
 assert wait_calls[-1] == ({'a', 'b'}, True)
 
+for failure_mode in ('patch', 'verify'):
+    failure_state = {1: 'live', 2: 'live'}
+    failure_verify_calls = []
+
+    def failure_patch(ids, lifecycle):
+        for item in ids:
+            failure_state[item] = lifecycle
+        if failure_mode == 'patch' and lifecycle == 'consolidated':
+            raise RuntimeError('synthetic patch failure')
+
+    def failure_verify(ids, expected):
+        failure_verify_calls.append(expected)
+        if failure_mode == 'verify' and expected == 'consolidated':
+            raise RuntimeError('synthetic verify failure')
+        assert all(failure_state[item] == expected for item in ids)
+
+    try:
+        transition_with_reconciliation(
+            ids=[1, 2],
+            target_slugs={'a', 'b'},
+            patch_fn=failure_patch,
+            verify_fn=failure_verify,
+            refresh_fn=lambda: None,
+            wait_fn=lambda *_: None,
+        )
+    except PipelineError as exc:
+        assert 'rollback succeeded' in str(exc)
+    else:
+        raise AssertionError(f'{failure_mode} failure must surface')
+    assert failure_state == {1: 'live', 2: 'live'}
+    assert failure_verify_calls[-1] == 'live'
+
 print('AI Tech lifecycle rollback tests passed')

@@ -16,7 +16,7 @@ from urllib.parse import urlparse
 SOURCE_TIERS = {"FULL_REPORT", "NEWS_BRIEF", "REJECT"}
 REQUIRED_HEADINGS = (
     "핵심 변화",
-    "사건별 확인된 source facts",
+    "사건별 source-summary record",
     "의미와 해석",
     "다음 주 watch items",
     "Sources",
@@ -131,7 +131,11 @@ def neutral_event_title(article: dict[str, Any]) -> str:
         (("mistral", "조달"), "프랑스 공공 조달에서 Mistral 우선 방침 보도"),
         (("라운드힐", "소송"), "라운드힐 뮤직, Anthropic·Suno 상대 소송 제기"),
         (("포트나이트", "인수"), "Fortinet, Virtue AI 인수"),
-        (("openai", "보안"), "OpenAI, 보안 사고 이후 학습·테스트 일시 중단 보도"),
+        (("openai", "허깅페이스"), "OpenAI, 보안 사고 이후 학습·테스트 일시 중단 보도"),
+        (("openai", "hugging face"), "OpenAI, 보안 사고 이후 학습·테스트 일시 중단 보도"),
+        (("openai", "해킹"), "OpenAI, 보안 사고 이후 학습·테스트 일시 중단 보도"),
+        (("openai", "학습", "중단"), "OpenAI, 보안 사고 이후 학습·테스트 일시 중단 보도"),
+        (("openai", "보안"), "OpenAI, AI 보안 기준 공개"),
         (("존스 홉킨스", "에이전틱"), "Johns Hopkins·Great Learning, Agentic AI 인증 과정 출시"),
         (("자문위원회",), "미 보건교육 기관, 자문위원회 기반 산학 협력 강조"),
         (("patton", "데이터센터"), "Patton Township, 데이터센터 조닝 조례 개정"),
@@ -258,7 +262,7 @@ def build_weekly_digest(
         cluster_titles = " · ".join(neutral_event_title(cluster["articles"][0]) for cluster in themes[theme_name])
         lines.append(f"- **{theme_name}**: {len(themes[theme_name])}개 core event — {cluster_titles}")
 
-    lines.extend(["", "## 핵심 사건", "", "## 사건별 확인된 source facts", ""])
+    lines.extend(["", "## 핵심 사건", "", "## 사건별 source-summary record", ""])
     for index, cluster in enumerate(core, start=1):
         article = cluster["articles"][0]
         score = cluster.get("selection_score", _score_event(cluster))

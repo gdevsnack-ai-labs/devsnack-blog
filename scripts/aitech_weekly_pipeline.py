@@ -230,7 +230,9 @@ def production_get(path: str) -> tuple[int, str]:
         raise PipelineError(f"Production read failed for {path}: {exc}") from exc
 
 
-def publish_weekly(selection: dict[str, Any], content: str) -> dict[str, Any]:
+def publish_weekly(selection: dict[str, Any], content: str, allow_public_publish: bool = False) -> dict[str, Any]:
+    if not allow_public_publish:
+        raise PipelineError("AI Tech Weekly public publish is paused; pass --allow-public-publish only after Phase 3 sign-off")
     slug = f"{WEEKLY_ROUTE_PREFIX}{selection['week_start']}"
     title = f"AI Tech Weekly Digest — {selection['week_start']}~{selection['week_end']}"
     quality_counts = Counter(str(row.get("source_quality")) for row in selection["articles"])
@@ -273,7 +275,7 @@ def publish_weekly(selection: dict[str, Any], content: str) -> dict[str, Any]:
 def verify_weekly_production(slug: str) -> None:
     deadline = time.time() + 240
     last_status, last_body = 0, ""
-    markers = ("AI Tech Weekly Digest", "핵심 변화", "사건별 확인된 source facts", "의미와 해석", "다음 주 watch items")
+    markers = ("AI Tech Weekly Digest", "핵심 변화", "사건별 source-summary record", "의미와 해석", "다음 주 watch items")
     while time.time() < deadline:
         last_status, last_body = production_get(f"/lab/{slug}")
         if last_status == 200 and all(marker in html.unescape(last_body) for marker in markers):
@@ -428,9 +430,9 @@ def transition_with_reconciliation(
     final_verify_fn: Callable[[], None] | None = None,
     reconciliation_verify_fn: Callable[[], None] | None = None,
 ) -> None:
-    patch_fn(ids, CONSOLIDATED)
-    verify_fn(ids, CONSOLIDATED)
     try:
+        patch_fn(ids, CONSOLIDATED)
+        verify_fn(ids, CONSOLIDATED)
         refresh_fn()
         wait_fn(target_slugs, False)
         if final_verify_fn:
@@ -473,7 +475,7 @@ def run_pipeline(week_start: str, week_end: str, publish: bool, transition: bool
     if not publish:
         return 0
 
-    result = publish_weekly(selection, content)
+    result = publish_weekly(selection, content, allow_public_publish=allow_public_publish)
     weekly_slug = f"{WEEKLY_ROUTE_PREFIX}{week_start}"
     target_slugs = {row["slug"] for row in selection["posts"]}
     ids = [int(row["id"]) for row in selection["posts"]]

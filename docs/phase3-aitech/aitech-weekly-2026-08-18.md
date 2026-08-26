@@ -12,13 +12,13 @@ Evidence decision: FULL_REPORT 0개 · NEWS_BRIEF 14개 · REJECT 0개
 
 ## 핵심 변화
 
-- **기타**: 1개 core event — OpenAI, 보안 사고 이후 학습·테스트 일시 중단 보도
+- **기타**: 1개 core event — OpenAI, AI 보안 기준 공개
 - **시장·플랫폼**: 2개 core event — Fortinet, Virtue AI 인수 · 프랑스 공공 조달에서 Mistral 우선 방침 보도
 - **안전·규제**: 2개 core event — Patton Township, 데이터센터 조닝 조례 개정 · 라운드힐 뮤직, Anthropic·Suno 상대 소송 제기
 
 ## 핵심 사건
 
-## 사건별 확인된 source facts
+## 사건별 source-summary record
 
 ### 1. Patton Township, 데이터센터 조닝 조례 개정
 
@@ -52,7 +52,7 @@ Evidence decision: FULL_REPORT 0개 · NEWS_BRIEF 14개 · REJECT 0개
 - DevSnack/AI interpretation: 이번 묶음에서 확인되는 공통 방향은 모델 성능보다 배포 과정의 보안·책임·조달 기준이 함께 움직인다는 점이다. 이는 source facts를 넘어선 편집자의 해석이다.
 - source_ref: S02
 
-### 5. OpenAI, 보안 사고 이후 학습·테스트 일시 중단 보도
+### 5. OpenAI, AI 보안 기준 공개
 
 - 선정 점수: evidence 1 · relevance 3 · significance 1 · total 11
 - source quality: `NEWS_BRIEF`
@@ -92,7 +92,7 @@ Evidence decision: FULL_REPORT 0개 · NEWS_BRIEF 14개 · REJECT 0개
 - **S01** [Fortinet, Virtue AI 인수](https://www.thefastmode.com/solution-vendors-m-a/50225-fortinet-acquires-virtue-ai-to-strengthen-security-for-autonomous-ai-systems)
 - **S02** [라운드힐 뮤직, Anthropic·Suno 상대 소송 제기](https://www.reuters.com/legal/legalindustry/music-publisher-sues-anthropic-suno-over-ai-training-2026-08-17/)
 - **S03** [프랑스 공공 조달에서 Mistral 우선 방침 보도](https://www.reuters.com/world/france-use-ai-tools-test-cybsecurity-vulnerabilities-after-tax-agency-hacking-2026-08-18/)
-- **S04** [OpenAI, 보안 사고 이후 학습·테스트 일시 중단 보도](https://www.moneycontrol.com/news/business/openai-slows-model-training-to-bolster-security-after-hugging-face-hack-14009803.html)
+- **S04** [OpenAI, AI 보안 기준 공개](https://www.moneycontrol.com/news/business/openai-slows-model-training-to-bolster-security-after-hugging-face-hack-14009803.html)
 - **S05** [Johns Hopkins·Great Learning, Agentic AI 인증 과정 출시](https://www.manilatimes.net/2026/08/20/tmt-newswire/globenewswire/johns-hopkins-whiting-school-of-engineering-collaborates-with-great-learning-to-launch-certificate-program-in-agentic-ai/2408762)
 - **S06** [Stripe–OpenRouter 인수설 보도 (미확인)](https://www.androguider.com/2026/08/stripes-openrouter-acquisition-real.html)
 - **S07** [미 보건교육 기관, 자문위원회 기반 산학 협력 강조](https://www.timeshighereducation.com/campus/connecting-institutional-dots-workforce-readiness)
