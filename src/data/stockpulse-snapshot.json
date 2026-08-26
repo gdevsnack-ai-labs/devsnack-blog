@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-26T10:04:30.117916+00:00",
+  "generated_at": "2026-08-26T10:34:37.761504+00:00",
   "posts": [
     {
       "slug": "2026-08-26-6-800",
@@ -92,110 +92,6 @@
         "AI 분석"
       ],
       "published": "2026-08-23T23:05:38+00:00"
-    },
-    {
-      "slug": "2026-08-21-088-463",
-      "title": "2026-08-21 오늘의 주식 시황 분석 - 코스피 0.88% 반등, 코스닥 -4.63% 폭락",
-      "excerpt": null,
-      "labels": [
-        "AI Market Watch",
-        "증시 분석",
-        "코스피",
-        "StockPulse",
-        "AI 분석"
-      ],
-      "published": "2026-08-21T07:30:58+00:00"
-    },
-    {
-      "slug": "2026-08-21-589-6900-sk-kospi-6900",
-      "title": "2026-08-21 오늘의 주식 예측 - 코스피 5.89% 급등 6900선 돌파, 삼성전자·SK하이닉스 주도 - KOSPI 6900 Morning Brief",
-      "excerpt": null,
-      "labels": [
-        "AI Market Watch",
-        "증시 분석",
-        "코스피",
-        "StockPulse",
-        "AI 분석"
-      ],
-      "published": "2026-08-20T23:16:46+00:00"
-    },
-    {
-      "slug": "2026-08-20-589-6852-kospi-6852-market",
-      "title": "2026-08-20 오늘의 주식 시황 분석 - 코스피 전일 대비 5.89% 급반등, 6852선 복귀 - KOSPI 6852 Market Close",
-      "excerpt": null,
-      "labels": [
-        "AI Market Watch",
-        "증시 분석",
-        "코스피",
-        "StockPulse",
-        "AI 분석"
-      ],
-      "published": "2026-08-20T07:30:28+00:00"
-    },
-    {
-      "slug": "2026-08-20-58-6400-kospi-6400-morning",
-      "title": "2026-08-20 오늘의 주식 예측 - 코스피 5.8% 폭락, 6400선 붕괴 직전 후퇴 - KOSPI 6400 Morning Brief",
-      "excerpt": null,
-      "labels": [
-        "AI Market Watch",
-        "증시 분석",
-        "코스피",
-        "StockPulse",
-        "AI 분석"
-      ],
-      "published": "2026-08-19T23:31:10+00:00"
-    },
-    {
-      "slug": "2026-08-19-580-6471-kospi-6471-market",
-      "title": "2026-08-19 오늘의 주식 시황 분석 - 코스피 5.80% 폭락 6471선 붕괴 - KOSPI 6471 Market Close",
-      "excerpt": null,
-      "labels": [
-        "AI Market Watch",
-        "증시 분석",
-        "코스피",
-        "StockPulse",
-        "AI 분석"
-      ],
-      "published": "2026-08-19T10:16:24+00:00"
-    },
-    {
-      "slug": "2026-08-19-6750-sox",
-      "title": "2026-08-19 오늘의 주식 예측 - 코스피 6,750선 방어 실패, SOX 급락에 외인 매도 우려",
-      "excerpt": null,
-      "labels": [
-        "AI Market Watch",
-        "증시 분석",
-        "코스피",
-        "StockPulse",
-        "AI 분석"
-      ],
-      "published": "2026-08-18T23:30:18+00:00"
-    },
-    {
-      "slug": "2026-08-18-155-6869-kospi-6869-market_01042512239",
-      "title": "2026-08-18 오늘의 주식 시황 분석 - 코스피 1.55% 하락 6869선 마감, 전강후약 변동성 장 - KOSPI 6869 Market Close",
-      "excerpt": null,
-      "labels": [
-        "AI Market Watch",
-        "증시 분석",
-        "코스피",
-        "StockPulse",
-        "AI 분석"
-      ],
-      "published": "2026-08-18T08:13:03+00:00"
-    },
-    {
-      "slug": "2026-08-18-7000-69507100-kospi-7000",
-      "title": "2026-08-18 오늘의 주식 예측 - 코스피 7000선 붕괴, 6950~7100 구간 방어 - KOSPI 7000 Morning Brief",
-      "excerpt": null,
-      "labels": [
-        "AI Market Watch",
-        "증시 분석",
-        "코스피",
-        "StockPulse",
-        "AI 분석"
-      ],
-      "published": "2026-08-17T23:30:46+00:00"
     },
     {
       "slug": "2026-08-14-7000-6977",
