@@ -1,3 +1,5 @@
+'use client'
+
 import { TrendingUp, TrendingDown, Minus, AlertCircle, CheckCircle2, HelpCircle, BarChart3, Target } from 'lucide-react'
 import stockpulseSnapshot from '@/data/stockpulse-snapshot.json'
 
