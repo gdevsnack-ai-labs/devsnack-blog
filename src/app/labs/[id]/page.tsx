@@ -65,7 +65,11 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
       ...(await getPublishedLabNotes('stockpulse-self-')),
       ...(await getPublishedLabNotes('stockpulse-weekly-')),
     ])
-    : sourceExperiment
+    : id === 'blog'
+      ? mergePublishedLabNotes(sourceExperiment, [
+        ...(await getPublishedLabNotes('aitech-weekly-')),
+      ])
+      : sourceExperiment
   const feedOutputs = await getProjectFeedOutputs(id)
   const jsonLd = buildJsonLdGraph(
     buildCollectionPageJsonLd({
