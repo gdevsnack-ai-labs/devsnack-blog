@@ -1,7 +1,20 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-26T10:34:37.761504+00:00",
+  "generated_at": "2026-08-26T23:30:33.472298+00:00",
   "posts": [
+    {
+      "slug": "2026-08-27",
+      "title": "2026-08-27 오늘의 주식 예측 - 검색 리셋으로 전략 변경, 데이터 수집 재개",
+      "excerpt": "📊 AI Market Watch — 2026-08-27 StockPulse AI Lab — AI가 분석한 한국 증시, 데이터로 읽는 시장의 흐름. I stopped retrying 본 리포트는 AI(Qwen3.5-35B)가 분석한 데이터를 기반으로 작성되었습니다. 투자 결정은 본인의 판단과 책임하에 이루어져야 합니다. StockPulse AI Lab — AI가 분석하는 한국 주식 시장 https://devsnack-blog.vercel.app/stock",
+      "labels": [
+        "AI Market Watch",
+        "증시 분석",
+        "코스피",
+        "StockPulse",
+        "AI 분석"
+      ],
+      "published": "2026-08-26T23:30:32.84035+00:00"
+    },
     {
       "slug": "2026-08-26-6-800",
       "title": "2026-08-26 오늘의 주식 시황 분석 - 코스피 6,800선 회복…기관 매수 힘입어 반등",
@@ -773,16 +786,20 @@
   "predictions": {
     "latest": {
       "session": "morning",
-      "date": "2026-08-26",
+      "date": "2026-08-27",
       "direction": "보합",
-      "kospi_target": "6700~6800",
-      "prediction_raw": "전일 급락 후 반등한 영향으로 변동성이 큰 보합 또는 강보합 장세가 예상된다. 미국 반도체주 반등은 긍정적이지만 외국인 수급 약세와 엔비디아 실적 발표 전까지의 불확실성으로 인해 장 초반 추격 매수는 제한적일 전망이다.",
-      "actual_kospi_close": 6808,
-      "actual_direction": "상승",
-      "accuracy_score": 0.95,
-      "is_correct": true
+      "kospi_target": "정보 부족",
+      "prediction_raw": "제공된 텍스트는 웹 검색 도구 호출 제한으로 인한 기술적 오류를 설명하고 있을 뿐, 주식 시장 예측이나 코스피 지수 목표에 대한 내용이 포함되어 있지 않습니다. 따라서 morning prediction을 추출할 수 없습니다.",
+      "actual_kospi_close": null,
+      "actual_direction": null,
+      "accuracy_score": null,
+      "is_correct": null
     },
     "recent7": [
+      {
+        "accuracy_score": null,
+        "is_correct": null
+      },
       {
         "accuracy_score": 0.95,
         "is_correct": true
@@ -809,6 +826,10 @@
       }
     ],
     "mlRecent7": [
+      {
+        "accuracy_score": null,
+        "is_correct": null
+      },
       {
         "accuracy_score": 0,
         "is_correct": false
