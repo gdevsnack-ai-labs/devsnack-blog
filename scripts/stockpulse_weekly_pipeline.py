@@ -159,8 +159,8 @@ def fetch_period_data(week_start: str, week_end: str) -> dict[str, Any]:
         raise PipelineError(f"Expected exactly one morning and one ml prediction per date: {dict(by_prediction_date_session)}")
     if set(by_lab_date) != set(dates) or any(by_lab_date[item] != 1 for item in dates):
         raise PipelineError(f"Expected exactly one daily Lab Note per date: {dict(by_lab_date)}")
-    if any(row.get("status") != "live" or row.get("lifecycle_status") != "live" for row in posts):
-        raise PipelineError("Selected daily rows are not all status=live and lifecycle_status=live")
+    if any(row.get("status") != "live" or row.get("lifecycle_status") not in {"live", "consolidated"} for row in posts):
+        raise PipelineError("Selected daily rows must keep status=live and use lifecycle_status live or consolidated")
 
     return {
         "dates": dates,
@@ -312,6 +312,18 @@ def fetch_selected_rows(ids: list[int]) -> list[dict[str, Any]]:
     return rows
 
 
+def lifecycle_preflight(rows: list[dict[str, Any]]) -> str:
+    """Classify an exact batch without allowing mixed lifecycle states."""
+    if not rows or any(row.get("status") != "live" for row in rows):
+        raise PipelineError("Lifecycle preflight requires selected rows to remain status=live")
+    states = {row.get("lifecycle_status") for row in rows}
+    if states == {"live"}:
+        return "ready"
+    if states == {"consolidated"}:
+        return "already_consolidated"
+    raise PipelineError(f"Mixed lifecycle states are not safe to transition: {sorted(str(state) for state in states)}")
+
+
 def patch_lifecycle(ids: list[int], lifecycle_status: str) -> list[dict[str, Any]]:
     id_filter = f"in.({','.join(str(item) for item in ids)})"
     rows = rest_request(
@@ -412,8 +424,12 @@ def verify_detail_routes(rows: list[dict[str, Any]]) -> None:
 def transition_with_reconciliation(rows: list[dict[str, Any]]) -> dict[str, Any]:
     ids = [int(row["id"]) for row in rows]
     slugs = {str(row["slug"]) for row in rows}
-    if any(row.get("status") != "live" or row.get("lifecycle_status") != "live" for row in rows):
-        raise PipelineError("Transition preflight requires all selected rows to be status=live/lifecycle=live")
+    state = lifecycle_preflight(rows)
+    if state == "already_consolidated":
+        verify_lifecycle(ids, CONSOLIDATED)
+        verify_public_projections(slugs, should_contain=False)
+        verify_detail_routes(rows)
+        return {"status": "already_consolidated", "ids": ids, "slugs": sorted(slugs), "reconciled": False}
     try:
         patched = patch_lifecycle(ids, CONSOLIDATED)
         if {int(row["id"]) for row in patched} != set(ids):
