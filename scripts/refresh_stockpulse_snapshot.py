@@ -191,10 +191,20 @@ def run_git(*args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
     )
 
 
+def unexpected_status_lines(status_output: str, snapshot_relative_path: str) -> list[str]:
+    """Return dirty paths other than the snapshot this script owns.
+
+    Keep leading porcelain status spaces intact.  Calling ``strip()`` on the
+    whole output changes `` M path`` into ``M path`` and falsely rejects the
+    script's own tracked snapshot update.
+    """
+    allowed = {f"?? {snapshot_relative_path}", f" M {snapshot_relative_path}"}
+    return [line for line in status_output.splitlines() if line and line not in allowed]
+
+
 def push_snapshot() -> None:
-    status = run_git("status", "--porcelain", check=True).stdout.strip().splitlines()
-    allowed = {f"?? {SNAPSHOT_PATH.relative_to(REPO_ROOT)}", f" M {SNAPSHOT_PATH.relative_to(REPO_ROOT)}"}
-    unexpected = [line for line in status if line not in allowed]
+    status_output = run_git("status", "--porcelain", check=True).stdout
+    unexpected = unexpected_status_lines(status_output, str(SNAPSHOT_PATH.relative_to(REPO_ROOT)))
     if unexpected:
         raise RuntimeError(f"Refusing snapshot commit with unrelated working-tree changes: {unexpected}")
 
