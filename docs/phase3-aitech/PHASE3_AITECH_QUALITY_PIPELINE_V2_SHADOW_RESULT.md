@@ -316,3 +316,13 @@ DevSnack public repo:
 - `src/app/labs/[id]/page.tsx`
 - `docs/phase3-aitech/aitech-weekly-2026-08-18.md`
 - this result document
+
+## 12. Code-push route read-back (not content publish)
+
+After the code/document push, production route sanity was checked without inserting a Weekly row or a new AI Tech article:
+
+- `https://devsnack-blog.vercel.app/aitech`: HTTP 200, `PRERENDER`
+- `https://devsnack-blog.vercel.app/lab/aitech-weekly-2026-08-18`: HTTP 404, expected because the Weekly row was not published
+- `https://devsnack-blog.vercel.app/lab/stockpulse-weekly-2026-08-18`: HTTP 200, existing Phase 2 content preserved
+
+This is a route read-back only. It is not the Phase 3 post-transition projection verification, which remains paused until public publish/lifecycle transition is explicitly resumed.
