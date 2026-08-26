@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { destinationLabel, postHref } from '@/config/site-catalog'
+import { publicFeedOrFilter } from '@/lib/ia/feed-lifecycle'
 
 const SITE_URL = 'https://devsnack-blog.vercel.app'
 
@@ -8,6 +9,7 @@ export async function GET() {
     .from('posts')
     .select('slug, title, excerpt, blog_id, published, updated, cover_image')
     .eq('status', 'live')
+    .or(publicFeedOrFilter())
     .order('published', { ascending: false })
     .limit(50)
 

@@ -20,8 +20,8 @@ type FeedPost = {
   labels: string[] | null
   published: string | null
   cover_image: string | null
-  blog_id: string
-  status: string
+  blog_id?: string
+  status?: string
 }
 type SidebarPost = Pick<FeedPost, 'slug' | 'title' | 'labels' | 'published'>
 
@@ -46,6 +46,16 @@ function sourcePosts(kind: FeedKind) {
   return kind === 'aitech' ? AITECH_POSTS : DEVSNACK_POSTS
 }
 
+function asStoryPost(post: FeedPost) {
+  return {
+    slug: post.slug,
+    title: post.title,
+    blog_id: post.blog_id || 'devsnack',
+    status: post.status || 'live',
+    labels: post.labels,
+  }
+}
+
 function getPosts(kind: FeedKind, page: number, tag?: string, month?: string) {
   let filtered = sourcePosts(kind)
   if (tag) filtered = filtered.filter(post => post.labels?.includes(tag))
@@ -57,14 +67,14 @@ function getPosts(kind: FeedKind, page: number, tag?: string, month?: string) {
     })
   }
   // Keep the existing IA classification rule: only Story assets belong here.
-  if (kind === 'devsnack') filtered = filtered.filter(post => isPostPrimaryType(post, 'story'))
+  if (kind === 'devsnack') filtered = filtered.filter(post => isPostPrimaryType(asStoryPost(post), 'story'))
   const from = (page - 1) * PAGE_SIZE
   return { posts: filtered.slice(from, from + PAGE_SIZE), count: filtered.length }
 }
 
 function getSidebarPosts(kind: FeedKind): SidebarPost[] {
   const posts = sourcePosts(kind)
-  return (kind === 'devsnack' ? posts.filter(post => isPostPrimaryType(post, 'story')) : posts) as SidebarPost[]
+  return (kind === 'devsnack' ? posts.filter(post => isPostPrimaryType(asStoryPost(post), 'story')) : posts) as SidebarPost[]
 }
 
 function FeedPageView({ kind, page, tag, month }: { kind: FeedKind; page: number; tag?: string; month?: string }) {

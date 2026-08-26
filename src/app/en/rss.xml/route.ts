@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase'
+import { publicFeedOrFilter } from '@/lib/ia/feed-lifecycle'
 
 const SITE_URL = 'https://devsnack-blog.vercel.app'
 
@@ -30,7 +31,7 @@ export async function GET() {
 
   const postIds = (translations ?? []).map(row => row.post_id)
   const { data: posts } = postIds.length
-    ? await supabase.from('posts').select('id,slug,blog_id,published,updated,cover_image').in('id', postIds).eq('status', 'live')
+    ? await supabase.from('posts').select('id,slug,blog_id,published,updated,cover_image').in('id', postIds).eq('status', 'live').or(publicFeedOrFilter())
     : { data: [] }
   const postById = new Map((posts ?? []).map(post => [post.id, post]))
 

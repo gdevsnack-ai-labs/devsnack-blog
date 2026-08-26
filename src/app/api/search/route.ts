@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { publicFeedOrFilter } from '@/lib/ia/feed-lifecycle'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -18,6 +19,7 @@ export async function GET(request: NextRequest) {
     .from('posts')
     .select('id, slug, title, excerpt, labels, published, cover_image, blog_id')
     .eq('status', 'live')
+    .or(publicFeedOrFilter())
     .textSearch('fts', q, { config: 'simple' })
     .order('published', { ascending: false })
     .limit(20)

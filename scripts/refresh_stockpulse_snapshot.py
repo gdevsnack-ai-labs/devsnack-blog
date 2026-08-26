@@ -69,19 +69,33 @@ def fetch_rows(base_url: str, service_key: str, table: str, params: list[tuple[s
 def build_snapshot() -> dict[str, Any]:
     base_url, service_key = get_config()
     posts_params = [
-        ("select", "slug,title,excerpt,labels,published"),
+        ("select", "slug,title,excerpt,labels,published,lifecycle_status"),
         ("status", "eq.live"),
         ("blog_id", "eq.stockpulse"),
+        ("lifecycle_status", "eq.live"),
         ("order", "published.desc"),
         ("limit", "5000"),
     ]
-    posts = fetch_rows(base_url, service_key, "posts", posts_params)
-    if not posts:
+    rows = fetch_rows(base_url, service_key, "posts", posts_params)
+    if not rows:
         raise RuntimeError("Refusing to write an empty StockPulse post snapshot")
 
-    slugs = [post.get("slug") for post in posts]
+    slugs = [post.get("slug") for post in rows]
     if any(not slug for slug in slugs) or len(slugs) != len(set(slugs)):
         raise RuntimeError("StockPulse post snapshot contains missing or duplicate slugs")
+    if any(post.get("lifecycle_status") != "live" for post in rows):
+        raise RuntimeError("StockPulse post snapshot contains a row outside lifecycle live")
+
+    posts = [
+        {
+            "slug": post.get("slug"),
+            "title": post.get("title"),
+            "excerpt": post.get("excerpt"),
+            "labels": post.get("labels") if isinstance(post.get("labels"), list) else [],
+            "published": post.get("published"),
+        }
+        for post in rows
+    ]
 
     seven_days_ago = (datetime.now(timezone.utc) - timedelta(days=7)).date().isoformat()
     prediction_queries: dict[str, list[tuple[str, str]]] = {

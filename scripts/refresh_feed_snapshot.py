@@ -32,6 +32,7 @@ SNAPSHOT_PATHS = {
     "devsnack": REPO_ROOT / "src" / "data" / "devsnack-snapshot.json",
 }
 MAX_EXCERPT_CHARS = 320
+MAX_AITECH_EXCERPT_CHARS = 160
 MAX_STATIC_COVER_CHARS = 100_000
 
 
@@ -58,12 +59,14 @@ def get_config() -> tuple[str, str]:
 def fetch_posts(feed: str) -> list[dict[str, Any]]:
     base_url, service_key = get_config()
     params = [
-        ("select", "slug,title,excerpt,labels,published,cover_image,blog_id,status"),
+        ("select", "slug,title,excerpt,labels,published,cover_image,blog_id,status,lifecycle_status"),
         ("status", "eq.live"),
         ("blog_id", f"eq.{feed}"),
         ("order", "published.desc"),
         ("limit", "5000"),
     ]
+    if feed == "aitech":
+        params.append(("lifecycle_status", "eq.live"))
     request = Request(
         f"{base_url}/rest/v1/posts?{urlencode(params)}",
         headers={
@@ -87,20 +90,24 @@ def normalize_post(post: dict[str, Any], feed: str) -> dict[str, Any]:
     if not isinstance(cover, str) or cover.startswith("data:") or len(cover) > MAX_STATIC_COVER_CHARS:
         cover = None
 
+    excerpt_limit = MAX_AITECH_EXCERPT_CHARS if feed == "aitech" else MAX_EXCERPT_CHARS
     normalized = {
         "slug": post.get("slug"),
         "title": post.get("title"),
-        "excerpt": excerpt[:MAX_EXCERPT_CHARS] or None,
+        "excerpt": excerpt[:excerpt_limit] or None,
         "labels": post.get("labels") if isinstance(post.get("labels"), list) else [],
         "published": post.get("published"),
         "cover_image": cover,
-        "blog_id": post.get("blog_id"),
-        "status": post.get("status"),
     }
     if not normalized["slug"] or not normalized["title"]:
         raise RuntimeError(f"{feed} snapshot contains a post without slug/title")
-    if normalized["blog_id"] != feed or normalized["status"] != "live":
+    if post.get("blog_id") != feed or post.get("status") != "live":
         raise RuntimeError(f"{feed} snapshot contains a row outside live/{feed}")
+    if feed == "aitech" and post.get("lifecycle_status") != "live":
+        raise RuntimeError("aitech snapshot contains a row outside lifecycle live")
+    if feed == "devsnack":
+        normalized["blog_id"] = "devsnack"
+        normalized["status"] = "live"
     return normalized
 
 

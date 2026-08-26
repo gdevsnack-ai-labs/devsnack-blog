@@ -9,16 +9,19 @@ import { FeedProvenance, type StockPulsePredictionSummary } from '@/components/f
 import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 import { normalizeProvenance } from '@/lib/provenance'
+import { feedDetailFilters } from '@/lib/ia/feed-lifecycle'
 
 export const revalidate = 60
 
 async function getPost(slug: string): Promise<Post | null> {
-  const { data } = await supabase
+  let query = supabase
     .from('posts')
     .select('*')
     .eq('slug', slug)
-    .eq('status', 'live')
-    .eq('blog_id', 'stockpulse')
+  for (const [column, value] of Object.entries(feedDetailFilters('stockpulse'))) {
+    query = query.eq(column, value)
+  }
+  const { data } = await query
     .single()
 
   return data

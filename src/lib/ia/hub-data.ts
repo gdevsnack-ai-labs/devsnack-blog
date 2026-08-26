@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import { isPostPrimaryType } from '@/lib/ia'
 import type { KnowledgePostInput } from '@/lib/ia/hub-projections'
+import { feedListFilters } from '@/lib/ia/feed-lifecycle'
 
 export interface StoryPostInput {
   slug: string
@@ -73,11 +74,13 @@ export async function getReclassifiedBenchmarkPosts(): Promise<StoryPostInput[]>
 }
 
 export async function getLatestPost(blogId: 'aitech' | 'stockpulse') {
-  const { data } = await supabase
+  let query = supabase
     .from('posts')
     .select('slug, title, published, updated')
-    .eq('blog_id', blogId)
-    .eq('status', 'live')
+  for (const [column, value] of Object.entries(feedListFilters(blogId))) {
+    query = query.eq(column, value)
+  }
+  const { data } = await query
     .order('published', { ascending: false })
     .limit(1)
 

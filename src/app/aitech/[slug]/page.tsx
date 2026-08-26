@@ -8,16 +8,19 @@ import { BlogHeader } from '@/components/blog-header'
 import { FeedProvenance } from '@/components/feed-provenance'
 import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
+import { feedDetailFilters } from '@/lib/ia/feed-lifecycle'
 
 export const revalidate = 60
 
 async function getPost(slug: string): Promise<Post | null> {
-  const { data } = await supabase
+  let query = supabase
     .from('posts')
     .select('*')
     .eq('slug', slug)
-    .eq('blog_id', 'aitech')
-    .eq('status', 'live')
+  for (const [column, value] of Object.entries(feedDetailFilters('aitech'))) {
+    query = query.eq(column, value)
+  }
+  const { data } = await query
     .single()
   return data
 }

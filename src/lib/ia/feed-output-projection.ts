@@ -2,6 +2,7 @@ import { postHref } from '@/config/site-catalog'
 import { supabase } from '@/lib/supabase'
 import { feedProjectForBlog } from './feed-projects'
 import type { FeedProvenance } from '@/lib/provenance'
+import { feedListFilters } from './feed-lifecycle'
 
 export interface ProjectFeedOutput {
   id: number
@@ -23,11 +24,13 @@ export async function getProjectFeedOutputs(projectId: string, limit = 8): Promi
   const blogId = PROJECT_FEED_BLOG[projectId]
   if (!blogId || !feedProjectForBlog(blogId)) return []
 
-  const { data, error } = await supabase
+  let query = supabase
     .from('posts')
     .select('id, slug, title, published, updated, provenance, blog_id')
-    .eq('blog_id', blogId)
-    .eq('status', 'live')
+  for (const [column, value] of Object.entries(feedListFilters(blogId))) {
+    query = query.eq(column, value)
+  }
+  const { data, error } = await query
     .order('published', { ascending: false })
     .limit(limit)
 

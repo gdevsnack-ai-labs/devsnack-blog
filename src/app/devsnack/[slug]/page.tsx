@@ -10,16 +10,19 @@ import { getPublishedEnglishTranslation } from '@/lib/translation'
 import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 import { getPostPresentation } from '@/lib/ia'
+import { feedDetailFilters } from '@/lib/ia/feed-lifecycle'
 
 export const revalidate = 60
 
 async function getPost(slug: string): Promise<Post | null> {
-  const { data } = await supabase
+  let query = supabase
     .from('posts')
     .select('*')
     .eq('slug', slug)
-    .eq('status', 'live')
-    .eq('blog_id', 'devsnack')
+  for (const [column, value] of Object.entries(feedDetailFilters('devsnack'))) {
+    query = query.eq(column, value)
+  }
+  const { data } = await query
     .single()
 
   return data

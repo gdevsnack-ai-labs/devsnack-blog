@@ -4,6 +4,7 @@ import { postHref } from '@/config/site-catalog'
 import { isIndexableSitemapRoute } from '@/lib/seo/sitemap-policy'
 import { absoluteSiteUrl, SITE_URL } from '@/lib/seo/metadata'
 import { sourceContentHash } from '@/lib/translation-core'
+import { publicFeedOrFilter } from '@/lib/ia/feed-lifecycle'
 
 export const dynamic = 'force-dynamic'
 
@@ -28,6 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .from('posts')
       .select('id,slug,blog_id,updated,title,content,excerpt,seo_desc,labels')
       .eq('status', 'live')
+      .or(publicFeedOrFilter())
       .order('updated', { ascending: false }),
     supabase
       .from('post_translations')
