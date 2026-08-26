@@ -243,14 +243,16 @@ def production_get(path: str) -> tuple[int, str]:
 
 
 def verify_weekly_production(slug: str, note: str) -> None:
-    status, body = production_get(f"/lab/{slug}")
-    if status != 200:
-        raise PipelineError(f"Weekly Lab Note production read-back failed: HTTP {status}")
-    for marker in ("주간 지표", "일별 compact result", "전주 대비 변화", "다음 주 변경사항"):
-        if marker not in body:
-            raise PipelineError(f"Weekly Lab Note production read-back missing marker: {marker}")
-    if "37.5%" not in body or "0.4875" not in body or "0.2125" not in body:
-        raise PipelineError("Weekly Lab Note production read-back missing expected calculated metrics")
+    deadline = time.time() + 240
+    last_status = 0
+    last_body = ""
+    while time.time() < deadline:
+        last_status, last_body = production_get(f"/lab/{slug}")
+        if last_status == 200 and all(marker in last_body for marker in ("주간 지표", "일별 compact result", "전주 대비 변화", "다음 주 변경사항")):
+            if "37.5%" in last_body and "0.4875" in last_body and "0.2125" in last_body:
+                return
+        time.sleep(5)
+    raise PipelineError(f"Weekly Lab Note production read-back failed: HTTP {last_status}, expected metrics/sections not visible")
 
 
 def publish_weekly(week_start: str, week_end: str, note: str) -> dict[str, Any]:
@@ -273,6 +275,20 @@ def publish_weekly(week_start: str, week_end: str, note: str) -> dict[str, Any]:
             "human_reviewed": False,
         },
     )
+    rows = rest_request(
+        "GET",
+        "posts",
+        [
+            ("select", "id,slug,title,blog_id,status,lifecycle_status,content"),
+            ("slug", f"eq.{slug}"),
+            ("limit", "2"),
+        ],
+    )
+    if not isinstance(rows, list) or len(rows) != 1:
+        raise PipelineError("Weekly Supabase read-back did not return exactly one row")
+    row = rows[0]
+    if row.get("blog_id") != "lab" or row.get("status") != "live" or row.get("lifecycle_status") != "live" or row.get("content") != note:
+        raise PipelineError("Weekly Supabase read-back does not match the published payload")
     verify_weekly_production(slug, note)
     return result
 
