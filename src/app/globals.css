@@ -300,12 +300,29 @@
   .content-article > h1 {
     font-size: clamp(1.65rem, 7vw, 2.25rem);
     line-height: 1.22;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    word-break: keep-all;
   }
 
   .prose-devsnack {
     font-size: 0.95rem;
     line-height: 1.8;
+  }
+
+  .prose-devsnack pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .prose-devsnack table {
+    white-space: normal;
+  }
+
+  .prose-devsnack th,
+  .prose-devsnack td {
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .prose-devsnack h2 {
