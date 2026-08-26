@@ -37,57 +37,54 @@ function StatusBadge({ is_correct }: { is_correct: boolean | null }) {
 }
 
 export async function StockPulsePredictionWidget() {
-  // 1. 최신 LLM 예측
-  const { data: latest } = await supabase
-    .from('predictions')
-    .select('*')
-    .eq('session', 'morning')
-    .order('date', { ascending: false })
-    .limit(1)
-    .maybeSingle()
-
-  // 2. 최신 ML 예측
-  const { data: mlLatest } = await supabase
-    .from('predictions')
-    .select('*')
-    .eq('session', 'ml')
-    .order('date', { ascending: false })
-    .limit(1)
-    .maybeSingle()
-
-  // 3. 최근 7일 — LLM
+  // The widget only needs small prediction summaries. Keep these independent
+  // reads in parallel so the page does not wait for six round trips in series.
   const sevenDaysAgo = new Date()
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
   const sevenDayStr = sevenDaysAgo.toISOString().slice(0, 10)
 
-  const { data: recent7 } = await supabase
-    .from('predictions')
-    .select('*')
-    .eq('session', 'morning')
-    .gte('date', sevenDayStr)
-    .order('date', { ascending: false })
-
-  // 4. 최근 7일 — ML
-  const { data: mlRecent7 } = await supabase
-    .from('predictions')
-    .select('*')
-    .eq('session', 'ml')
-    .gte('date', sevenDayStr)
-    .order('date', { ascending: false })
-
-  // 5. 전체 통계 — LLM
-  const { data: allMorning } = await supabase
-    .from('predictions')
-    .select('accuracy_score, is_correct')
-    .eq('session', 'morning')
-    .not('accuracy_score', 'is', null)
-
-  // 6. 전체 통계 — ML
-  const { data: allMl } = await supabase
-    .from('predictions')
-    .select('accuracy_score, is_correct')
-    .eq('session', 'ml')
-    .not('accuracy_score', 'is', null)
+  const [
+    { data: latest },
+    { data: recent7 },
+    { data: mlRecent7 },
+    { data: allMorning },
+    { data: allMl },
+  ] = await Promise.all([
+    // Latest LLM prediction
+    supabase
+      .from('predictions')
+      .select('session, date, direction, kospi_target, prediction_raw, actual_kospi_close, actual_direction, accuracy_score, is_correct')
+      .eq('session', 'morning')
+      .order('date', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    // Recent 7 days — LLM
+    supabase
+      .from('predictions')
+      .select('accuracy_score, is_correct')
+      .eq('session', 'morning')
+      .gte('date', sevenDayStr)
+      .order('date', { ascending: false }),
+    // Recent 7 days — ML
+    supabase
+      .from('predictions')
+      .select('accuracy_score, is_correct')
+      .eq('session', 'ml')
+      .gte('date', sevenDayStr)
+      .order('date', { ascending: false }),
+    // Overall statistics — LLM
+    supabase
+      .from('predictions')
+      .select('accuracy_score, is_correct')
+      .eq('session', 'morning')
+      .not('accuracy_score', 'is', null),
+    // Overall statistics — ML
+    supabase
+      .from('predictions')
+      .select('accuracy_score, is_correct')
+      .eq('session', 'ml')
+      .not('accuracy_score', 'is', null),
+  ])
 
   // 아무 데이터도 없으면 렌더링 안 함
   if ((!recent7 || recent7.length === 0) && (!latest || !latest.is_correct) && (!mlRecent7 || mlRecent7.length === 0)) {
