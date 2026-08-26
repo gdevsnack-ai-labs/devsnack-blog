@@ -1,5 +1,5 @@
 import { TrendingUp, TrendingDown, Minus, AlertCircle, CheckCircle2, HelpCircle, BarChart3, Target } from 'lucide-react'
-import { supabase } from '@/lib/supabase'
+import stockpulseSnapshot from '@/data/stockpulse-snapshot.json'
 
 function DirectionIcon({ direction, size = 16 }: { direction: string; size?: number }) {
   if (direction === '상승') return <TrendingUp size={size} className="text-red-500" />
@@ -36,55 +36,9 @@ function StatusBadge({ is_correct }: { is_correct: boolean | null }) {
   )
 }
 
-export async function StockPulsePredictionWidget() {
-  // The widget only needs small prediction summaries. Keep these independent
-  // reads in parallel so the page does not wait for six round trips in series.
-  const sevenDaysAgo = new Date()
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
-  const sevenDayStr = sevenDaysAgo.toISOString().slice(0, 10)
-
-  const [
-    { data: latest },
-    { data: recent7 },
-    { data: mlRecent7 },
-    { data: allMorning },
-    { data: allMl },
-  ] = await Promise.all([
-    // Latest LLM prediction
-    supabase
-      .from('predictions')
-      .select('session, date, direction, kospi_target, prediction_raw, actual_kospi_close, actual_direction, accuracy_score, is_correct')
-      .eq('session', 'morning')
-      .order('date', { ascending: false })
-      .limit(1)
-      .maybeSingle(),
-    // Recent 7 days — LLM
-    supabase
-      .from('predictions')
-      .select('accuracy_score, is_correct')
-      .eq('session', 'morning')
-      .gte('date', sevenDayStr)
-      .order('date', { ascending: false }),
-    // Recent 7 days — ML
-    supabase
-      .from('predictions')
-      .select('accuracy_score, is_correct')
-      .eq('session', 'ml')
-      .gte('date', sevenDayStr)
-      .order('date', { ascending: false }),
-    // Overall statistics — LLM
-    supabase
-      .from('predictions')
-      .select('accuracy_score, is_correct')
-      .eq('session', 'morning')
-      .not('accuracy_score', 'is', null),
-    // Overall statistics — ML
-    supabase
-      .from('predictions')
-      .select('accuracy_score, is_correct')
-      .eq('session', 'ml')
-      .not('accuracy_score', 'is', null),
-  ])
+export function StockPulsePredictionWidget() {
+  // This snapshot is refreshed by the morning/evening publisher.
+  const { latest, recent7, mlRecent7, allMorning, allMl } = stockpulseSnapshot.predictions
 
   // 아무 데이터도 없으면 렌더링 안 함
   if ((!recent7 || recent7.length === 0) && (!latest || !latest.is_correct) && (!mlRecent7 || mlRecent7.length === 0)) {

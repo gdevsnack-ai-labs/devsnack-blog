@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp } from 'lucide-react'
 import { BlogHeader } from '@/components/blog-header'
@@ -7,6 +6,7 @@ import { BlogSidebar } from '@/components/blog-sidebar'
 import { StockPulsePredictionWidget } from '@/components/stock-pulse-prediction-widget'
 import { Pagination } from '@/components/pagination'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
+import stockpulseSnapshot from '@/data/stockpulse-snapshot.json'
 
 export const metadata = buildRouteMetadata({
   title: 'StockPulse — DevSnack',
@@ -39,31 +39,19 @@ function getMonthRange(month?: string) {
   return { start: `${month}-01`, end: `${next}-01` }
 }
 
-async function getPosts(page: number, tag?: string, month?: string) {
-  let query = supabase
-    .from('posts')
-    .select('slug, title, excerpt, labels, published', { count: 'exact' })
-    .eq('status', 'live')
-    .eq('blog_id', 'stockpulse')
-
-  if (tag) query = query.contains('labels', [tag])
+function getPosts(page: number, tag?: string, month?: string) {
+  const allPosts = stockpulseSnapshot.posts as PostSummary[]
+  let filtered = allPosts
+  if (tag) filtered = filtered.filter(post => post.labels?.includes(tag))
   const range = getMonthRange(month)
-  if (range) query = query.gte('published', range.start).lt('published', range.end)
-
+  if (range) {
+    filtered = filtered.filter(post => {
+      if (!post.published) return false
+      return post.published >= range.start && post.published < range.end
+    })
+  }
   const from = (page - 1) * PAGE_SIZE
-  const { data, count } = await query.order('published', { ascending: false }).range(from, from + PAGE_SIZE - 1)
-  return { posts: (data ?? []) as PostSummary[], count: count ?? 0 }
-}
-
-async function getSidebarPosts(): Promise<SidebarPost[]> {
-  const { data } = await supabase
-    .from('posts')
-    .select('slug, title, labels, published')
-    .eq('status', 'live')
-    .eq('blog_id', 'stockpulse')
-    .order('published', { ascending: false })
-    .limit(1000)
-  return (data ?? []) as SidebarPost[]
+  return { posts: filtered.slice(from, from + PAGE_SIZE), count: filtered.length }
 }
 
 export default async function StockPage({
@@ -73,10 +61,8 @@ export default async function StockPage({
 }) {
   const sp = await searchParams
   const page = getPage(sp.page)
-  const [{ posts, count }, sidebarPosts] = await Promise.all([
-    getPosts(page, sp.tag, sp.month),
-    getSidebarPosts(),
-  ])
+  const { posts, count } = getPosts(page, sp.tag, sp.month)
+  const sidebarPosts = stockpulseSnapshot.posts as SidebarPost[]
   const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE))
 
   return (
