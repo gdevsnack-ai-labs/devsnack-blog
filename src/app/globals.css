@@ -429,6 +429,14 @@
   color: rgb(229 231 235) !important;
 }
 
+/* Legacy StockPulse reports include a light disclaimer panel inline. */
+.dark .prose-devsnack [style*="background: #f9f9f9"],
+.dark .prose-devsnack [style*="background:#f9f9f9"] {
+  background-color: rgb(31 41 55) !important;
+  border: 1px solid rgb(55 65 81) !important;
+  color: rgb(229 231 235) !important;
+}
+
 /* Keep semantic callout colors after the generic inline-style reset. */
 .dark .prose-devsnack .devsnack-update-note,
 .dark .prose-devsnack .devsnack-update-note p,
