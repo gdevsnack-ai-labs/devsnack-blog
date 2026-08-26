@@ -115,7 +115,6 @@ function StockPulseProvenance({ provenance, prediction }: Omit<FeedProvenancePro
           <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             {reportDate && <span className="rounded-full bg-white/70 px-2 py-1 dark:bg-gray-900/50">실험 일자 {reportDate}</span>}
             {normalized?.session && <span className="rounded-full bg-white/70 px-2 py-1 dark:bg-gray-900/50">{normalized.session === 'morning' ? '아침 예측' : normalized.session}</span>}
-            {normalized?.run_id && <span className="rounded-full bg-white/70 px-2 py-1 dark:bg-gray-900/50">실행 {normalized.run_id}</span>}
           </div>
           {prediction && (
             <div className="mt-3 grid gap-2 text-xs sm:grid-cols-2">

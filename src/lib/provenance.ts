@@ -10,7 +10,6 @@ export interface FeedProvenance {
   report_date?: string
   session?: string
   experiment_id?: string
-  run_id?: string
   model?: string
 }
 
@@ -39,7 +38,6 @@ export function normalizeProvenance(value: unknown): FeedProvenance | null {
     ...(typeof value.report_date === 'string' ? { report_date: value.report_date } : {}),
     ...(typeof value.session === 'string' ? { session: value.session } : {}),
     ...(typeof value.experiment_id === 'string' ? { experiment_id: value.experiment_id } : {}),
-    ...(typeof value.run_id === 'string' ? { run_id: value.run_id } : {}),
     ...(typeof value.model === 'string' ? { model: value.model } : {}),
   }
 }
