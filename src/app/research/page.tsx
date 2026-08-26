@@ -24,6 +24,7 @@ export default async function KnowledgePage() {
   const posts = projectKnowledgePosts(await getKnowledgePosts())
   const counts = Object.fromEntries(DOMAIN_ORDER.map(domain => [domain, posts.filter(post => post.domain === domain).length])) as Record<KnowledgeDomain, number>
   const recent = posts.filter(post => !post.benchmarkResearch).slice(0, 8)
+  const legacySources = posts.filter(post => post.asset.assetId.startsWith('post:devsnack:'))
   const benchmarkResearch = posts.filter(post => post.benchmarkResearch).slice(0, 8)
   const relatedPosts = posts.filter(post => post.related.length > 0).slice(0, 3)
 
@@ -51,6 +52,13 @@ export default async function KnowledgePage() {
           <div className="mb-4"><h2 id="recent-knowledge-heading" className="text-xl font-bold">Recent Knowledge</h2><p className="mt-1 text-sm text-muted-foreground">최근 업데이트된 참고 자료</p></div>
           {recent.length > 0 ? <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{recent.map(post => <KnowledgeAssetCard key={post.slug} post={post} />)}</div> : <div className="rounded-xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">Knowledge asset가 없습니다.</div>}
         </section>
+
+        {legacySources.length > 0 && (
+          <section className="mt-10" aria-labelledby="reclassified-knowledge-heading">
+            <div className="mb-4"><h2 id="reclassified-knowledge-heading" className="text-xl font-bold">Reclassified DevSnack Sources</h2><p className="mt-1 text-sm text-muted-foreground">기존 `/devsnack` URL을 유지하면서 Knowledge로 연결한 원문 전체입니다.</p></div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{legacySources.map(post => <KnowledgeAssetCard key={post.slug} post={post} />)}</div>
+          </section>
+        )}
 
         <section className="mt-10" aria-labelledby="benchmark-research-heading">
           <div className="mb-4"><h2 id="benchmark-research-heading" className="text-xl font-bold">Benchmark Research</h2><p className="mt-1 text-sm text-muted-foreground">측정 결과가 아니라 Benchmark를 이해하거나 적용하기 위한 조사·도구·방법론입니다.</p></div>

@@ -260,6 +260,67 @@ export function getBenchmarksByCategory(category: BenchmarkProjection['categoryI
   return BENCHMARK_PROJECTIONS.filter(benchmark => benchmark.categoryIds.includes(category))
 }
 
+export interface ReclassifiedArticleInput extends LegacyPostLike {
+  excerpt?: string | null
+  published: string
+  updated?: string | null
+  cover_image?: string | null
+}
+
+export interface LegacyBenchmarkProjection {
+  asset: AssetRef
+  slug: string
+  title: string
+  excerpt: string
+  published: string
+  href: string
+  projectHref?: string
+}
+
+export function projectLegacyBenchmarkPost(post: ReclassifiedArticleInput): LegacyBenchmarkProjection {
+  const asset = assetFromLegacyPost(post)
+  return {
+    asset,
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt || '측정 조건과 결과를 원문에서 확인할 수 있는 DevSnack Benchmark source article입니다.',
+    published: post.published,
+    href: asset.route,
+    projectHref: asset.projectId ? `/labs/${asset.projectId}` : undefined,
+  }
+}
+
+export function projectLegacyBenchmarkPosts(posts: ReclassifiedArticleInput[]): LegacyBenchmarkProjection[] {
+  return posts.map(projectLegacyBenchmarkPost)
+}
+
+export interface LegacyLabProjection {
+  asset: AssetRef
+  slug: string
+  title: string
+  excerpt: string
+  published: string
+  href: string
+  projectHref?: string
+}
+
+export function projectLegacyLabPost(post: ReclassifiedArticleInput): LegacyLabProjection {
+  const asset = assetFromLegacyPost(post)
+  return {
+    asset,
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt || '실험 과정과 결과를 원문에서 확인할 수 있는 DevSnack Lab source article입니다.',
+    published: post.published,
+    href: asset.route,
+    projectHref: asset.projectId ? `/labs/${asset.projectId}` : undefined,
+  }
+}
+
+export function projectLegacyLabPosts(posts: ReclassifiedArticleInput[]): LegacyLabProjection[] {
+  return posts.map(projectLegacyLabPost)
+}
+
 export interface KnowledgePostInput extends LegacyPostLike {
   excerpt?: string | null
   published: string
@@ -276,6 +337,7 @@ export interface KnowledgeProjection {
   excerpt: string
   published: string
   updated?: string | null
+  href: string
   domain: KnowledgeDomain
   domainLabel: string
   benchmarkResearch: boolean
@@ -308,10 +370,22 @@ function getKnowledgeDomain(slug: string, category: ResearchCategory): Knowledge
   return 'other'
 }
 
+function getKnowledgeDomainFromAsset(asset: AssetRef): KnowledgeDomain {
+  const domains = asset.domain || []
+  if (domains.includes('agent_memory')) return 'agent-memory'
+  if (domains.includes('media') || domains.includes('creative_ai')) return 'media'
+  if (domains.includes('infrastructure') || domains.includes('automation')) return 'infrastructure'
+  if (domains.includes('hardware')) return 'hardware'
+  if (domains.includes('llm') || domains.includes('inference')) return 'ai-llm'
+  return 'other'
+}
+
 export function projectKnowledgePost(post: KnowledgePostInput): KnowledgeProjection {
   const classification = classifyResearch(post.labels)
-  const domain = getKnowledgeDomain(post.slug, classification.category)
   const asset = assetFromLegacyPost(post)
+  const domain = post.blog_id === 'devsnack'
+    ? getKnowledgeDomainFromAsset(asset)
+    : getKnowledgeDomain(post.slug, classification.category)
   return {
     asset,
     slug: post.slug,
@@ -319,10 +393,11 @@ export function projectKnowledgePost(post: KnowledgePostInput): KnowledgeProject
     excerpt: post.excerpt || '요약이 아직 정리되지 않은 Knowledge 항목입니다.',
     published: post.published,
     updated: post.updated,
+    href: asset.route,
     domain,
     domainLabel: KNOWLEDGE_DOMAIN_LABEL[domain],
-    benchmarkResearch: classification.category === 'benchmark',
-    statusLabel: classification.status,
+    benchmarkResearch: post.blog_id === 'research' && classification.category === 'benchmark',
+    statusLabel: post.blog_id === 'devsnack' ? '원문 Article' : classification.status,
     related: getRelatedAssets(asset.assetId),
   }
 }

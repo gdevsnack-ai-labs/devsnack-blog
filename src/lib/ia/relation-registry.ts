@@ -81,6 +81,56 @@ export const ASSET_RELATIONS: AssetRelation[] = [
     to: postRef('devsnack', 'ai-built-gomoku-engine-vs-rapfi'),
   },
   {
+    from: postRef('devsnack', 'ai-llm-omok-experiment'),
+    relation: 'informs',
+    to: projectRef('ai-omok'),
+  },
+  {
+    from: postRef('devsnack', 'ml-ai'),
+    relation: 'informs',
+    to: projectRef('ai-omok'),
+  },
+  {
+    from: projectRef('local-llm-benchmark'),
+    relation: 'published_as',
+    to: postRef('devsnack', 'ornith-10-35b-5-agentic-coding-9-gguf'),
+  },
+  {
+    from: projectRef('local-llm-benchmark'),
+    relation: 'published_as',
+    to: postRef('devsnack', 'dgx-spark-gb10-north-mini-code-10-gguf-9_01353512936'),
+  },
+  {
+    from: projectRef('local-llm-benchmark'),
+    relation: 'published_as',
+    to: postRef('devsnack', 'nex-n2-mini-ud-bartowski'),
+  },
+  {
+    from: projectRef('local-llm-benchmark'),
+    relation: 'published_as',
+    to: postRef('devsnack', 'nvidia-dgx-spark-gb10-nex-n2-mini-gguf-6'),
+  },
+  {
+    from: projectRef('local-llm-benchmark'),
+    relation: 'published_as',
+    to: postRef('devsnack', 'nvidia-dgx-spark-gb10-gguf-4'),
+  },
+  {
+    from: projectRef('local-llm-benchmark'),
+    relation: 'published_as',
+    to: postRef('devsnack', 'gemma-4-mtp-drafter-dgx-spark-3-31b'),
+  },
+  {
+    from: projectRef('local-llm-benchmark'),
+    relation: 'published_as',
+    to: postRef('devsnack', 'dgx-spark-qwen36-llamacpp-vllm-dflash'),
+  },
+  {
+    from: postRef('devsnack', 'googledrive-as-a-mediaserver'),
+    relation: 'informs',
+    to: projectRef('blog'),
+  },
+  {
     from: projectRef('stockpulse-ai-self-improvement'),
     relation: 'produces',
     to: findingRef('stockpulse-ai-self-improvement'),

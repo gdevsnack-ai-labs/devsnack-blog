@@ -2,10 +2,12 @@ import Link from 'next/link'
 import { ArrowRight, FlaskConical, Hammer, Play, Sparkles } from 'lucide-react'
 import { HubHeader } from '@/components/hub-header'
 import { LabHubProjectCard } from '@/components/lab-hub-project-card'
+import { LegacyLabSourceCard } from '@/components/legacy-lab-source-card'
 import { RelatedAssets } from '@/components/related-assets'
 import { experiments } from '@/data/experiments'
 import { DEMO_ASSETS } from '@/lib/ia'
-import { getLabCollectionProjects, getRelatedAssets } from '@/lib/ia/hub-projections'
+import { getReclassifiedLabPosts } from '@/lib/ia/hub-data'
+import { getLabCollectionProjects, getRelatedAssets, projectLegacyLabPosts } from '@/lib/ia/hub-projections'
 import { getFeaturedExperiment, getKeyFinding, getLabBoardMetadata, getLabStatusCounts, getLatestResult, getRecentFindings, LAB_FILTERS, parseLabFilter, type LabFilter } from '@/lib/labs'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
 
@@ -74,6 +76,7 @@ function CollectionSection({ collection, projects }: { collection: keyof typeof 
 export default async function LabsPage({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams
   const filter = parseLabFilter(params.status)
+  const legacyLabPosts = projectLegacyLabPosts(await getReclassifiedLabPosts())
   const labProjects = getLabCollectionProjects(experiments, 'experiments').concat(getLabCollectionProjects(experiments, 'builds-systems'), getLabCollectionProjects(experiments, 'creative-tests'))
   const featured = getFeaturedExperiment(experiments.filter(experiment => experiment.id !== 'local-llm-benchmark'))
   const recentFindings = getRecentFindings(experiments.filter(experiment => experiment.id !== 'local-llm-benchmark'), 3)
@@ -93,6 +96,18 @@ export default async function LabsPage({ searchParams }: { searchParams: SearchP
         <LatestFinding experiment={featured} />
 
         {recentFindings.length > 0 && <section className="mt-10" aria-labelledby="recent-findings-heading"><div className="mb-4 flex items-end justify-between gap-3"><div><h2 id="recent-findings-heading" className="text-xl font-bold">Recent Findings</h2><p className="mt-1 text-sm text-muted-foreground">상태나 진행률보다 최근에 확인한 결과를 먼저 봅니다.</p></div><span className="text-xs text-muted-foreground">{recentFindings.length} findings</span></div><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{recentFindings.map(experiment => <FindingStrip key={experiment.id} experimentId={experiment.id} />)}</div></section>}
+
+        {legacyLabPosts.length > 0 && (
+          <section className="mt-10" aria-labelledby="legacy-lab-source-heading">
+            <div className="mb-4">
+              <h2 id="legacy-lab-source-heading" className="text-xl font-bold">Reclassified Lab Sources</h2>
+              <p className="mt-1 text-sm text-muted-foreground">기존 `/devsnack` URL을 유지하면서 Experiment 원문으로 연결한 기록입니다.</p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              {legacyLabPosts.map(post => <LegacyLabSourceCard key={post.asset.assetId} post={post} />)}
+            </div>
+          </section>
+        )}
 
         <section className="mt-10 rounded-xl border border-border bg-white p-5 dark:bg-gray-900" aria-labelledby="lab-board-heading">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">

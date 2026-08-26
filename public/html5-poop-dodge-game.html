@@ -1,0 +1,1100 @@
+
+<!-- SEO meta description: 순수 HTML5 Canvas2D + WebAudio로 만든 똥피하기 게임. 외부 라이브러리 제로, SVG 스프라이트, 반응형 디자인 완벽 구현. -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="HTML5 Canvas, Web Audio API, SVG 스프라이트로 만든 똥피하기 게임. PC와 모바일에서 모두 완벽하게 동작하는 추억의 플래시 게임을 웹 기술로 재현했습니다.">
+  <meta name="keywords" content="똥피하기,HTML5게임,웹게임,Canvas게임,SVG스프라이트,WebAudio,자바스크립트게임,반응형게임">
+  <meta name="author" content="AI Game Developer">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://blog.example.com/poop-dodge-game">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="HTML5로 만든 똥피하기 게임 - 웹오디오, SVG 스프라이트, 반응형 완벽 구현">
+  <meta property="og:description" content="Canvas + Web Audio + SVG 스프라이트로 제작한 똥피하기 게임입니다. PC와 모바일에서 모두 플레이 가능합니다.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://blog.example.com/poop-dodge-game">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:site_name" content="AI Game Dev Blog">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HTML5로 만든 똥피하기 게임">
+  <meta name="twitter:description" content="Canvas + Web Audio + SVG 스프라이트로 제작한 똥피하기 게임">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "HTML5로 만든 똥피하기 게임 - 웹 기술로 추억을 되살리다",
+    "description": "HTML5 Canvas, Web Audio API, SVG 스프라이트를 활용한 똥피하기 게임 개발기. PC와 모바일에서 모두 완벽하게 동작합니다.",
+    "author": {
+      "@type": "Person",
+      "name": "AI Game Developer"
+    },
+    "datePublished": "2026-06-08",
+    "dateModified": "2026-06-08",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://blog.example.com/poop-dodge-game"
+    },
+    "image": "https://blog.example.com/poop-dodge-game/og-image.png",
+    "keywords": ["똥피하기", "HTML5 게임", "웹게임", "Canvas", "Web Audio", "SVG"],
+    "about": {
+      "@type": "VideoGame",
+      "name": "똥피하기",
+      "applicationCategory": "Game",
+      "operatingSystem": "All",
+      "browserRequirements": "HTML5 지원 브라우저"
+    }
+  }
+  </script>
+
+  <title>HTML5 똥피하기 게임 - Canvas + Web Audio + SVG 스프라이트 | AI Game Dev Blog</title>
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      line-height: 1.8;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+    }
+
+    /* ===== BLOG CONTAINER ===== */
+    .blog-container {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    /* ===== HEADER ===== */
+    .blog-header {
+      text-align: center;
+      padding: 48px 0 32px;
+    }
+    .blog-header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      color: #1a202c;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .blog-header .subtitle {
+      margin-top: 12px;
+      color: #718096;
+      font-size: 1rem;
+    }
+    .blog-header .meta-info {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: #a0aec0;
+    }
+    .blog-header .meta-info span { margin: 0 8px; }
+    .blog-header .meta-info .tag {
+      display: inline-block;
+      background: #e2e8f0;
+      color: #4a5568;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      margin: 2px 3px;
+    }
+
+    /* ===== GAME SECTION ===== */
+    .game-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 20px;
+      padding: 24px;
+      margin: 24px 0;
+      box-shadow: 0 20px 60px rgba(102,126,234,0.3);
+    }
+    .game-section h2 {
+      color: #fff;
+      text-align: center;
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+    .game-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #87CEEB;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.1);
+    }
+    .game-wrapper canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      touch-action: none;
+      cursor: pointer;
+    }
+
+    /* ===== BLOG CONTENT ===== */
+    .blog-content {
+      padding: 20px 0;
+    }
+    .blog-content h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-top: 48px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 3px solid #667eea;
+    }
+    .blog-content h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      color: #2d3748;
+    }
+    .blog-content p {
+      margin-bottom: 16px;
+      font-size: 1.02rem;
+    }
+    .blog-content ul, .blog-content ol {
+      margin: 12px 0 20px 24px;
+    }
+    .blog-content li {
+      margin-bottom: 8px;
+    }
+    .blog-content .highlight-box {
+      background: linear-gradient(135deg, #ebf4ff, #e9d8fd);
+      border-left: 4px solid #667eea;
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .blog-content code {
+      background: #edf2f7;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: 'Fira Code', 'Consolas', monospace;
+    }
+    .blog-content pre {
+      background: #1a202c;
+      color: #e2e8f0;
+      padding: 16px 20px;
+      border-radius: 10px;
+      overflow-x: auto;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      margin: 16px 0;
+    }
+    .blog-content pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+
+    /* ===== FEATURE GRID ===== */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .feature-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .feature-card .icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    .feature-card h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .feature-card p {
+      font-size: 0.88rem;
+      color: #718096;
+      margin: 0;
+    }
+
+    /* ===== FOOTER ===== */
+    .blog-footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #e2e8f0;
+      text-align: center;
+      color: #a0aec0;
+      font-size: 0.88rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .blog-container { padding: 0 16px 40px; }
+      .blog-header { padding: 32px 0 24px; }
+      .game-section { padding: 16px; margin: 16px 0; border-radius: 16px; }
+      .game-section h2 { font-size: 1.1rem; }
+      .feature-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .feature-card { padding: 14px; }
+      .blog-content h2 { font-size: 1.3rem; margin-top: 32px; }
+    }
+    @media (max-width: 400px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===== LOADING ===== */
+    .game-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(135, 206, 235, 0.9);
+      color: #4a5568;
+      font-size: 1rem;
+      z-index: 10;
+      transition: opacity 0.5s;
+    }
+    .game-loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="blog-container">
+
+  <!-- ===== HEADER ===== -->
+  <header class="blog-header">
+    <h1>HTML5로 만든 똥피하기 게임<br>웹 기술로 추억을 되살리다</h1>
+    <p class="subtitle">Canvas + Web Audio + SVG 스프라이트 풀스택 구현기</p>
+    <div class="meta-info">
+      <span>📅 2026.06.08</span>
+      <span>👨‍💻 AI Game Developer</span>
+      <div style="margin-top: 8px;">
+        <span class="tag">HTML5</span>
+        <span class="tag">Canvas</span>
+        <span class="tag">Web Audio</span>
+        <span class="tag">SVG</span>
+        <span class="tag">게임개발</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== GAME SECTION ===== -->
+  <section class="game-section" aria-label="게임">
+    <h2>🎮 지금 바로 플레이!</h2>
+    <p style="color: rgba(255,255,255,0.8); text-align: center; font-size: 0.9rem; margin-bottom: 12px;">
+      ← → 방향키 또는 화면 터치로 이동 | 똥을 피해 오래 살아남으세요!
+    </p>
+    <div class="game-wrapper">
+      <canvas id="gameCanvas" width="500" height="667"></canvas>
+      <div class="game-loading" id="gameLoading">게임 로딩 중...</div>
+    </div>
+    <div style="text-align: center; margin-top: 12px;">
+      <button id="restartBtn" style="
+        background: rgba(255,255,255,0.2);
+        color: #fff;
+        border: 2px solid rgba(255,255,255,0.4);
+        padding: 8px 28px;
+        border-radius: 25px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-weight: 600;
+        backdrop-filter: blur(4px);
+      " onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+        🔄 다시 시작
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== BLOG CONTENT ===== -->
+  <article class="blog-content">
+
+    <h2>들어가며</h2>
+    <p>
+      어릴 적 즐기던 <strong>똥피하기</strong> 게임을 기억하시나요? 플래시 시절 유행했던 이 단순하면서도 중독성 있는 게임을
+      최신 HTML5 웹 기술로 재현해보았습니다. 이번 프로젝트는 단순한 복제를 넘어, <strong>Web Audio API</strong>를 활용한
+      사운드 효과, <strong>SVG</strong> 기반의 고품질 스프라이트, <strong>localStorage</strong>를 이용한 점수 저장,
+      그리고 <strong>PC와 모바일</strong>을 모두 지원하는 반응형 디자인까지 적용한 풀스택 웹 게임입니다.
+    </p>
+
+    <div class="highlight-box">
+      <strong>✨ 핵심 기술 스택:</strong> HTML5 Canvas · Web Audio API · SVG (인라인 스프라이트) · Vanilla JavaScript · CSS3 반응형 디자인 · localStorage
+    </div>
+
+    <h2>게임 플레이 방법</h2>
+    <ul>
+      <li><strong>PC:</strong> ← (좌) / → (우) 방향키 또는 A / D 키로 캐릭터를 이동하세요.</li>
+      <li><strong>모바일:</strong> 화면 왼쪽 절반을 터치하면 왼쪽으로, 오른쪽 절반을 터치하면 오른쪽으로 이동합니다.</li>
+      <li>위에서 떨어지는 똥을 피해 최대한 오래 살아남으세요!</li>
+      <li>시간이 지날수록 똥이 더 빠르고 많이 떨어집니다.</li>
+      <li>게임 오버 시 점수가 <strong>localStorage</strong>에 자동 저장되어 최고 기록을 갱신할 수 있습니다.</li>
+    </ul>
+
+    <h2>기술적 특징</h2>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="icon">🎨</div>
+        <h4>SVG 스프라이트</h4>
+        <p>고품질 벡터 그래픽을 Canvas에서 렌더링하여 선명한 화질 제공</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🔊</div>
+        <h4>Web Audio API</h4>
+        <p>외부 파일 없이 순수 코드로 생성한 사운드 이펙트</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">💾</div>
+        <h4>점수 저장</h4>
+        <p>localStorage 기반 최고 점수 기록 유지</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📱</div>
+        <h4>반응형 디자인</h4>
+        <p>PC, 태블릿, 모바일 모든 환경에서 완벽 동작</p>
+      </div>
+    </div>
+
+    <h3>1. 고품질 SVG 스프라이트 시스템</h3>
+    <p>
+      모든 게임 그래픽은 <strong>SVG(Scalable Vector Graphics)</strong>로 제작되었습니다.
+      SVG를 사용함으로써 어떤 해상도에서도 픽셀 깨짐 없이 선명한 그래픽을 유지할 수 있습니다.
+      SVG 문자열을 <code>Blob</code>과 <code>URL.createObjectURL</code>을 통해 <code>Image</code> 객체로 변환한 후,
+      <code>Canvas 2D Context</code>의 <code>drawImage()</code>로 렌더링합니다.
+    </p>
+    <pre><code>// SVG → Image 변환 과정
+const svgBlob = new Blob([svgString], { type: 'image/svg+xml' });
+const url = URL.createObjectURL(svgBlob);
+const img = new Image();
+img.onload = () => { /* Canvas에 drawImage() */ };
+img.src = url;</code></pre>
+    <p>
+      똥 스프라이트는 그라데이션과 곡선을 활용한 3D 입체감 표현하였고, 플레이어 캐릭터는 귀여운 모자 쓴
+      캐릭터로 디자인하여 게임의 재미를 더했습니다.
+    </p>
+
+    <h3>2. Web Audio API를 활용한 사운드</h3>
+    <p>
+      외부 오디오 파일 없이 <strong>Web Audio API</strong>만으로 모든 사운드 효과를 생성했습니다.
+      <code>OscillatorNode</code>와 <code>GainNode</code>를 조합하여 점프, 게임오버, 점수 획득 등
+      다양한 상황에 맞는 사운드를 합성합니다. 최신 브라우저의 오디오 정책(Autoplay Policy)을 고려하여
+      사용자 상호작용 시 AudioContext를 초기화합니다.
+    </p>
+    <pre><code>// Web Audio 사운드 생성 예시
+function playSound(frequency, duration, type = 'square') {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.value = frequency;
+  gain.gain.value = 0.15;
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + duration);
+}</code></pre>
+
+    <h3>3. 모바일 대응 터치 컨트롤</h3>
+    <p>
+      모바일 환경에서는 <strong>터치 이벤트</strong>를 통해 게임을 조작합니다. 화면을 왼쪽 절반과 오른쪽 절반으로
+      나누어 터치 위치에 따라 캐릭터가 이동합니다. 또한 <code>touch-action: none</code> CSS 속성으로
+      브라우저의 기본 스크롤/확대 동작을 방지하여 게임 플레이에 집중할 수 있도록 했습니다.
+      모든 컨트롤은 <code>requestAnimationFrame</code> 기반의 게임 루프와 통합되어 부드러운 조작감을 제공합니다.
+    </p>
+
+    <h3>4. 점수 저장 시스템</h3>
+    <p>
+      게임 점수는 브라우저의 <strong>localStorage</strong>에 저장됩니다. 게임 오버 시 현재 점수가 최고 기록보다
+      높으면 자동으로 갱신됩니다. 이를 통해 페이지를 새로고침해도 최고 점수가 유지됩니다.
+    </p>
+
+    <h3>5. 게임 루프와 난이도 곡선</h3>
+    <p>
+      게임은 <code>requestAnimationFrame</code>을 사용한 메인 루프로 구동됩니다. 시간이 지남에 따라
+      똥의 낙하 속도와 생성 빈도가 점진적으로 증가하여 자연스러운 난이도 곡선을 형성합니다.
+      충돌 감지는 AABB(Axis-Aligned Bounding Box) 방식을 사용하여 정확하면서도 가벼운 판정을 제공합니다.
+    </p>
+
+    <h2>개발 후기</h2>
+    <p>
+      이번 프로젝트는 AI의 도움을 받아 진행한 흥미로운 경험이었습니다. 단순한 게임 하나를 만들더라도
+      <strong>SVG 스프라이트 디자인, Web Audio 사운드 합성, Canvas 게임 루프, 모바일 터치 최적화,
+      SEO 최적화</strong> 등 다양한 기술적 고려사항이 필요했습니다.
+    </p>
+    <p>
+      특히 SVG를 Canvas와 결합하는 방식과 Web Audio API로 사운드를 합성하는 과정이 가장 흥미로웠습니다.
+      외부 리소스 없이 순수 코드만으로 게임을 완성할 수 있다는 점이 HTML5 웹 기술의 매력입니다.
+    </p>
+    <p>
+      이 게임의 전체 소스 코드는 하나의 HTML 파일에 모두 담겨 있습니다. 블로그에 임베딩하여
+      바로 플레이할 수 있도록 설계되었으며, 구글 SEO 최적화를 위한 구조화 데이터(JSON-LD),
+      Open Graph 태그 등을 포함하고 있어 블로그 게시물로도 완성도가 높습니다.
+    </p>
+
+    <h2>마치며</h2>
+    <p>
+      위에서 직접 게임을 플레이해보세요! 최고 점수에 도전해보시고, 친구들과 공유해보세요.
+      이 게임은 순수 HTML5 기술로 제작되어 모든 현대 브라우저에서 문제없이 동작합니다.
+    </p>
+    <p>
+      코드에 대한 질문이나 제안사항이 있다면 댓글로 남겨주세요. 감사합니다!
+    </p>
+  </article>
+
+  <footer class="blog-footer">
+    <p>© 2026 AI Game Dev Blog · 순수 HTML5 기술로 제작되었습니다</p>
+  </footer>
+
+
+</div>
+
+<!-- ============================================================ -->
+<!-- GAME JAVASCRIPT -->
+<!-- ============================================================ -->
+<script>
+(function() {
+  'use strict';
+
+  // ============================================================
+  // 1. SVG SPRITE DEFINITIONS
+  // ============================================================
+  const SVG = {
+    poop: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80">
+      <defs>
+        <radialGradient id="pg" cx="45%" cy="35%" r="55%">
+          <stop offset="0%" stop-color="#d4a04a"/>
+          <stop offset="60%" stop-color="#8B5E3C"/>
+          <stop offset="100%" stop-color="#5a2d1e"/>
+        </radialGradient>
+        <radialGradient id="pg2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#c4923a" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#6B3A2A" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <!-- Swirl top -->
+      <path d="M30 12 C42 12 48 4 44 -2 C40 -8 33 -2 30 5 C27 -2 20 -8 16 -2 C12 4 18 12 30 12Z" fill="#7a4a2a"/>
+      <path d="M30 10 C40 10 44 4 41 -1 C38 -6 33 -1 30 5 C27 -1 22 -6 19 -1 C16 4 20 10 30 10Z" fill="#8B5E3C"/>
+      <!-- Main body -->
+      <ellipse cx="30" cy="50" rx="24" ry="28" fill="url(#pg)"/>
+      <!-- Highlight -->
+      <ellipse cx="24" cy="38" rx="10" ry="8" fill="url(#pg2)"/>
+      <!-- Bottom bumps -->
+      <ellipse cx="18" cy="72" rx="12" ry="8" fill="#6B3A2A"/>
+      <ellipse cx="42" cy="72" rx="12" ry="8" fill="#6B3A2A"/>
+      <ellipse cx="30" cy="76" rx="14" ry="6" fill="#4a2518"/>
+      <!-- Cute eyes -->
+      <ellipse cx="22" cy="46" rx="3" ry="3.5" fill="#3a1a0e"/>
+      <ellipse cx="38" cy="46" rx="3" ry="3.5" fill="#3a1a0e"/>
+      <ellipse cx="23" cy="44.5" rx="1.2" ry="1.5" fill="#fff"/>
+      <ellipse cx="39" cy="44.5" rx="1.2" ry="1.5" fill="#fff"/>
+      <!-- Blush -->
+      <ellipse cx="15" cy="52" rx="4" ry="2.5" fill="#c4923a" opacity="0.4"/>
+      <ellipse cx="45" cy="52" rx="4" ry="2.5" fill="#c4923a" opacity="0.4"/>
+    </svg>`,
+
+    player: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 70">
+      <defs>
+        <radialGradient id="skin" cx="50%" cy="40%" r="50%">
+          <stop offset="0%" stop-color="#ffe0c0"/>
+          <stop offset="100%" stop-color="#f5c6a0"/>
+        </radialGradient>
+        <linearGradient id="shirt" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#5B9BD5"/>
+          <stop offset="100%" stop-color="#3A7BD5"/>
+        </linearGradient>
+      </defs>
+      <!-- Shadow -->
+      <ellipse cx="25" cy="68" rx="16" ry="3" fill="rgba(0,0,0,0.12)"/>
+      <!-- Legs -->
+      <rect x="16" y="52" width="7" height="16" rx="3.5" fill="#2d3748"/>
+      <rect x="27" y="52" width="7" height="16" rx="3.5" fill="#2d3748"/>
+      <!-- Shoes -->
+      <ellipse cx="19.5" cy="68" rx="5" ry="3" fill="#e74c3c"/>
+      <ellipse cx="30.5" cy="68" rx="5" ry="3" fill="#e74c3c"/>
+      <!-- Body -->
+      <rect x="13" y="26" width="24" height="28" rx="6" fill="url(#shirt)"/>
+      <!-- Shirt detail -->
+      <rect x="22" y="26" width="6" height="28" rx="0" fill="rgba(255,255,255,0.15)"/>
+      <!-- Arms -->
+      <rect x="4" y="28" width="10" height="6" rx="3" fill="url(#skin)"/>
+      <rect x="36" y="28" width="10" height="6" rx="3" fill="url(#skin)"/>
+      <!-- Hands -->
+      <circle cx="5" cy="34" r="3.5" fill="url(#skin)"/>
+      <circle cx="45" cy="34" r="3.5" fill="url(#skin)"/>
+      <!-- Neck -->
+      <rect x="21" y="20" width="8" height="8" rx="3" fill="url(#skin)"/>
+      <!-- Head -->
+      <circle cx="25" cy="13" r="14" fill="url(#skin)"/>
+      <!-- Hair -->
+      <path d="M11 10 C11 1 39 1 39 10 C39 14 35 16 25 16 C15 16 11 14 11 10Z" fill="#2d3748"/>
+      <path d="M11 10 C10 5 15 0 25 0 C35 0 40 5 39 10" fill="#2d3748"/>
+      <!-- Eyes -->
+      <ellipse cx="20" cy="12" rx="2.5" ry="3" fill="#2d3748"/>
+      <ellipse cx="30" cy="12" rx="2.5" ry="3" fill="#2d3748"/>
+      <ellipse cx="20.5" cy="11" rx="1" ry="1.2" fill="#fff"/>
+      <ellipse cx="30.5" cy="11" rx="1" ry="1.2" fill="#fff"/>
+      <!-- Blush -->
+      <ellipse cx="14" cy="16" rx="3.5" ry="2" fill="#f5a0a0" opacity="0.4"/>
+      <ellipse cx="36" cy="16" rx="3.5" ry="2" fill="#f5a0a0" opacity="0.4"/>
+      <!-- Mouth -->
+      <path d="M22 17 Q25 20 28 17" stroke="#c0392b" fill="none" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Hat -->
+      <ellipse cx="25" cy="5" rx="17" ry="5" fill="#e74c3c"/>
+      <rect x="16" y="-3" width="18" height="9" rx="3" fill="#c0392b"/>
+      <rect x="18" y="-4" width="14" height="4" rx="2" fill="#e74c3c"/>
+    </svg>`,
+
+    bgCloud: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60">
+      <ellipse cx="60" cy="35" rx="45" ry="20" fill="rgba(255,255,255,0.6)"/>
+      <ellipse cx="40" cy="30" rx="30" ry="18" fill="rgba(255,255,255,0.7)"/>
+      <ellipse cx="80" cy="32" rx="28" ry="16" fill="rgba(255,255,255,0.65)"/>
+      <ellipse cx="60" cy="25" rx="20" ry="14" fill="rgba(255,255,255,0.8)"/>
+    </svg>`,
+
+    gameOverBg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160">
+      <rect width="200" height="160" rx="16" fill="rgba(0,0,0,0.75)"/>
+    </svg>`
+  };
+
+  // ============================================================
+  // 2. SPRITE LOADER
+  // ============================================================
+  function loadSVG(svgString) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      img.onload = () => { resolve(img); URL.revokeObjectURL(url); };
+      img.onerror = () => { resolve(null); };
+      img.src = url;
+    });
+  }
+
+  // ============================================================
+  // 3. AUDIO MANAGER
+  // ============================================================
+  class AudioManager {
+    constructor() {
+      this.ctx = null;
+      this.initialized = false;
+    }
+
+    init() {
+      if (this.initialized) return;
+      try {
+        this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        this.initialized = true;
+      } catch(e) {
+        console.warn('Web Audio not available');
+      }
+    }
+
+    _tone(freq, duration, type = 'square', volume = 0.12) {
+      if (!this.ctx) return;
+      try {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        gain.gain.setValueAtTime(volume, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(this.ctx.currentTime);
+        osc.stop(this.ctx.currentTime + duration);
+      } catch(e) { /* audio fail silently */ }
+    }
+
+    dodge() {
+      this._tone(523, 0.08, 'square', 0.08);
+      this._tone(659, 0.08, 'sine', 0.06);
+    }
+
+    gameOver() {
+      this._tone(400, 0.15, 'sawtooth', 0.1);
+      setTimeout(() => this._tone(300, 0.15, 'sawtooth', 0.1), 150);
+      setTimeout(() => this._tone(200, 0.3, 'sawtooth', 0.1), 300);
+    }
+
+    scoreMilestone() {
+      this._tone(880, 0.1, 'sine', 0.08);
+      setTimeout(() => this._tone(1100, 0.15, 'sine', 0.08), 100);
+    }
+
+    startGame() {
+      this._tone(523, 0.1, 'sine', 0.1);
+      setTimeout(() => this._tone(659, 0.1, 'sine', 0.1), 100);
+      setTimeout(() => this._tone(784, 0.15, 'sine', 0.1), 200);
+    }
+  }
+
+  // ============================================================
+  // 4. GAME CLASS
+  // ============================================================
+  class PoopDodgeGame {
+    constructor(canvasId) {
+      this.canvas = document.getElementById(canvasId);
+      this.ctx = this.canvas.getContext('2d');
+      this.audio = new AudioManager();
+
+      // Game state
+      this.state = 'MENU'; // MENU | PLAYING | GAME_OVER
+      this.score = 0;
+      try {
+        this.highScore = parseInt(localStorage.getItem('poopDodgeHighScore')) || 0;
+      } catch(e) {
+        this.highScore = 0;
+      }
+      this.difficulty = 1;
+
+      // Player
+      this.player = { x: 225, y: 0, width: 34, height: 60 };
+
+      // Poops
+      this.poops = [];
+      this.spawnTimer = 0;
+      this.spawnInterval = 60; // frames
+
+      // Input
+      this.keys = { left: false, right: false };
+      this.touchX = null; // -1 left, 0 none, 1 right
+
+      // Sprites
+      this.sprites = {};
+
+      // Frame tracking
+      this.frameCount = 0;
+      this.lastTime = 0;
+
+      // Canvas sizing
+      this.baseWidth = 500;
+      this.baseHeight = 667;
+      this.scale = 1;
+
+      // Game over tracking
+      this.milestoneSoundPlayed = 0;
+
+      // Bind
+      this.loop = this.loop.bind(this);
+      this._onKeyDown = this._onKeyDown.bind(this);
+      this._onKeyUp = this._onKeyUp.bind(this);
+      this._onTouch = this._onTouch.bind(this);
+      this._onTouchEnd = this._onTouchEnd.bind(this);
+
+      this._setupCanvas();
+      this._loadSprites();
+    }
+
+    async _loadSprites() {
+      const loadingEl = document.getElementById('gameLoading');
+      try {
+        const [poop, player, cloud, goBg] = await Promise.all([
+          loadSVG(SVG.poop),
+          loadSVG(SVG.player),
+          loadSVG(SVG.bgCloud),
+          loadSVG(SVG.gameOverBg)
+        ]);
+        this.sprites.poop = poop;
+        this.sprites.player = player;
+        this.sprites.cloud = cloud;
+        this.sprites.goBg = goBg;
+      } catch(e) {
+        console.error('Sprite loading error:', e);
+      }
+      if (loadingEl) loadingEl.classList.add('hidden');
+    }
+
+    _setupCanvas() {
+      this._resizeCanvas();
+      window.addEventListener('resize', () => this._resizeCanvas());
+
+      // Keyboard
+      document.addEventListener('keydown', this._onKeyDown);
+      document.addEventListener('keyup', this._onKeyUp);
+
+      // Touch
+      this.canvas.addEventListener('touchstart', this._onTouch, { passive: false });
+      this.canvas.addEventListener('touchmove', this._onTouch, { passive: false });
+      this.canvas.addEventListener('touchend', this._onTouchEnd, { passive: false });
+
+      // Mouse click (for menu/restart)
+      this.canvas.addEventListener('click', (e) => {
+        if (this.state === 'MENU' || this.state === 'GAME_OVER') {
+          this.audio.init();
+          this._startGame();
+        }
+      });
+    }
+
+    _resizeCanvas() {
+      const wrapper = this.canvas.parentElement;
+      if (!wrapper) return;
+      const wrapperWidth = wrapper.clientWidth;
+      const maxWidth = Math.min(wrapperWidth, 500);
+      this.scale = maxWidth / this.baseWidth;
+      this.canvas.style.width = maxWidth + 'px';
+      this.canvas.style.height = (this.baseHeight * this.scale) + 'px';
+    }
+
+    // ---- Input Handlers ----
+
+    _onKeyDown(e) {
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        this.keys.left = true;
+        e.preventDefault();
+      }
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        this.keys.right = true;
+        e.preventDefault();
+      }
+      if ((e.key === ' ' || e.key === 'Enter') && (this.state === 'MENU' || this.state === 'GAME_OVER')) {
+        this.audio.init();
+        this._startGame();
+        e.preventDefault();
+      }
+    }
+
+    _onKeyUp(e) {
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        this.keys.left = false;
+        e.preventDefault();
+      }
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        this.keys.right = false;
+        e.preventDefault();
+      }
+    }
+
+    _onTouch(e) {
+      e.preventDefault();
+      if (!this.canvas) return;
+      const rect = this.canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      if (!touch) return;
+      const x = touch.clientX - rect.left;
+      const relX = x / rect.width;
+      if (relX < 0.4) this.touchX = -1;
+      else if (relX > 0.6) this.touchX = 1;
+      else this.touchX = 0;
+
+      if (this.state === 'MENU' || this.state === 'GAME_OVER') {
+        this.audio.init();
+        this._startGame();
+      }
+    }
+
+    _onTouchEnd(e) {
+      e.preventDefault();
+      this.touchX = null;
+    }
+
+    // ---- Game Lifecycle ----
+
+    _startGame(force) {
+      if (this.state === 'PLAYING' && !force) return;
+      this.state = 'PLAYING';
+      this.score = 0;
+      this.difficulty = 1;
+      this.frameCount = 0;
+      this.milestoneSoundPlayed = 0;
+      this.poops = [];
+      this.spawnTimer = 0;
+      this.spawnInterval = 60;
+      this.player.x = (this.baseWidth - this.player.width) / 2;
+      this.player.y = this.baseHeight - 100;
+      this.audio.startGame();
+    }
+
+    _gameOver() {
+      this.state = 'GAME_OVER';
+      this.audio.gameOver();
+      if (this.score > this.highScore) {
+        this.highScore = Math.floor(this.score);
+        try { localStorage.setItem('poopDodgeHighScore', this.highScore); } catch(e) {}
+      }
+    }
+
+    restart() {
+      this.audio.init();
+      this._startGame(true);
+    }
+
+    // ---- Update ----
+
+    _update() {
+      if (this.state !== 'PLAYING') return;
+
+      this.frameCount++;
+      this.score += 0.1;
+
+      // Difficulty progression
+      this.difficulty = 1 + this.frameCount / 1800; // increases over ~30s
+      this.spawnInterval = Math.max(15, 60 - this.frameCount / 30);
+
+      // Milestone sound every 100 points
+      const milestone = Math.floor(this.score / 100);
+      if (milestone > this.milestoneSoundPlayed && milestone > 0) {
+        this.audio.scoreMilestone();
+        this.milestoneSoundPlayed = milestone;
+      }
+
+      // Spawn poops
+      this.spawnTimer++;
+      if (this.spawnTimer >= this.spawnInterval) {
+        this.spawnTimer = 0;
+        const numPoops = Math.min(1 + Math.floor(this.difficulty / 0.5), 4);
+        for (let i = 0; i < numPoops; i++) {
+          if (Math.random() < 0.4) continue; // not always all
+          this.poops.push({
+            x: 10 + Math.random() * (this.baseWidth - 80),
+            y: -50,
+            speed: (1.5 + Math.random() * 2) * this.difficulty,
+            size: 30 + Math.random() * 20,
+            rotation: Math.random() * Math.PI * 2,
+            rotSpeed: (Math.random() - 0.5) * 0.05,
+            wobble: Math.random() * 100,
+            wobbleSpeed: 0.02 + Math.random() * 0.03,
+            wobbleAmp: 0.3 + Math.random() * 0.5
+          });
+        }
+      }
+
+      // Player movement
+      let moveDir = 0;
+      if (this.keys.left) moveDir = -1;
+      if (this.keys.right) moveDir = 1;
+      if (this.touchX !== null) moveDir = this.touchX;
+
+      if (moveDir !== 0) {
+        this.player.x += moveDir * 5;
+        this.player.x = Math.max(10, Math.min(this.baseWidth - this.player.width - 10, this.player.x));
+      }
+
+      // Update poops
+      for (let i = this.poops.length - 1; i >= 0; i--) {
+        const p = this.poops[i];
+        p.y += p.speed;
+        p.rotation += p.rotSpeed;
+        p.x += Math.sin(p.wobble + this.frameCount * p.wobbleSpeed) * p.wobbleAmp;
+
+        // Collision check
+        if (this._checkCollision(p)) {
+          this._gameOver();
+          return;
+        }
+
+        // Remove off-screen
+        if (p.y > this.baseHeight + 50) {
+          this.poops.splice(i, 1);
+          this.audio.dodge();
+        }
+      }
+    }
+
+    _checkCollision(poop) {
+      // Poop rendered size: width=poop.size, height=poop.size*1.33
+      // Poop top-left at (poop.x, poop.y) after canvas translate
+      const margin = 8;
+      const poopW = poop.size;
+      const poopH = poop.size * 1.33;
+      return (
+        this.player.x + margin < poop.x + poopW - margin &&
+        this.player.x + this.player.width - margin > poop.x + margin &&
+        this.player.y + margin < poop.y + poopH - margin &&
+        this.player.y + this.player.height - margin > poop.y + margin
+      );
+    }
+
+    // ---- Render ----
+
+    _render() {
+      const ctx = this.ctx;
+      const W = this.baseWidth;
+      const H = this.baseHeight;
+
+      // Clear with sky gradient
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
+      skyGrad.addColorStop(0, '#87CEEB');
+      skyGrad.addColorStop(0.6, '#B0E0E6');
+      skyGrad.addColorStop(1, '#90EE90');
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Ground
+      ctx.fillStyle = '#7ec850';
+      ctx.fillRect(0, H - 20, W, 20);
+      ctx.fillStyle = '#6ab840';
+      ctx.fillRect(0, H - 20, W, 4);
+
+      // Clouds
+      if (this.sprites.cloud) {
+        ctx.globalAlpha = 0.6;
+        ctx.drawImage(this.sprites.cloud, 50, 30, 100, 50);
+        ctx.drawImage(this.sprites.cloud, 300, 50, 80, 40);
+        ctx.drawImage(this.sprites.cloud, 180, 80, 90, 45);
+        ctx.drawImage(this.sprites.cloud, 400, 25, 70, 35);
+        ctx.globalAlpha = 1;
+      }
+
+      // Draw poops
+      if (this.sprites.poop) {
+        for (const p of this.poops) {
+          ctx.save();
+          ctx.translate(p.x + p.size / 2, p.y + p.size / 2);
+          ctx.rotate(p.rotation);
+          ctx.drawImage(this.sprites.poop, -p.size / 2, -p.size / 2, p.size, p.size * 1.33);
+          ctx.restore();
+        }
+      }
+
+      // Draw player
+      if (this.sprites.player) {
+        ctx.drawImage(this.sprites.player, this.player.x, this.player.y, this.player.width, this.player.height);
+      }
+
+      // HUD
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      ctx.beginPath();
+      ctx.roundRect(10, 10, 160, 38, 10);
+      ctx.fill();
+
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 16px -apple-system, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      const scoreText = `점수: ${Math.floor(this.score)}`;
+      ctx.fillText(scoreText, 20, 17);
+
+      if (this.highScore > 0) {
+        ctx.font = '12px -apple-system, sans-serif';
+        ctx.fillStyle = '#ffd700';
+        ctx.fillText(`🏆 최고: ${this.highScore}점`, 20, 37);
+      }
+
+      // State-specific overlays
+      if (this.state === 'MENU') {
+        this._drawOverlay('🎯 똥피하기', [
+          '← → 키 또는 터치로 이동',
+          '똥을 피해 오래 살아남으세요!',
+          '(터치 또는 Enter로 시작)'
+        ]);
+      }
+
+      if (this.state === 'GAME_OVER') {
+        this._drawOverlay('💀 게임 오버!', [
+          `점수: ${Math.floor(this.score)}`,
+          this.score >= this.highScore && this.score > 0 ? '🎉 신기록!' : `최고 점수: ${this.highScore}`,
+          '(터치 또는 Enter로 재시작)'
+        ]);
+      }
+    }
+
+    _drawOverlay(title, lines) {
+      const ctx = this.ctx;
+      const W = this.baseWidth;
+      const H = this.baseHeight;
+
+      ctx.fillStyle = 'rgba(0,0,0,0.65)';
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 36px -apple-system, sans-serif';
+      ctx.fillText(title, W / 2, H / 2 - 60);
+
+      ctx.font = '18px -apple-system, sans-serif';
+      ctx.fillStyle = '#e2e8f0';
+      lines.forEach((line, i) => {
+        ctx.fillText(line, W / 2, H / 2 + (i * 30));
+      });
+
+      // Decorative poop at bottom for menu
+      if (this.state === 'MENU' && this.sprites.poop) {
+        ctx.save();
+        ctx.translate(W / 2, H / 2 + 100);
+        ctx.drawImage(this.sprites.poop, -25, -33, 50, 66);
+        ctx.restore();
+      }
+    }
+
+    // ---- Game Loop ----
+
+    loop(time) {
+      const dt = this.lastTime ? time - this.lastTime : 16;
+      this.lastTime = time;
+
+      this._update();
+      this._render();
+
+      requestAnimationFrame(this.loop);
+    }
+
+    start() {
+      this.player.y = this.baseHeight - 100;
+      this.player.x = (this.baseWidth - this.player.width) / 2;
+      requestAnimationFrame(this.loop);
+    }
+  }
+
+  // ============================================================
+  // 5. POLYFILL roundRect
+  // ============================================================
+  if (!CanvasRenderingContext2D.prototype.roundRect) {
+    CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+      if (r > w / 2) r = w / 2;
+      if (r > h / 2) r = h / 2;
+      this.moveTo(x + r, y);
+      this.lineTo(x + w - r, y);
+      this.quadraticCurveTo(x + w, y, x + w, y + r);
+      this.lineTo(x + w, y + h - r);
+      this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      this.lineTo(x + r, y + h);
+      this.quadraticCurveTo(x, y + h, x, y + h - r);
+      this.lineTo(x, y + r);
+      this.quadraticCurveTo(x, y, x + r, y);
+      return this;
+    };
+  }
+
+  // ============================================================
+  // 6. INIT
+  // ============================================================
+  const game = new PoopDodgeGame('gameCanvas');
+
+  // Expose restart to button
+  document.getElementById('restartBtn').addEventListener('click', () => {
+    game.audio.init();
+    game.restart();
+  });
+
+  // Start loop after sprites load (or immediately, renders when ready)
+  game.start();
+
+  // Expose for debugging
+  window.__game = game;
+
+})();
+</script>
+
+</body>
+</html><br/><hr>
+<h3>📖 관련 글</h3>
+<ul>
+  <li><a href="/devsnack/ai-vampire-survivor-like-demo">AI 뱀파이어 서바이버 라이크 데모</a></li>
+</ul>

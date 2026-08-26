@@ -14,7 +14,7 @@ export function KnowledgeAssetCard({ post }: { post: KnowledgeProjection }) {
       <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-3">
         {post.benchmarkResearch && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">Benchmark Research</span>}
         <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">{post.statusLabel}</span>
-        <Link href={`/research/${post.slug}`} className="ml-auto inline-flex items-center gap-1 text-xs font-medium text-foreground no-underline hover:text-purple-600 dark:hover:text-purple-400">
+        <Link href={post.href} className="ml-auto inline-flex items-center gap-1 text-xs font-medium text-foreground no-underline hover:text-purple-600 dark:hover:text-purple-400">
           읽기 <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
         </Link>
       </div>

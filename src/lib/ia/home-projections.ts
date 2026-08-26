@@ -129,7 +129,7 @@ function toKnowledgeProjection(post: KnowledgeProjection): HomeFeaturedItem {
     eyebrow: `Knowledge · ${post.domainLabel}`,
     title: post.title,
     summary: compactText(post.excerpt, 170),
-    href: `/research/${post.slug}`,
+    href: post.href,
     related: post.related[0],
     knowledge: post,
   }

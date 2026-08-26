@@ -5,6 +5,7 @@ import { BlogHeader } from '@/components/blog-header'
 import { BlogSidebar } from '@/components/blog-sidebar'
 import { Pagination } from '@/components/pagination'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
+import { isPostPrimaryType } from '@/lib/ia'
 
 export const metadata = buildRouteMetadata({
   title: 'Stories — DevSnack',
@@ -22,6 +23,8 @@ type PostSummary = {
   labels: string[] | null
   published: string | null
   cover_image: string | null
+  blog_id: 'devsnack'
+  status: 'live'
 }
 
 type SidebarPost = Pick<PostSummary, 'slug' | 'title' | 'labels' | 'published'>
@@ -42,7 +45,7 @@ function getMonthRange(month?: string) {
 async function getPosts(page: number, tag?: string, month?: string) {
   let query = supabase
     .from('posts')
-    .select('slug, title, excerpt, labels, published, cover_image', { count: 'exact' })
+    .select('slug, title, excerpt, labels, published, cover_image, blog_id, status')
     .eq('status', 'live')
     .eq('blog_id', 'devsnack')
 
@@ -50,20 +53,21 @@ async function getPosts(page: number, tag?: string, month?: string) {
   const range = getMonthRange(month)
   if (range) query = query.gte('published', range.start).lt('published', range.end)
 
+  const { data } = await query.order('published', { ascending: false }).limit(1000)
+  const stories = (data ?? []).filter(post => isPostPrimaryType(post, 'story')) as PostSummary[]
   const from = (page - 1) * PAGE_SIZE
-  const { data, count } = await query.order('published', { ascending: false }).range(from, from + PAGE_SIZE - 1)
-  return { posts: (data ?? []) as PostSummary[], count: count ?? 0 }
+  return { posts: stories.slice(from, from + PAGE_SIZE), count: stories.length }
 }
 
 async function getSidebarPosts(): Promise<SidebarPost[]> {
   const { data } = await supabase
     .from('posts')
-    .select('slug, title, labels, published')
+    .select('slug, title, labels, published, blog_id, status')
     .eq('status', 'live')
     .eq('blog_id', 'devsnack')
     .order('published', { ascending: false })
     .limit(1000)
-  return (data ?? []) as SidebarPost[]
+  return ((data ?? []).filter(post => isPostPrimaryType(post, 'story'))) as SidebarPost[]
 }
 
 export default async function Home({

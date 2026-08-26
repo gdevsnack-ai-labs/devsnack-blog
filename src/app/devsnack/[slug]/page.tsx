@@ -9,6 +9,7 @@ import { EnglishSourceSwitch } from '@/components/english-source-switch'
 import { getPublishedEnglishTranslation } from '@/lib/translation'
 import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
+import { getPostPresentation } from '@/lib/ia'
 
 export const revalidate = 60
 
@@ -31,6 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   const description = post.seo_desc ?? post.excerpt ?? post.title
   const translation = await getPublishedEnglishTranslation(post.id)
+  const presentation = getPostPresentation(post)
   return buildRouteMetadata({
     title: post.title,
     description,
@@ -38,7 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     kind: 'article',
     language: 'ko',
     ...(translation ? { koreanPath: `/devsnack/${slug}`, englishPath: `/en/devsnack/${slug}` } : {}),
-    section: 'Stories',
+    section: presentation.section,
     image: post.cover_image,
     publishedTime: post.published,
     modifiedTime: post.updated,
@@ -51,16 +53,17 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
   if (!post) notFound()
 
+  const presentation = getPostPresentation(post)
   const readingTime = Math.max(1, Math.ceil((post.content?.length || 0) / 2000))
 
   const jsonLd = buildJsonLdGraph(
     buildArticleJsonLd({
-      type: 'Article',
+      type: presentation.schemaType,
       title: post.title,
       description: post.seo_desc ?? post.excerpt ?? post.title,
       url: absoluteSiteUrl(`/devsnack/${slug}`),
       language: 'ko',
-      section: 'Stories',
+      section: presentation.section,
       published: post.published,
       modified: post.updated,
       image: post.cover_image,
@@ -70,7 +73,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
     }),
     buildBreadcrumbJsonLd([
       { name: '홈', url: absoluteSiteUrl('/') },
-      { name: 'Stories', url: absoluteSiteUrl('/devsnack') },
+      { name: presentation.section, url: absoluteSiteUrl(presentation.hubHref) },
       { name: post.title, url: absoluteSiteUrl(`/devsnack/${slug}`) },
     ], 'ko'),
   )
@@ -78,14 +81,17 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   return (
     <div className="min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <BlogHeader title="DevSnack Blog" subtitle="개발자의 시선으로 보는 AI" icon="terminal" color="blue" />
+      <BlogHeader title={presentation.section === 'Stories' ? 'DevSnack Blog' : `DevSnack · ${presentation.section}`} subtitle="개발자의 시선으로 보는 AI" icon="terminal" color="blue" />
 
       <div className="max-w-3xl mx-auto px-4 py-4">
-        <Link href="/devsnack" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors no-underline">
+        <Link href={presentation.hubHref} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors no-underline">
           <ArrowLeft className="w-4 h-4" />
-          DevSnack 목록으로
+          {presentation.section} 목록으로
         </Link>
-        <div className="mt-3"><EnglishSourceSwitch postId={post.id} englishHref={`/en/devsnack/${post.slug}`} koreanHref={`/devsnack/${post.slug}`} /></div>
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+          <span className="text-xs text-muted-foreground">Source URL 유지 · {presentation.section} projection</span>
+          {presentation.section === 'Stories' && <EnglishSourceSwitch postId={post.id} englishHref={`/en/devsnack/${post.slug}`} koreanHref={`/devsnack/${post.slug}`} />}
+        </div>
       </div>
 
       <article className="content-article max-w-3xl mx-auto min-w-0 px-4 py-8">
@@ -125,9 +131,9 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
       <footer className="border-t mt-16">
         <div className="max-w-3xl mx-auto px-4 py-8">
-          <Link href="/devsnack" className="inline-flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:underline">
+          <Link href={presentation.hubHref} className="inline-flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:underline">
             <ArrowLeft className="w-4 h-4" />
-            DevSnack 블로그 목록으로
+            {presentation.section} 목록으로
           </Link>
         </div>
       </footer>

@@ -4,7 +4,9 @@ import { BenchmarkResultCard } from '@/components/benchmark-result-card'
 import { HubHeader } from '@/components/hub-header'
 import { RelatedAssets } from '@/components/related-assets'
 import { LanguageSwitch } from '@/components/language-switch'
-import { BENCHMARK_OVERVIEW, BENCHMARK_PROJECTIONS, getBenchmarksByCategory, getRelatedAssets } from '@/lib/ia/hub-projections'
+import { LegacyBenchmarkSourceCard } from '@/components/legacy-benchmark-source-card'
+import { getReclassifiedBenchmarkPosts } from '@/lib/ia/hub-data'
+import { BENCHMARK_OVERVIEW, BENCHMARK_PROJECTIONS, getBenchmarksByCategory, getRelatedAssets, projectLegacyBenchmarkPosts } from '@/lib/ia/hub-projections'
 import { buildRouteMetadata, absoluteSiteUrl } from '@/lib/seo/metadata'
 import { buildBreadcrumbJsonLd, buildCollectionPageJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 
@@ -31,8 +33,17 @@ function familyAnchor(family: string): string {
   return `benchmark-family-${family.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
 }
 
-export default function BenchmarksPage() {
-  const availableCategories = CATEGORY_META.filter(category => getBenchmarksByCategory(category.id).length > 0)
+export default async function BenchmarksPage() {
+  const legacyBenchmarks = projectLegacyBenchmarkPosts(await getReclassifiedBenchmarkPosts())
+  const legacyCountForCategory = (category: typeof CATEGORY_META[number]['id']) => legacyBenchmarks.filter(benchmark => {
+    const domains = benchmark.asset.domain || []
+    if (category === 'llm') return domains.includes('llm')
+    if (category === 'inference') return domains.includes('inference')
+    if (category === 'hardware') return domains.includes('hardware')
+    return domains.includes('creative_ai')
+  }).length
+  const countForCategory = (category: typeof CATEGORY_META[number]) => getBenchmarksByCategory(category.id).length + legacyCountForCategory(category.id)
+  const availableCategories = CATEGORY_META.filter(category => countForCategory(category) > 0)
   const related = getRelatedAssets('project:local-llm-benchmark')
   const relatedKnowledge = Array.from(
     new Map(BENCHMARK_PROJECTIONS.flatMap(benchmark => benchmark.relatedKnowledge).map(knowledge => [knowledge.href, knowledge])).values(),
@@ -53,7 +64,10 @@ export default function BenchmarksPage() {
       language: 'ko',
       section: 'Benchmarks',
       breadcrumbs: [],
-      parts: BENCHMARK_PROJECTIONS.map((benchmark, index) => ({ name: benchmark.title, url: absoluteSiteUrl(benchmark.contentHref), position: index + 1 })),
+      parts: [
+        ...BENCHMARK_PROJECTIONS.map((benchmark, index) => ({ name: benchmark.title, url: absoluteSiteUrl(benchmark.contentHref), position: index + 1 })),
+        ...legacyBenchmarks.map((benchmark, index) => ({ name: benchmark.title, url: absoluteSiteUrl(benchmark.href), position: BENCHMARK_PROJECTIONS.length + index + 1 })),
+      ],
     }),
     buildBreadcrumbJsonLd([
       { name: '홈', url: absoluteSiteUrl('/') },
@@ -144,12 +158,12 @@ export default function BenchmarksPage() {
               <h2 id="benchmark-collections-heading" className="text-xl font-bold">Collections</h2>
               <p className="mt-1 text-sm text-muted-foreground">현재 published result가 있는 측정 영역만 표시합니다.</p>
             </div>
-            <span className="text-xs text-muted-foreground">{BENCHMARK_PROJECTIONS.length} result</span>
+            <span className="text-xs text-muted-foreground">{BENCHMARK_PROJECTIONS.length + legacyBenchmarks.length} result</span>
           </div>
           {availableCategories.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {availableCategories.map(category => {
-                const count = getBenchmarksByCategory(category.id).length
+                const count = countForCategory(category)
                 return (
                   <div key={category.id} className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900">
                     <p className="text-sm font-bold">{category.label}</p>
@@ -209,6 +223,18 @@ export default function BenchmarksPage() {
             <div className="rounded-xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">No published benchmark yet</div>
           )}
         </section>
+
+        {legacyBenchmarks.length > 0 && (
+          <section className="mt-10" aria-labelledby="legacy-benchmark-heading">
+            <div className="mb-4">
+              <h2 id="legacy-benchmark-heading" className="text-xl font-bold">Reclassified DevSnack Results</h2>
+              <p className="mt-1 text-sm text-muted-foreground">기존 `/devsnack` URL을 유지하면서 Benchmark 결과로 연결한 원문입니다.</p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              {legacyBenchmarks.map(benchmark => <LegacyBenchmarkSourceCard key={benchmark.asset.assetId} benchmark={benchmark} />)}
+            </div>
+          </section>
+        )}
 
         <section className="mt-10 rounded-2xl border border-border bg-muted/30 p-5 md:p-6" aria-labelledby="benchmark-knowledge-heading">
           <div className="flex items-center gap-2"><BookOpen className="h-5 w-5 text-muted-foreground" aria-hidden="true" /><h2 id="benchmark-knowledge-heading" className="text-lg font-bold">Related Knowledge</h2></div>

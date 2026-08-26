@@ -112,6 +112,155 @@ const POST_OVERRIDES: Record<string, Partial<PostClassification>> = {
     classification: 'confirmed',
   },
 
+  // Step A Story audit: source-preserving projections for legacy DevSnack posts.
+  'devsnack:ai-llm-omok-experiment': {
+    primaryType: 'experiment',
+    role: 'report',
+    projectId: 'ai-omok',
+    domain: ['game_ai', 'inference'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:ornith-10-35b-5-agentic-coding-9-gguf': {
+    primaryType: 'benchmark',
+    role: 'report',
+    projectId: 'local-llm-benchmark',
+    domain: ['llm', 'inference', 'hardware'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:dgx-spark-gb10-north-mini-code-10-gguf-9_01353512936': {
+    primaryType: 'benchmark',
+    role: 'report',
+    projectId: 'local-llm-benchmark',
+    domain: ['llm', 'inference', 'hardware'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:nex-n2-mini-ud-bartowski': {
+    primaryType: 'benchmark',
+    role: 'report',
+    projectId: 'local-llm-benchmark',
+    domain: ['llm', 'inference', 'hardware'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:nvidia-dgx-spark-gb10-nex-n2-mini-gguf-6': {
+    primaryType: 'benchmark',
+    role: 'report',
+    projectId: 'local-llm-benchmark',
+    domain: ['llm', 'inference', 'hardware'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:nvidia-dgx-spark-gb10-gguf-4': {
+    primaryType: 'benchmark',
+    role: 'report',
+    projectId: 'local-llm-benchmark',
+    domain: ['llm', 'inference', 'hardware'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:gemma-4-mtp-drafter-dgx-spark-3-31b': {
+    primaryType: 'benchmark',
+    role: 'report',
+    projectId: 'local-llm-benchmark',
+    domain: ['llm', 'inference', 'hardware'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:dgx-spark-qwen36-llamacpp-vllm-dflash': {
+    primaryType: 'benchmark',
+    role: 'report',
+    projectId: 'local-llm-benchmark',
+    domain: ['llm', 'inference', 'hardware'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:googledrive-as-a-mediaserver': {
+    primaryType: 'knowledge',
+    role: 'report',
+    domain: ['infrastructure', 'media'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:ml-ai': {
+    primaryType: 'knowledge',
+    role: 'summary',
+    domain: ['llm', 'game_ai'],
+    provenance: 'ai_assisted',
+    classification: 'inferred',
+  },
+  'devsnack:hermes-agent-2-llm': {
+    primaryType: 'knowledge',
+    role: 'report',
+    domain: ['agent_memory', 'automation'],
+    provenance: 'ai_assisted',
+    classification: 'inferred',
+  },
+  'devsnack:krea-2-turbo-on-dgx-spark-40-16_0675256768': {
+    primaryType: 'knowledge',
+    role: 'report',
+    domain: ['creative_ai', 'media', 'hardware'],
+    provenance: 'ai_assisted',
+    classification: 'inferred',
+  },
+  'devsnack:chatgpt-gemini-meshllm': {
+    primaryType: 'knowledge',
+    role: 'summary',
+    domain: ['llm', 'infrastructure'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:ai-pc_01257715332': {
+    primaryType: 'knowledge',
+    role: 'summary',
+    domain: ['llm', 'infrastructure'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:dgx-spark-gb10-2026-4': {
+    primaryType: 'knowledge',
+    role: 'summary',
+    domain: ['llm', 'hardware'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:comfyui': {
+    primaryType: 'knowledge',
+    role: 'summary',
+    domain: ['media', 'infrastructure'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:google-oauth2-clientsecretjson': {
+    primaryType: 'knowledge',
+    role: 'summary',
+    domain: ['infrastructure', 'automation'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:hermes-agent-searxng-dgx-gb10-tailscale': {
+    primaryType: 'knowledge',
+    role: 'report',
+    domain: ['infrastructure', 'automation'],
+    provenance: 'ai_assisted',
+    classification: 'inferred',
+  },
+  'devsnack:html5-poop-dodge-game': {
+    primaryType: 'showcase',
+    role: 'artifact',
+    domain: ['web'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
+  'devsnack:ai-vampire-survivor-like-demo': {
+    primaryType: 'showcase',
+    role: 'artifact',
+    domain: ['web', 'game_ai'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
 }
 
 function classifyLabPost(slug: string): Partial<PostClassification> {
@@ -148,6 +297,14 @@ function classifyPost(post: LegacyPostLike): PostClassification | undefined {
   }
 }
 
+export function getPostClassification(post: LegacyPostLike): PostClassification | undefined {
+  return classifyPost(post)
+}
+
+export function isPostPrimaryType(post: LegacyPostLike, primaryType: PrimaryType): boolean {
+  return classifyPost(post)?.primaryType === primaryType
+}
+
 function lifecycleFromStatus(status?: string | null): AssetLifecycle {
   if (status === 'draft') return 'draft'
   if (status === 'live') return 'active'
@@ -170,6 +327,32 @@ export function assetFromLegacyPost(post: LegacyPostLike): AssetRef {
     lifecycle: lifecycleFromStatus(post.status),
     source: post.blog_id === 'research' ? 'research' : post.blog_id === 'misc' ? 'misc' : 'post',
     classification: classification?.classification || 'ambiguous',
+  }
+}
+
+export interface PostPresentation {
+  asset: AssetRef
+  section: 'Stories' | 'Lab' | 'Benchmarks' | 'Knowledge' | 'Showcase'
+  hubHref: string
+  schemaType: 'Article' | 'TechArticle'
+}
+
+export function getPostPresentation(post: LegacyPostLike): PostPresentation {
+  const asset = assetFromLegacyPost(post)
+  switch (asset.primaryType) {
+    case 'experiment':
+    case 'build':
+    case 'system':
+    case 'creative_test':
+      return { asset, section: 'Lab', hubHref: '/labs', schemaType: 'TechArticle' }
+    case 'benchmark':
+      return { asset, section: 'Benchmarks', hubHref: '/benchmarks', schemaType: 'TechArticle' }
+    case 'knowledge':
+      return { asset, section: 'Knowledge', hubHref: '/research', schemaType: 'TechArticle' }
+    case 'showcase':
+      return { asset, section: 'Showcase', hubHref: '/demos/html', schemaType: 'Article' }
+    default:
+      return { asset, section: 'Stories', hubHref: '/devsnack', schemaType: 'Article' }
   }
 }
 

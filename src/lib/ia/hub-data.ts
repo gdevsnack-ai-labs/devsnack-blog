@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase'
+import { isPostPrimaryType } from '@/lib/ia'
 import type { KnowledgePostInput } from '@/lib/ia/hub-projections'
 
 export interface StoryPostInput {
@@ -22,12 +23,13 @@ export async function getKnowledgePosts(): Promise<KnowledgePostInput[]> {
   const { data } = await supabase
     .from('posts')
     .select('slug, title, excerpt, labels, published, updated, blog_id, status')
-    .eq('blog_id', 'research')
+    .in('blog_id', ['research', 'devsnack'])
     .eq('status', 'live')
     .order('published', { ascending: false })
-    .limit(200)
+    .limit(500)
 
-  return (data || []) as KnowledgePostInput[]
+  return (data || [])
+    .filter(post => isPostPrimaryType(post, 'knowledge')) as KnowledgePostInput[]
 }
 
 export async function getRecentStories(limit = 3): Promise<StoryPostInput[]> {
@@ -37,9 +39,37 @@ export async function getRecentStories(limit = 3): Promise<StoryPostInput[]> {
     .eq('blog_id', 'devsnack')
     .eq('status', 'live')
     .order('published', { ascending: false })
-    .limit(limit)
+    .limit(500)
 
-  return (data || []) as StoryPostInput[]
+  return (data || [])
+    .filter(post => isPostPrimaryType(post, 'story'))
+    .slice(0, limit) as StoryPostInput[]
+}
+
+export async function getReclassifiedLabPosts(): Promise<StoryPostInput[]> {
+  const { data } = await supabase
+    .from('posts')
+    .select('slug, title, excerpt, published, updated, cover_image, blog_id, status')
+    .eq('blog_id', 'devsnack')
+    .eq('status', 'live')
+    .order('published', { ascending: false })
+    .limit(500)
+
+  return (data || [])
+    .filter(post => isPostPrimaryType(post, 'experiment')) as StoryPostInput[]
+}
+
+export async function getReclassifiedBenchmarkPosts(): Promise<StoryPostInput[]> {
+  const { data } = await supabase
+    .from('posts')
+    .select('slug, title, excerpt, published, updated, cover_image, blog_id, status')
+    .eq('blog_id', 'devsnack')
+    .eq('status', 'live')
+    .order('published', { ascending: false })
+    .limit(500)
+
+  return (data || [])
+    .filter(post => isPostPrimaryType(post, 'benchmark')) as StoryPostInput[]
 }
 
 export async function getLatestPost(blogId: 'aitech' | 'stockpulse') {
