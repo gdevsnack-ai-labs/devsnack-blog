@@ -1,0 +1,502 @@
+{
+  "schema_version": 1,
+  "feed": "devsnack",
+  "generated_at": "2026-08-26T09:17:26.324083+00:00",
+  "posts": [
+    {
+      "slug": "ai-agent-model-switch-memory-debt",
+      "title": "생각보다 잘하는데, 생각보다 멍청했다",
+      "excerpt": "생각보다 잘하는데, 생각보다 멍청했다 \n --- Hermes Agent의 두뇌를 GPT로 바꾸고 알게 된 것 \n 최근 내가 사용하고 있는 Hermes Agent의 오케스트레이터 모델을 바꿨다. \n 기존에는 OpenCode.ai의 Go 서비스를 통해 DeepSeek V4 Flash를 사용하고\n있었는데, 이번에는 ChatGPT 쪽으로 옮겨 GPT-5.6 Luna를 연결했다. \n 바꾸고 나서 처음 며칠은 꽤 만족스러웠다. \n 빠르고, 코딩도",
+      "labels": [
+        "로컬 AI",
+        "AI 에이전트",
+        "DGX Spark",
+        "GPT-5.6 Luna",
+        "Hermes Agent",
+        "LLM 오케스트레이션",
+        "Memory Debt",
+        "OpenCode Go"
+      ],
+      "published": "2026-08-23T06:14:13+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1WXZb6qri965CgFW83MhPm-jRtXTC809z",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "googledrive-as-a-mediaserver",
+      "title": "AI 블로그 미디어 파이프라인 — Blogger API 제약, Google Drive 저장소, ORB 차단 우회",
+      "excerpt": "개요: 자동 발행되는 블로그 시스템 이 블로그는 AI가 콘텐츠를 만들고 크론이 자동 발행 하는 파이프라인으로 운영됩니다. 구조는 크게 두 갈래입니다: 자체 블로그 (Vercel + Supabase) — Next.js 기반. 게시글, 검색, 시리즈, SEO, 조회수까지 자체 DB로 관리 Google Blogger (Blogspot) — Google 검색 노출과 안정성 때문에 병행. API v3로 발행 발행 흐름은 단순합니다: 크론 → Python 스크립트 → Blogger API 발행 + Supabase 동시 INSERT → Verc",
+      "labels": [
+        "Architecture",
+        "Blogger API",
+        "DevSnack",
+        "Google Drive",
+        "Next.js",
+        "Pipeline",
+        "TIL",
+        "Vercel",
+        "Video"
+      ],
+      "published": "2026-08-19T08:16:23+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1cc5Uz45Ui134PzVGIecj1U1Q9GklsoFd",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "why-we-need-study-ai-gen",
+      "title": "AI 시대에도 공부가 필요한 이유",
+      "excerpt": "이 글은 이전 칼럼 「AI는 매달 똑똑해지는데, 왜 나는 그대로일까?」와 「왜 AI 강의는 이렇게 잘 팔릴까? — AI는 일을 대신해주지 않는다, 생각할 시간을 돌려줄 뿐이다」의 연장선에 있습니다.  \n \n # AI는 날마다 똑똑해지는데, 우리는 왜 그대로일까? \n — 아는 만큼만 쓸 수 있다 \n \n \n \n 눈부신 속도 \n Kimi3가 나왔다. Fable이 나왔다. GPT 5.6 Sol이 나왔다. \n AI가 발전하는 속도는 정말 눈이 부",
+      "labels": [
+        "공부",
+        "생산성",
+        "자동화",
+        "칼럼",
+        "학습",
+        "AI",
+        "DevSnack",
+        "LLM"
+      ],
+      "published": "2026-07-23T10:00:00+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/17xj_LmPKl--eK4o9wcrms5KGJ9THrYA7",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "ai-built-gomoku-engine-vs-rapfi",
+      "title": "AI가 세계 최강의 오목 엔진을 만들었다? …로그를 보기 전까지는",
+      "excerpt": "AI가 세계 최강의 오목 엔진을 만들었다? …로그를 보기 전까지는 AI에게 오목 엔진을 만들어 달라고 했다. 단 1시간 만에 780줄의 Minimax 엔진이 완성됐다. 그리고 현존 최강 오목 엔진 Rapfi와 대결을 붙였다. 결과가 너무 완벽했다. 그래서 오히려 믿을 수 없었다. 1부에서 이어집니다 지난 1부에서는 한 가지 사실을 확인했다: LLM 혼자서는 오목을 잘 두지 못한다. 보드를 텍스트로만 '독해'해야 하는 구조적 한계, Alpha-Beta나 MCTS 같은 탐색 알고리즘의 부재. 어쩌면 당연한 결과였다. 하지만 질문을 바꿔",
+      "labels": [
+        "디버깅",
+        "생성형AI",
+        "실험",
+        "알파고",
+        "오목",
+        "평가환경",
+        "AI",
+        "DevSnack AI Lab",
+        "LLM",
+        "Minimax",
+        "Rapfi"
+      ],
+      "published": "2026-07-20T01:00:00+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1duHGGFrfMlF-LVg9ST9YG7QbHEVTOAqq",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "i-read-ai-written-news",
+      "title": "나는 AI가 쓴 뉴스를 읽고 있다",
+      "excerpt": "DEVSNACK — 개발자의 시선으로 보는 AI 며칠 전 아침이었다. 습관처럼 블로그 관리 페이지를 열었다. 밤새 새로운 글이 하나 올라와 있었다. 제목은 GPT-5.6 이야기였다. AI가 단순한 도구를 넘어 스스로 계획하고 행동하는 에이전트로 진화하고 있고, 진짜 위험은 모델의 성능이 아니라 인간의 적응 속도라는 내용이었다. 생각보다 괜찮은 글이었다. 몇 문단을 읽다가 문득 이상한 기분이 들었다. 잠깐. 이 글 누가 쓴 거지? 당연히 AI였다. 내가 만든 시스템이 뉴스를 수집했고, 관련 자료를 조사했고, 내용을 정리했고, 글을 작",
+      "labels": [
+        "거버넌스",
+        "생성형AI",
+        "자동화",
+        "책임",
+        "칼럼",
+        "AI",
+        "AI뉴스",
+        "AI슬롭",
+        "DevSnack",
+        "DevSnack AI Lab",
+        "LLM"
+      ],
+      "published": "2026-07-15T10:47:03+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1COoaR4FMnsBLAvwZ3ypXR_uPLNWFONCD",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "ai-is-getting-smarter-but-am-i",
+      "title": "AI는 매달 똑똑해지는데, 왜 나는 그대로일까?",
+      "excerpt": "벤치마크 점수와 실제 생산성 사이의 괴리 AI 업계는 거의 매달 축제를 연다. 새로운 모델이 나온다. 벤치마크 점수가 오른다. 유튜브 썸네일에는 이런 문장이 붙는다. \"미쳤다.\" \"이제 인간 개발자 끝났다.\" \"역대 최고의 모델.\" 댓글도 비슷하다. \"혁명이다.\" \"이번엔 진짜다.\" 퇴근하고 집에 와서 직접 써본다. 그리고 몇 분 뒤 이런 생각이 든다. \"음... 그래서 뭐가 달라진 거지?\" 아마 많은 사람들이 한 번쯤은 느껴봤을 감정일 것이다. 분명 AI는 더 똑똑해지고 있다. 그런데 이상하게도 내 하루는 크게 달라지지 않는다.",
+      "labels": [
+        "벤치마크",
+        "생산성",
+        "생산성격차",
+        "적응",
+        "칼럼",
+        "활용",
+        "AI",
+        "DevSnack",
+        "LLM"
+      ],
+      "published": "2026-07-14T02:16:56+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1MNe832O4et9rIJ-x9XnimnNYuL56XW-2",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "ml-ai",
+      "title": "알파고의 ML과 생성형 AI는 무엇이 다른가 — 기술적 본질부터 실전 실험까지",
+      "excerpt": "# 알파고의 ML과 생성형",
+      "labels": [
+        "강화학습",
+        "생성형AI",
+        "알파고",
+        "칼럼",
+        "AI",
+        "AI칼럼",
+        "AlphaGo",
+        "DeepMind",
+        "DevSnack AI Lab",
+        "LLM",
+        "MCTS",
+        "Transformer"
+      ],
+      "published": "2026-07-14T01:42:20+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1NgVidUJpSQlrdF05QXKqv9IhS70JFT2H",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "ai-llm-omok-experiment",
+      "title": "생성형 AI는 왜 오목을 잘 두지 못할까? — 예상과 달랐던 실험 결과 - LLM Omok Experiment",
+      "excerpt": "2016년 알파고는 바둑을 정복했고, 2026년 생성형 AI는 아직 오목판 위에서 길을 잃는다 2016년 3월, 전 세계는 한 장면에 숨을 죽였다. 구글 딥마인드의 알파고(AlphaGo)가 이세돌 9단을 꺾은 그 순간, 인류는 \"AI가 인간을 넘어섰다\"는 충격과 경외를 동시에 느꼈다. 10년이 지난 2026년. 우리는 매일 AI를 손 안에서 사용한다. ChatGPT, Claude, Gemini는 글을 쓰고, 코드를 작성하고, 이미지를 생성한다. 누군가는 \"이제 AI는 인간보다 똑똑하다\"고 말한다. 솔직히 말하면, 나도 이 AI가 오",
+      "labels": [
+        "생성형AI",
+        "실험",
+        "알파고",
+        "오목",
+        "칼럼",
+        "AI",
+        "DevSnack AI Lab",
+        "LLM"
+      ],
+      "published": "2026-07-14T01:20:19+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1dT1YfERw06ipGaZxrZV4X9p3Ky4sHu6s",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "ai-is-not-a-shortcut",
+      "title": "왜 AI 강의는 이렇게 잘 팔릴까?",
+      "excerpt": "AI는 일을 대신해주지 않는다 — 생각할 시간을 돌려줄 뿐이다 AI를 다루는 콘텐츠를 보다 보",
+      "labels": [
+        "노코드",
+        "딸깍",
+        "생산성",
+        "생성형AI",
+        "칼럼",
+        "AI",
+        "AI강의",
+        "AI도구",
+        "AI자동화",
+        "DevSnack",
+        "FOMO",
+        "LLM"
+      ],
+      "published": "2026-07-10T03:46:56+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1LG9A4ZH8SqyQ6eNn0AwGC8GMHn-4b6Cw",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "when-ai-got-borders",
+      "title": "AI에도 국경이 생기기 시작했다 -  소버린 AI 시대와 오픈소스 개발자의 불안",
+      "excerpt": "오늘은 어떤 모델이 허깅페이스에 올라왔을까. 습관처럼 허깅페이스 트렌딩 페이지를 열었다. 한국어 파인튜닝 모델이 몇 개 보이고, 새로운 Qwen 변형이 올라왔다. 평소와 다를 바 없는 아침이었다. 그런데 유튜브를 보다가 눈에 띈 영상 하나. \"중국, 최첨단 AI 모델 해외 접근 제한 검토.\" [1] 허걱, 싶었다. 페이블(Fable) 사태를 아직도 생생히 기억한다. 앤스로픽의 클로드 페이블 5가 출시 3일 만에 미국 정부의 수출통제 명령을 받았다. [2] 이유가 뭐였나. \"국가안보.\" 수억 명이 쓰는 상용 AI 모델이, 정부 명령",
+      "labels": [
+        "국가안보",
+        "로컬AI",
+        "소버린AI",
+        "오픈소스",
+        "중국AI규제",
+        "페이블5",
+        "AI",
+        "DGXSpark",
+        "LLM"
+      ],
+      "published": "2026-07-08T12:10:41+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1cF8wrVAZ9rnz3lHVN5bW-rLRZbAQlCcb",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "ornith-10-35b-5-agentic-coding-9-gguf",
+      "title": "Ornith-1.0-35B: 5인 팀이 만든 Agentic Coding 모델, 9개 GGUF 전량 벤치마크",
+      "excerpt": "Ornith-1.0-35B: 5인 팀이 만든 Agentic Coding 모델, 9개 GGUF 전량 벤치마크 2026년 6월 25일, HuggingFace에 Ornith-1.0 이라는 모델이 올라왔다. DeepReinforce AI라는 곳에서 만들었는데, 팀 규모가 5명 이라고 한다. MIT 라이선스. Qwen 3.5-35B-A3B를 베이스로 RL post-training 으로 agentic coding 능력을 강화했다고 한다. 요즘 나오는 모델들 트렌드가 다 그렇지만, 이걸 보자마자 든 생각: \"DGX Spark에 한 번 올려볼까?",
+      "labels": [
+        "벤치마크",
+        "DGX Spark",
+        "GGUF",
+        "LLM",
+        "MoE",
+        "MTP",
+        "NVFP4",
+        "Ornith"
+      ],
+      "published": "2026-06-30T10:49:36+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1-3aYKzXM-JTQhzjmz00eRjWiewDfPKjN",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "hermes-agent-2-llm",
+      "title": "Hermes Agent 제2의 두뇌: 로컬 LLM 위키 지식베이스 구축기",
+      "excerpt": "⚠️ 솔직히 말하면 — AI 에이전트랑 일하다 보면 똑같은 얘기를 계속하게 된다. \"아까 그 모델 설정값이 뭐였더라?\" \"지난주에 테스트했던 그 벤치마크 결과 좀 볼 수 있어?\" \"어? 너 또 까먹었어?\" 처음 Hermes Agent를 쓰기 시작했을 때 가장 크게 실망했던 점은 기억력 이었다. 대화 세션이 끝나면 에이전트는 모든 걸 잊어버렸다. 마치 새 직원이 매일 첫 출근하는 것 같았다. \"내가 DGX Spark에서 Qwen3.6을 vLLM으로 돌린다고 말했잖아\"라고 해도, 새 세션에서는 \"아, 그게 뭐죠?\"라는 답변이 돌아왔다.",
+      "labels": [
+        "튜토리얼",
+        "AI 에이전트",
+        "AI 인프라",
+        "Hermes Agent",
+        "LLM"
+      ],
+      "published": "2026-06-30T02:34:20+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1gR6sYWe2KuOV1XY2l5tkYL1-Eg81Ll43",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "krea-2-turbo-on-dgx-spark-40-16_0675256768",
+      "title": "Krea 2 Turbo on DGX Spark: 생성 시간을 40초에서 16초로 단축한 최적화 기록",
+      "excerpt": "⚠️ 먼저 고백하자면 — 꽤 오래 헤맸다 ComfyUI에서 Krea 2가 동작은 하는데 너무 느렸다. BF16 체크포인트 하나 로딩하는 데만 수십 초, 워크플로우 실행까지 포함하면 이미지 한 장에 40초가량 소요되었다. \"Blackwell GB10에서 이게 최선일까?\"라는 의문이 들어 최적화를 시작했다. 여러 시행착오 끝에 순정 ComfyUI(v0.26.0)와 7개 노드만으로 구성한 단순한 워크플로우를 사용해 16초 대까지 단축했으며, NVFP4(4-bit 부동소수점) 양자화 모델도 정상 동작함을 확인했다. 이 글은 그 과정을 기록",
+      "labels": [
+        "이미지 생성",
+        "최적화",
+        "ComfyUI",
+        "DGX Spark",
+        "Krea 2",
+        "NVFP4"
+      ],
+      "published": "2026-06-30T01:51:55+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/19cULACdCyix5YrwU7IrawtWrwP4XBqgi",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "dgx-spark-gb10-north-mini-code-10-gguf-9_01353512936",
+      "title": "DGX Spark GB10에서 North Mini Code 1.0 GGUF 벤치마크: 9개 양자화 완전 비교",
+      "excerpt": "NVIDIA DGX Spark GB10에서 North Mini Code 1.0 GGUF 벤치마크: 9개 양자화 완전 비교 CohereLabs 기반 MoE 모델, DGX Spark GB10에서 어떤 양자화가 가장 잘 돌아갈까? 9개 GGUF 양자화의 실제 측정 데이터로 분석했다. ▲ North Code CohereLabs에서 North-Mini-Code-1.0 이라는 새로운 코딩 특화 MoE 모델이 나왔다. Unsloth가 16개 샤드로 구성된 safetensors를 9종류의 GGUF 양자화로 변환해 공개했다. DGX Spark GB",
+      "labels": [
+        "벤치마크",
+        "DGX Spark",
+        "GGUF",
+        "LLM"
+      ],
+      "published": "2026-06-14T10:35:23+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1fwfwpP71OGuZ3n0SVM3g43n3xZRr1gXx",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "chatgpt-gemini-meshllm",
+      "title": "ChatGPT와 Gemini는 왜 서로 다른 답을 했을까? - MeshLLM 심화편",
+      "excerpt": "MeshLLM 심화편 ChatGPT와 Gemini는 왜 서로 다른 답을 했을까? 2026년 6월 15일 · MeshLLM 탐구기 Part 2 · 6분 읽기 몇 주 전, 허깅페이스에서 이상한 GGUF 파일 구조를 발견했다. 레이어 단위로 쪼개진 수백 GB의 모델 파일들. 처음엔 \"아, 분할 다운로드용이겠지\"라고 생각했다. 그런데 궁금해서 ChatGPT와 Gemini에게 각각 물어봤다. 두 AI가 내놓은 해석이 비슷하면서도 달랐다 . 그리고 그 차이가 바로 MeshLLM의 본질을 파헤치는 열쇠가 되었다. ▲ Chatgpt Vs Gemi",
+      "labels": [
+        "분산 추론",
+        "AI 인프라",
+        "LLM",
+        "MeshLLM"
+      ],
+      "published": "2026-06-13T06:19:32+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1jlP4MLywUSYA7JhPq1CIEYRQ5-ZTIkd1",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "ai-pc_01257715332",
+      "title": "초거대 AI 모델의 미래? 레이어를 쪼개서 여러 PC에 나눠 돌리는 기술",
+      "excerpt": "AI Infrastructure 초거대 AI 모델의 미래? 레이어를 쪼개서 여러 PC에 나눠 돌리는 기술 2026년 6월 13일 · MeshLLM · 5분 읽기 허깅페이스를 탐사하다 우연히 발견한 이상한 파일 구조 하나가, 생각보다 깊은 기술 세계로 나를 이끌었다. MiniMax M3 모델을 살펴보던 중, 평소 보던 GGUF 파일과 완전히 다른 형태를 목격했다. 일반 GGUF model.gguf (전체 1개 파일) model-q4.gguf model-q8.gguf MeshLLM 레이어 패키지 shared/embeddings.gguf",
+      "labels": [
+        "분산 추론",
+        "AI 인프라",
+        "LLM",
+        "MeshLLM"
+      ],
+      "published": "2026-06-13T05:52:11+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1gFN3bQ2Fb9iNFUk8zMBIlhHqlDE0hwDu",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "nex-n2-mini-ud-bartowski",
+      "title": "Nex-N2-mini UD 버전 벤치마크: bartowski와 비교했을 때 어떤가요?",
+      "excerpt": "Nex-N2-mini UD 버전 벤치마크: bartowski와 비교했을 때 어떤가요? Nex AGI의 Nex-N2-mini 모델이 bartowski 컨버전 버전으로 널리 쓰이고 있는데, 최근 s Jakek 이 UD (Ultra-Dense) 컨벤션으로 새로 컨버전한 버전이 Hugging Face( sjakek/Nex-N2-mini-GGUF )에 올라왔습니다. 같은 모델이지만 양자화 컨벤션과 메타데이터 구조가 달라 실제 성능과 메모리 사용량에서 차이가 날 수 있습니다. 🧪 ▲ Ud Comparison 직접 비교해보고 느낀 점 사실 이",
+      "labels": [
+        "벤치마크",
+        "DGX Spark",
+        "GGUF",
+        "LLM"
+      ],
+      "published": "2026-06-12T15:56:54+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/12D4Qa98cxOsVH3TSMKuLW-sXADvzjEup",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "nvidia-dgx-spark-gb10-nex-n2-mini-gguf-6",
+      "title": "NVIDIA DGX Spark GB10에서 Nex-N2-mini GGUF 벤치마크: 6개 양자화 완전 비교",
+      "excerpt": "NVIDIA DGX Spark GB10에서 Nex-N2-mini GGUF 벤치마크: 6개 양자화 완전 비교 Nex AGI의 새로운 Agentic 모델, DGX Spark GB10에서 어떤 양자화가 가장 잘 돌아갈까? 6개 GGUF 양자화의 실제 측정 데이터로 분석했다. Nex AGI에서 Nex-N2-mini 라는 새로운 GGUF 모델 패밀리가 나왔다. Qwen3.5-35B-A3B-Base를 기반으로 MoE 구조에 \"Agentic Thinking\" 프레임워크를 붙인 에이전트 특화 모델이다. Bartowski가 16개 샤드로 구성된 s",
+      "labels": [
+        "벤치마크",
+        "DGX Spark",
+        "GGUF",
+        "LLM"
+      ],
+      "published": "2026-06-12T07:52:10+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1a7RJ9VQJzLw6smc5S9PW13AOvYTsY-vR",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "nvidia-dgx-spark-gb10-gguf-4",
+      "title": "NVIDIA DGX Spark GB10에서 GGUF 모델 벤치마크: 4개 모델 완전 비교",
+      "excerpt": "NVIDIA DGX Spark GB10에서 GGUF 모델 벤치마크: 4개 모델 완전 비교 DGX Spark GB10에서 어떤 로컬 LLM을, 어떤 옵션으로 돌려야 할까? 4개 모델, 224개 조합의 실제 측정 데이터로 분석했다. 새로운 GGUF 모델이 나와서 DGX Spark GB10에서 성능을 측정해봤다. 자동화 프로그램(llama-bench, build 9533, commit c4a278d68)으로 스레드, 배치 크기, KV 캐시 등 여러 조합을 바꿔가며 총 224개 를 테스트했다. Gemma 4, LFM 2.5, 그리고 커뮤니",
+      "labels": [
+        "벤치마크",
+        "DGX Spark",
+        "GGUF",
+        "LLM"
+      ],
+      "published": "2026-06-10T05:54:28+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1BXQ4RPbdkb8PhwH0pbxpeOlv0MM2-FrX",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "html5-poop-dodge-game",
+      "title": "HTML5로 만든 똥피하기 게임 - 웹오디오, SVG 스프라이트, 반응형 완벽 구현",
+      "excerpt": "HTML5 똥피하기 게임 - Canvas + Web Audio + SVG 스프라이트 | AI Game Dev Blog HTML5로 만든 똥피하기 게임 웹 기술로 추억을 되살리다 Canvas + Web Audio + SVG 스프라이트 풀스택 구현기 📅 2026.06.08 👨‍💻 AI Game Developer HTML5 Canvas Web Audio SVG 게임개발 🎮 지금 바로 플레이! ← → 방향키 또는 화면 터치로 이동 | 똥을 피해 오래 살아남으세요! 게임 로딩 중... 🔄 다시 시작 들어가며 어릴 적 즐기던 똥피하기 게임을",
+      "labels": [
+        "게임 개발",
+        "HTML5",
+        "JavaScript"
+      ],
+      "published": "2026-06-07T23:40:25+00:00",
+      "cover_image": null,
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "ai-vampire-survivor-like-demo",
+      "title": "AI 활용한 뱀파이어 서바이버 라이크 데모 (Vampire Survivor like demo)",
+      "excerpt": "<meta name=\"viewport\" content=\"wi",
+      "labels": [
+        "게임 개발",
+        "AI 코딩",
+        "HTML5",
+        "JavaScript"
+      ],
+      "published": "2026-05-29T14:08:51+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/11FHl7P-23WjfqBfAy0iAHtpi7np8X_iF",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "gemma-4-mtp-drafter-dgx-spark-3-31b",
+      "title": "Gemma 4 MTP Drafter 실전 적용기 — DGX Spark에서 3배 빨라진 31B",
+      "excerpt": "핵심 결과 모델 프레임워크 Baseline + MTP γ=4 속도 향상 Gemma 4 26B-A4B (FP8) vLLM 37.3 tok/s 62.9 tok/s 1.69x Gemma 4 31B Dense (NVFP4) vLLM 6.5 tok/s 18.8 tok/s 2.89x Gemma 4 26B-A4B (Q8_0) llama.cpp 45.4 tok/s (MTP 미지원) — Gemma 4 31B Dense (Q6_K_XL) llama.cpp 6.8 tok/s (MTP 미지원) — Gemma 4 31B Dense (NVFP4-turbo)",
+      "labels": [
+        "벤치마크",
+        "추론 가속",
+        "DGX Spark",
+        "Gemma",
+        "LLM"
+      ],
+      "published": "2026-05-06T09:02:00+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1ogBlG4GOWDK9dNurKC1t0JH0MN9Tc081",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "2-hermes-agent-24",
+      "title": "2부: Hermes Agent, 24시간 개인 비서로 쓰며 느낀 것들",
+      "excerpt": "들어가며 1부 에서는 OpenClaw의 한계와 Hermes Agent로 전환한 배경을 다뤘다. 이번 2부에서는 Hermes의 핵심 기능인 자기 학습 루프가 실제로 어떻게 작동하는지, DGX Spark에서의 설정 과정, 그리고 개인 24시간 비서로 사용하면서 느낀 실질적인 장단점을 정리한다. Hermes의 핵심: 자기 학습 루프(Self-Learning Loop) 대부분의 AI 에이전트 프레임워크는 \"작업 수신 → 계획 → 실행 → 결과 반환\"의 고정된 루프를 따른다. 세션이 끝나면 아무것도 남지 않는다. 같은 유형의 작업을 100번",
+      "labels": [
+        "튜토리얼",
+        "AI 에이전트",
+        "Hermes Agent"
+      ],
+      "published": "2026-04-30T14:35:00+00:00",
+      "cover_image": null,
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "dgx-spark-gb10-2026-4",
+      "title": "DGX Spark GB10에서 돌릴 수 있는 최적화 모델 총정리 (2026년 4월 기준)",
+      "excerpt": "NVIDIA DGX Spark를 손에 넣었는데, 어떤 모델을 올려야 할지 막막하셨나요? 허깅페이스에 올라온 GB10 최적화 모델들을 샅샅이 뒤져서 정리했습니다. 📑 목차 DGX Spark, 왜 특별한가 NVIDIA 공식 모델: 기본기부터 탄탄하게 커뮤니티 NVFP4 모델: 진짜 재미는 여기서 Uncensored / Abliterated 변종들 vLLM 인프라: SM12.1의 함정과 해결 인기도 순위 용도별 추천 정리 다음 글 예고 DGX Spark, 왜 특별한가 NVIDIA DGX Spark는 Grace Blackwell GB10",
+      "labels": [
+        "AI 모델",
+        "DGX Spark",
+        "LLM",
+        "NVFP4"
+      ],
+      "published": "2026-04-27T23:30:00+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/13gGjFApkEoBBFXqImBuriLagmFtI94ey",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "1-openclaw-hermes-agent",
+      "title": "1부: OpenClaw에서 Hermes Agent로 — 왜 갈아탔는가",
+      "excerpt": "들어가며 NVIDIA DGX GB10(DGX Spark)에서 24시간 돌아가는 개인 AI 비서를 만들겠다는 목표로 OpenClaw를 약 한 달간 사용했다. GitHub 스타 34만 개, ClawHub 마켓플레이스의 13,000개 이상의 커뮤니티 스킬, 24개 메시징 플랫폼 지원. 스펙만 보면 완벽했다. 그런데 실제로 매일 쓰다 보니 이야기가 달라졌다. 결론부터 말하면, 지금은 Nous Research의 Hermes Agent 로 완전히 갈아탔고, 훨씬 만족하고 있다. 이 글에서는 OpenClaw를 떠난 이유와 Hermes를 선택하게",
+      "labels": [
+        "튜토리얼",
+        "AI 에이전트",
+        "Hermes Agent"
+      ],
+      "published": "2026-04-27T01:00:00+00:00",
+      "cover_image": null,
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "dgx-spark-qwen36-llamacpp-vllm-dflash",
+      "title": "DGX Spark 실전기: Qwen3.6을 llama.cpp에서 vLLM + DFlash로 갈아타기",
+      "excerpt": "TL;DR — llama.cpp로 Qwen3.6을 잘 쓰고 있었는데, vLLM + NVFP4 + DFlash 조합이 정말 2배 빠를까? DGX Spark에서 직접 설치하고, 삽질하고, 측정했습니다. 결론부터 말하면 — 빠릅니다. 88~104 tok/s. 📑 목차 발단: 숫자가 너무 좋아서 의심스러웠다 현재 환경: llama.cpp 기준선 vLLM + NVFP4 + DFlash 설치: 실전 과정 첫 번째 삽질: 오토튜닝으로 시스템 마비 안정적인 설정: 실사용을 위한 docker-compose.yml 핵심 트릭: 모델 이름으로 Thin",
+      "labels": [
+        "최적화",
+        "추론 가속",
+        "DGX Spark",
+        "LLM",
+        "vLLM"
+      ],
+      "published": "2026-04-26T23:00:00+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1Ue-cDbUVrvZuvtvfghDPXeTYZ_WG9YNj",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "comfyui",
+      "title": "ComfyUI 모델 심볼릭 링크 설정 가이드",
+      "excerpt": "※ 이 글은 설명을 돕기 위한 실제 터미널 출력 화면과 설정 파일 예시를 포함하고 있습니다. 곧 스크린샷도 추가할 예정입니다. 개요 ComfyUI에서 사용하는 모델 파일(checkpoint, LoRA, VAE 등)은 용량이 매우 큽니다. 모델을 한 곳에 모아두고 심볼릭 링크(Symbolic Link)로 연결하면 디스크 공간을 절약하면서 여러 환경에서 동일한 모델을 공유할 수 있습니다. 이 글에서는 /srv/ai/models 에 보관된 모델 파일들을 /home/user/ComfyUI/models 로 심볼릭 링크하는 ▲ Comfyui",
+      "labels": [
+        "이미지 생성",
+        "튜토리얼",
+        "ComfyUI"
+      ],
+      "published": "2026-04-26T00:30:00+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1lEZdrZoeqi4uzgagDZ-VLGni0vuDfTbI",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "google-oauth2-clientsecretjson",
+      "title": "Google OAuth2 client_secret.json 만들기",
+      "excerpt": "※ 이 글은 설명을 돕기 위한 실제 터미널 출력 화면과 설정 파일 예시를 포함하고 있습니다. 곧 스크린샷도 추가할 예정입니다. 개요 💡 왜 이 글이 필요했는가 사실 이 글을 쓰게 된 계기는 생각보다 단순하다. YouTube 자동화 파이프라인을 만들면서 Blogger API, YouTube Data API, Google Drive API를 연달아 붙여야 했는데, 매번 OAuth 설정할 때마다 \"어디서 클라이언트 ID를 만들었더라?\" 하고 헤매는 내 자신이 너무 답답했다. 특히 OAuth 동의 화면 설정에서 테스트 사용자를 등록하지 않",
+      "labels": [
+        "개발 도구",
+        "튜토리얼",
+        "OAuth"
+      ],
+      "published": "2026-04-25T14:32:00+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1aRQWrgRxQQtOJCBcZXHM1OpBfwqPjqJV",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
+    {
+      "slug": "hermes-agent-searxng-dgx-gb10-tailscale",
+      "title": "Hermes Agent 웹 검색이 차단될 때 — SearXNG로 무료 무제한 검색 붙이기 (DGX GB10 + Tailscale Funnel)",
+      "excerpt": "왜 Hermes Agent 웹 검색이 막히는가 ⚠️ 실제로 겪었던 이야기 며칠 전까지만 해도 Hermes Agent가 웹 검색을 하다가 \"검색 결과를 가져올 수 없습니다\"라는 메시지만 반복해서 뱉어내는 바람에 거의 3시간을 허비했다. Firecrawl의 무료 티어는 하루 500회로 금방 바닥나고, Tavily도 유료 전환을 요구했다. \"에이전트한테 검색 한 번 시키는데 결제까지 해야 하나?\" 싶어서 직접 해결하기로 마음먹었다. Reddit r/hermesagent에서 SearXNG 이야기를 보고 \"이거다!\" 싶었다. 직접 설치해보니",
+      "labels": [
+        "튜토리얼",
+        "AI 에이전트",
+        "Hermes Agent"
+      ],
+      "published": "2026-04-25T11:59:00+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1NNcwtKaxPnm091JNiaT1UM7YbeeYhM2H",
+      "blog_id": "devsnack",
+      "status": "live"
+    }
+  ]
+}
