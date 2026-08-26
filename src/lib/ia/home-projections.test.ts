@@ -65,6 +65,8 @@ const unknownDataServices = projectHomeDataServices({
   stockPulse: null,
 
 })
+expectEqual(unknownDataServices.length, 1, 'Home should keep only currently live services after AI Tech archive')
+expectEqual(unknownDataServices[0].title, 'StockPulse', 'Home should remove archived AI Tech from Data strip')
 expectTrue(unknownDataServices.every(service => service.status === undefined && service.updated === undefined), 'unknown Home freshness must be omitted instead of rendered as an error-like message')
 
 console.log(`home projection tests passed: featured=${projection.featured.length}, labItems=${projection.labItems.length}, knowledge=${projection.knowledge.length}, data=${projection.dataServices.length}, stories=${projection.stories.length}`)

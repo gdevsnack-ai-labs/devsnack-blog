@@ -136,26 +136,26 @@ function toKnowledgeProjection(post: KnowledgeProjection): HomeFeaturedItem {
 }
 
 export function projectHomeDataServices(snapshot: DataHubSnapshot): HomeDataService[] {
-  return [
-    {
+  const services: HomeDataService[] = []
+  if (snapshot.aiTech) {
+    services.push({
       title: 'AI Tech',
       type: 'Feed',
       href: '/aitech',
       description: 'Automated AI news feed',
-      status: snapshot.aiTech?.title,
-      updated: formatDate(snapshot.aiTech?.updated || snapshot.aiTech?.published),
-    },
-    {
-      title: 'StockPulse',
-      type: 'Feed',
-      href: '/stock',
-      description: 'Automated market analysis',
-      status: snapshot.stockPulse?.title,
-      updated: formatDate(snapshot.stockPulse?.updated || snapshot.stockPulse?.published),
-    },
-
-
-  ]
+      status: snapshot.aiTech.title,
+      updated: formatDate(snapshot.aiTech.updated || snapshot.aiTech.published),
+    })
+  }
+  services.push({
+    title: 'StockPulse',
+    type: 'Feed',
+    href: '/stock',
+    description: 'Automated market analysis',
+    status: snapshot.stockPulse?.title,
+    updated: formatDate(snapshot.stockPulse?.updated || snapshot.stockPulse?.published),
+  })
+  return services
 }
 
 export function createHomeProjection({

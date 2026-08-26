@@ -77,7 +77,7 @@ def fetch_posts(feed: str) -> list[dict[str, Any]]:
     )
     with urlopen(request, timeout=30) as response:
         rows = json.loads(response.read())
-    if not isinstance(rows, list) or not rows:
+    if not isinstance(rows, list) or (not rows and feed != "aitech"):
         raise RuntimeError(f"Refusing to write an empty {feed} snapshot")
     return rows
 

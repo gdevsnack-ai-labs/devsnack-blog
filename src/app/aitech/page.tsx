@@ -3,7 +3,7 @@ import { StaticFeedPage } from '@/components/static-feed-page'
 
 export const metadata = buildRouteMetadata({
   title: 'AI Tech — DevSnack',
-  description: '자동 수집·정리되는 AI 기술과 산업 동향 Feed',
+  description: 'AI Tech v1 자동 발행 실험의 기록과 현재 source·evidence pipeline 재정비 상태를 안내합니다.',
   canonicalPath: '/aitech',
 })
 

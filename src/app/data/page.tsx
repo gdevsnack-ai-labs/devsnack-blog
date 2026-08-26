@@ -10,7 +10,7 @@ export const revalidate = 60
 
 export const metadata = buildRouteMetadata({
   title: 'Data — DevSnack',
-  description: 'AI Tech·StockPulse 피드를 한 곳에서 확인하는 DevSnack Data Hub',
+  description: 'StockPulse처럼 현재 운영 중인 자동 갱신 정보를 한 곳에서 확인하는 DevSnack Data Hub',
   canonicalPath: '/data',
 })
 
@@ -34,25 +34,25 @@ export default async function DataPage() {
         />
 
         <section className="mt-8 grid gap-3 sm:grid-cols-3" aria-label="Data principles">
-          <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Radio className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Feeds</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">계속 발행되는 AI Tech와 시장 분석 정보</p></div>
+          <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Radio className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Feeds</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">현재 운영 중인 StockPulse 시장 분석 정보</p></div>
           <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Database className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Project → Assets</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">StockPulse처럼 하나의 Project가 Feed·Dataset·Experiment를 함께 만듭니다.</p></div>
         </section>
 
         <section className="mt-10" aria-labelledby="data-feeds-heading">
           <div className="mb-4"><h2 id="data-feeds-heading" className="text-xl font-bold">Feeds</h2><p className="mt-1 text-sm text-muted-foreground">자동 수집·정리·발행되는 정보</p></div>
           <div className="grid gap-4 lg:grid-cols-2">
-            <DataServiceCard
+            {snapshot.aiTech && <DataServiceCard
               title="AI Tech"
               type="Feed"
-              description="검색·RSS 자료를 수집하고 AI가 정리해 발행하는 AI 기술 뉴스 Feed입니다. 사람이 쓴 DevSnack Story와는 생성 주체와 소비 목적이 다릅니다."
-              updateDescription="SearXNG/RSS 수집 → AI 정리 → 자동 발행"
-              lastUpdated={formatDate(snapshot.aiTech?.updated || snapshot.aiTech?.published)}
-              latestTitle={snapshot.aiTech?.title}
+              description="검색·RSS 자료를 수집하고 AI가 정리해 발행하는 AI 기술 뉴스 Feed입니다. 현재 v1 자동 발행 실험은 중지하고 source·evidence 수집 파이프라인을 재정비하고 있습니다."
+              updateDescription="v1 archive · v2 source/evidence pipeline 준비 중"
+              lastUpdated={formatDate(snapshot.aiTech.updated || snapshot.aiTech.published)}
+              latestTitle={snapshot.aiTech.title}
               href="/aitech"
-              provenance="Automated AI news feed"
+              provenance="Archived v1 experiment"
               relatedHref="/labs/blog"
               relatedLabel="AI Tech Automation System"
-            />
+            />}
             <DataServiceCard
               title="StockPulse"
               type="Feed"

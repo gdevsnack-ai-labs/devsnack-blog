@@ -9,8 +9,8 @@ import { BlogHeader } from '@/components/blog-header'
 import { BlogSidebar } from '@/components/blog-sidebar'
 import { Pagination } from '@/components/pagination'
 import { isPostPrimaryType } from '@/lib/ia'
-import aitechSnapshot from '@/data/aitech-snapshot.json'
 import devsnackSnapshot from '@/data/devsnack-snapshot.json'
+import { AitechV1ArchivePage } from '@/components/aitech-v1-archive-page'
 
 type FeedKind = 'aitech' | 'devsnack'
 type FeedPost = {
@@ -26,7 +26,6 @@ type FeedPost = {
 type SidebarPost = Pick<FeedPost, 'slug' | 'title' | 'labels' | 'published'>
 
 const PAGE_SIZE = 24
-const AITECH_POSTS = aitechSnapshot.posts as FeedPost[]
 const DEVSNACK_POSTS = devsnackSnapshot.posts as FeedPost[]
 
 function getPage(value: string | null) {
@@ -42,8 +41,8 @@ function getMonthRange(month?: string) {
   return { start: `${month}-01`, end: `${next}-01` }
 }
 
-function sourcePosts(kind: FeedKind) {
-  return kind === 'aitech' ? AITECH_POSTS : DEVSNACK_POSTS
+function sourcePosts(kind: FeedKind): FeedPost[] {
+  return kind === 'devsnack' ? DEVSNACK_POSTS : []
 }
 
 function asStoryPost(post: FeedPost) {
@@ -74,7 +73,7 @@ function getPosts(kind: FeedKind, page: number, tag?: string, month?: string) {
 
 function getSidebarPosts(kind: FeedKind): SidebarPost[] {
   const posts = sourcePosts(kind)
-  return (kind === 'devsnack' ? posts.filter(post => isPostPrimaryType(asStoryPost(post), 'story')) : posts) as SidebarPost[]
+  return (kind === 'devsnack' ? posts.filter(post => isPostPrimaryType(asStoryPost(post), 'story')) : []) as SidebarPost[]
 }
 
 function FeedPageView({ kind, page, tag, month }: { kind: FeedKind; page: number; tag?: string; month?: string }) {
@@ -176,6 +175,8 @@ function FeedPageQueryView({ kind }: { kind: FeedKind }) {
 }
 
 export function StaticFeedPage({ kind }: { kind: FeedKind }) {
+  if (kind === 'aitech') return <AitechV1ArchivePage />
+
   return (
     <Suspense fallback={<FeedPageView kind={kind} page={1} />}>
       <FeedPageQueryView kind={kind} />
