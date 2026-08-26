@@ -407,3 +407,38 @@
 .dark .prose-devsnack hr {
   @apply border-gray-700;
 }
+
+/* Inline Blogger/StockPulse table styles must not override dark mode. */
+.dark .prose-devsnack table,
+.dark .prose-devsnack tr {
+  background: transparent !important;
+}
+
+.dark .prose-devsnack th,
+.dark .prose-devsnack td {
+  border-color: rgb(55 65 81) !important;
+}
+
+.dark .prose-devsnack th {
+  background-color: rgb(31 41 55) !important;
+  color: rgb(229 231 235) !important;
+}
+
+.dark .prose-devsnack td {
+  background-color: transparent !important;
+  color: rgb(229 231 235) !important;
+}
+
+/* Keep semantic callout colors after the generic inline-style reset. */
+.dark .prose-devsnack .devsnack-update-note,
+.dark .prose-devsnack .devsnack-update-note p,
+.dark .prose-devsnack .devsnack-update-note strong {
+  color: rgb(254 243 199) !important;
+}
+
+.dark .prose-devsnack .devsnack-showcase-callout,
+.dark .prose-devsnack .devsnack-showcase-callout p,
+.dark .prose-devsnack .devsnack-showcase-callout strong {
+  color: rgb(219 234 254) !important;
+}
+
