@@ -3,6 +3,30 @@
 import { TrendingUp, TrendingDown, Minus, AlertCircle, CheckCircle2, HelpCircle, BarChart3, Target } from 'lucide-react'
 import stockpulseSnapshot from '@/data/stockpulse-snapshot.json'
 
+type Prediction = {
+  session: string
+  date: string
+  direction: string
+  kospi_target: string
+  prediction_raw: string
+  actual_kospi_close: number | null
+  actual_direction: string | null
+  accuracy_score: number | null
+  is_correct: boolean | null
+}
+
+type PredictionMetric = Pick<Prediction, 'accuracy_score' | 'is_correct'>
+
+type StockPulsePredictions = {
+  latest: Prediction | null
+  recent7: PredictionMetric[]
+  mlRecent7: PredictionMetric[]
+  allMorning: PredictionMetric[]
+  allMl: PredictionMetric[]
+}
+
+const predictions = stockpulseSnapshot.predictions as unknown as StockPulsePredictions
+
 function DirectionIcon({ direction, size = 16 }: { direction: string; size?: number }) {
   if (direction === '상승') return <TrendingUp size={size} className="text-red-500" />
   if (direction === '하락') return <TrendingDown size={size} className="text-blue-500" />
@@ -40,7 +64,7 @@ function StatusBadge({ is_correct }: { is_correct: boolean | null }) {
 
 export function StockPulsePredictionWidget() {
   // This snapshot is refreshed by the morning/evening publisher.
-  const { latest, recent7, mlRecent7, allMorning, allMl } = stockpulseSnapshot.predictions
+  const { latest, recent7, mlRecent7, allMorning, allMl } = predictions
 
   // 아무 데이터도 없으면 렌더링 안 함
   if ((!recent7 || recent7.length === 0) && (!latest || !latest.is_correct) && (!mlRecent7 || mlRecent7.length === 0)) {
