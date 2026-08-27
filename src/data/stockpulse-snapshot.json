@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-27T00:01:50.772449+00:00",
+  "generated_at": "2026-08-27T00:03:53.728478+00:00",
   "posts": [
     {
       "slug": "2026-08-27",
@@ -788,8 +788,8 @@
       "session": "morning",
       "date": "2026-08-27",
       "direction": "보합",
-      "kospi_target": "정보 부족",
-      "prediction_raw": "제공된 텍스트는 웹 검색 도구 호출 제한으로 인한 기술적 오류를 설명하고 있을 뿐, 주식 시장 예측이나 코스피 지수 목표에 대한 내용이 포함되어 있지 않습니다. 따라서 morning prediction을 추출할 수 없습니다.",
+      "kospi_target": "6,750~6,900",
+      "prediction_raw": "전일 코스피 반등과 코스닥 보합이 엇갈린 가운데, 오늘은 보합권 출발 후 업종별 차별화를 예상합니다. 코스피 6,800선 지지와 외국인 수급, 반도체 대형주 동반 여부를 핵심 기준으로 확인합니다.",
       "actual_kospi_close": null,
       "actual_direction": null,
       "accuracy_score": null,
