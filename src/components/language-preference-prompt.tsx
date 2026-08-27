@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { EN_PILOT_SOURCE_PATHS } from '@/lib/i18n/english-pilot'
+import { getLanguageRoute } from '@/lib/i18n/english-pilot'
 
 export function rememberLanguagePreference(locale: 'ko' | 'en') {
   document.cookie = `devsnack-language=${locale}; Max-Age=31536000; Path=/; SameSite=Lax`
@@ -16,16 +16,34 @@ export function LanguagePreferencePrompt() {
   const [englishHref, setEnglishHref] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!EN_PILOT_SOURCE_PATHS.includes(pathname)) return
-    const saved = window.localStorage.getItem('devsnack-language-preference')
-    if (saved) return
-    const browserLanguage = window.navigator.language.toLowerCase()
-    if (browserLanguage.startsWith('ko')) {
-      rememberLanguagePreference('ko')
-      return
-    }
-    setEnglishHref(`/en${pathname}`)
-    setVisible(true)
+    const timer = window.setTimeout(() => {
+      const route = getLanguageRoute(pathname)
+      if (!route || route.koreanPath !== pathname) {
+        setVisible(false)
+        setEnglishHref(null)
+        return
+      }
+
+      const saved = window.localStorage.getItem('devsnack-language-preference')
+      const cookie = document.cookie.match(/(?:^|; )devsnack-language=([^;]+)/)?.[1]
+      if (saved === 'ko' || saved === 'en' || cookie === 'ko' || cookie === 'en') {
+        setVisible(false)
+        setEnglishHref(null)
+        return
+      }
+
+      const browserLanguage = window.navigator.language.toLowerCase()
+      if (browserLanguage.startsWith('ko')) {
+        rememberLanguagePreference('ko')
+        setVisible(false)
+        setEnglishHref(null)
+        return
+      }
+
+      setEnglishHref(route.englishPath)
+      setVisible(true)
+    }, 0)
+    return () => window.clearTimeout(timer)
   }, [pathname])
 
   if (!visible || !englishHref) return null

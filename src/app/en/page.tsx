@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { ArrowUpRight, FlaskConical, Languages, Search } from 'lucide-react'
-import { LanguageSwitch } from '@/components/language-switch'
-import { EN_NAVIGATION, EN_PROJECT_PROJECTIONS, EN_STATIC_LOCALE_METADATA } from '@/lib/i18n/english-pilot'
+import { EN_STATIC_LOCALE_METADATA } from '@/lib/i18n/english-pilot'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
 
 export const metadata = {
@@ -35,7 +34,6 @@ export default function EnglishHomePage() {
             <h1 className="mt-4 text-3xl font-bold tracking-tight md:text-5xl">DevSnack in English</h1>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">A small, deliberate English content pilot. These pages preserve the technical meaning, measurements, protocols, code, and source links of their Korean originals.</p>
           </div>
-          <LanguageSwitch englishHref="/en" koreanHref="/" />
         </header>
 
         <section className="mt-8 grid gap-3 sm:grid-cols-3" aria-label="Pilot principles">

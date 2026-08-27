@@ -1,7 +1,6 @@
 import Link from 'next/link'
-import { ArrowUpRight, Gauge, Languages } from 'lucide-react'
+import { ArrowUpRight, Gauge } from 'lucide-react'
 import { notFound } from 'next/navigation'
-import { LanguageSwitch } from '@/components/language-switch'
 import { EN_BENCHMARK_OVERVIEW } from '@/lib/i18n/english-pilot'
 import { getEnglishPost } from '@/lib/translation'
 import { buildRouteMetadata, absoluteSiteUrl } from '@/lib/seo/metadata'
@@ -45,7 +44,6 @@ export default async function EnglishBenchmarksPage() {
       <div className="mx-auto max-w-5xl px-4 py-8 md:py-12">
         <header className="flex flex-col gap-5 border-b border-border pb-8 md:flex-row md:items-start md:justify-between">
           <div><Link href="/en" className="text-sm text-muted-foreground no-underline hover:text-foreground">DevSnack English Pilot</Link><div className="mt-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400"><Gauge className="h-4 w-4" /> {EN_BENCHMARK_OVERVIEW.eyebrow}</div><h1 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">{EN_BENCHMARK_OVERVIEW.title}</h1><p className="mt-4 max-w-3xl text-base leading-relaxed text-muted-foreground">{EN_BENCHMARK_OVERVIEW.description}</p></div>
-          <LanguageSwitch englishHref="/en/benchmarks" koreanHref="/benchmarks" />
         </header>
 
         <main className="mt-8 space-y-8">

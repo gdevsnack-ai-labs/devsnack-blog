@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Calendar, Clock, ExternalLink } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
-import { EnglishSourceSwitch } from '@/components/english-source-switch'
 import { getPublishedEnglishTranslation } from '@/lib/translation'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
@@ -119,7 +118,6 @@ export default async function ResearchPostPage({ params }: { params: Promise<{ i
           <ArrowLeft className="w-4 h-4" />
           Knowledge 목록으로
         </Link>
-        <div className="mb-5"><EnglishSourceSwitch postId={post.id} englishHref={`/en/research/${post.slug}`} koreanHref={`/research/${post.slug}`} /></div>
 
         <article className="content-article min-w-0">
           <h1 className="text-2xl md:text-3xl font-bold leading-tight mb-4">{post.title}</h1>

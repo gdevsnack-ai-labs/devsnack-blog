@@ -10,7 +10,6 @@ import { getRelatedAssets } from '@/lib/ia/hub-projections'
 import { getProjectFeedOutputs } from '@/lib/ia/feed-output-projection'
 import { ProjectFeedOutputs } from '@/components/project-feed-outputs'
 import { RelatedAssets } from '@/components/related-assets'
-import { LanguageSwitch } from '@/components/language-switch'
 import { buildRouteMetadata, absoluteSiteUrl } from '@/lib/seo/metadata'
 import { buildBreadcrumbJsonLd, buildCollectionPageJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 
@@ -106,7 +105,6 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
           <ArrowLeft className="h-4 w-4" />
           Labs 대시보드
         </Link>
-        {id === 'stockpulse-ai-self-improvement' && <div className="mt-3"><LanguageSwitch englishHref={`/en/labs/${id}`} koreanHref={`/labs/${id}`} /></div>}
 
         <header className="mt-8 border-b border-border pb-8">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">

@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { House, FileText, FlaskConical, Telescope, Wrench, Server, Info, Play, Search, Link as LinkIcon, Rss, ChevronUp, Sun, Moon } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { MOBILE_NAV_GROUPS, SINGLE_NAV_ITEMS, type IconKey, type NavGroup } from '@/config/site-catalog'
+import { getEnglishNavigationPath, getLanguageRoute } from '@/lib/i18n/english-pilot'
 import { trackSiteEvent } from '@/lib/analytics'
 
 const ICONS: Record<IconKey, LucideIcon> = {
@@ -27,6 +28,8 @@ export function MobileTabBar() {
   const [openMenu, setOpenMenu] = useState<string | null>(null)
   const [dark, setDark] = useState(false)
   const home = SINGLE_NAV_ITEMS[0]
+  const isEnglish = pathname === '/en' || pathname.startsWith('/en/')
+  const localizedHref = (href: string): string => isEnglish ? getEnglishNavigationPath(href) : href
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -52,7 +55,14 @@ export function MobileTabBar() {
 
   const isActive = (href: string, activeHrefs: string[] = []): boolean => {
     const prefixes = [href, ...activeHrefs]
-    return prefixes.some(prefix => prefix === '/' ? pathname === '/' : pathname.startsWith(prefix))
+    return prefixes.some(prefix => {
+      if (prefix === '/' && pathname === '/') return true
+      if (prefix !== '/' && pathname.startsWith(prefix)) return true
+      if (!isEnglish) return false
+      const englishPath = getLanguageRoute(prefix)?.englishPath
+      if (!englishPath) return false
+      return englishPath === '/en' ? pathname === '/en' : pathname.startsWith(englishPath)
+    })
   }
 
   const groupActive = (group: NavGroup) => group.items.some(item => isActive(item.href, item.activeHrefs))
@@ -65,8 +75,8 @@ export function MobileTabBar() {
   }
 
   const tabs = [
-    { id: 'home', label: home.label, href: home.href, icon: home.icon, group: null },
-    ...MOBILE_NAV_GROUPS.map(group => ({ id: group.id, label: group.label, href: group.items[0]?.href || '/', icon: group.icon, group })),
+    { id: 'home', label: home.label, href: localizedHref(home.href), icon: home.icon, group: null },
+    ...MOBILE_NAV_GROUPS.map(group => ({ id: group.id, label: group.label, href: localizedHref(group.items[0]?.href || '/'), icon: group.icon, group })),
   ]
 
   return (
@@ -128,7 +138,7 @@ export function MobileTabBar() {
                     return (
                       <Link
                         key={item.id}
-                        href={item.href}
+                        href={localizedHref(item.href)}
                         role="menuitem"
                         className={`block px-3 py-2 rounded-lg text-sm no-underline whitespace-nowrap ${
                           itemActive

@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Calendar, Clock } from 'lucide-react'
 import { ViewCounter } from '@/components/view-counter'
 import { BlogHeader } from '@/components/blog-header'
-import { EnglishSourceSwitch } from '@/components/english-source-switch'
 import { getPublishedEnglishTranslation } from '@/lib/translation'
 import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
@@ -93,7 +92,6 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         </Link>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
           <span className="text-xs text-muted-foreground">Source URL 유지 · {presentation.section} projection</span>
-          {presentation.section === 'Stories' && <EnglishSourceSwitch postId={post.id} englishHref={`/en/devsnack/${post.slug}`} koreanHref={`/devsnack/${post.slug}`} />}
         </div>
       </div>
 

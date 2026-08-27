@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight, FlaskConical, Languages, ShieldCheck } from 'lucide-react'
 import { notFound } from 'next/navigation'
-import { LanguageSwitch } from '@/components/language-switch'
 import { EnglishStockPulseEvaluation } from '@/components/english-stockpulse-evaluation'
 import { EN_PROJECT_PROJECTIONS } from '@/lib/i18n/english-pilot'
 import { getEnglishPost } from '@/lib/translation'
@@ -55,7 +54,6 @@ export default async function EnglishStockPulseProjectPage() {
               <div className="mt-6 flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground"><FlaskConical className="h-4 w-4" /> {project.domain}</div>
               <h1 className="mt-3 text-3xl font-bold tracking-tight md:text-4xl">{project.name}</h1>
             </div>
-            <LanguageSwitch englishHref="/en/labs/stockpulse-ai-self-improvement" koreanHref="/labs/stockpulse-ai-self-improvement" />
           </div>
           <p className="mt-6 max-w-3xl text-base leading-relaxed text-muted-foreground">{project.description}</p>
           <p className="mt-3 text-sm text-muted-foreground">{project.nature}</p>

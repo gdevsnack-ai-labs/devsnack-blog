@@ -2,6 +2,7 @@
 
 import { SideNav } from './side-nav'
 import { MobileTabBar } from './mobile-tab-bar'
+import { GlobalLanguageSwitch } from './global-language-switch'
 
 interface AppLayoutProps {
   children: React.ReactNode
@@ -18,6 +19,7 @@ export function AppLayout({ children, counts }: AppLayoutProps) {
     <div className="flex min-h-screen">
       <SideNav counts={counts} />
       <main className="flex-1 min-w-0 pb-16 md:pb-0">
+        <GlobalLanguageSwitch />
         {children}
       </main>
       <MobileTabBar />

@@ -3,7 +3,6 @@ import { BarChart3, BookOpen, CheckCircle2, FlaskConical } from 'lucide-react'
 import { BenchmarkResultCard } from '@/components/benchmark-result-card'
 import { HubHeader } from '@/components/hub-header'
 import { RelatedAssets } from '@/components/related-assets'
-import { LanguageSwitch } from '@/components/language-switch'
 import { LegacyBenchmarkSourceCard } from '@/components/legacy-benchmark-source-card'
 import { getReclassifiedBenchmarkPosts } from '@/lib/ia/hub-data'
 import { BENCHMARK_OVERVIEW, BENCHMARK_PROJECTIONS, getBenchmarksByCategory, getRelatedAssets, projectLegacyBenchmarkPosts } from '@/lib/ia/hub-projections'
@@ -85,7 +84,6 @@ export default async function BenchmarksPage() {
           description="조건을 고정하고 직접 측정한 결과를 모읍니다. Research 자료나 계획이 아니라, Target·Environment·Protocol·Result를 확인할 수 있는 published benchmark만 보여줍니다."
           icon={BarChart3}
         />
-        <div className="mt-4"><LanguageSwitch englishHref="/en/benchmarks" koreanHref="/benchmarks" /></div>
 
         <section className="mt-8 rounded-2xl border border-border bg-white p-5 dark:bg-gray-900 md:p-6" aria-labelledby="benchmark-start-heading">
           <div className="flex items-start gap-3">

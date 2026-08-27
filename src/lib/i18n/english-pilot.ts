@@ -27,6 +27,43 @@ export function isEnglishPilotSourcePath(pathname: string): boolean {
   return EN_PILOT_SOURCE_PATHS.includes(pathname)
 }
 
+export type LanguageRoute = {
+  koreanPath: string
+  englishPath: string
+}
+
+function normalizePathname(pathname: string): string {
+  const withLeadingSlash = pathname.split(/[?#]/, 1)[0].startsWith('/')
+    ? pathname.split(/[?#]/, 1)[0]
+    : `/${pathname.split(/[?#]/, 1)[0]}`
+  if (withLeadingSlash === '/') return '/'
+  return withLeadingSlash.replace(/\/+$/, '') || '/'
+}
+
+/**
+ * Return a language pair only when both route identities are part of the
+ * published English pilot. Korean-only routes deliberately return null.
+ */
+export function getLanguageRoute(pathname: string): LanguageRoute | null {
+  const normalized = normalizePathname(pathname)
+  if (normalized === '/' || normalized === '/en') {
+    return { koreanPath: '/', englishPath: '/en' }
+  }
+
+  const koreanPath = normalized.startsWith('/en/') ? normalized.slice(3) : normalized
+  if (!isEnglishPilotSourcePath(koreanPath)) return null
+
+  return {
+    koreanPath,
+    englishPath: `/en${koreanPath}`,
+  }
+}
+
+/** Keep shared navigation inside the English pilot when no English hub exists. */
+export function getEnglishNavigationPath(pathname: string): string {
+  return getLanguageRoute(pathname)?.englishPath || '/en'
+}
+
 export const EN_PROJECT_PROJECTIONS = {
   'stockpulse-ai-self-improvement': {
     name: 'StockPulse AI Self-Improvement Experiment',

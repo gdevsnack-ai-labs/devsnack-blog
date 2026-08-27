@@ -10,6 +10,7 @@ import {
 import type { LucideIcon } from 'lucide-react'
 import { ThemeToggle } from './theme-toggle'
 import { NAV_GROUPS, SINGLE_NAV_ITEMS, type IconKey, type NavGroup, type NavItem } from '@/config/site-catalog'
+import { getEnglishNavigationPath, getLanguageRoute } from '@/lib/i18n/english-pilot'
 import { trackSiteEvent } from '@/lib/analytics'
 
 interface SideNavCounts {
@@ -39,9 +40,20 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({})
   const [userToggled, setUserToggled] = useState<Record<string, boolean>>({})
 
+  const isEnglish = pathname === '/en' || pathname.startsWith('/en/')
+  const localizedHref = (href: string): string => isEnglish ? getEnglishNavigationPath(href) : href
+
   const isActive = (href: string, activeHrefs: string[] = []): boolean => {
     const prefixes = [href, ...activeHrefs]
-    return prefixes.some(prefix => prefix === '/' ? pathname === '/' : pathname.startsWith(prefix))
+    return prefixes.some(prefix => {
+      const currentPath = prefix === '/' ? '/' : prefix
+      if (currentPath === '/' && pathname === '/') return true
+      if (currentPath !== '/' && pathname.startsWith(currentPath)) return true
+      if (!isEnglish) return false
+      const englishPath = getLanguageRoute(prefix)?.englishPath
+      if (!englishPath) return false
+      return englishPath === '/en' ? pathname === '/en' : pathname.startsWith(englishPath)
+    })
   }
 
   const groupHasActiveItem = (group: NavGroup) => group.items.some(item => isActive(item.href, item.activeHrefs))
@@ -59,6 +71,7 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
 
   const renderSubItem = (item: NavItem) => {
     const active = isActive(item.href, item.activeHrefs)
+    const href = localizedHref(item.href)
     const ItemIcon = item.icon ? ICONS[item.icon] : null
     const countableBlogIds = new Set(['devsnack', 'stockpulse', 'aitech'])
     const count = item.blogId && countableBlogIds.has(item.blogId)
@@ -68,7 +81,7 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
     return (
       <Link
         key={item.id}
-        href={item.href}
+        href={href}
         className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm no-underline transition-colors ${
           active
             ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-medium'
@@ -121,12 +134,13 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
 
   const renderSingle = (item: NavItem) => {
     const active = isActive(item.href)
+    const href = localizedHref(item.href)
     const ItemIcon = item.icon ? ICONS[item.icon] : null
 
     return (
       <Link
         key={item.id}
-        href={item.href}
+        href={href}
         className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm no-underline transition-colors ${
           active
             ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-medium'
@@ -148,7 +162,7 @@ export function SideNav({ counts }: { counts?: SideNavCounts }) {
     >
       <div className={`flex items-center border-b border-border px-3 py-3 ${collapsed ? 'justify-center' : 'justify-between'}`}>
         {!collapsed && (
-          <Link href="/" className="no-underline">
+          <Link href={localizedHref('/')} className="no-underline">
             <span className="text-sm font-bold">🧪 Lab</span>
           </Link>
         )}

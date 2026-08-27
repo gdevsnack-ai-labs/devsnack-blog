@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { ArrowLeft, Calendar, Clock, Languages, ShieldAlert } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { BlogHeader } from '@/components/blog-header'
-import { LanguageSwitch } from '@/components/language-switch'
 import { ViewCounter } from '@/components/view-counter'
 import { stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 import { koreanSourcePath, translationStatusLabel, type TranslationStatus } from '@/lib/translation-core'
@@ -49,16 +48,14 @@ export function EnglishPostArticle({
       {structuredData && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       )}
-      {isStory && <BlogHeader title="DevSnack Blog" subtitle="AI from a developer's point of view" icon="terminal" color="blue" />}
+      {isStory && <BlogHeader title="DevSnack Blog" subtitle="AI from a developer's point of view" icon="terminal" color="blue" homeHref="/en" searchHref={null} />}
 
       <div className={topClass}>
         <Link href={koreanPath} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground no-underline hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> View the Korean source
         </Link>
-        <div className="mt-3 flex justify-end">
-          <LanguageSwitch englishHref={englishPath} koreanHref={koreanPath} />
-        </div>
       </div>
+      {sectionSubtitle && <p className="sr-only">{sectionTitle}: {sectionSubtitle}</p>}
 
       <article className={articleClass}>
         {source.cover_image && (
@@ -97,14 +94,14 @@ export function EnglishPostArticle({
         {isKnowledge && (
           <section className="mt-8 rounded-xl border border-border bg-muted/30 p-4" aria-labelledby="related-material-heading">
             <h2 id="related-material-heading" className="text-sm font-semibold text-muted-foreground">Related material</h2>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">This section mirrors the Korean Knowledge route's related-material boundary. Source links in the translated article remain unchanged unless a verified internal equivalent exists.</p>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">This section mirrors the Korean Knowledge route&apos;s related-material boundary. Source links in the translated article remain unchanged unless a verified internal equivalent exists.</p>
           </section>
         )}
       </article>
 
       <footer className="mt-12 border-t border-border pt-6 text-sm text-muted-foreground">
         <div className="mx-auto max-w-3xl px-4">
-          <p>This English page is part of DevSnack's English Content SEO/GEO Experiment. The Korean source remains the canonical editorial origin for this pilot.</p>
+          <p>This English page is part of DevSnack&apos;s English Content SEO/GEO Experiment. The Korean source remains the canonical editorial origin for this pilot.</p>
           <Link href={koreanPath} className="mt-3 inline-flex text-blue-600 no-underline hover:underline dark:text-blue-400">Open the Korean source →</Link>
         </div>
       </footer>
