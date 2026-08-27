@@ -117,9 +117,16 @@ function trimUrl(value: string): string {
   return value.replace(/[),.;]+$/g, '')
 }
 
+function visibleHeadingText(value: string): string {
+  return decodeHtmlEntities(value)
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
 export function extractSourceUrls(content: string): string[] {
-  const htmlHeading = Array.from(content.matchAll(/<h[1-6][^>]*>\s*([^<]+?)\s*<\/h[1-6]>/gi))
-    .find(match => SOURCE_HEADING.test(match[1]))
+  const htmlHeading = Array.from(content.matchAll(/<h[1-6][^>]*>\s*([\s\S]*?)\s*<\/h[1-6]>/gi))
+    .find(match => SOURCE_HEADING.test(visibleHeadingText(match[1])))
   const markdownHeading = Array.from(content.matchAll(/^#{1,6}\s+(.+)$/gim))
     .find(match => SOURCE_HEADING.test(match[1]))
   const headingMatch = htmlHeading || markdownHeading

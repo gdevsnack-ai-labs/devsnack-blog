@@ -1,9 +1,5 @@
-import {
-  buildRouteMetadata,
-  buildResearchJsonLd,
-  extractSourceUrls,
-  stripImportedHeadArtifacts,
-} from './metadata'
+// @ts-expect-error Node's strip-types runner requires the explicit extension.
+import { buildRouteMetadata, buildResearchJsonLd, extractSourceUrls, stripImportedHeadArtifacts } from './metadata.ts'
 
 function expectEqual(actual: unknown, expected: unknown, message: string) {
   if (JSON.stringify(actual) !== JSON.stringify(expected)) {
@@ -58,6 +54,17 @@ expectEqual(
   extractSourceUrls(researchContent),
   ['https://huggingface.co/example/model', 'https://example.com/paper'],
   'source extraction must be scoped to the Sources section',
+)
+const legacyHtmlResearchContent = `
+<h2><strong>Sources</strong></h2>
+<p><a href="https://example.com/legacy-source">Legacy source</a></p>
+<h2>Limitations</h2>
+<p>https://example.com/outside-section</p>
+`
+expectEqual(
+  extractSourceUrls(legacyHtmlResearchContent),
+  ['https://example.com/legacy-source'],
+  'source extraction must recognize visible text in inline-markup HTML headings',
 )
 const jsonLd = buildResearchJsonLd({
   title: 'Example Research',
