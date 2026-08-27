@@ -48,3 +48,4 @@ next-env.d.ts
 
 # Python test/build artifacts
 scripts/__pycache__/
+**/__pycache__/
