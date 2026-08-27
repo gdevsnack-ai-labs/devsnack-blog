@@ -10,11 +10,13 @@ GitHub so Vercel deploys the new data.
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import os
 import subprocess
 import sys
 import tempfile
+import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -25,6 +27,54 @@ from urllib.request import Request, urlopen
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SNAPSHOT_PATH = REPO_ROOT / "src" / "data" / "stockpulse-snapshot.json"
 ENV_PATH = REPO_ROOT / ".env.local"
+SITE_URL = "https://devsnack-blog.vercel.app"
+PRODUCTION_VERIFY_TIMEOUT_SECONDS = 180
+
+
+def verify_production_snapshot(snapshot: dict[str, Any], *, timeout_seconds: int = PRODUCTION_VERIFY_TIMEOUT_SECONDS) -> None:
+    """Wait until the production static StockPulse list contains the snapshot head.
+
+    The detail route reads Supabase dynamically, but ``/stock`` is force-static
+    and embeds this JSON at build time.  A successful Git push therefore does
+    not prove that the public list has changed yet.
+    """
+    posts = snapshot.get("posts") or []
+    if not posts or not posts[0].get("slug") or not posts[0].get("title"):
+        raise RuntimeError("production snapshot verification needs a non-empty latest post")
+
+    latest = posts[0]
+    expected_title = str(latest["title"])
+    deadline = time.monotonic() + max(0, timeout_seconds)
+    attempts = 0
+    last_reason = "unknown"
+
+    while True:
+        attempts += 1
+        try:
+            request = Request(
+                f"{SITE_URL}/stock",
+                headers={
+                    "Accept": "text/html",
+                    "Cache-Control": "no-cache",
+                    "User-Agent": "StockPulse-snapshot-verifier/1.0",
+                },
+            )
+            with urlopen(request, timeout=20) as response:
+                status = getattr(response, "status", None) or 200
+                body = html.unescape(response.read().decode("utf-8", errors="replace"))
+            if status == 200 and expected_title in body:
+                print(f"Production StockPulse list verified: slug={latest['slug']} attempts={attempts}")
+                return
+            last_reason = f"HTTP {status}, latest title not present"
+        except Exception as exc:
+            last_reason = f"{type(exc).__name__}: {exc}"
+
+        if time.monotonic() >= deadline:
+            raise RuntimeError(
+                "production StockPulse list did not reflect snapshot "
+                f"within {timeout_seconds}s ({last_reason})"
+            )
+        time.sleep(10)
 
 
 def load_env(path: Path) -> dict[str, str]:
@@ -239,15 +289,19 @@ def main() -> int:
     )
     if content_equal(existing, snapshot):
         print("Snapshot content is already current.")
+        if not args.no_push:
+            verify_production_snapshot(snapshot)
         return 0
     if args.check:
         print("Snapshot check passed; changes are available.")
+        verify_production_snapshot(snapshot)
         return 0
 
     write_snapshot(snapshot)
     print(f"Wrote {SNAPSHOT_PATH}")
     if not args.no_push:
         push_snapshot()
+        verify_production_snapshot(snapshot)
     return 0
 
 
