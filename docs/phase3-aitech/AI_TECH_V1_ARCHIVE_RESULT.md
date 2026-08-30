@@ -9,6 +9,8 @@ tags: [ai-tech, archive, lifecycle, source-evidence, searxng, devsnack]
 
 # AI Tech v1 종료·아카이빙 및 v2 Source Pipeline 준비 결과
 
+> 이 문서의 본문 결과는 2026-08-26 기준 archive baseline입니다. 2026-08-30 URL lifecycle 후속 결과는 마지막 섹션에 추가했습니다.
+
 ## 0. 결론
 
 기존 AI Tech 자동 발행 실험을 `v1`으로 종료하고, 기존 article body를 개별 개선하거나 소급 재검증하지 않은 채 lifecycle archive로 전환했다. AI Tech `/aitech`는 유지하되, 일반 Feed 목록 대신 v1 실험 안내와 compact historical index를 표시한다.
@@ -296,3 +298,27 @@ Vercel production read-back은 위 projection 결과와 같이 완료했다.
 - crawler 대규모 수정
 
 다음 단계는 별도 승인 후 v2 Source & Evidence Pipeline 설계안을 실제 observability·resolver·source-role·independent-source 수집 계층으로 나누어 구현하는 것이다. public publish 재개는 구현 완료와 분리해 별도로 판단한다.
+
+## 11. URL lifecycle 후속 결과 — 2026-08-30
+
+v1 전문을 별도 archive로 복제하지 않고 `/aitech` compact history에만 흔적을 남긴다는 정책을 확정해, 기존 AI Tech detail URL 185개를 전부 public retirement 처리했다.
+
+```text
+185개 old detail URL → HTTP 410 Gone
+redirect → 0개
+```
+
+검증 결과:
+
+- DB 기준 185개 slug 전체가 production에서 HTTP 410
+- `/aitech`는 HTTP 200 유지
+- `/aitech` compact history record 185개 유지
+- compact history의 detail link 0개
+- RSS의 AI Tech detail link 0개
+- sitemap의 AI Tech detail URL 0개, `/aitech` hub는 유지
+- public search에서 대표 v1 제목 결과 0개
+- `/labs/blog`는 AI Tech Feed Output을 노출하지 않음
+
+Vercel DevSnack에는 Season 2부터 단순 AI Tech Feed 전용 slug를 생성하지 않는다. Season 2 실제 기사는 GitHub Pages에 발행하고, Vercel Lab에는 source·evidence·quality·reject·pipeline 개선과 같은 실험 기록만 남긴다.
+
+DB row와 article body purge는 이번 URL retirement와 분리했으며 실행하지 않았다.

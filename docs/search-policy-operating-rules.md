@@ -112,7 +112,7 @@ PRIVATE → route 제거 또는 인증 필요 → sitemap 제외
 
 다음은 사람이 매번 기억하지 않아도 helper가 자동 판정합니다.
 
-- AITech `lifecycle_status=archived` detail → `noindex, follow`
+- AITech v1 `lifecycle_status=archived` detail → `410 Gone` (public URL retired)
 - StockPulse `lifecycle_status=consolidated` detail → `noindex, follow`
 - `blog_id=lab`이면서 `stockpulse-self-*`인 daily raw note → `noindex, follow`
 - English route 또는 `locale=en` + `human_reviewed=false` → `noindex, follow`
@@ -380,7 +380,7 @@ const decision = searchPolicyDecisionForPost(input)
 |---|---|---|
 | `/tools/operations` | PUBLIC + NOINDEX | 운영 투명성은 유지하되 search landing 아님 |
 | `/aitech` | INDEX | 자동 발행 실험 archive Hub·회고 |
-| `/aitech/[slug]` archived | NOINDEX | 반복 historical automated detail |
+| `/aitech/[slug]` archived v1 | GONE (410) | 반복 historical automated detail은 compact history만 유지 |
 | `/stock` | INDEX | current dashboard와 대표 Data surface |
 | `/stock/[slug]` live | INDEX 기본 | current rich report 보존 |
 | `/stock/[slug]` consolidated | NOINDEX | 보관 history |
@@ -441,7 +441,7 @@ npm run audit:links -- --base-url https://devsnack-blog.vercel.app
 
 - Story → index
 - Benchmark → index
-- AITech archived → noindex
+- AITech v1 archived detail → 410 Gone
 - StockPulse consolidated → noindex
 - StockPulse daily Lab → noindex
 - StockPulse weekly Lab → index
