@@ -154,13 +154,13 @@ export function HermesUsageDashboard({ report, capturedAt, isStale }: HermesUsag
             <div>
               <div className="mb-3 flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 dark:border-blue-900 dark:bg-blue-950/30 dark:text-blue-300">
-                  <BarChart3 className="h-3.5 w-3.5" aria-hidden="true" /> Data Tracker
+                  <BarChart3 className="h-3.5 w-3.5" aria-hidden="true" /> DevSnack AI Lab
                 </span>
                 <span className="rounded-full border border-border bg-card px-2.5 py-1 text-xs text-muted-foreground">Aggregate only</span>
               </div>
-              <h1 className="text-3xl font-bold tracking-tight md:text-4xl">Hermes Usage</h1>
+              <h1 className="text-3xl font-bold tracking-tight md:text-4xl">DevSnack 모델 사용량</h1>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
-                유라의 방에서 기록된 모든 Hermes live 프로필·source·task를 합산해 토큰 사용량을 확인합니다. 12시간 단위 스냅샷입니다.
+                DevSnack AI Lab에서 사용하는 모델별 토큰 사용량을 확인합니다. 프로필·채널·작업 정보는 공개하지 않고, 모델·토큰·호출 수만 익명 집계로 표시합니다.
               </p>
             </div>
             <div className="rounded-xl border border-border bg-card px-4 py-3 text-sm shadow-sm">
@@ -180,7 +180,7 @@ export function HermesUsageDashboard({ report, capturedAt, isStale }: HermesUsag
       </header>
 
       <main className="mx-auto max-w-7xl space-y-8 px-4 py-8 md:px-6 md:py-10">
-        <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6" aria-label="Hermes usage summary">
+        <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6" aria-label="DevSnack model usage summary">
           <Card icon={Activity} label="전체 기록 토큰" value={formatCompact(usage.usage_token_totals.total_tokens)} detail="Input + Output + Cache" tone="bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400" />
           <Card icon={Layers3} label="Input + Output" value={formatCompact(usage.usage_token_totals.input_tokens + usage.usage_token_totals.output_tokens)} detail="대화 생성 기준" tone="bg-cyan-100 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400" />
           <Card icon={Database} label="Cache Read" value={formatCompact(usage.usage_token_totals.cache_read_tokens)} detail="캐시 읽기 토큰" tone="bg-violet-100 text-violet-600 dark:bg-violet-900/30 dark:text-violet-400" />
@@ -205,15 +205,12 @@ export function HermesUsageDashboard({ report, capturedAt, isStale }: HermesUsag
         </section>
 
         <section className="grid gap-4 lg:grid-cols-2">
-          <BreakdownTable title="모델별 누적 사용량" rows={report.model_totals} dimension="model" />
-          <BreakdownTable title="Source별 사용량" rows={report.source_totals} dimension="source" />
-          <BreakdownTable title="Task별 사용량" rows={report.task_totals} dimension="task" />
-          <BreakdownTable title="Provider별 사용량" rows={report.provider_totals} dimension="provider" />
+          <BreakdownTable title="모델별 누적 토큰 사용량" rows={report.model_totals} dimension="model" />
         </section>
 
         <section className="rounded-xl border border-blue-200 bg-blue-50/70 p-4 text-sm text-blue-950 dark:border-blue-900 dark:bg-blue-950/20 dark:text-blue-100">
           <h2 className="font-semibold">집계 방법</h2>
-          <p className="mt-2 leading-relaxed">전체 기록 토큰은 <code className="rounded bg-blue-100 px-1 py-0.5 text-xs dark:bg-blue-900/50">input + output + cache_read + cache_write</code>입니다. Reasoning tokens는 별도 기록이며 합계에 중복 포함하지 않습니다. Hermes가 API 호출별 토큰 시각을 보존하지 않으므로 일별 데이터는 세션 시작일(KST)에 배정됩니다.</p>
+          <p className="mt-2 leading-relaxed">전체 기록 토큰은 <code className="rounded bg-blue-100 px-1 py-0.5 text-xs dark:bg-blue-900/50">input + output + cache_read + cache_write</code>입니다. Reasoning tokens는 별도 기록이며 합계에 중복 포함하지 않습니다. 수집기가 API 호출별 토큰 시각을 보존하지 않으므로 일별 데이터는 세션 시작일(KST)에 배정됩니다.</p>
         </section>
       </main>
     </div>

@@ -71,12 +71,12 @@ export default async function DataPage() {
               relatedLabel="Self-Improvement Experiment"
             />
             <DataServiceCard
-              title="Hermes Usage"
+              title="DevSnack 모델 사용량"
               type="Tracker"
-              description="유라의 방에 있는 모든 live Hermes 프로필·source·task를 합산해 토큰 사용량을 추적하는 공개용 Data Tracker입니다."
+              description="DevSnack AI Lab에서 사용하는 모델별 토큰·호출 수를 보여주는 공개용 사용량 통계입니다. 프로필·채널·작업 정보는 표시하지 않습니다."
               updateDescription="KST 00:00 · 12:00에 읽기 전용 스냅샷 수집"
               lastUpdated={formatDate(hermesUsage.capturedAt)}
-              latestTitle={hermesUsage.available ? 'Aggregate-only snapshot' : '첫 수집 대기'}
+              latestTitle={hermesUsage.available ? 'Model usage snapshot' : '첫 수집 대기'}
               href="/data/hermes-usage"
               provenance="Automated usage telemetry"
             />
