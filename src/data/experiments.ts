@@ -125,23 +125,23 @@ const STOCKPULSE_SELF: Experiment = {
   githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
 }
 
-// ── Blog Automation (더미 → 실제 전환) ──
+// ── AI Tech v1 자동화 뉴스 실험 ──
 const BLOG_AUTO: Experiment = {
   id: 'blog',
-  name: 'Blog Automation',
-  description: 'AI Tech와 StockPulse Feed를 수집·분석·검증·발행하고, 실제 Output을 DevSnack Data와 Lab으로 연결하는 자동화 시스템',
-  progress: 85,
+  name: 'AI Tech v1 자동화 뉴스 실험',
+  description: 'AI를 활용한 자동화 파이프라인으로 매일 AI 기술·산업 기사를 작성하고, 생성 결과를 독자 관점에서 평가한 v1 실험',
+  progress: 100,
   color: 'green',
-  status: '진행중',
-  category: 'running',
+  status: '완료',
+  category: 'completed',
   startedAt: '2026.04',
-  whyText: '매일 4시 StockPulse 리포트, 10시 AI Tech 뉴스, YouTube 댓글 자동 배치 — 이 모든 것이 Hermes Agent + 로컬 LLM(Qwen3.5-35B) 자동화 파이프라인으로 돌아간다. 사람이 검증만 하면 되는 시스템.',
-  nextGoals: ['Blogger/Vercel 동시 발행 안정화', 'Lab 메트릭 자동 업데이트'],
+  whyText: 'AI를 활용한 자동화 파이프라인으로 매일 AI 기술·산업 기사를 작성하고, 생성된 결과를 독자 관점에서 평가하는 실험을 진행했다. 일부 결과에서 사실과 다른 내용이나 과장된 표현이 확인되어 v1을 완료 처리하고, source·evidence·quality gate를 강화한 v2 실험을 준비한다. v2의 실제 기사는 GitHub Pages에서 발행하고, Vercel의 DevSnack Lab에는 단순 피드 전용 slug를 만들지 않고 기사 생성 과정과 실험 기록을 남긴다.',
+  nextGoals: ['v2 source·evidence pipeline 설계', 'GitHub Pages publication 전환'],
   timeline: [
-    { name: 'AI Tech 뉴스 자동 발행',    status: '완료',   date: '2026.04' },
-    { name: 'StockPulse 리포트 자동화',  status: '완료',   date: '2026.05' },
-    { name: 'Vercel/Supabase 직접 발행', status: '완료', date: '2026.08', result: 'AI Tech·StockPulse가 Blogger 없이 Supabase에 직접 발행되고 production route read-back으로 검증됨' },
-    { name: 'Lab Output 관계 연결', status: '진행중', date: '2026.08', result: 'Project/System에서 실제 Feed Output을 탐색하고 Feed 상세에서 생성 Project로 돌아가는 양방향 연결을 구축 중' },
+    { name: 'AI Tech 뉴스 자동 발행', status: '완료', date: '2026.04', result: 'AI가 주제 선택·source 수집·작성·검증·발행을 연결하는 daily pipeline을 운영' },
+    { name: 'AI Tech v1 독자 평가', status: '완료', date: '2026.08', result: '생성 결과를 독자 관점에서 평가하고, 일부 기사에서 사실과 다른 내용과 과장된 표현을 확인' },
+    { name: 'v1 compact history 정리', status: '완료', date: '2026.08', result: '185개 v1 기록은 /aitech compact history에 제목·발행일만 남기고, 기존 detail은 공개 discovery에서 분리' },
+    { name: 'v1 완료 및 v2 전환 결정', status: '완료', date: '2026.08', result: 'Season 2 실제 기사는 GitHub Pages에서 발행하고, DevSnack Lab에는 source·evidence·quality·개선 과정을 기록하는 방향 확정' },
   ],
   blogPosts: [],
   githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',

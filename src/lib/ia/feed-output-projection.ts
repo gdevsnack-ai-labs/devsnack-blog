@@ -16,7 +16,6 @@ export interface ProjectFeedOutput {
 }
 
 const PROJECT_FEED_BLOG: Record<string, string> = {
-  blog: 'aitech',
   'stockpulse-ai-self-improvement': 'stockpulse',
 }
 

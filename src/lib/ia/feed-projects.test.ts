@@ -7,11 +7,7 @@ function expectEqual(actual: unknown, expected: unknown, message: string) {
   }
 }
 
-expectEqual(feedProjectForBlog('aitech'), {
-  projectId: 'blog',
-  href: '/labs/blog',
-  label: 'AI Tech 자동화 시스템',
-}, 'AI Tech must resolve to the existing Blog Automation System')
+expectEqual(feedProjectForBlog('aitech'), null, 'AI Tech publication must stay outside the Vercel Lab Feed Output projection')
 expectEqual(feedProjectForBlog('stockpulse'), {
   projectId: 'stockpulse-ai-self-improvement',
   href: '/labs/stockpulse-ai-self-improvement',

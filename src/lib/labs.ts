@@ -141,7 +141,7 @@ const LAB_KNOWLEDGE: Record<string, LabKnowledge> = {
     showInFindings: true,
   },
   blog: {
-    keyFinding: 'Hermes Agent와 로컬 LLM을 연결한 발행·분석 파이프라인이 실제 운영 중이며, 반복 작업 자동화와 Lab 결과 기록을 함께 검증하고 있습니다.',
+    keyFinding: 'AI 기반 daily 기사 자동화는 실제 운영 가능했지만, 일부 결과에서 사실과 다른 내용과 과장된 표현이 확인되어 v1을 완료 처리했습니다. Season 2 실제 기사는 GitHub Pages에 발행하고, Vercel의 DevSnack Lab에는 단순 피드 전용 slug를 만들지 않으며 source·evidence·quality gate와 개선 과정을 기록하는 v2 실험을 준비합니다.',
     showInFindings: false,
   },
 }

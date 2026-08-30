@@ -5,11 +5,6 @@ export interface FeedProjectLink {
 }
 
 const FEED_PROJECTS: Record<string, FeedProjectLink> = {
-  aitech: {
-    projectId: 'blog',
-    href: '/labs/blog',
-    label: 'AI Tech 자동화 시스템',
-  },
   stockpulse: {
     projectId: 'stockpulse-ai-self-improvement',
     href: '/labs/stockpulse-ai-self-improvement',
