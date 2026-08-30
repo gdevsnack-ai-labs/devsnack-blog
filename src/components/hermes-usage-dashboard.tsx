@@ -214,7 +214,6 @@ export function HermesUsageDashboard({ report, capturedAt, isStale }: HermesUsag
         <section className="rounded-xl border border-blue-200 bg-blue-50/70 p-4 text-sm text-blue-950 dark:border-blue-900 dark:bg-blue-950/20 dark:text-blue-100">
           <h2 className="font-semibold">집계 방법</h2>
           <p className="mt-2 leading-relaxed">전체 기록 토큰은 <code className="rounded bg-blue-100 px-1 py-0.5 text-xs dark:bg-blue-900/50">input + output + cache_read + cache_write</code>입니다. Reasoning tokens는 별도 기록이며 합계에 중복 포함하지 않습니다. Hermes가 API 호출별 토큰 시각을 보존하지 않으므로 일별 데이터는 세션 시작일(KST)에 배정됩니다.</p>
-          <p className="mt-2 leading-relaxed text-xs opacity-80">원본 Hermes DB는 읽기 전용으로 수집되며, 외부 화면에는 프로필·세션·대화 내용·로컬 경로를 표시하지 않습니다.</p>
         </section>
       </main>
     </div>
