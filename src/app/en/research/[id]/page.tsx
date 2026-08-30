@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     koreanPath: `/research/${id}`,
     englishPath: `/en/research/${id}`,
     section: 'Knowledge',
+    searchPolicy: 'noindex',
     image: entry.source.cover_image,
     publishedTime: entry.source.published,
     modifiedTime: entry.source.updated,
@@ -43,11 +44,11 @@ export default async function EnglishKnowledgePage({ params }: { params: Promise
       keywords: entry.source.labels || [],
       citations: extractSourceUrls(entry.translation.content || ''),
       about: { '@type': 'Thing', name: 'Local AI and infrastructure research' },
-      isPartOf: { '@type': 'CollectionPage', name: 'DevSnack Knowledge', url: absoluteSiteUrl('/en/research') },
+      isPartOf: { '@type': 'CollectionPage', name: 'DevSnack English Pilot', url: absoluteSiteUrl('/en') },
     }),
     buildBreadcrumbJsonLd([
       { name: 'Home', url: absoluteSiteUrl('/en') },
-      { name: 'Knowledge', url: absoluteSiteUrl('/en/research') },
+      { name: 'English Pilot', url: absoluteSiteUrl('/en') },
       { name: entry.translation.title, url: absoluteSiteUrl(`/en/research/${id}`) },
     ], 'en'),
   )

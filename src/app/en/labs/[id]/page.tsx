@@ -20,6 +20,7 @@ export const metadata = buildRouteMetadata({
   koreanPath: '/labs/stockpulse-ai-self-improvement',
   englishPath: '/en/labs/stockpulse-ai-self-improvement',
   section: 'Lab Project',
+  searchPolicy: 'noindex',
 })
 
 export default async function EnglishStockPulseProjectPage() {
@@ -38,7 +39,7 @@ export default async function EnglishStockPulseProjectPage() {
     }),
     buildBreadcrumbJsonLd([
       { name: 'Home', url: absoluteSiteUrl('/en') },
-      { name: 'Lab Projects', url: absoluteSiteUrl('/en/labs') },
+      { name: 'English Pilot', url: absoluteSiteUrl('/en') },
       { name: project.name, url: absoluteSiteUrl('/en/labs/stockpulse-ai-self-improvement') },
     ], 'en'),
   )

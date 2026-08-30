@@ -11,8 +11,6 @@ export default function robots(): MetadataRoute.Robots {
         '/admin/',
         '/api/ingest',
         '/api/ops/',
-        '/api/poc/',
-        '/tools/operations',
       ],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,

@@ -9,6 +9,7 @@ import { FeedProvenance } from '@/components/feed-provenance'
 import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 import { feedDetailFilters } from '@/lib/ia/feed-lifecycle'
+import { searchPolicyForPost } from '@/lib/seo/search-policy'
 
 export const revalidate = 60
 
@@ -37,6 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     kind: 'article',
     language: 'ko',
     section: 'AI Tech',
+    searchPolicy: searchPolicyForPost(post),
     image: post.cover_image,
     publishedTime: post.published,
     modifiedTime: post.updated,

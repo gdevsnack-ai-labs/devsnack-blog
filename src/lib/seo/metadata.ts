@@ -1,5 +1,7 @@
 // @ts-expect-error Node's strip-types runner requires the explicit extension.
 import { absoluteSiteUrl, SITE_URL } from './site.ts'
+// @ts-expect-error Node's strip-types runner requires the explicit extension.
+import { robotsForSearchPolicy, searchPolicyForPath, type SearchPolicy } from './search-policy.ts'
 
 function decodeHtmlEntities(value: string): string {
   return value
@@ -26,6 +28,7 @@ export interface RouteMetadataInput {
   koreanPath?: string
   englishPath?: string
   indexable?: boolean
+  searchPolicy?: SearchPolicy
   section?: string
 }
 
@@ -63,10 +66,12 @@ export function buildRouteMetadata({
   language = 'ko',
   koreanPath,
   englishPath,
-  indexable = true,
+  indexable,
+  searchPolicy,
   section,
 }: RouteMetadataInput) {
   const canonical = absoluteSiteUrl(canonicalPath)
+  const policy = searchPolicy ?? (indexable === false ? 'noindex' : searchPolicyForPath(canonicalPath))
   const cleanTitle = cleanMetaText(title, 75)
   const cleanDescription = cleanMetaText(description, 160)
   const openGraph = {
@@ -95,7 +100,7 @@ export function buildRouteMetadata({
           },
         }
       : { canonical },
-    robots: { index: indexable, follow: true },
+    robots: robotsForSearchPolicy(policy),
     openGraph,
     twitter: {
       card: image ? 'summary_large_image' : 'summary',

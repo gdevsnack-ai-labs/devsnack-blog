@@ -14,6 +14,7 @@ export const metadata = buildRouteMetadata({
 export default function DemosPage() {
   let total = 0
   for (const cat of DEMO_CATEGORIES) total += DEMOS[cat.key].length
+  const populatedCategories = DEMO_CATEGORIES.filter(cat => DEMOS[cat.key].length > 0)
 
   return (
     <div className="min-h-screen bg-background">
@@ -26,7 +27,7 @@ export default function DemosPage() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
-          {DEMO_CATEGORIES.map(cat => {
+          {populatedCategories.map(cat => {
             const items = DEMOS[cat.key]
             return (
               <Link

@@ -1,6 +1,14 @@
 import { ExternalLink, Route, Music, FlaskConical, BrainCircuit } from 'lucide-react'
 import { BlogHeader } from '@/components/blog-header'
 import Link from 'next/link'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
+
+export const metadata = buildRouteMetadata({
+  title: '링크·채널 — DevSnack',
+  description: 'DevSnack 관련 채널, 오픈소스 저장소와 주요 콘텐츠 링크 모음입니다.',
+  canonicalPath: '/links',
+  searchPolicy: 'noindex',
+})
 
 const channels = [
   { title: 'AI 연구 결과', sub: '@DevsnackAILab', url: 'https://www.youtube.com/@DevsnackAILab',

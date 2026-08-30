@@ -14,6 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
     title: `${meta.label} Showcase — DevSnack`,
     description: meta.description,
     canonicalPath: `/demos/${category}`,
+    searchPolicy: (DEMOS[category as DemoCategory] || []).length > 0 ? 'index' : 'noindex',
   })
 }
 

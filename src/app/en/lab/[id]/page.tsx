@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     koreanPath: `/lab/${id}`,
     englishPath: `/en/lab/${id}`,
     section: id === 'ornith15-server-quality-speed-benchmark' ? 'Benchmark' : 'Lab Notes',
+    searchPolicy: 'noindex',
     image: entry.source.cover_image,
     publishedTime: entry.source.published,
     modifiedTime: entry.source.updated,

@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     koreanPath: `/devsnack/${slug}`,
     englishPath: `/en/devsnack/${slug}`,
     section: 'Stories',
+    searchPolicy: 'noindex',
     image: entry.source.cover_image,
     publishedTime: entry.source.published,
     modifiedTime: entry.source.updated,
@@ -46,7 +47,7 @@ export default async function EnglishStoryPage({ params }: { params: Promise<{ s
     }),
     buildBreadcrumbJsonLd([
       { name: 'Home', url: absoluteSiteUrl('/en') },
-      { name: 'Stories', url: absoluteSiteUrl('/en/devsnack') },
+      { name: 'English Pilot', url: absoluteSiteUrl('/en') },
       { name: entry.translation.title, url: absoluteSiteUrl(`/en/devsnack/${slug}`) },
     ], 'en'),
   )

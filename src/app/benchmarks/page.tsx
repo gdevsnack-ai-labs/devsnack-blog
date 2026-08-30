@@ -16,8 +16,6 @@ export const metadata = buildRouteMetadata({
   description: '실행 조건과 측정 프로토콜을 공개한 DevSnack Benchmark 결과 모음',
   canonicalPath: '/benchmarks',
   language: 'ko',
-  koreanPath: '/benchmarks',
-  englishPath: '/en/benchmarks',
   section: 'Benchmarks',
 })
 

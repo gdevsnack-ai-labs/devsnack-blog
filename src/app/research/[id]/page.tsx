@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Calendar, Clock, ExternalLink } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
-import { getPublishedEnglishTranslation } from '@/lib/translation'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 
@@ -17,6 +16,7 @@ import {
   RESEARCH_STATUS_META,
 } from '@/lib/content-taxonomy'
 import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
+import { searchPolicyForPost } from '@/lib/seo/search-policy'
 
 async function getResearchPost(id: string) {
   const { data } = await supabase
@@ -52,7 +52,6 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
   const description = getDescription(post)
   const keywords = getKeywords(post)
-  const translation = await getPublishedEnglishTranslation(post.id)
   return {
     ...buildRouteMetadata({
       title: `${post.title} | DevSnack Knowledge`,
@@ -60,8 +59,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       canonicalPath: `/research/${id}`,
       kind: 'article',
       language: 'ko',
-      ...(translation ? { koreanPath: `/research/${id}`, englishPath: `/en/research/${id}` } : {}),
       section: 'Knowledge',
+      searchPolicy: searchPolicyForPost(post),
       image: post.cover_image,
       publishedTime: post.published,
       modifiedTime: post.updated,

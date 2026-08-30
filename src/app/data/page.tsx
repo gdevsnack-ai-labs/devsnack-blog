@@ -1,4 +1,4 @@
-import { Database, Radio } from 'lucide-react'
+import { BarChart3, Database, Radio } from 'lucide-react'
 import { DataServiceCard } from '@/components/data-service-card'
 import { HubHeader } from '@/components/hub-header'
 import { RelatedAssets } from '@/components/related-assets'
@@ -40,6 +40,7 @@ export default async function DataPage() {
         <section className="mt-8 grid gap-3 sm:grid-cols-3" aria-label="Data principles">
           <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Radio className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Feeds</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">현재 운영 중인 StockPulse 시장 분석 정보</p></div>
           <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Database className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Project → Assets</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">StockPulse처럼 하나의 Project가 Feed·Dataset·Experiment를 함께 만듭니다.</p></div>
+          <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><BarChart3 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">해석의 한계</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">자동 생성 수치와 editorial 판단은 다르며, 스냅샷 시점·측정 조건에 따라 해석이 달라질 수 있습니다.</p></div>
         </section>
 
         <section className="mt-10" aria-labelledby="data-feeds-heading">

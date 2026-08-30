@@ -8,6 +8,7 @@ export const metadata = {
     title: 'English Content Experiment — DevSnack',
     description: 'DevSnack English pilot: original Stories, Lab Notes, a Project, Benchmark, and Knowledge pages translated for an SEO/GEO experiment.',
     canonicalPath: '/en',
+    searchPolicy: 'noindex',
   }),
   openGraph: { type: 'website', locale: 'en_US', title: 'English Content Experiment — DevSnack', description: 'A small English content SEO/GEO pilot for DevSnack.' },
 }
@@ -56,7 +57,7 @@ export default function EnglishHomePage() {
         </section>
 
         <footer className="mt-12 border-t border-border pt-6 text-sm text-muted-foreground">
-          <p>Phase 4 intentionally does not add hreflang, canonical pairing, translated sitemap entries, or JSON-LD language integration. Those belong to the next SEO/GEO phase.</p>
+          <p>This pilot is temporarily noindex until human review, English collection routes, and the translation policy are complete. The Korean source remains the editorial origin.</p>
           <Link href="/" className="mt-3 inline-flex text-blue-600 no-underline hover:underline dark:text-blue-400">Back to the Korean DevSnack home →</Link>
         </footer>
       </div>

@@ -1,3 +1,6 @@
+// @ts-expect-error Node's strip-types runner requires the explicit extension.
+import { isIndexableSearchPolicy, searchPolicyForPath } from './search-policy.ts'
+
 export type SitemapRoutePolicy = 'INDEX' | 'NAVIGATION_ONLY' | 'UTILITY'
 
 const INDEX_ROUTES = new Set([
@@ -9,20 +12,12 @@ const INDEX_ROUTES = new Set([
   '/labs',
   '/benchmarks',
   '/data',
-  '/lab',
   '/demos',
-  '/demos/html',
-  '/html5-poop-dodge-game.html',
-  '/pixel-survivors-ai-game.html',
   '/research',
   '/misc',
   '/about',
   '/privacy',
   '/contact',
-  '/links',
-  '/en',
-  '/en/benchmarks',
-  '/en/labs/stockpulse-ai-self-improvement',
 ])
 
 const NAVIGATION_ONLY_PREFIXES = [
@@ -51,5 +46,5 @@ export function routePolicy(pathname: string): SitemapRoutePolicy {
 }
 
 export function isIndexableSitemapRoute(pathname: string): boolean {
-  return routePolicy(pathname) === 'INDEX'
+  return routePolicy(pathname) === 'INDEX' && isIndexableSearchPolicy(searchPolicyForPath(pathname))
 }

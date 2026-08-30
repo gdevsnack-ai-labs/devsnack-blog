@@ -10,6 +10,7 @@ import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHe
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 import { normalizeProvenance } from '@/lib/provenance'
 import { feedDetailFilters } from '@/lib/ia/feed-lifecycle'
+import { searchPolicyForPost } from '@/lib/seo/search-policy'
 
 export const revalidate = 60
 
@@ -57,6 +58,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     kind: 'article',
     language: 'ko',
     section: 'StockPulse Experiment',
+    searchPolicy: searchPolicyForPost(post),
     image: post.cover_image,
     publishedTime: post.published,
     modifiedTime: post.updated,

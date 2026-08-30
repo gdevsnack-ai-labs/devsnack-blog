@@ -1,6 +1,13 @@
 import Link from 'next/link'
 import { BlogHeader } from '@/components/blog-header'
 import { ArrowLeft, Mail, MapPin } from 'lucide-react'
+import { buildRouteMetadata } from '@/lib/seo/metadata'
+
+export const metadata = buildRouteMetadata({
+  title: '문의하기 — DevSnack',
+  description: 'DevSnack 콘텐츠, 협업 제안, 오류 제보를 위한 문의 페이지입니다.',
+  canonicalPath: '/contact',
+})
 
 export default function ContactPage() {
   return (

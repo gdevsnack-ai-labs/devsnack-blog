@@ -16,6 +16,7 @@ export const metadata = buildRouteMetadata({
   koreanPath: '/benchmarks',
   englishPath: '/en/benchmarks',
   section: 'Benchmarks',
+  searchPolicy: 'noindex',
 })
 
 export default async function EnglishBenchmarksPage() {

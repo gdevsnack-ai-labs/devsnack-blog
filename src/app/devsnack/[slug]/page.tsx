@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Calendar, Clock } from 'lucide-react'
 import { ViewCounter } from '@/components/view-counter'
 import { BlogHeader } from '@/components/blog-header'
-import { getPublishedEnglishTranslation } from '@/lib/translation'
 import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 import { getPostPresentation } from '@/lib/ia'
@@ -33,7 +32,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!post) return { title: 'Not Found' }
 
   const description = post.seo_desc ?? post.excerpt ?? post.title
-  const translation = await getPublishedEnglishTranslation(post.id)
   const presentation = getPostPresentation(post)
   return buildRouteMetadata({
     title: post.title,
@@ -41,7 +39,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     canonicalPath: `/devsnack/${slug}`,
     kind: 'article',
     language: 'ko',
-    ...(translation ? { koreanPath: `/devsnack/${slug}`, englishPath: `/en/devsnack/${slug}` } : {}),
     section: presentation.section,
     image: post.cover_image,
     publishedTime: post.published,

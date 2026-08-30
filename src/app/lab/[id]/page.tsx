@@ -8,9 +8,9 @@ import { experiments } from '@/data/experiments'
 import { supabase } from '@/lib/supabase'
 import { MarkdownRenderer } from '@/components/markdown-renderer'
 import { postHref } from '@/config/site-catalog'
-import { getPublishedEnglishTranslation } from '@/lib/translation'
 import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
+import { searchPolicyForPost } from '@/lib/seo/search-policy'
 
 export const revalidate = 60
 export const dynamicParams = true
@@ -354,15 +354,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const post = await getLabPost(id)
   if (!post) return { title: 'Lab Not Found' }
   const description = post.seo_desc ?? post.excerpt ?? post.title
-  const translation = await getPublishedEnglishTranslation(post.id)
   return buildRouteMetadata({
     title: post.title,
     description,
     canonicalPath: `/lab/${id}`,
     kind: 'article',
     language: 'ko',
-    ...(translation ? { koreanPath: `/lab/${id}`, englishPath: `/en/lab/${id}` } : {}),
     section: id === 'ornith15-server-quality-speed-benchmark' ? 'Benchmark' : 'Lab Notes',
+    searchPolicy: searchPolicyForPost(post),
     image: post.cover_image,
     publishedTime: post.published,
     modifiedTime: post.updated,

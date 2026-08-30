@@ -49,7 +49,6 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     canonicalPath: `/labs/${id}`,
     kind: 'website',
     language: 'ko',
-    ...(id === 'stockpulse-ai-self-improvement' ? { koreanPath: `/labs/${id}`, englishPath: `/en/labs/${id}` } : {}),
     section: 'Lab Project',
   })
 }
