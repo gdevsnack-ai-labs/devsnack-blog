@@ -160,7 +160,7 @@ export function HermesUsageDashboard({ report, capturedAt, isStale }: HermesUsag
               </div>
               <h1 className="text-3xl font-bold tracking-tight md:text-4xl">Hermes Usage</h1>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
-                유라의 방에서 기록된 모든 Hermes live 프로필·source·task를 합산해 토큰 사용량을 확인합니다. 실시간 모니터가 아닌 12시간 단위 스냅샷입니다.
+                유라의 방에서 기록된 모든 Hermes live 프로필·source·task를 합산해 토큰 사용량을 확인합니다. 12시간 단위 스냅샷입니다.
               </p>
             </div>
             <div className="rounded-xl border border-border bg-card px-4 py-3 text-sm shadow-sm">
