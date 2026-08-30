@@ -4,7 +4,7 @@ import { postHref } from '@/config/site-catalog'
 import { isIndexableSitemapRoute } from '@/lib/seo/sitemap-policy'
 import { SITE_URL } from '@/lib/seo/metadata'
 import { publicFeedOrFilter } from '@/lib/ia/feed-lifecycle'
-import { isIndexableSearchPolicy, searchPolicyForPost } from '@/lib/seo/search-policy'
+import { isIndexablePostSitemapEntry } from '@/lib/seo/search-policy'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       console.error(`[sitemap] 알 수 없는 blog_id: ${post.blog_id}`)
       return []
     }
-    if (!isIndexableSearchPolicy(searchPolicyForPost(post))) return []
+    if (!isIndexablePostSitemapEntry(post)) return []
     return [{
       url: `${SITE_URL}${path}`,
       lastModified: post.updated ? new Date(post.updated) : new Date(),
