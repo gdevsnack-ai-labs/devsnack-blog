@@ -3,6 +3,7 @@ import { DataServiceCard } from '@/components/data-service-card'
 import { HubHeader } from '@/components/hub-header'
 import { RelatedAssets } from '@/components/related-assets'
 import { getDataHubSnapshot } from '@/lib/ia/hub-data'
+import { getHermesUsageSnapshot } from '@/lib/hermes-usage-data'
 import { getRelatedAssets } from '@/lib/ia/hub-projections'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
 
@@ -20,7 +21,10 @@ function formatDate(value?: string | null): string {
 }
 
 export default async function DataPage() {
-  const snapshot = await getDataHubSnapshot()
+  const [snapshot, hermesUsage] = await Promise.all([
+    getDataHubSnapshot(),
+    getHermesUsageSnapshot(),
+  ])
   const stockPulseRelated = getRelatedAssets('project:stockpulse-ai-self-improvement')
 
   return (
@@ -64,6 +68,16 @@ export default async function DataPage() {
               provenance="Automated market analysis"
               relatedHref="/labs/stockpulse-ai-self-improvement"
               relatedLabel="Self-Improvement Experiment"
+            />
+            <DataServiceCard
+              title="Hermes Usage"
+              type="Tracker"
+              description="유라의 방에 있는 모든 live Hermes 프로필·source·task를 합산해 토큰 사용량을 추적하는 공개용 Data Tracker입니다."
+              updateDescription="KST 00:00 · 12:00에 읽기 전용 스냅샷 수집"
+              lastUpdated={formatDate(hermesUsage.capturedAt)}
+              latestTitle={hermesUsage.available ? 'Aggregate-only snapshot' : '첫 수집 대기'}
+              href="/data/hermes-usage"
+              provenance="Automated usage telemetry"
             />
           </div>
         </section>
