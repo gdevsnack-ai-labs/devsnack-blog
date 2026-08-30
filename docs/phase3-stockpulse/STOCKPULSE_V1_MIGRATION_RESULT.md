@@ -22,7 +22,7 @@ StockPulse v2는 생성하지 않았고, v2 실험·파라미터 변경·Feed �
 - Pages source: `main:/`
 - Pages visibility: public
 - HTTPS enforcement: enabled
-- Publication commit: `17011e4`
+- Publication commits: `17011e4` (initial import), `04d9dfc` (lifecycle metadata), `a6da414` (responsive UI fix)
 
 구성:
 
