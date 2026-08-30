@@ -16,6 +16,7 @@ function expectEqual(actual: unknown, expected: unknown, message: string) {
   }
 }
 
+expectEqual(searchPolicyForPath('/stock'), 'noindex', 'StockPulse Hub must remain public but noindex after externalization')
 expectEqual(searchPolicyForPath('/tools/operations'), 'noindex', 'Operations must remain public but noindex')
 expectEqual(searchPolicyForPath('/links'), 'noindex', 'utility Links must be noindex')
 expectEqual(searchPolicyForPath('/admin/research'), 'private', 'Admin routes must be private, not merely noindex')
@@ -31,6 +32,11 @@ expectEqual(
   searchPolicyForPost({ blog_id: 'aitech', slug: 'archived-feed', status: 'live', lifecycle_status: 'archived' }),
   'noindex',
   'archived AI Tech detail must be noindex',
+)
+expectEqual(
+  searchPolicyForPost({ blog_id: 'stockpulse', slug: 'retired-report', status: 'live', lifecycle_status: 'archived' }),
+  'noindex',
+  'externally migrated StockPulse detail must be noindex',
 )
 expectEqual(
   searchPolicyForPost({ blog_id: 'stockpulse', slug: 'old-report', status: 'live', lifecycle_status: 'consolidated' }),

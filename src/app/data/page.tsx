@@ -44,7 +44,7 @@ export default async function DataPage() {
         </section>
 
         <section className="mt-10" aria-labelledby="data-feeds-heading">
-          <div className="mb-4"><h2 id="data-feeds-heading" className="text-xl font-bold">Feeds</h2><p className="mt-1 text-sm text-muted-foreground">자동 수집·정리·발행되는 정보</p></div>
+          <div className="mb-4"><h2 id="data-feeds-heading" className="text-xl font-bold">Publications & Trackers</h2><p className="mt-1 text-sm text-muted-foreground">자동 수집·정리되거나 외부 publication으로 연결되는 정보</p></div>
           <div className="grid gap-4 lg:grid-cols-2">
             {snapshot.aiTech && <DataServiceCard
               title="AI Tech"
@@ -60,15 +60,15 @@ export default async function DataPage() {
             />}
             <DataServiceCard
               title="StockPulse"
-              type="Feed"
-              description="KOSPI/KOSDAQ 시장 데이터를 기반으로 자동 생성되는 아침·장 마감 분석 Feed입니다. 별도의 Data와 자기개선 Experiment가 함께 연결됩니다."
-              updateDescription="장중 데이터 수집 → 시장 분석 → Feed 발행"
+              type="Publication"
+              description="GitHub Pages에서 제공하는 StockPulse Daily Morning·Market Close publication입니다. DevSnack의 /stock은 현재 상태·archive·외부 원문을 연결하는 Hub입니다."
+              updateDescription="GitHub Pages publication · v1 archive · v2 재설계 전 발행 중단"
               lastUpdated={formatDate(snapshot.stockPulse?.updated || snapshot.stockPulse?.published)}
-              latestTitle={snapshot.stockPulse?.title}
+              latestTitle={snapshot.stockPulse?.title || 'GitHub Pages StockPulse publication'}
               href="/stock"
-              provenance="Automated market analysis"
+              provenance="External daily market publication"
               relatedHref="/labs/stockpulse-ai-self-improvement"
-              relatedLabel="Self-Improvement Experiment"
+              relatedLabel="StockPulse v1 결과"
             />
             <DataServiceCard
               title="DevSnack 모델 사용량"

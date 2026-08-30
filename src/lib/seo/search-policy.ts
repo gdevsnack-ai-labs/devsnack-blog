@@ -41,6 +41,7 @@ export const SEARCH_POLICY_OVERRIDES: Readonly<Record<string, { policy: SearchPo
 const PRIVATE_PATHS = ['/admin', '/api']
 const NOINDEX_PATH_REASONS: Readonly<Record<string, string>> = {
   '/search': 'utility_search_results',
+  '/stock': 'stockpulse_external_publication_gateway',
   '/tools/operations': 'public_operations_transparency_without_search_landing_value',
   '/links': 'utility_directory',
   '/data/hermes-usage': 'aggregate_telemetry_utility',
@@ -133,6 +134,9 @@ function automaticPostDecision(post: SearchPolicyPostLike): SearchPolicyDecision
   }
   if (post.blog_id === 'stockpulse' && post.lifecycle_status === 'consolidated') {
     return decision('noindex', 'stockpulse_consolidated_history', 'automatic')
+  }
+  if (post.blog_id === 'stockpulse' && post.lifecycle_status === 'archived') {
+    return decision('noindex', 'stockpulse_external_publication_archive', 'automatic')
   }
   if (post.blog_id === 'lab' && post.slug?.startsWith('stockpulse-self-')) {
     return decision('noindex', 'stockpulse_daily_raw_lab_note', 'automatic')

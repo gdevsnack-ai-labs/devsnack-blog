@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, FileText, Video, ExternalLink, CheckCircle2, Sparkles, Calendar, Clock } from 'lucide-react'
 import { ProgressBar } from '@/components/progress-bar'
@@ -11,6 +11,7 @@ import { postHref } from '@/config/site-catalog'
 import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 import { searchPolicyForPost } from '@/lib/seo/search-policy'
+import { getStockPulseWeeklyExternalNoteUrl } from '@/lib/stockpulse-migration'
 
 export const revalidate = 60
 export const dynamicParams = true
@@ -50,14 +51,6 @@ async function getBlogPosts(slugs: string[]) {
     .eq('status', 'live')
     .order('published', { ascending: false })
   return data || []
-}
-
-type DailyReport = {
-  slug: string
-  blog_id: string
-  title: string
-  published: string | null
-  excerpt: string | null
 }
 
 /** Render a lab blog post (blog_id='lab') */
@@ -149,19 +142,6 @@ async function ExperimentDetailPage({ id }: { id: string }) {
   if (!exp) notFound()
 
   const relatedPosts = await getBlogPosts(exp.blogPosts || [])
-
-  // StockPulse 자기개선 실험: 일별 분석 리포트 동적 조회
-  let dailyReports: DailyReport[] = []
-  if (id === 'stockpulse-ai-self-improvement') {
-    const { data } = await supabase
-      .from('posts')
-      .select('slug, blog_id, title, published, excerpt')
-      .like('slug', 'stockpulse-self-%')
-      .eq('status', 'live')
-      .order('published', { ascending: false })
-      .limit(50)
-    dailyReports = data || []
-  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -265,34 +245,6 @@ async function ExperimentDetailPage({ id }: { id: string }) {
           </div>
         )}
 
-        {/* 일별 분석 리포트 (동적) */}
-        {dailyReports.length > 0 && (
-          <section className="mb-8 border border-border rounded-xl p-5 bg-white dark:bg-gray-900">
-            <h2 className="text-lg font-bold mb-4">📋 일별 분석 리포트</h2>
-            <div className="space-y-2">
-              {dailyReports.map(post => (
-                <Link
-                  key={post.slug}
-                  href={`/lab/${post.slug}`}
-                  className="flex items-center justify-between gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors no-underline group"
-                >
-                  <div className="flex-1 min-w-0">
-                    <span className="text-sm font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
-                      {post.title}
-                    </span>
-                    {post.excerpt && (
-                      <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{post.excerpt}</p>
-                    )}
-                  </div>
-                  <span className="text-xs text-muted-foreground shrink-0">
-                    {post.published ? new Date(post.published).toLocaleDateString('ko-KR') : ''}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
         <section className="mb-8 border border-border rounded-xl p-5 bg-white dark:bg-gray-900">
           <h2 className="text-lg font-bold mb-4">🔗 Links</h2>
           <div className="flex flex-wrap gap-3">
@@ -341,6 +293,10 @@ async function ExperimentDetailPage({ id }: { id: string }) {
 // ── Metadata: legacy lab content and legacy experiment route ──
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
+  const weeklyExternalUrl = getStockPulseWeeklyExternalNoteUrl(id)
+  if (weeklyExternalUrl) {
+    return { title: 'StockPulse Weekly Lab Note', robots: { index: false, follow: false } }
+  }
   const experiment = experiments.find(e => e.id === id)
   if (experiment) {
     return buildRouteMetadata({
@@ -371,6 +327,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 // ── Main: experiment first, fallback to lab blog post ──
 export default async function LabDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
+
+  // Weekly StockPulse Lab Note is preserved on the external publication.
+  const weeklyExternalUrl = getStockPulseWeeklyExternalNoteUrl(id)
+  if (weeklyExternalUrl) permanentRedirect(weeklyExternalUrl)
 
   // 1) 실험 상세 페이지 시도
   const exp = experiments.find(e => e.id === id)

@@ -1,0 +1,1750 @@
+{
+  "audit": {
+    "audited_at": "2026-08-30T23:20:06+09:00",
+    "mode": "read_only_inventory_and_strategy",
+    "execution_performed": false,
+    "sources": [
+      "Supabase posts/predictions read-only REST queries",
+      "Vercel production route read-back",
+      "devsnack-blog source tree and existing AI Tech migration result",
+      "devsnack-research-notes README and repository inventory",
+      "Hermes StockPulse cron list and output artifacts"
+    ]
+  },
+  "current_state": {
+    "stockpulse_posts_http": 200,
+    "stockpulse_post_count": 68,
+    "stockpulse_posts_by_lifecycle": {
+      "live": 60,
+      "consolidated": 8
+    },
+    "stockpulse_posts_current_snapshot_count": 60,
+    "stockpulse_posts_by_report_type": {
+      "close": 24,
+      "daily": 12,
+      "morning": 32
+    },
+    "stockpulse_duplicate_date_type_groups": {
+      "2026-08-26:morning": 2
+    },
+    "stockpulse_missing_expected_close_dates": [
+      "2026-08-27"
+    ],
+    "lab_posts_http": 200,
+    "lab_stockpulse_count": 27,
+    "lab_by_kind": {
+      "daily": 26,
+      "weekly": 1
+    },
+    "predictions": {
+      "http": 200,
+      "count": 54,
+      "by_session": {
+        "morning": 28,
+        "ml": 26
+      },
+      "date_start": "2026-07-21",
+      "date_end": "2026-08-27",
+      "unscored": 4,
+      "latest_unscored": [
+        {
+          "id": 38,
+          "date": "2026-08-05",
+          "session": "ml"
+        },
+        {
+          "id": 62,
+          "date": "2026-08-17",
+          "session": "morning"
+        },
+        {
+          "id": 89,
+          "date": "2026-08-27",
+          "session": "ml"
+        },
+        {
+          "id": 88,
+          "date": "2026-08-27",
+          "session": "morning"
+        }
+      ]
+    },
+    "current_local_snapshot": {
+      "path": "src/data/stockpulse-snapshot.json",
+      "posts": 60,
+      "schema_version": 1
+    },
+    "current_production_readback": {
+      "/stock": {
+        "http": 200,
+        "snapshot_list_embedded": true
+      },
+      "/stock/2026-08-27": {
+        "http": 200,
+        "direct_detail_accessible": true
+      },
+      "/labs/stockpulse-ai-self-improvement": {
+        "http": 200,
+        "feed_outputs_visible": true,
+        "daily_lab_notes_merged": true
+      },
+      "/sitemap.xml": {
+        "http": 200
+      },
+      "/rss.xml": {
+        "http": 200
+      }
+    },
+    "cron_state": {
+      "paused_jobs": [
+        "b13f779ae769",
+        "bd8b3aa4186c",
+        "c2e1f1ff268d",
+        "84ed0ec5fa7e",
+        "4f9a8a55d11e",
+        "75f373fb1076"
+      ],
+      "active_job": [
+        "0542ee03fb85"
+      ],
+      "paused_at": "2026-08-28T00:13:47+09:00 (approximately; per-job timestamps differ by seconds)",
+      "resume_performed": false
+    },
+    "source_acquisition_blocker": {
+      "configured_search_backend": "searxng",
+      "configured_extract_backend": "firecrawl",
+      "live_extract_probe": "failed: local Firecrawl endpoint 127.0.0.1:3002 refused connection",
+      "implication": "v2 must either pass an extract-service health gate or forbid web_extract and use bounded search/local data; no job resume until chosen path is verified"
+    }
+  },
+  "stockpulse_daily_report_inventory": [
+    {
+      "id": 40,
+      "slug": "8300-2-9-kospi-8300-breakdown",
+      "title": "코스피 8300선 붕괴 2% 급락 국민연금 리밸런싱 - KOSPI 8300 Breakdown",
+      "published": "2026-07-06T08:28:58+00:00",
+      "updated": "2026-07-18T16:23:51.491555+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-02",
+      "report_type": "daily",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 25509,
+      "external_target": "reports/2026-07-02/daily/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy general daily report; original type marker was not preserved",
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 39,
+      "slug": "511p-8000-26-kospi-8000-defense",
+      "title": "코스피 8000선 사수 약보합 마감 개인 2.6조 매수 - KOSPI 8000 Defense",
+      "published": "2026-07-06T08:29:03+00:00",
+      "updated": "2026-07-18T16:23:51.193137+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-06",
+      "report_type": "daily",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 18983,
+      "external_target": "reports/2026-07-06/daily/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy general daily report; original type marker was not preserved",
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 38,
+      "slug": "491-7389-314-kospi-7656-foreign-sell",
+      "title": "코스피 4.91% 급락 장중 7389선 붕괴 개인 3.14조 매수 - KOSPI 7656 Foreign Sell",
+      "published": "2026-07-07T08:00:51+00:00",
+      "updated": "2026-07-18T16:23:50.862427+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-07",
+      "report_type": "daily",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 25100,
+      "external_target": "reports/2026-07-07/daily/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy general daily report; original type marker was not preserved",
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 37,
+      "slug": "7246-535-2-kospi-7246",
+      "title": "코스피 7246선 뚫려 5.35% 폭락 외국인 2조 대량 매도 - KOSPI 7246",
+      "published": "2026-07-08T08:37:16+00:00",
+      "updated": "2026-07-18T16:23:50.533626+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-08",
+      "report_type": "daily",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 29475,
+      "external_target": "reports/2026-07-08/daily/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy general daily report; original type marker was not preserved",
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 36,
+      "slug": "7291-3-kospi-7291-roll",
+      "title": "코스피 롤러코스터 7291 마감 미·이란 충돌 충격에도 3연속 낙 후 반등 - KOSPI 7291 Roll",
+      "published": "2026-07-09T08:00:44+00:00",
+      "updated": "2026-07-18T16:23:50.193287+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-09",
+      "report_type": "daily",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 26286,
+      "external_target": "reports/2026-07-09/daily/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy general daily report; original type marker was not preserved",
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 35,
+      "slug": "252-7475-547-kospi-7475-recovery",
+      "title": "코스피 2.52% 반등 7475선 복귀 코스닥 5.47% 급락 - KOSPI 7475 Recovery",
+      "published": "2026-07-10T08:01:05+00:00",
+      "updated": "2026-07-18T16:23:49.866371+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-10",
+      "report_type": "daily",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 22980,
+      "external_target": "reports/2026-07-10/daily/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy general daily report; original type marker was not preserved",
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 34,
+      "slug": "252-7475-18-kospi-7476-morning-brief",
+      "title": "☀️ 코스피 2.52% 반등 7475선 회복 공포지수 18점 오늘 반등 주도할 종목은? - KOSPI 7476 Morning Brief",
+      "published": "2026-07-13T00:00:19+00:00",
+      "updated": "2026-07-18T16:23:49.574394+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-13",
+      "report_type": "morning",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 25155,
+      "external_target": "/reports/2026-07-13/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 33,
+      "slug": "895-6800-kospi-6800-crash",
+      "title": "코스피 8.95% 폭락 6800대 추락 서킷브레이커 발동 - KOSPI 6800 Crash",
+      "published": "2026-07-13T08:00:28+00:00",
+      "updated": "2026-07-18T16:23:49.248847+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-13",
+      "report_type": "daily",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 19608,
+      "external_target": "reports/2026-07-13/daily/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy general daily report; original type marker was not preserved",
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 32,
+      "slug": "895-6800-kospi-6800-morning-brief",
+      "title": "☀️ 코스피 8.95% 폭락 6800선 붕괴 오늘 반등 가능할까 - KOSPI 6800 Morning Brief",
+      "published": "2026-07-14T00:00:48+00:00",
+      "updated": "2026-07-18T16:23:48.92608+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-14",
+      "report_type": "morning",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 25187,
+      "external_target": "/reports/2026-07-14/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 31,
+      "slug": "6856-749-kospi-6856-recovery",
+      "title": "코스피 6856선 회복 코스닥 연중최저 749선 붕괴 - KOSPI 6856 Recovery",
+      "published": "2026-07-14T08:00:57+00:00",
+      "updated": "2026-07-18T16:23:48.49513+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-14",
+      "report_type": "daily",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 33015,
+      "external_target": "reports/2026-07-14/daily/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy general daily report; original type marker was not preserved",
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 30,
+      "slug": "685683-20-7000-kospi-6856-morning-brief",
+      "title": "☀️ 코스피 6,856.83선 반등 공포지수 20 오늘 7,000선 도전 - KOSPI 6856 Morning Brief",
+      "published": "2026-07-15T00:00:15+00:00",
+      "updated": "2026-07-18T16:23:48.163104+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-15",
+      "report_type": "morning",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 22214,
+      "external_target": "/reports/2026-07-15/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 29,
+      "slug": "6-7284-33-kospi-7284-surge",
+      "title": "코스피 6%대 폭등 7284선 기록 33조원 거래량 - KOSPI 7284 Surge",
+      "published": "2026-07-15T08:00:25+00:00",
+      "updated": "2026-07-18T16:23:47.829037+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-15",
+      "report_type": "daily",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 34160,
+      "external_target": "reports/2026-07-15/daily/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy general daily report; original type marker was not preserved",
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 28,
+      "slug": "7284-20-kospi-7284-morning-brief",
+      "title": "☀️ 코스피 7284선 회복 공포지수 20 반등세 지속될까 - KOSPI 7284 Morning Brief",
+      "published": "2026-07-16T00:01:05+00:00",
+      "updated": "2026-07-18T16:23:47.465802+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-16",
+      "report_type": "morning",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 28404,
+      "external_target": "/reports/2026-07-16/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 27,
+      "slug": "637-6820-kospi-6820-637-drop",
+      "title": "코스피 6.37% 폭락 6820선 마감 개인 대량 순매수세 - KOSPI 6820 6.37% Drop",
+      "published": "2026-07-16T08:00:12+00:00",
+      "updated": "2026-07-18T16:23:47.111188+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-16",
+      "report_type": "daily",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 24833,
+      "external_target": "reports/2026-07-16/daily/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy general daily report; original type marker was not preserved",
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 448,
+      "slug": "6820-637-kospi-6820-morning-brief",
+      "title": "☀️ 오늘의 증시: 코스피 6820선 붕괴 -6.37% 대폭락 반등 시한은 - KOSPI 6820 Morning Brief",
+      "published": "2026-07-20T01:28:11+00:00",
+      "updated": "2026-07-20T01:28:12.477647+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-20",
+      "report_type": "morning",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 25007,
+      "external_target": "/reports/2026-07-20/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 451,
+      "slug": "446-6500-9191-kospi-6516-drop",
+      "title": "코스피 4.46% 폭락 6500선 붕괴 기관 9191억 순매도 - KOSPI 6516 Drop",
+      "published": "2026-07-20T08:23:43+00:00",
+      "updated": "2026-07-20T08:23:44.2867+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-20",
+      "report_type": "daily",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 24574,
+      "external_target": "reports/2026-07-20/daily/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy general daily report; original type marker was not preserved",
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 452,
+      "slug": "6516-16-morning-brief",
+      "title": "☀️ 오늘의 증시: 코스피 6,516포인트 대폭락 공포지수 16 Morning Brief",
+      "published": "2026-07-21T00:00:34+00:00",
+      "updated": "2026-07-21T00:00:35.835232+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-21",
+      "report_type": "morning",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 24278,
+      "external_target": "/reports/2026-07-21/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 455,
+      "slug": "6748-356-kospi-6748-surge",
+      "title": "코스피 6,748원 3.56% 폭등 외국인·기관 쌍끌이 매수 - KOSPI 6748 Surge",
+      "published": "2026-07-21T08:00:41+00:00",
+      "updated": "2026-07-21T08:00:42.572747+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-21",
+      "report_type": "daily",
+      "date_source": "content",
+      "provenance_session": null,
+      "content_chars": 16045,
+      "external_target": "reports/2026-07-21/daily/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "legacy general daily report; original type marker was not preserved",
+        "legacy slug had no ISO date; report date parsed from article body"
+      ]
+    },
+    {
+      "id": 458,
+      "slug": "2026-07-22-356-6700-12-kospi-6700",
+      "title": "2026-07-22 오늘의 주식 예측 - 코스피 3.56% 급등, 6700선 회복但 이격도 -12% - KOSPI 6700 Morning Brief",
+      "published": "2026-07-21T15:00:00+00:00",
+      "updated": "2026-07-21T23:48:36.465768+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-22",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 25504,
+      "external_target": "/reports/2026-07-22/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 461,
+      "slug": "2026-07-22-kospi-marketclose",
+      "title": "2026-07-22 오늘의 주식 시황 분석 - 시장 분석 리포트 - KOSPI MarketClose",
+      "published": "2026-07-22T09:59:58+00:00",
+      "updated": "2026-07-22T10:00:00.508642+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-22",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 19886,
+      "external_target": "/reports/2026-07-22/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 463,
+      "slug": "2026-07-23-679770pt-074-23",
+      "title": "2026-07-23 오늘의 주식 예측 - 코스피 6,797.70pt (+0.74%) 반등, 공포지수 23 기록",
+      "published": "2026-07-22T23:30:50+00:00",
+      "updated": "2026-07-22T23:30:51.319854+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-23",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 23317,
+      "external_target": "/reports/2026-07-23/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 466,
+      "slug": "2026-07-23-440-7-5",
+      "title": "2026-07-23 오늘의 주식 시황 분석 - 코스피 4.40% 급등 7천선 복귀, 코스닥 5%대 동반 강세",
+      "published": "2026-07-23T07:30:56+00:00",
+      "updated": "2026-07-23T07:30:58.48232+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-23",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 30292,
+      "external_target": "/reports/2026-07-23/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 469,
+      "slug": "2026-07-24-7097-6950",
+      "title": "2026-07-24 오늘의 주식 예측 - 코스피 7,097선 소회 실패…6,950선 테스트",
+      "published": "2026-07-23T23:30:20+00:00",
+      "updated": "2026-07-23T23:30:20.889551+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-24",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 11560,
+      "external_target": "/reports/2026-07-24/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 472,
+      "slug": "2026-07-24-572-6690-7000-kospi-6690",
+      "title": "2026-07-24 오늘의 주식 시황 분석 - 코스피 5.72% 폭락 6690선 마감, 7000선 붕괴 - KOSPI 6690 Market Close",
+      "published": "2026-07-24T07:33:23+00:00",
+      "updated": "2026-07-24T07:33:24.760307+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-24",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 20843,
+      "external_target": "/reports/2026-07-24/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 476,
+      "slug": "2026-07-27-572-6500-kospi-6500-morning",
+      "title": "2026-07-27 오늘의 주식 예측 - 코스피, 전일 5.72% 폭락 후 6500선 방어를 위한 약세 장세 전망 - KOSPI 6500 Morning Brief",
+      "published": "2026-07-26T23:30:14+00:00",
+      "updated": "2026-07-26T23:30:15.713414+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-27",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 12830,
+      "external_target": "/reports/2026-07-27/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 479,
+      "slug": "2026-07-27-6755",
+      "title": "2026-07-27 오늘의 주식 시황 분석 - 코스피 6,755선 회복…전일 반등세 이어져",
+      "published": "2026-07-27T07:31:22+00:00",
+      "updated": "2026-07-27T07:31:24.105288+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-27",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 38192,
+      "external_target": "/reports/2026-07-27/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 481,
+      "slug": "2026-07-28-66006800-fomc",
+      "title": "2026-07-28 오늘의 주식 예측 - 코스피 6,600~6,800 보합권, FOMC 경계감에 상단 저항",
+      "published": "2026-07-27T23:30:42+00:00",
+      "updated": "2026-07-27T23:30:43.191722+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-28",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 13474,
+      "external_target": "/reports/2026-07-28/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 484,
+      "slug": "2026-07-28-1084-6000-kospi-6000-market",
+      "title": "2026-07-28 오늘의 주식 시황 분석 - 코스피 10.84% 폭락, 6000선 붕괴 및 양서킷브레이커 발동 - KOSPI 6000 Market Close",
+      "published": "2026-07-28T07:31:55+00:00",
+      "updated": "2026-07-28T07:31:56.968792+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-28",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 24873,
+      "external_target": "/reports/2026-07-28/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 487,
+      "slug": "2026-07-29-6023-19",
+      "title": "2026-07-29 오늘의 주식 예측 - 코스피 6,023선 회복세, 공탐 19로 기술적 반등 기대",
+      "published": "2026-07-29T03:35:01+00:00",
+      "updated": "2026-07-29T03:35:02.074299+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-29",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 17295,
+      "external_target": "/reports/2026-07-29/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 488,
+      "slug": "2026-07-29-598-6000-kospi-6000-market",
+      "title": "2026-07-29 오늘의 주식 시황 분석 - 코스피 5.98% 폭락, 6000선 완전 붕괴 - KOSPI 6000 Market Close",
+      "published": "2026-07-29T07:44:56+00:00",
+      "updated": "2026-07-29T07:44:59.026777+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-29",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 20247,
+      "external_target": "/reports/2026-07-29/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 491,
+      "slug": "2026-07-31-5590-5850-kospi-5590-morning",
+      "title": "2026-07-31 오늘의 주식 예측 - 코스피 5590선에서 반등, 5850 선상승 전망 - KOSPI 5590 Morning Brief",
+      "published": "2026-07-31T06:08:53+00:00",
+      "updated": "2026-07-31T06:08:54.130686+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-31",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 13294,
+      "external_target": "/reports/2026-07-31/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 492,
+      "slug": "2026-07-31-1791-6500-kospi-6500-market",
+      "title": "2026-07-31 오늘의 주식 시황 분석 - 코스피 +17.91% 폭등, 6500선 회복 - KOSPI 6500 Market Close",
+      "published": "2026-07-31T11:47:56+00:00",
+      "updated": "2026-07-31T11:47:58.827262+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-07-31",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 23582,
+      "external_target": "/reports/2026-07-31/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 499,
+      "slug": "2026-08-03-1791-6300-kospi-6300-morning",
+      "title": "2026-08-03 오늘의 주식 예측 - 코스피 17.91% 폭등 후 6300선 붕괴 예상 - KOSPI 6300 Morning Brief",
+      "published": "2026-08-02T23:30:59+00:00",
+      "updated": "2026-08-02T23:31:00.103411+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-03",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 25978,
+      "external_target": "/reports/2026-08-03/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 502,
+      "slug": "2026-08-03-512-6200-244-kospi-6200",
+      "title": "2026-08-03 오늘의 주식 시황 분석 - 코스피 -5.12% 6200선 붕괴, 코스닥은 +2.44% 상승 - KOSPI 6200 Market Close",
+      "published": "2026-08-03T07:37:16+00:00",
+      "updated": "2026-08-03T07:37:17.996042+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-03",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 38096,
+      "external_target": "/reports/2026-08-03/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 504,
+      "slug": "2026-08-04-63006500-kospi-6300-morning",
+      "title": "2026-08-04 오늘의 주식 예측 - 코스피 6300~6500선 도전 전일 강세 반등 - KOSPI 6300 Morning Brief",
+      "published": "2026-08-03T23:30:29+00:00",
+      "updated": "2026-08-03T23:30:30.81669+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-04",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 13924,
+      "external_target": "/reports/2026-08-04/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 506,
+      "slug": "2026-08-04-162-3-780",
+      "title": "2026-08-04 오늘의 주식 시황 분석 - 코스피 1.62% 상승, 코스닥 3연승에 780선 회복",
+      "published": "2026-08-04T07:32:53+00:00",
+      "updated": "2026-08-04T07:32:55.216855+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-04",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 27287,
+      "external_target": "/reports/2026-08-04/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 511,
+      "slug": "2026-08-05-376-6600",
+      "title": "2026-08-05 오늘의 주식 시황 분석 - 코스피 3.76% 급등 6,600선 회복, 매수 사이드카 발동",
+      "published": "2026-08-05T07:37:40+00:00",
+      "updated": "2026-08-05T07:37:41.809987+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-05",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 29937,
+      "external_target": "/reports/2026-08-05/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 513,
+      "slug": "2026-08-05-6623-kospi-6623-morning-brief",
+      "title": "2026-08-05 오늘의 주식 예측 - 코스피 6623선 돌파, 상승세 지속 전망 - KOSPI 6623 Morning Brief",
+      "published": "2026-08-05T08:18:53+00:00",
+      "updated": "2026-08-05T08:18:53.581593+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-05",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 3303,
+      "external_target": "/reports/2026-08-05/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 514,
+      "slug": "2026-08-06-6598-kospi-6598-morning-brief",
+      "title": "2026-08-06 오늘의 주식 예측 - 코스피 6598선 돌파, 보합권 회복 전망 - KOSPI 6598 Morning Brief",
+      "published": "2026-08-05T23:30:45+00:00",
+      "updated": "2026-08-05T23:30:46.025741+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-06",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 19356,
+      "external_target": "/reports/2026-08-06/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 517,
+      "slug": "2026-08-06-458-6238-800-kospi-6238",
+      "title": "2026-08-06 오늘의 주식 시황 분석 - 코스피 -4.58% 폭락 6238선 붕괴, 코스닥은 800선 탈출 - KOSPI 6238 Market Close",
+      "published": "2026-08-06T07:33:30+00:00",
+      "updated": "2026-08-06T07:33:31.769872+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-06",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 29780,
+      "external_target": "/reports/2026-08-06/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 519,
+      "slug": "2026-08-07-6296-63006450-kospi-6296",
+      "title": "2026-08-07 오늘의 주식 예측 - 코스피 6296 종가, 6300~6450 상승 전망 - KOSPI 6296 Morning Brief",
+      "published": "2026-08-06T23:30:47+00:00",
+      "updated": "2026-08-06T23:30:48.903137+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-07",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 29948,
+      "external_target": "/reports/2026-08-07/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 523,
+      "slug": "2026-08-07-6258-6158-kospi-6258-market",
+      "title": "2026-08-07 오늘의 주식 시황 분석 - 코스피 6258선 마감, 6158선까지 급락 - KOSPI 6258 Market Close",
+      "published": "2026-08-07T08:47:22+00:00",
+      "updated": "2026-08-07T08:47:23.251359+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-07",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 35570,
+      "external_target": "/reports/2026-08-07/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 684,
+      "slug": "2026-08-10-6300-sox-kospi-6300-morning",
+      "title": "2026-08-10 오늘의 주식 예측 - 코스피 6300선 회복, SOX 반도체 상승 모멘텀 - KOSPI 6300 Morning Brief",
+      "published": "2026-08-09T23:31:00+00:00",
+      "updated": "2026-08-09T23:31:01.315411+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-10",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 19325,
+      "external_target": "/reports/2026-08-10/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 687,
+      "slug": "2026-08-10-6300-7-1418-kospi-6300",
+      "title": "2026-08-10 오늘의 주식 시황 분석 - 코스피 6300선 회복…코스닥 7% 급등, 환율 1418원 안착 - KOSPI 6300 Market Close",
+      "published": "2026-08-10T07:32:38+00:00",
+      "updated": "2026-08-10T07:32:39.759956+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-10",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 29939,
+      "external_target": "/reports/2026-08-10/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 689,
+      "slug": "2026-08-11-6200-sox-kospi-6200-morning",
+      "title": "2026-08-11 오늘의 주식 예측 - 코스피 6200선 붕괴 예상, SOX 연동 하락세 - KOSPI 6200 Morning Brief",
+      "published": "2026-08-10T23:30:54+00:00",
+      "updated": "2026-08-10T23:30:55.76496+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-11",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 25828,
+      "external_target": "/reports/2026-08-11/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 692,
+      "slug": "2026-08-11-073-6345-kospi-6345-market",
+      "title": "2026-08-11 오늘의 주식 시황 분석 - 코스피 0.73% 상승 6345선 회복..수출 호조에 반도체 급등 - KOSPI 6345 Market Close",
+      "published": "2026-08-11T07:34:02+00:00",
+      "updated": "2026-08-11T07:34:04.516238+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-11",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 31146,
+      "external_target": "/reports/2026-08-11/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 777,
+      "slug": "2026-08-12-6420-kospi-6420-morning-brief",
+      "title": "2026-08-12 오늘의 주식 예측 - 코스피 6420선 상방 한계, 보합권 장세 예상 - KOSPI 6420 Morning Brief",
+      "published": "2026-08-11T23:30:35+00:00",
+      "updated": "2026-08-11T23:30:36.125565+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-12",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 27775,
+      "external_target": "/reports/2026-08-12/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 780,
+      "slug": "2026-08-12-368-28",
+      "title": "2026-08-12 오늘의 주식 시황 분석 - 코스피 3.68% 급등·외인 2.8조 매수",
+      "published": "2026-08-12T07:36:39+00:00",
+      "updated": "2026-08-12T07:36:41.734855+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-12",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 26902,
+      "external_target": "/reports/2026-08-12/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 900,
+      "slug": "2026-08-13-60-6600-6720-kospi-6600",
+      "title": "2026-08-13 오늘의 주식 예측 - 코스피 상승 60% 확률, 6600-6720선 도전 - KOSPI 6600 Morning Brief",
+      "published": "2026-08-12T23:31:04+00:00",
+      "updated": "2026-08-12T23:31:05.62192+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-13",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 30500,
+      "external_target": "/reports/2026-08-13/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 1247,
+      "slug": "2026-08-13-6800-kospi-6800-market-close",
+      "title": "2026-08-13 오늘의 주식 시황 분석 - 코스피 6800선 회복·나흘연 상승세 - KOSPI 6800 Market Close",
+      "published": "2026-08-13T07:32:27+00:00",
+      "updated": "2026-08-13T07:32:29.171466+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-13",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 28771,
+      "external_target": "/reports/2026-08-13/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 1448,
+      "slug": "2026-08-14-6813",
+      "title": "2026-08-14 오늘의 주식 예측 - 코스피 6,813선 마감, 연휴 전 갭상승 후 보합세 기대",
+      "published": "2026-08-13T23:30:30+00:00",
+      "updated": "2026-08-13T23:30:31.283867+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-14",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 12419,
+      "external_target": "/reports/2026-08-14/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 1689,
+      "slug": "2026-08-14-7000-6977",
+      "title": "2026-08-14 오늘의 주식 시황 분석 - 코스피 7,000선 붕괴 후 반등 실패 6,977선 마감",
+      "published": "2026-08-14T07:32:57+00:00",
+      "updated": "2026-08-14T07:32:58.198531+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-14",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 30111,
+      "external_target": "/reports/2026-08-14/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 2723,
+      "slug": "2026-08-18-7000-69507100-kospi-7000",
+      "title": "2026-08-18 오늘의 주식 예측 - 코스피 7000선 붕괴, 6950~7100 구간 방어 - KOSPI 7000 Morning Brief",
+      "published": "2026-08-17T23:30:46+00:00",
+      "updated": "2026-08-17T23:30:47.535533+00:00",
+      "status": "live",
+      "lifecycle_status": "consolidated",
+      "report_date": "2026-08-18",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 21903,
+      "external_target": "/reports/2026-08-18/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "already excluded from current /stock snapshot; still archive externally"
+      ]
+    },
+    {
+      "id": 2728,
+      "slug": "2026-08-18-155-6869-kospi-6869-market_01042512239",
+      "title": "2026-08-18 오늘의 주식 시황 분석 - 코스피 1.55% 하락 6869선 마감, 전강후약 변동성 장 - KOSPI 6869 Market Close",
+      "published": "2026-08-18T08:13:03+00:00",
+      "updated": "2026-08-18T08:13:04.24387+00:00",
+      "status": "live",
+      "lifecycle_status": "consolidated",
+      "report_date": "2026-08-18",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 23721,
+      "external_target": "/reports/2026-08-18/close/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "already excluded from current /stock snapshot; still archive externally"
+      ]
+    },
+    {
+      "id": 2731,
+      "slug": "2026-08-19-6750-sox",
+      "title": "2026-08-19 오늘의 주식 예측 - 코스피 6,750선 방어 실패, SOX 급락에 외인 매도 우려",
+      "published": "2026-08-18T23:30:18+00:00",
+      "updated": "2026-08-18T23:30:18.767405+00:00",
+      "status": "live",
+      "lifecycle_status": "consolidated",
+      "report_date": "2026-08-19",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 2392,
+      "external_target": "/reports/2026-08-19/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "already excluded from current /stock snapshot; still archive externally"
+      ]
+    },
+    {
+      "id": 2854,
+      "slug": "2026-08-19-580-6471-kospi-6471-market",
+      "title": "2026-08-19 오늘의 주식 시황 분석 - 코스피 5.80% 폭락 6471선 붕괴 - KOSPI 6471 Market Close",
+      "published": "2026-08-19T10:16:24+00:00",
+      "updated": "2026-08-19T10:16:25.780009+00:00",
+      "status": "live",
+      "lifecycle_status": "consolidated",
+      "report_date": "2026-08-19",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 27541,
+      "external_target": "/reports/2026-08-19/close/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "already excluded from current /stock snapshot; still archive externally"
+      ]
+    },
+    {
+      "id": 2896,
+      "slug": "2026-08-20-58-6400-kospi-6400-morning",
+      "title": "2026-08-20 오늘의 주식 예측 - 코스피 5.8% 폭락, 6400선 붕괴 직전 후퇴 - KOSPI 6400 Morning Brief",
+      "published": "2026-08-19T23:31:10+00:00",
+      "updated": "2026-08-19T23:31:11.167281+00:00",
+      "status": "live",
+      "lifecycle_status": "consolidated",
+      "report_date": "2026-08-20",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 9516,
+      "external_target": "/reports/2026-08-20/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "already excluded from current /stock snapshot; still archive externally"
+      ]
+    },
+    {
+      "id": 2981,
+      "slug": "2026-08-20-589-6852-kospi-6852-market",
+      "title": "2026-08-20 오늘의 주식 시황 분석 - 코스피 전일 대비 5.89% 급반등, 6852선 복귀 - KOSPI 6852 Market Close",
+      "published": "2026-08-20T07:30:28+00:00",
+      "updated": "2026-08-20T07:30:29.718958+00:00",
+      "status": "live",
+      "lifecycle_status": "consolidated",
+      "report_date": "2026-08-20",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 28086,
+      "external_target": "/reports/2026-08-20/close/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "already excluded from current /stock snapshot; still archive externally"
+      ]
+    },
+    {
+      "id": 3238,
+      "slug": "2026-08-21-589-6900-sk-kospi-6900",
+      "title": "2026-08-21 오늘의 주식 예측 - 코스피 5.89% 급등 6900선 돌파, 삼성전자·SK하이닉스 주도 - KOSPI 6900 Morning Brief",
+      "published": "2026-08-20T23:16:46+00:00",
+      "updated": "2026-08-20T23:16:47.058979+00:00",
+      "status": "live",
+      "lifecycle_status": "consolidated",
+      "report_date": "2026-08-21",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 9638,
+      "external_target": "/reports/2026-08-21/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "already excluded from current /stock snapshot; still archive externally"
+      ]
+    },
+    {
+      "id": 3249,
+      "slug": "2026-08-21-088-463",
+      "title": "2026-08-21 오늘의 주식 시황 분석 - 코스피 0.88% 반등, 코스닥 -4.63% 폭락",
+      "published": "2026-08-21T07:30:58+00:00",
+      "updated": "2026-08-21T07:31:00.14961+00:00",
+      "status": "live",
+      "lifecycle_status": "consolidated",
+      "report_date": "2026-08-21",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 30759,
+      "external_target": "/reports/2026-08-21/close/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "already excluded from current /stock snapshot; still archive externally"
+      ]
+    },
+    {
+      "id": 3261,
+      "slug": "2026-08-24-6900-kosdaq-800-kospi-6900",
+      "title": "2026-08-24 오늘의 주식 예측 - 코스피 6900선 회복, KOSDAQ 800선 붕괴 - KOSPI 6900 Morning Brief",
+      "published": "2026-08-23T23:05:38+00:00",
+      "updated": "2026-08-23T23:05:38.89705+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-24",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 6193,
+      "external_target": "/reports/2026-08-24/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 3267,
+      "slug": "2026-08-24-3-6600-kospi-6600-market",
+      "title": "2026-08-24 오늘의 주식 시황 분석 - 코스피 3% 급락 6600선 붕괴, 코스닥 순환매 반등 - KOSPI 6600 Market Close",
+      "published": "2026-08-24T07:31:21+00:00",
+      "updated": "2026-08-24T07:31:22.526618+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-24",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 25389,
+      "external_target": "/reports/2026-08-24/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 3271,
+      "slug": "2026-08-25-312-6700-kospi-6700-morning",
+      "title": "2026-08-25 오늘의 주식 예측 - 코스피 3.12% 폭락 6700선 붕괴, 코스닥은 반등 - KOSPI 6700 Morning Brief",
+      "published": "2026-08-24T23:07:37+00:00",
+      "updated": "2026-08-24T23:07:38.509261+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-25",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 10980,
+      "external_target": "/reports/2026-08-25/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 3274,
+      "slug": "2026-08-25-068-3",
+      "title": "2026-08-25 오늘의 주식 시황 분석 - 코스피 0.68% 반등, 외국인 3조매도 속 기관·개인 매수",
+      "published": "2026-08-25T07:31:05+00:00",
+      "updated": "2026-08-25T07:31:06.624091+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-25",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": null,
+      "content_chars": 25815,
+      "external_target": "/reports/2026-08-25/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 3283,
+      "slug": "2026-08-26-6400-6700-kospi-6400-morning-brief",
+      "title": "2026-08-26 오늘의 주식 예측 - 코스피 6400선 급락 후 반등 6700선 복귀 - KOSPI 6400 Morning Brief",
+      "published": "2026-08-25T23:05:30.624167+00:00",
+      "updated": "2026-08-25T23:05:30.624167+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-26",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": "morning",
+      "content_chars": 8851,
+      "external_target": "/reports/2026-08-26/morning/",
+      "migration_class": "duplicate_candidate",
+      "notes": [
+        "same report date/type has multiple source rows; preserve both and choose canonical after content comparison"
+      ]
+    },
+    {
+      "id": 3284,
+      "slug": "2026-08-26-6-742pt",
+      "title": "2026-08-26 오늘의 주식 예측 - 코스피 6,742pt 반등 마감, 외국인 순매도 지속",
+      "published": "2026-08-25T23:30:09.134657+00:00",
+      "updated": "2026-08-25T23:30:09.134657+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-26",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": "morning",
+      "content_chars": 3687,
+      "external_target": "/reports/2026-08-26/morning/",
+      "migration_class": "duplicate_candidate",
+      "notes": [
+        "same report date/type has multiple source rows; preserve both and choose canonical after content comparison"
+      ]
+    },
+    {
+      "id": 3288,
+      "slug": "2026-08-26-6-800",
+      "title": "2026-08-26 오늘의 주식 시황 분석 - 코스피 6,800선 회복…기관 매수 힘입어 반등",
+      "published": "2026-08-26T07:30:37.430623+00:00",
+      "updated": "2026-08-26T07:30:37.430623+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-26",
+      "report_type": "close",
+      "date_source": "slug",
+      "provenance_session": "evening",
+      "content_chars": 30491,
+      "external_target": "/reports/2026-08-26/close/",
+      "migration_class": "canonical_candidate",
+      "notes": []
+    },
+    {
+      "id": 3291,
+      "slug": "2026-08-27",
+      "title": "2026-08-27 오늘의 주식 예측 - 코스피 6800선 회복, 대형주 온도차 존재 - KOSPI 6800 Morning Brief",
+      "published": "2026-08-26T23:30:32.84035+00:00",
+      "updated": "2026-08-27T00:01:39.983633+00:00",
+      "status": "live",
+      "lifecycle_status": "live",
+      "report_date": "2026-08-27",
+      "report_type": "morning",
+      "date_source": "slug",
+      "provenance_session": "morning",
+      "content_chars": 3880,
+      "external_target": "/reports/2026-08-27/morning/",
+      "migration_class": "canonical_candidate",
+      "notes": [
+        "latest morning exists; corresponding close report is absent after upstream failure"
+      ]
+    }
+  ],
+  "stockpulse_experiment_inventory": {
+    "daily_lab_notes": [
+      {
+        "id": 456,
+        "slug": "stockpulse-self-2026-07-21",
+        "title": "StockPulse 자기개선 실험 — 2026-07-21 (❌ 실패)",
+        "published": "2026-07-21T12:38:56.705319+00:00",
+        "updated": "2026-07-21T12:38:56.824126+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 462,
+        "slug": "stockpulse-self-2026-07-22",
+        "title": "StockPulse 자기개선 실험 — 2026-07-22 (✅ 성공)",
+        "published": "2026-07-22T10:00:00+00:00",
+        "updated": "2026-07-22T10:11:49.642952+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 468,
+        "slug": "stockpulse-self-2026-07-23",
+        "title": "StockPulse 자기개선 실험 — 2026-07-23 (✅ 성공)",
+        "published": "2026-07-23T07:31:00+00:00",
+        "updated": "2026-07-23T09:02:33.003133+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 473,
+        "slug": "stockpulse-self-2026-07-24",
+        "title": "StockPulse 자기개선 실험 — 2026-07-24 (❌ 실패)",
+        "published": "2026-07-24T07:33:41.045979+00:00",
+        "updated": "2026-07-24T07:33:41.163705+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 480,
+        "slug": "stockpulse-self-2026-07-27",
+        "title": "StockPulse 자기개선 실험 — 2026-07-27 (❌ 실패)",
+        "published": "2026-07-27T07:31:46.701237+00:00",
+        "updated": "2026-07-27T07:31:46.903359+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 485,
+        "slug": "stockpulse-self-2026-07-28",
+        "title": "StockPulse 자기개선 실험 — 2026-07-28 (❌ 실패)",
+        "published": "2026-07-28T07:32:18.714936+00:00",
+        "updated": "2026-07-28T07:32:18.908363+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 489,
+        "slug": "stockpulse-self-2026-07-29",
+        "title": "StockPulse 자기개선 실험 — 2026-07-29 (❌ 실패)",
+        "published": "2026-07-29T07:45:16.437739+00:00",
+        "updated": "2026-07-29T07:45:16.579045+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 490,
+        "slug": "stockpulse-self-2026-07-30",
+        "title": "StockPulse 자기개선 실험 — 2026-07-30 (❌ 실패)",
+        "published": "2026-07-30T13:18:14.466278+00:00",
+        "updated": "2026-07-30T13:18:14.689791+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 493,
+        "slug": "stockpulse-self-2026-07-31",
+        "title": "StockPulse 자기개선 실험 — 2026-07-31 (✅ 성공)",
+        "published": "2026-07-31T11:48:21.773519+00:00",
+        "updated": "2026-07-31T11:48:22.011192+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 503,
+        "slug": "stockpulse-self-2026-08-03",
+        "title": "StockPulse 자기개선 실험 — 2026-08-03 (❌ 실패)",
+        "published": "2026-08-03T07:37:39.849228+00:00",
+        "updated": "2026-08-03T07:37:40.043546+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 507,
+        "slug": "stockpulse-self-2026-08-04",
+        "title": "StockPulse 자기개선 실험 — 2026-08-04 (✅ 성공)",
+        "published": "2026-08-04T07:33:17.018879+00:00",
+        "updated": "2026-08-04T07:33:17.144962+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 512,
+        "slug": "stockpulse-self-2026-08-05",
+        "title": "StockPulse 자기개선 실험 — 2026-08-05 (✅ 성공)",
+        "published": "2026-08-05T07:37:49.169991+00:00",
+        "updated": "2026-08-05T07:37:49.389365+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 518,
+        "slug": "stockpulse-self-2026-08-06",
+        "title": "StockPulse 자기개선 실험 — 2026-08-06 (❌ 실패)",
+        "published": "2026-08-06T07:33:58.416743+00:00",
+        "updated": "2026-08-06T07:33:58.715276+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 522,
+        "slug": "stockpulse-self-2026-08-07",
+        "title": "StockPulse 자기개선 실험 — 2026-08-07 (❌ 실패)",
+        "published": "2026-08-07T07:40:54.825597+00:00",
+        "updated": "2026-08-07T07:40:54.97589+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 688,
+        "slug": "stockpulse-self-2026-08-10",
+        "title": "StockPulse 자기개선 실험 — 2026-08-10 (✅ 성공)",
+        "published": "2026-08-10T07:33:03.87779+00:00",
+        "updated": "2026-08-10T07:33:04.00117+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 693,
+        "slug": "stockpulse-self-2026-08-11",
+        "title": "StockPulse 자기개선 실험 — 2026-08-11 (❌ 실패)",
+        "published": "2026-08-11T07:34:27.866496+00:00",
+        "updated": "2026-08-11T07:34:28.052424+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 781,
+        "slug": "stockpulse-self-2026-08-12",
+        "title": "StockPulse 자기개선 실험 — 2026-08-12 (❌ 실패)",
+        "published": "2026-08-12T07:37:04.973962+00:00",
+        "updated": "2026-08-12T07:37:05.197929+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 1248,
+        "slug": "stockpulse-self-2026-08-13",
+        "title": "StockPulse 자기개선 실험 — 2026-08-13 (✅ 성공)",
+        "published": "2026-08-13T07:32:54.215424+00:00",
+        "updated": "2026-08-13T07:32:54.351936+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 1690,
+        "slug": "stockpulse-self-2026-08-14",
+        "title": "StockPulse 자기개선 실험 — 2026-08-14 (❌ 실패)",
+        "published": "2026-08-14T07:33:19.724639+00:00",
+        "updated": "2026-08-14T07:33:19.908245+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 2727,
+        "slug": "stockpulse-self-2026-08-18",
+        "title": "StockPulse 자기개선 실험 — 2026-08-18 (❌ 실패)",
+        "published": "2026-08-18T08:12:18.052614+00:00",
+        "updated": "2026-08-18T08:12:18.181838+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 2851,
+        "slug": "stockpulse-self-2026-08-19",
+        "title": "StockPulse 자기개선 실험 — 2026-08-19 (✅ 성공)",
+        "published": "2026-08-19T07:31:27.776162+00:00",
+        "updated": "2026-08-19T07:31:27.907097+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 2982,
+        "slug": "stockpulse-self-2026-08-20",
+        "title": "StockPulse 자기개선 실험 — 2026-08-20 (❌ 실패)",
+        "published": "2026-08-20T07:30:48.791999+00:00",
+        "updated": "2026-08-21T17:15:05+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 3250,
+        "slug": "stockpulse-self-2026-08-21",
+        "title": "StockPulse 자기개선 실험 — 2026-08-21 (✅ 성공)",
+        "published": "2026-08-21T07:31:17.803423+00:00",
+        "updated": "2026-08-21T07:31:17.997712+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 3268,
+        "slug": "stockpulse-self-2026-08-24",
+        "title": "StockPulse 자기개선 실험 — 2026-08-24 (❌ 실패)",
+        "published": "2026-08-24T07:31:40.308179+00:00",
+        "updated": "2026-08-24T07:31:40.487991+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 3275,
+        "slug": "stockpulse-self-2026-08-25",
+        "title": "StockPulse 자기개선 실험 — 2026-08-25 (❌ 실패)",
+        "published": "2026-08-25T07:31:24.157695+00:00",
+        "updated": "2026-08-25T07:31:24.31823+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      },
+      {
+        "id": 3289,
+        "slug": "stockpulse-self-2026-08-26",
+        "title": "StockPulse 자기개선 실험 — 2026-08-26 (✅ 성공)",
+        "published": "2026-08-26T07:30:54.895948+00:00",
+        "updated": "2026-08-26T07:30:55.090632+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "daily",
+        "proposed_handling": "source_only_archive"
+      }
+    ],
+    "weekly_lab_notes": [
+      {
+        "id": 3290,
+        "slug": "stockpulse-weekly-2026-08-18",
+        "title": "StockPulse 주간 자기개선 실험 — 2026-08-18~2026-08-21",
+        "published": "2026-08-26T10:32:14.668625+00:00",
+        "updated": "2026-08-26T10:32:14.668625+00:00",
+        "status": "live",
+        "lifecycle_status": "live",
+        "kind": "weekly",
+        "proposed_handling": "external_weekly_migration_and_devsnack_compact_finding"
+      }
+    ],
+    "raw_predictions_policy": "retain and continue accumulating in Supabase/local telemetry; do not publish as Vercel daily Lab posts",
+    "daily_lab_policy": "do not create new independent daily Lab posts; existing notes are source material for external weekly notes or private archive"
+  },
+  "existing_artifact_inventory": [
+    {
+      "path": "/home/kahros/content-factory/ai_blogs/stockpulse/stockpulse_publish.py",
+      "role": "current Supabase/Vercel publisher; creates post rows and refreshes Vercel snapshot"
+    },
+    {
+      "path": "/home/kahros/content-factory/ai_blogs/stockpulse/apply_improvement.py",
+      "role": "raw improvement journal and prompt/ML/feature action application"
+    },
+    {
+      "path": "/home/kahros/workspace/vercel-blog/devsnack-blog/scripts/stockpulse_weekly.py",
+      "role": "deterministic Weekly Lab Note generator; currently renders links to Vercel daily posts"
+    },
+    {
+      "path": "/home/kahros/workspace/vercel-blog/devsnack-blog/scripts/stockpulse_weekly_pipeline.py",
+      "role": "Vercel/Supabase weekly publish and lifecycle transition pipeline; not a GitHub Pages publisher"
+    },
+    {
+      "path": "/home/kahros/workspace/vercel-blog/devsnack-blog/src/data/stockpulse-snapshot.json",
+      "role": "static /stock feed source; currently 60 posts"
+    },
+    {
+      "path": "/home/kahros/workspace/vercel-blog/devsnack-blog/src/app/stock/[slug]/page.tsx",
+      "role": "dynamic Vercel detail route; currently renders live stockpulse rows"
+    },
+    {
+      "path": "/home/kahros/workspace/vercel-blog/devsnack-blog/src/lib/ia/feed-projects.ts",
+      "role": "maps StockPulse feed to current self-improvement Lab project"
+    },
+    {
+      "path": "/home/kahros/workspace/vercel-blog/devsnack-blog/src/lib/ia/feed-output-projection.ts",
+      "role": "projects current StockPulse daily feed outputs into Lab pages"
+    },
+    {
+      "path": "/home/kahros/workspace/vercel-blog/devsnack-blog/src/data/experiments.ts",
+      "role": "current StockPulse project projection; still running at 88%"
+    },
+    {
+      "path": "/home/kahros/workspace/vercel-blog/devsnack-blog/src/lib/lab-note-projection.ts",
+      "role": "merges live daily/weekly Lab rows into project timeline"
+    },
+    {
+      "path": "/home/kahros/yura_workspace/projects/devsnack-research-notes/README.md",
+      "role": "existing GitHub Pages Research Notebook; explicitly excludes StockPulse/AITech output"
+    }
+  ],
+  "target_architecture": {
+    "recommended_publication_repo": "gdevsnack-ai-labs/stockpulse-publication (dedicated GitHub Pages repository; no local repo found yet)",
+    "why_not_research_notes": "Research Notebook README explicitly excludes StockPulse/AITech output and its UI contract is research notes, not a daily reading service",
+    "public_routes": [
+      "/",
+      "/reports/YYYY-MM-DD/morning/",
+      "/reports/YYYY-MM-DD/close/",
+      "/archive/YYYY/MM/",
+      "/about/"
+    ],
+    "publication_contract": [
+      "Morning Report",
+      "Market Close",
+      "general Daily Market Report",
+      "date-based archive",
+      "direction/confidence/range/key variables/market points",
+      "latest Morning/Close cards",
+      "readable responsive UI"
+    ],
+    "experiment_contract": [
+      "raw prediction/evaluation/action data remains accumulated",
+      "one Weekly Lab Note per completed week on GitHub Pages",
+      "DevSnack shows compact Weekly Experiment Result/Finding cards",
+      "Lab Notes Board links to external Weekly Lab Note",
+      "no new Vercel daily feed slug and no new independent daily Lab post"
+    ],
+    "v2_project_ids": {
+      "stockpulse_v1_completed_route": "stockpulse-ai-self-improvement",
+      "stockpulse_v2_recommended_route": "stockpulse-v2",
+      "ai_tech_v2_recommended_route": "ai-tech-v2"
+    }
+  },
+  "proposed_migration_strategy": {
+    "phase_0_inventory": "freeze this corrected inventory; compare duplicate/unresolved legacy candidates by body before canonical mapping",
+    "phase_1_external_publication": "create dedicated Pages repo, import all 68 daily rows as readable date/type reports; preserve unresolved legacy rows under explicit legacy archive pages; represent 2026-08-27 as morning-only with close-missing notice",
+    "phase_2_external_weekly": "render existing and future Weekly Lab Notes from raw predictions/journal; preserve full detail on Pages; keep internal execution traces and secrets private",
+    "phase_3_vercel_landing": "keep /stock as a stable migration landing page with external publication link; stop using it as a daily feed and remove StockPulse from project Feed Output projection",
+    "phase_4_old_stock_routes": "after exact Pages read-back, redirect mapped /stock/<old-slug> to external reports; redirect legacy targets to explicit archive pages; use 410 only for a row with no preserved external target",
+    "phase_5_old_lab_routes": "retain 26 Daily Lab Notes as DB/source history; stop new daily Lab posts; after weekly Pages targets exist, redirect old daily Lab URLs to the relevant external Weekly Note or archive index; retire the Vercel full Weekly Note after compact Finding replacement",
+    "phase_6_v1_v2_projection": "mark current stockpulse-ai-self-improvement 100%/완료 as v1 only, add final transition finding and external publication link; create separate stockpulse-v2 project; handle ai-tech-v2 as a parallel project",
+    "phase_7_resume": "only after Pages publication, Vercel routes/projections, and source-acquisition health/bounded fallback are verified; resume jobs in dependency order and run one controlled end-to-end test"
+  },
+  "not_executed": [
+    "No Supabase PATCH/DELETE/INSERT",
+    "No Vercel source or production route change",
+    "No GitHub Pages repository creation or publish",
+    "No redirect/410 rollout",
+    "No Lab status change to completed",
+    "No cron resume or prompt update",
+    "No StockPulse prediction/publishing run"
+  ]
+}

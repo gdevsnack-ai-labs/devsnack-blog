@@ -15,9 +15,7 @@ export interface ProjectFeedOutput {
   href: string
 }
 
-const PROJECT_FEED_BLOG: Record<string, string> = {
-  'stockpulse-ai-self-improvement': 'stockpulse',
-}
+const PROJECT_FEED_BLOG: Record<string, string> = {}
 
 export async function getProjectFeedOutputs(projectId: string, limit = 8): Promise<ProjectFeedOutput[]> {
   const blogId = PROJECT_FEED_BLOG[projectId]

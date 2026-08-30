@@ -44,9 +44,9 @@ const NATURE_BY_ID: Record<string, ExperimentNature> = {
     openEnded: true,
   },
   'stockpulse-ai-self-improvement': {
-    label: '지속 실험',
-    description: '자기개선 루프가 계속 반복되는 실험입니다.',
-    openEnded: true,
+    label: '완료된 v1 실험',
+    description: '예측·평가·개선 시도 루프를 운영한 뒤, 결과와 한계를 정리한 종료 실험입니다.',
+    openEnded: false,
   },
   'local-llm-benchmark': {
     label: '확장형 벤치마크',
@@ -119,7 +119,13 @@ const LAB_KNOWLEDGE: Record<string, LabKnowledge> = {
     showInFindings: true,
   },
   'stockpulse-ai-self-improvement': {
-    keyFinding: 'StockPulse는 예측→평가→실패 분석→프롬프트·ML 파라미터·피처 적용 루프를 실제 운영 중이며, 분석 결과가 다음 예측 파이프라인에 반영되는 자기개선 실험입니다.',
+    keyFinding: 'StockPulse v1은 예측→실제 결과 평가→LLM·ML 비교→개선 시도 루프를 실제 운영하고, 68개 Daily Report와 54개 prediction raw를 남겼습니다. 자동화 루프는 구축했지만 개선 전략의 정확도 효과는 충분히 규명하지 못해 v1을 종료하고, Daily publication은 GitHub Pages로 분리했습니다.',
+    metrics: [
+      { label: 'Daily Reports', value: '68개', note: 'v1 전체 외부 보존' },
+      { label: 'Prediction raw', value: '54개', note: 'Morning 28 · ML 26' },
+      { label: 'Daily Lab Notes', value: '26개', note: 'v1 source 기록' },
+      { label: 'Weekly Lab Note', value: '1개', note: 'GitHub Pages로 이전' },
+    ],
     showInFindings: true,
   },
   'hermes-memory': {

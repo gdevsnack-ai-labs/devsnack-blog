@@ -58,16 +58,11 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
   const sourceExperiment = experiments.find(item => item.id === id)
   if (!sourceExperiment) notFound()
 
-  const experiment = id === 'stockpulse-ai-self-improvement'
+  const experiment = id === 'blog'
     ? mergePublishedLabNotes(sourceExperiment, [
-      ...(await getPublishedLabNotes('stockpulse-self-')),
-      ...(await getPublishedLabNotes('stockpulse-weekly-')),
+      ...(await getPublishedLabNotes('aitech-weekly-')),
     ])
-    : id === 'blog'
-      ? mergePublishedLabNotes(sourceExperiment, [
-        ...(await getPublishedLabNotes('aitech-weekly-')),
-      ])
-      : sourceExperiment
+    : sourceExperiment
   const feedOutputs = await getProjectFeedOutputs(id)
   const jsonLd = buildJsonLdGraph(
     buildCollectionPageJsonLd({

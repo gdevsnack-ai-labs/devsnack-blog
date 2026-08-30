@@ -4,13 +4,7 @@ export interface FeedProjectLink {
   label: string
 }
 
-const FEED_PROJECTS: Record<string, FeedProjectLink> = {
-  stockpulse: {
-    projectId: 'stockpulse-ai-self-improvement',
-    href: '/labs/stockpulse-ai-self-improvement',
-    label: 'StockPulse 자기개선 실험',
-  },
-}
+const FEED_PROJECTS: Record<string, FeedProjectLink> = {}
 
 export function feedProjectForBlog(blogId: string): FeedProjectLink | null {
   return FEED_PROJECTS[blogId] || null

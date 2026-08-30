@@ -3,7 +3,7 @@ import { ArrowUpRight, Database, RefreshCw } from 'lucide-react'
 
 export interface DataServiceCardProps {
   title: string
-  type: 'Feed' | 'Tracker'
+  type: 'Feed' | 'Tracker' | 'Publication'
   description: string
   updateDescription: string
   lastUpdated: string
