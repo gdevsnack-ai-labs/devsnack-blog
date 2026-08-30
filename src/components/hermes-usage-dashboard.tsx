@@ -160,7 +160,7 @@ export function HermesUsageDashboard({ report, capturedAt, isStale }: HermesUsag
               </div>
               <h1 className="text-3xl font-bold tracking-tight md:text-4xl">DevSnack 모델 사용량</h1>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
-                DevSnack AI Lab에서 사용하는 모델별 토큰 사용량을 확인합니다. 프로필·채널·작업 정보는 공개하지 않고, 모델·토큰·호출 수만 익명 집계로 표시합니다.
+                DevSnack AI Lab에서 사용하는 모델별 토큰 사용량을 확인합니다. 현재 공개 snapshot은 프로필·채널·작업을 구분하지 않는 aggregate이며, 화면에는 모델·토큰·호출 수만 익명 집계로 표시합니다.
               </p>
             </div>
             <div className="rounded-xl border border-border bg-card px-4 py-3 text-sm shadow-sm">

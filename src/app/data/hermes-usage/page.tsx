@@ -7,7 +7,7 @@ export const revalidate = 300
 
 export const metadata = buildRouteMetadata({
   title: 'DevSnack 모델 사용량 — DevSnack',
-  description: 'DevSnack AI Lab에서 사용하는 모델별 토큰 사용량을 12시간 단위로 보여주는 공개 통계입니다.',
+  description: 'DevSnack AI Lab 공개 모델별 토큰 사용량을 12시간 단위로 보여주는 aggregate 통계입니다.',
   canonicalPath: '/data/hermes-usage',
   indexable: false,
 })

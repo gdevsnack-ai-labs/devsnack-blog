@@ -73,7 +73,7 @@ export default async function DataPage() {
             <DataServiceCard
               title="DevSnack 모델 사용량"
               type="Tracker"
-              description="DevSnack AI Lab에서 사용하는 모델별 토큰·호출 수를 보여주는 공개용 사용량 통계입니다. 프로필·채널·작업 정보는 표시하지 않습니다."
+              description="DevSnack AI Lab의 모델별 토큰·호출 수를 보여주는 공개 aggregate 통계입니다. 프로필·채널·작업 정보는 표시하지 않습니다."
               updateDescription="KST 00:00 · 12:00에 읽기 전용 스냅샷 수집"
               lastUpdated={formatDate(hermesUsage.capturedAt)}
               latestTitle={hermesUsage.available ? 'Model usage snapshot' : '첫 수집 대기'}
