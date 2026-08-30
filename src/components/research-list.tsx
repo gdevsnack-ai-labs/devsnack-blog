@@ -9,6 +9,7 @@ import {
   RESEARCH_STATUS_META,
   classifyResearch,
 } from '@/lib/content-taxonomy'
+import { isMigratedResearchSlug } from '@/lib/research-note-migration'
 
 export { RESEARCH_CATEGORIES }
 
@@ -27,7 +28,7 @@ async function getResearchPosts() {
     .eq('blog_id', 'research')
     .eq('status', 'live')
     .order('published', { ascending: false })
-  return (data || []) as ResearchPost[]
+  return (data || []).filter(post => !isMigratedResearchSlug(post.slug)) as ResearchPost[]
 }
 
 function extractMeta(post: ResearchPost) {

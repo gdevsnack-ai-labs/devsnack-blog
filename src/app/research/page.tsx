@@ -1,7 +1,9 @@
 import { BookOpen, Layers3 } from 'lucide-react'
 import { HubHeader } from '@/components/hub-header'
 import { KnowledgeAssetCard } from '@/components/knowledge-asset-card'
+import { ResearchNotesBoard } from '@/components/research-notes-board'
 import { RelatedAssets } from '@/components/related-assets'
+import { RESEARCH_NOTES } from '@/data/research-notes'
 import { getKnowledgePosts } from '@/lib/ia/hub-data'
 import {
   KNOWLEDGE_DOMAIN_LABEL,
@@ -64,6 +66,8 @@ export default async function KnowledgePage() {
           <div className="mb-4"><h2 id="benchmark-research-heading" className="text-xl font-bold">Benchmark Research</h2><p className="mt-1 text-sm text-muted-foreground">측정 결과가 아니라 Benchmark를 이해하거나 적용하기 위한 조사·도구·방법론입니다.</p></div>
           {benchmarkResearch.length > 0 ? <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{benchmarkResearch.map(post => <KnowledgeAssetCard key={post.slug} post={post} />)}</div> : <div className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">Benchmark Research asset가 없습니다.</div>}
         </section>
+
+        <ResearchNotesBoard notes={RESEARCH_NOTES} />
 
         {relatedPosts.map(post => <RelatedAssets key={post.slug} links={post.related} title={`${post.title} · Related`} />)}
       </div>

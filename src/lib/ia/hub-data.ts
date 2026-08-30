@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { isPostPrimaryType } from '@/lib/ia'
+import { isMigratedResearchSlug } from '@/lib/research-note-migration'
 import type { KnowledgePostInput } from '@/lib/ia/hub-projections'
 import { feedListFilters } from '@/lib/ia/feed-lifecycle'
 
@@ -30,6 +31,7 @@ export async function getKnowledgePosts(): Promise<KnowledgePostInput[]> {
     .limit(500)
 
   return (data || [])
+    .filter(post => post.blog_id !== 'research' || !isMigratedResearchSlug(post.slug))
     .filter(post => isPostPrimaryType(post, 'knowledge')) as KnowledgePostInput[]
 }
 

@@ -59,8 +59,8 @@ expectEqual(
 )
 expectEqual(
   searchPolicyForPost({ blog_id: 'research', slug: 'ternary-bonsai-27b', status: 'live', lifecycle_status: 'live' }),
-  'index',
-  'other thin candidates must not be auto-cut',
+  'noindex',
+  'migrated download-only model detail must be noindex after externalization',
 )
 expectEqual(
   searchPolicyForPost({ blog_id: 'devsnack', slug: 'story', status: 'live', content_type: 'story' }),
@@ -202,6 +202,21 @@ expectEqual(
   isIndexablePostSitemapEntry({ blog_id: 'lab', slug: 'stockpulse-weekly-2026-08-18', status: 'live' }),
   true,
   'indexable weekly Lab notes may enter sitemap projections',
+)
+expectEqual(
+  isIndexablePostSitemapEntry({ blog_id: 'research', slug: 'dflash-2-qwen3-8-27b-vs-mtp', status: 'live' }),
+  false,
+  'migrated Research details must not enter sitemap projections',
+)
+expectEqual(
+  isIndexablePostSitemapEntry({ blog_id: 'research', slug: 'qwen3-8-27b-nvfp4-mtp-gguf-gb10', status: 'live' }),
+  true,
+  'retained K2 Research assets must remain sitemap-indexable',
+)
+expectEqual(
+  searchPolicyForPost({ blog_id: 'research', slug: 'dflash-2-qwen3-8-27b-vs-mtp', status: 'live' }),
+  'noindex',
+  'migrated Research details must be noindex',
 )
 expectEqual(robotsForSearchPolicy('index'), { index: true, follow: true }, 'index robots must be explicit')
 expectEqual(robotsForSearchPolicy('noindex'), { index: false, follow: true }, 'noindex robots must follow links')

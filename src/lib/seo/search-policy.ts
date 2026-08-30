@@ -1,6 +1,8 @@
 export type SearchPolicy = 'index' | 'noindex' | 'private'
 export type SearchPolicyDecisionSource = 'automatic' | 'override' | 'default'
 
+import { isMigratedResearchSlug } from '../research-note-migration'
+
 export interface SearchPolicyDecision {
   policy: SearchPolicy
   reason: string
@@ -134,6 +136,9 @@ function automaticPostDecision(post: SearchPolicyPostLike): SearchPolicyDecision
   }
   if (post.blog_id === 'lab' && post.slug?.startsWith('stockpulse-self-')) {
     return decision('noindex', 'stockpulse_daily_raw_lab_note', 'automatic')
+  }
+  if (post.blog_id === 'research' && post.slug && isMigratedResearchSlug(post.slug)) {
+    return decision('noindex', 'migrated_to_external_research_note', 'automatic')
   }
 
   const override = post.blog_id && post.slug
