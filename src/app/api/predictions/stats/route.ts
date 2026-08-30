@@ -3,6 +3,11 @@ import { supabase } from '@/lib/supabase'
 
 export const dynamic = 'force-dynamic'
 
+type PredictionStatsRow = {
+  accuracy_score: number | null
+  is_correct: boolean | null
+}
+
 export async function GET() {
   // 1. 가장 최근 예측
   const { data: latest } = await supabase
@@ -32,11 +37,11 @@ export async function GET() {
   const r7 = recent7 || []
   const allData = allMorning || []
 
-  const calcStats = (items: any[]) => {
+  const calcStats = (items: PredictionStatsRow[]) => {
     const total = items.length
-    const correct = items.filter((p: any) => p.is_correct === true).length
-    const wrong = items.filter((p: any) => p.is_correct === false).length
-    const pending = items.filter((p: any) => p.is_correct === null).length
+    const correct = items.filter(p => p.is_correct === true).length
+    const wrong = items.filter(p => p.is_correct === false).length
+    const pending = items.filter(p => p.is_correct === null).length
     const accuracy = total > 0 && total !== pending
       ? Math.round((correct / (total - pending)) * 100) / 100
       : null

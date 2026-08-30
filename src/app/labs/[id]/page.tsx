@@ -179,7 +179,7 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
             </section>
           )}
 
-          <ProjectFeedOutputs projectId={id} outputs={feedOutputs} />
+          <ProjectFeedOutputs outputs={feedOutputs} />
 
           <section aria-labelledby="experiment-log-heading">
             <div className="mb-4 flex items-center gap-2">

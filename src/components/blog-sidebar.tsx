@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { Search, Tag, Calendar, ArrowRight } from 'lucide-react'
+import { Search, Tag, Calendar } from 'lucide-react'
 import Link from 'next/link'
 
 type PostSummary = {

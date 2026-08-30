@@ -16,7 +16,7 @@ function formatDate(value: string | null): string {
   }).format(date)
 }
 
-export function ProjectFeedOutputs({ projectId, outputs }: { projectId: string; outputs: ProjectFeedOutput[] }) {
+export function ProjectFeedOutputs({ outputs }: { outputs: ProjectFeedOutput[] }) {
   if (outputs.length === 0) return null
   const feedProject = feedProjectForBlog(outputs[0].blogId)
   const isStockPulse = outputs[0].blogId === 'stockpulse'

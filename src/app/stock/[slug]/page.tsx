@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { supabase, type Post } from '@/lib/supabase'
 import { Badge } from '@/components/ui/badge'
-import { ArrowLeft, Calendar, Clock, TrendingUp } from 'lucide-react'
+import { ArrowLeft, Calendar, Clock } from 'lucide-react'
 import { ViewCounter } from '@/components/view-counter'
 import { BlogHeader } from '@/components/blog-header'
 import { FeedProvenance, type StockPulsePredictionSummary } from '@/components/feed-provenance'
@@ -109,8 +110,15 @@ export default async function StockPostPage({ params }: { params: Promise<{ slug
 
       <article className="content-article max-w-3xl mx-auto min-w-0 px-4 py-8">
         {post.cover_image && (
-          <div className="aspect-[16/7] rounded-xl overflow-hidden mb-8 bg-gray-100 dark:bg-gray-800">
-            <img src={post.cover_image} alt={`${post.title} — 대표 이미지`} className="w-full h-full object-cover" />
+          <div className="relative aspect-[16/7] rounded-xl overflow-hidden mb-8 bg-gray-100 dark:bg-gray-800">
+            <Image
+              src={post.cover_image}
+              alt={`${post.title} — 대표 이미지`}
+              fill
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="w-full h-full object-cover"
+              unoptimized
+            />
           </div>
         )}
 
