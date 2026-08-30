@@ -78,6 +78,8 @@ AI Tech snapshot은 전문 `content`를 넣지는 않지만, 현재 목록에 �
 
 2026-08-26 read-only REST/schema 조회 결과:
 
+> 아래 수치는 `/misc` retirement 전인 2026-08-30 lifecycle audit 당시의 historical snapshot이다. Live `/misc` 데이터는 후속 retirement 작업에서 삭제됐다.
+
 | blog_id | status | count |
 |---|---|---:|
 | `aitech` | `live` | 185 |

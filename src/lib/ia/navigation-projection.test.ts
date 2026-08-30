@@ -20,7 +20,7 @@ const existingRoutes = new Set([
   '/', '/devsnack', '/labs', '/demos', '/research',
   '/research/category/llm', '/research/category/tts', '/research/category/media',
   '/research/category/benchmark', '/research/category/hardware',
-  '/aitech', '/stock', '/benchmarks', '/data',
+  '/aitech', '/stock', '/benchmarks', '/data', '/data/hermes-usage',
   '/search', '/about', '/links', '/rss.xml', '/contact', '/privacy',
   '/tools/operations',
 ])
