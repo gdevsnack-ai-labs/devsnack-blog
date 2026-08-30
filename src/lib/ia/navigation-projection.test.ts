@@ -22,7 +22,7 @@ const existingRoutes = new Set([
   '/research/category/benchmark', '/research/category/hardware',
   '/aitech', '/stock', '/benchmarks', '/data',
   '/search', '/about', '/links', '/rss.xml', '/contact', '/privacy',
-  '/misc', '/tools/operations',
+  '/tools/operations',
 ])
 
 const allEnabledItems: NavItem[] = NAV_GROUPS.flatMap((group: NavGroup) => group.items.filter(item => item.enabled !== false))

@@ -105,7 +105,7 @@ export const NAV_GROUP_REGISTRY: NavGroup[] = [
       { id: 'more-rss', href: '/rss.xml', label: 'RSS', icon: 'rss' },
       { id: 'more-contact', href: '/contact', label: 'Contact' },
       { id: 'more-privacy', href: '/privacy', label: 'Privacy' },
-      { id: 'more-sandbox', href: BLOG_PATH.misc, label: 'Sandbox / Misc', blogId: 'misc' },
+
       { id: 'more-operations', href: '/tools/operations', label: 'Operations', icon: 'server' },
     ],
   },

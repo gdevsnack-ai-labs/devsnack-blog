@@ -39,7 +39,7 @@ export const DESTINATION_META: Record<DestinationId, {
   lab: { path: BLOG_PATH.lab, label: BLOG_LABEL.lab, kind: 'lab', navGroup: 'lab' },
   research: { path: BLOG_PATH.research, label: BLOG_LABEL.research, kind: 'research', navGroup: 'knowledge' },
 
-  misc: { path: BLOG_PATH.misc, label: BLOG_LABEL.misc, kind: 'tool', navGroup: 'more' },
+
   operations: { path: '/tools/operations', label: '운영중인 시스템', kind: 'tool', navGroup: 'more' },
   demos: { path: '/demos', label: 'Showcase', kind: 'demo', navGroup: 'lab' },
 }

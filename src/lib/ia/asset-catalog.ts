@@ -54,12 +54,7 @@ const POST_DEFAULTS: Record<string, PostClassification> = {
     classification: 'ambiguous',
   },
 
-  misc: {
-    primaryType: 'knowledge',
-    domain: ['other'],
-    provenance: 'ai_assisted',
-    classification: 'ambiguous',
-  },
+
 }
 
 function postKey(post: Pick<LegacyPostLike, 'blog_id' | 'slug'>): string {
@@ -325,7 +320,7 @@ export function assetFromLegacyPost(post: LegacyPostLike): AssetRef {
     domain: classification?.domain || ['other'],
     provenance: classification?.provenance,
     lifecycle: lifecycleFromStatus(post.status),
-    source: post.blog_id === 'research' ? 'research' : post.blog_id === 'misc' ? 'misc' : 'post',
+    source: post.blog_id === 'research' ? 'research' : 'post',
     classification: classification?.classification || 'ambiguous',
   }
 }

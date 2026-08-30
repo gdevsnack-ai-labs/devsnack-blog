@@ -25,7 +25,7 @@ ROUTES = [
     "/demos",
     "/demos/shortmovie",
     "/research",
-    "/misc",
+
     "/tools/operations",
     "/search",
     "/sitemap.xml",
@@ -38,7 +38,7 @@ BLOG_PATHS = {
 
     "lab": "/lab/",
     "research": "/research/",
-    "misc": "/misc/",
+
 }
 CONTENT_ROUTES = [
     "/devsnack/gemma-4-mtp-drafter-dgx-spark-3-31b",
@@ -48,7 +48,7 @@ CONTENT_ROUTES = [
     "/lab/isekai-instagram-mage-experiment",
     "/lab/isekai-instagram-mage-prologue",
     "/research/dflash-2-qwen3-8-27b-vs-mtp",
-    "/misc/rx-7900-xtx",
+
 ]
 
 
@@ -217,7 +217,7 @@ async def check_browser(failures: list[str]) -> None:
             "AI Tech": "/aitech/",
             "Lab": "/lab/",
             "Research": "/research/",
-            "잡동사니": "/misc/",
+
         }
         for text, href in zip(texts, hrefs):
             label = text.splitlines()[0].strip()

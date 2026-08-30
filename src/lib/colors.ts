@@ -1,7 +1,7 @@
 // DevSnack Blog — 블로그별 색상 토큰
 // docs/DESIGN.md 참조
 
-export type BlogId = 'devsnack' | 'stockpulse' | 'aitech' | 'lab' | 'research' | 'misc'
+export type BlogId = 'devsnack' | 'stockpulse' | 'aitech' | 'lab' | 'research'
 export type BlogColor = 'blue' | 'green' | 'orange' | 'purple' | 'amber'
 
 export const BLOG_COLORS: Record<BlogId, {
@@ -47,13 +47,7 @@ export const BLOG_COLORS: Record<BlogId, {
     border: 'border-purple-200 dark:border-purple-800',
     hover: 'hover:border-purple-300 dark:hover:border-purple-700',
   },
-  misc: {
-    primary: 'amber',
-    text: 'text-amber-600 dark:text-amber-400',
-    bg: 'bg-amber-100 dark:bg-amber-900/30',
-    border: 'border-amber-200 dark:border-amber-800',
-    hover: 'hover:border-amber-300 dark:hover:border-amber-700',
-  },
+
 }
 
 export const BLOG_LABEL: Record<BlogId, string> = {
@@ -63,7 +57,7 @@ export const BLOG_LABEL: Record<BlogId, string> = {
   aitech: 'AI Tech',
   lab: 'Lab',
   research: 'Knowledge',
-  misc: '잡동사니',
+
 }
 
 export const BLOG_PATH: Record<BlogId, string> = {
@@ -73,5 +67,4 @@ export const BLOG_PATH: Record<BlogId, string> = {
   aitech: '/aitech',
   lab: '/lab',
   research: '/research',
-  misc: '/misc',
 }

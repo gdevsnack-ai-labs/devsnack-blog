@@ -95,7 +95,7 @@ export const RELATION_TYPES = [
 export type RelationType = (typeof RELATION_TYPES)[number]
 
 export type Classification = 'confirmed' | 'inferred' | 'ambiguous'
-export type AssetSource = 'experiment' | 'demo' | 'post' | 'research' | 'misc' | 'data' | 'manual'
+export type AssetSource = 'experiment' | 'demo' | 'post' | 'research' | 'data' | 'manual'
 
 export interface LegacyPostLike {
   slug: string
