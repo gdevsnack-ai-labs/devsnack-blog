@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import { destinationLabel, postHref } from '@/config/site-catalog'
 import { publicFeedOrFilter } from '@/lib/ia/feed-lifecycle'
+import { isRssEligiblePost } from '@/lib/seo/rss-policy'
 
 const SITE_URL = 'https://devsnack-blog.vercel.app'
 
@@ -14,6 +15,7 @@ export async function GET() {
     .limit(50)
 
   const items = (posts ?? []).flatMap((post) => {
+    if (!isRssEligiblePost(post)) return []
     const urlPath = postHref(post.blog_id, post.slug)
     if (!urlPath) {
       console.error(`[rss] 알 수 없는 blog_id: ${post.blog_id}`)

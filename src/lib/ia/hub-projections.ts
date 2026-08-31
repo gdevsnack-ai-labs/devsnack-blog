@@ -1,4 +1,5 @@
 import { classifyResearch, type ResearchCategory } from '@/lib/content-taxonomy'
+import { toPlainTextExcerpt } from '@/lib/content-excerpt'
 import type { Experiment } from '@/data/experiments'
 import {
   getDomainLabel,
@@ -390,7 +391,7 @@ export function projectKnowledgePost(post: KnowledgePostInput): KnowledgeProject
     asset,
     slug: post.slug,
     title: post.title,
-    excerpt: post.excerpt || '요약이 아직 정리되지 않은 Knowledge 항목입니다.',
+    excerpt: toPlainTextExcerpt(post.excerpt, '요약이 아직 정리되지 않은 Knowledge 항목입니다.'),
     published: post.published,
     updated: post.updated,
     href: asset.route,

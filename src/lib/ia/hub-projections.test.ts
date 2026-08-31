@@ -49,6 +49,17 @@ expectEqual(knowledge.asset.primaryType, 'knowledge', 'Research asset must remai
 expectEqual(knowledge.domain, 'ai-llm', 'LLM research must project to AI / LLM')
 expectEqual(knowledge.benchmarkResearch, false, 'LLM research must not become Benchmark Result')
 
+const sanitizedKnowledge = projectKnowledgePost({
+  slug: 'ornith-1-5-gguf-gb10',
+  title: 'Ornith-1.5 GGUF',
+  blog_id: 'research',
+  status: 'live',
+  labels: ['진행중', 'llm'],
+  excerpt: ' <blockquote>요약</blockquote> <h2>결론</h2> <p>GB10 실측</p> ',
+  published: '2026-08-19T15:00:00+00:00',
+})
+expectEqual(sanitizedKnowledge.excerpt, '요약 결론 GB10 실측', 'Knowledge projection must expose a plain-text card excerpt')
+
 const benchmarkResearch = projectKnowledgePost({
   slug: 'herdr-yc-f26',
   title: 'Herdr — 에이전트 런타임/멀티플렉서',
