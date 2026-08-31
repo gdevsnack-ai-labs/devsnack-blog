@@ -389,19 +389,6 @@ export const DEMO_ASSETS: AssetRef[] = DEMO_CATEGORIES.flatMap(category =>
 /** Curated findings are Knowledge assets with a finding role, not a new Type. */
 export const CURATED_FINDING_ASSETS: AssetRef[] = [
   {
-    assetId: 'finding:autonomous-ai-blog:key',
-    route: '/labs/autonomous-ai-blog',
-    title: 'Autonomous AI Blog key finding',
-    primaryType: 'knowledge',
-    role: 'finding',
-    projectId: 'autonomous-ai-blog',
-    domain: ['automation', 'infrastructure'],
-    provenance: 'automated',
-    lifecycle: 'active',
-    source: 'manual',
-    classification: 'confirmed',
-  },
-  {
     assetId: 'finding:ai-omok:key',
     route: '/labs/ai-omok',
     title: 'AI Omok key finding',

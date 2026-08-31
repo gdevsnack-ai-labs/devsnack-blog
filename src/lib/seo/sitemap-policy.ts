@@ -10,6 +10,7 @@ const INDEX_ROUTES = new Set([
 
   '/aitech',
   '/labs',
+  '/labs/autonomous-ai-blog',
   '/benchmarks',
   '/data',
   '/demos',

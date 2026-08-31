@@ -32,7 +32,7 @@ export function HomeFindingItem({ project }: { project: LabProjectProjection }) 
       <div className="min-w-0">
         <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400"><FlaskConical className="h-3.5 w-3.5" aria-hidden="true" />{project.displayType}</div>
         <h3 className="mt-2 line-clamp-2 text-sm font-bold leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400">{project.title}</h3>
-        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">{project.finding || project.latestResult || project.description}</p>
+        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">{project.projectFinding || '아직 독립적인 Project Finding이 없습니다.'}</p>
       </div>
       <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
     </Link>

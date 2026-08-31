@@ -85,23 +85,35 @@ export interface LabMetric {
   note?: string
 }
 
+export interface ProjectFinding {
+  statement: string
+  evidence: string[]
+  scope: string
+  confidence?: string
+}
+
 interface LabKnowledge {
-  keyFinding: string
+  projectFinding?: ProjectFinding
   metrics?: LabMetric[]
   showInFindings: boolean
 }
 
 /**
- * Activity 로그에서 자동 계산할 수 없는 "가장 중요한 발견"을 관리합니다.
- * 원본 experiments.ts를 복제하지 않고, 공개 화면용 의미 레이어만 별도로 둡니다.
+ * Project Finding is a bounded conclusion supported by explicit evidence.
+ * Latest Activity and Latest Publication are intentionally kept elsewhere.
  */
 const LAB_KNOWLEDGE: Record<string, LabKnowledge> = {
   'autonomous-ai-blog': {
-    keyFinding: AUTONOMOUS_AI_BLOG_LIVE.keyFinding,
-    showInFindings: true,
+    projectFinding: AUTONOMOUS_AI_BLOG_LIVE.projectFinding || undefined,
+    showInFindings: false,
   },
   'local-llm-benchmark': {
-    keyFinding: 'Qwen3.8-27B의 장문 서빙 실측에 이어 Qwen3.6 품질 비교와 Ornith-1.5 서버 실측을 진행했습니다. 이후 production prompt와 validator의 pure hook fact_refs 충돌을 찾아 보정했고, 외부 gpt-5.6-luna one-shot은 의미 없는 ref 없이 통과했습니다. 새 Ornith matrix는 Q6/Q8의 1차 통과가 개선됐지만, Q5는 word budget과 factual scene refs가 남은 병목입니다.',
+    projectFinding: {
+      statement: '현재 YouTube production contract와 반복 생성 비용을 함께 고려하면 Q5는 속도·용량·통과율의 균형이 좋고, Q6은 재시도 수렴성이 좋았습니다. Q8은 현재 조건에서 우위가 확인되지 않았습니다.',
+      evidence: ['Ornith Q5/Q6/Q8 서버 품질·속도 측정', 'Q5 2/2·64.6 tok/s, Q6 2/2·59.8 tok/s, Q8 0/2·54.4 tok/s'],
+      scope: 'DGX Spark GB10, Science·History 두 fixture, 모델당 1회 반복, 현재 structured output contract',
+      confidence: 'limited',
+    },
     metrics: [
       { label: 'Qwen3.8 단일 Decode', value: '17~19.5 t/s', note: '기존 MTP 실측' },
       { label: 'Qwen3.8 4-slot', value: '18~22 t/s', note: '평균 acceptance 약 94%' },
@@ -115,11 +127,21 @@ const LAB_KNOWLEDGE: Record<string, LabKnowledge> = {
     showInFindings: true,
   },
   'ai-omok': {
-    keyFinding: 'ThreatAnalyzer를 연결하자 LLM은 22턴까지 방어했지만, AI가 만든 Minimax 엔진은 Rapfi(NNUE)에 5:0으로 패배했고 자율 개선 루프 69판에서도 승률 0%였습니다.',
+    projectFinding: {
+      statement: '현재 오목 실험 조건에서는 LLM 단독 구조보다 ThreatAnalyzer와 탐색 엔진을 결합한 구조가 더 오래 방어했지만, AI가 만든 Minimax 엔진은 Rapfi에 5:0으로 패배했고 자율 개선 루프도 승률을 높이지 못했습니다.',
+      evidence: ['ThreatAnalyzer 연결 후 22턴 방어', 'Minimax 대 Rapfi 5:0', '자율 개선 루프 69판 승률 0%'],
+      scope: '현재 AI Omok 구현·평가 환경과 기록된 69판의 실험 범위',
+      confidence: 'limited',
+    },
     showInFindings: true,
   },
   'stockpulse-ai-self-improvement': {
-    keyFinding: 'StockPulse v1은 예측→실제 결과 평가→LLM·ML 비교→개선 시도 루프를 실제 운영하고, 68개 Daily Report와 54개 prediction raw를 남겼습니다. 자동화 루프는 구축했지만 개선 전략의 정확도 효과는 충분히 규명하지 못해 v1을 종료하고, Daily publication은 GitHub Pages로 분리했습니다.',
+    projectFinding: {
+      statement: 'StockPulse v1은 예측→실제 결과 평가→LLM·ML 비교→개선 시도 루프를 실제 운영했지만, 개선 전략이 정확도를 높였다는 효과는 충분히 규명하지 못했습니다. v1은 종료하고 Daily publication은 GitHub Pages로 분리했습니다.',
+      evidence: ['68개 Daily Report', '54개 prediction raw', '26개 Daily Lab Note와 외부 Weekly publication'],
+      scope: '2026-07~08 StockPulse v1 운영 기록과 보존된 prediction/evaluation 자료',
+      confidence: 'confirmed',
+    },
     metrics: [
       { label: 'Daily Reports', value: '68개', note: 'v1 전체 외부 보존' },
       { label: 'Prediction raw', value: '54개', note: 'Morning 28 · ML 26' },
@@ -129,11 +151,21 @@ const LAB_KNOWLEDGE: Record<string, LabKnowledge> = {
     showInFindings: true,
   },
   'hermes-memory': {
-    keyFinding: 'Phase 1 implementation complete / evaluation pending — USER.md와 MEMORY.md의 역할을 분리했지만, 실제 기억 경험의 변화는 새 세션 평가 후 판단합니다.',
+    projectFinding: {
+      statement: 'Phase 1에서 USER.md와 MEMORY.md의 역할을 분리하는 구현은 완료했지만, 실제 기억 경험이 개선됐다는 결론은 새 세션 평가 전까지 확정하지 않습니다.',
+      evidence: ['USER.md와 MEMORY.md 역할 분리', '새 세션 사용 데이터 평가 보류'],
+      scope: 'Hermes Memory Experiment Phase 1 구현과 후속 평가 계획',
+      confidence: 'limited',
+    },
     showInFindings: true,
   },
   'luna-agentic-game-dev': {
-    keyFinding: '첫 번째 trivial Godot task가 Qwen worker의 독립 branch·Forgejo PR·Luna review·protected merge·post-merge smoke까지 통과했지만, 더 어려운 task와 장기 운영은 아직 검증되지 않았습니다.',
+    projectFinding: {
+      statement: '첫 번째 Godot task는 독립 branch·Forgejo PR·Luna review·protected merge·post-merge smoke까지 통과했지만, 더 어려운 task와 장기 운영까지 가능하다는 결론은 아직 검증되지 않았습니다.',
+      evidence: ['첫 E2E local tests 25 passed', 'protected main direct push rejected', 'merge 후 Godot smoke PASS'],
+      scope: 'Luna Agentic Game Development Lab Phase 0~4의 첫 E2E 기준선',
+      confidence: 'limited',
+    },
     metrics: [
       { label: 'Local tests', value: '25 passed', note: '첫 E2E 기준선' },
       { label: 'Godot smoke', value: 'PASS', note: 'merge 후 clean checkout' },
@@ -143,11 +175,21 @@ const LAB_KNOWLEDGE: Record<string, LabKnowledge> = {
     showInFindings: true,
   },
   'isekai-instagram-mage-experiment': {
-    keyFinding: 'GPT Image 2 기준 시트를 모든 장면에 참조해도 개별 프레임의 해부학적 품질과 장면 간 얼굴 identity는 별개였고, 최종 영상에서 다른 얼굴로 변하는 현상을 확인했습니다.',
+    projectFinding: {
+      statement: 'GPT Image 2 기준 시트를 모든 장면에 참조해도 개별 프레임의 해부학적 품질과 장면 간 얼굴 identity는 별개였고, 최종 영상에서 다른 얼굴로 변하는 현상을 확인했습니다.',
+      evidence: ['6개 장면 기준 시트 참조', '최종 영상 cross-scene 얼굴 identity 변화', 'Scene 4 손 crop 재생성 기록'],
+      scope: 'GPT Image 2와 LTX 2.5로 만든 60초 프롤로그의 장면·프레임 비교',
+      confidence: 'confirmed',
+    },
     showInFindings: true,
   },
   blog: {
-    keyFinding: 'AI 기반 daily 기사 자동화는 실제 운영 가능했지만, 일부 결과에서 사실과 다른 내용과 과장된 표현이 확인되어 v1을 완료 처리했습니다. Season 2 실제 기사는 GitHub Pages에 발행하고, Vercel의 DevSnack Lab에는 단순 피드 전용 slug를 만들지 않으며 source·evidence·quality gate와 개선 과정을 기록하는 v2 실험을 준비합니다.',
+    projectFinding: {
+      statement: 'AI 기반 daily 기사 자동화는 실제 운영 가능했지만, 일부 결과에서 사실과 다른 내용과 과장된 표현이 확인되어 v1을 완료 처리했습니다. v2는 source·evidence·quality gate 중심으로 재설계합니다.',
+      evidence: ['AI Tech v1 daily pipeline 운영', '사실과 다른 내용·과장된 표현에 대한 독자 평가', 'v2 GitHub Pages publication 전환 결정'],
+      scope: 'AI Tech v1 자동 발행 실험의 운영·품질 검토 기록',
+      confidence: 'confirmed',
+    },
     showInFindings: false,
   },
 }
@@ -198,8 +240,8 @@ export function getKeyResults(experiment: Experiment, limit = 3): TimelineItem[]
   return getSortedTimeline(experiment).filter(isActualResult).slice(0, limit)
 }
 
-export function getKeyFinding(experiment: Experiment): string | undefined {
-  return LAB_KNOWLEDGE[experiment.id]?.keyFinding
+export function getProjectFinding(experiment: Experiment): ProjectFinding | undefined {
+  return LAB_KNOWLEDGE[experiment.id]?.projectFinding
 }
 
 export function getKeyMetrics(experiment: Experiment): LabMetric[] {
@@ -213,20 +255,20 @@ function sortByImportanceAndActivity(a: Experiment, b: Experiment): number {
   const activeDiff = Number(b.category === 'running') - Number(a.category === 'running')
   if (activeDiff) return activeDiff
 
-  return Number(Boolean(getKeyFinding(b))) - Number(Boolean(getKeyFinding(a)))
+  return Number(Boolean(getProjectFinding(b))) - Number(Boolean(getProjectFinding(a)))
 }
 
 /** 최신 활동을 우선하되, 같은 날짜에는 현재 진행 중인 실험을 대표 실험으로 선택합니다. */
 export function getFeaturedExperiment(experiments: Experiment[]): Experiment | undefined {
   return experiments
-    .filter(experiment => !experiment.isDummy && Boolean(getLatestResult(experiment)))
+    .filter(experiment => !experiment.isDummy && Boolean(getProjectFinding(experiment)))
     .sort(sortByImportanceAndActivity)[0]
 }
 
 /** 핵심 발견이 별도로 정리된 실험만 결과 피드에 노출합니다. */
 export function getRecentFindings(experiments: Experiment[], limit = 4): Experiment[] {
   return experiments
-    .filter(experiment => !experiment.isDummy && LAB_KNOWLEDGE[experiment.id]?.showInFindings)
+    .filter(experiment => !experiment.isDummy && Boolean(getProjectFinding(experiment)) && LAB_KNOWLEDGE[experiment.id]?.showInFindings)
     .sort(sortByImportanceAndActivity)
     .slice(0, limit)
 }

@@ -42,10 +42,10 @@ export function LabHubProjectCard({ project }: { project: LabProjectProjection }
       <h3 className="mt-4 line-clamp-2 text-lg font-bold leading-snug transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400">{project.title}</h3>
       <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
 
-      {project.finding ? (
+      {project.projectFinding ? (
         <div className="mt-4 flex-1 rounded-lg border-l-2 border-blue-400 bg-blue-50/60 px-3 py-2.5 dark:border-blue-600 dark:bg-blue-950/20">
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Latest Finding</p>
-          <p className="mt-1 line-clamp-4 text-sm leading-relaxed">{project.finding}</p>
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Project Finding</p>
+          <p className="mt-1 line-clamp-4 text-sm leading-relaxed">{project.projectFinding}</p>
         </div>
       ) : (
         <div className="mt-4 flex-1 rounded-lg border border-dashed border-border bg-muted/30 px-3 py-2.5">

@@ -2,8 +2,9 @@ import Link from 'next/link'
 import { ArrowLeft, Calendar, CheckCircle2, ExternalLink, FileText, FlaskConical, PlayCircle } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import { experiments } from '@/data/experiments'
+import { AUTONOMOUS_AI_BLOG_LIVE } from '@/data/autonomous-ai-blog-live'
 import { ProgressBar } from '@/components/progress-bar'
-import { getCurrentStage, getDomainLabel, getKeyFinding, getKeyMetrics, getKeyResults, getLabBoardMetadata, getLatestResult, getNature, getSortedTimeline, LAB_FILTERS } from '@/lib/labs'
+import { getCurrentStage, getDomainLabel, getProjectFinding, getKeyMetrics, getKeyResults, getLabBoardMetadata, getLatestResult, getNature, getSortedTimeline, LAB_FILTERS } from '@/lib/labs'
 import { getPublishedLabNotes } from '@/lib/lab-notes'
 import { mergePublishedLabNotes } from '@/lib/lab-note-projection'
 import { getRelatedAssets } from '@/lib/ia/hub-projections'
@@ -82,11 +83,18 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
   )
 
   const nature = getNature(experiment)
-  const keyFinding = getKeyFinding(experiment)
+  const projectFinding = getProjectFinding(experiment)
   const latestActivity = getLatestResult(experiment)
+  const autonomousLive = id === 'autonomous-ai-blog' ? AUTONOMOUS_AI_BLOG_LIVE : null
+  const latestActivitySummary = autonomousLive?.latestActivity?.summary || latestActivity?.result
+  const latestActivityDate = autonomousLive?.latestActivity?.date || latestActivity?.date
+  const recentPublications = autonomousLive?.recentPublications || []
+  const timeline = getSortedTimeline(experiment)
+  const autonomousIncidents = autonomousLive
+    ? timeline.filter(item => item.name.includes('유지보수') || item.name.includes('변경'))
+    : []
   const keyMetrics = getKeyMetrics(experiment)
   const keyResults = getKeyResults(experiment)
-  const timeline = getSortedTimeline(experiment)
   const board = getLabBoardMetadata(experiment)
   const boardLabel = LAB_FILTERS.find(item => item.key === board.status)?.label || board.status
   const boardConfidenceLabel = board.confidence === 'inferred' ? '기록 기반 추정' : undefined
@@ -132,15 +140,33 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
         </header>
 
         <main className="mt-8 space-y-8">
-          {(keyFinding || latestActivity) && (
-            <section className="rounded-xl border border-blue-200 bg-blue-50/60 p-5 dark:border-blue-900/50 dark:bg-blue-950/20" aria-labelledby="current-finding-heading">
-              <h2 id="current-finding-heading" className="text-sm font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Current Finding</h2>
-              <p className="mt-3 text-base leading-relaxed">{keyFinding || latestActivity?.result}</p>
-              {latestActivity && (
-                <p className="mt-3 text-xs text-muted-foreground">
-                  Latest Activity · {latestActivity.date || '날짜 미기록'} · {latestActivity.name}
-                </p>
-              )}
+          <section className="rounded-xl border border-blue-200 bg-blue-50/60 p-5 dark:border-blue-900/50 dark:bg-blue-950/20" aria-labelledby="project-finding-heading">
+            <h2 id="project-finding-heading" className="text-sm font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Verified Project Finding</h2>
+            {projectFinding ? (
+              <>
+                <p className="mt-3 text-base leading-relaxed">{projectFinding.statement}</p>
+                <div className="mt-4 grid gap-4 text-sm md:grid-cols-2">
+                  <div>
+                    <p className="font-semibold text-foreground">Evidence</p>
+                    <ul className="mt-1 list-disc space-y-1 pl-5 text-muted-foreground">{projectFinding.evidence.map(item => <li key={item}>{item}</li>)}</ul>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-foreground">Scope</p>
+                    <p className="mt-1 leading-relaxed text-muted-foreground">{projectFinding.scope}</p>
+                    {projectFinding.confidence && <p className="mt-2 text-xs text-muted-foreground">Confidence · {projectFinding.confidence}</p>}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <p className="mt-3 text-base leading-relaxed text-muted-foreground">아직 독립적인 Project Finding이 없습니다. 현재는 Latest Activity와 Operational Snapshot만 기록되어 있습니다.</p>
+            )}
+          </section>
+
+          {latestActivitySummary && (
+            <section className="rounded-xl border border-border bg-muted/30 p-5" aria-labelledby="latest-activity-heading">
+              <h2 id="latest-activity-heading" className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Latest Activity</h2>
+              <p className="mt-3 text-base leading-relaxed">{latestActivitySummary}</p>
+              <p className="mt-3 text-xs text-muted-foreground">{latestActivityDate || '날짜 미기록'}{latestActivity?.name ? ` · ${latestActivity.name}` : ''}</p>
             </section>
           )}
 
@@ -172,6 +198,60 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
                 </div>
               )}
             </section>
+          )}
+
+          {autonomousLive && (
+            <>
+              <section className="grid gap-4 md:grid-cols-3" aria-label="Autonomous AI Blog project context">
+                <div className="rounded-xl border border-border bg-white p-5 dark:bg-gray-900 md:col-span-3">
+                  <h2 className="text-xl font-bold">Project Context</h2>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{experiment.whyText}</p>
+                </div>
+                <div className="rounded-xl border border-border bg-white p-5 dark:bg-gray-900">
+                  <h2 className="text-lg font-bold">Operating Model</h2>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{experiment.operatingModel}</p>
+                </div>
+                <div className="rounded-xl border border-border bg-white p-5 dark:bg-gray-900 md:col-span-2">
+                  <h2 className="text-lg font-bold">Human Intervention Policy</h2>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{experiment.humanInterventionPolicy}</p>
+                </div>
+              </section>
+
+              <section aria-labelledby="operational-snapshot-heading">
+                <div className="mb-4 flex items-center gap-2"><CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" /><h2 id="operational-snapshot-heading" className="text-xl font-bold">Operational Snapshot</h2></div>
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">Published notes</p><p className="mt-2 text-2xl font-bold">{autonomousLive.publishedCount}</p></div>
+                  <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">Held notes</p><p className="mt-2 text-2xl font-bold">{autonomousLive.heldCount}</p></div>
+                  <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">Last cycle</p><p className="mt-2 text-sm font-semibold">{autonomousLive.lastRunAt || '날짜 미기록'}</p></div>
+                </div>
+              </section>
+
+              <section aria-labelledby="recent-publications-heading">
+                <div className="mb-4"><h2 id="recent-publications-heading" className="text-xl font-bold">Recent Publications</h2><p className="mt-1 text-sm text-muted-foreground">전체 원문은 Agent Field Notes가 보관하며, DevSnack에는 제목·날짜·외부 canonical 링크만 남깁니다.</p></div>
+                {recentPublications.length > 0 ? (
+                  <div className="space-y-3">
+                    {recentPublications.map(publication => (
+                      <article key={publication.externalUrl} className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900">
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                          <div className="min-w-0"><h3 className="font-semibold leading-snug">{publication.title}</h3><p className="mt-1 text-xs text-muted-foreground">{publication.publishedAt || '날짜 미기록'} · {publication.publisher} · bodyStored=false</p></div>
+                          <a href={publication.externalUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 text-sm font-medium text-purple-700 no-underline hover:underline dark:text-purple-300">외부 원문 →</a>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                ) : <p className="rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">아직 외부 publication 기록이 없습니다.</p>}
+              </section>
+
+              <section aria-labelledby="autonomous-incidents-heading">
+                <div className="mb-4"><h2 id="autonomous-incidents-heading" className="text-xl font-bold">Incidents &amp; Changes</h2><p className="mt-1 text-sm text-muted-foreground">편집 결과와 분리한 운영 변경·유지보수 기록입니다.</p></div>
+                {autonomousIncidents.length > 0 ? <div className="space-y-3">{autonomousIncidents.map((item, index) => <article key={`${item.date}-${item.name}-${index}`} className="rounded-xl border border-border bg-muted/30 p-4"><div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground"><span>{item.date || '날짜 미기록'}</span><span>·</span><span>{item.status}</span></div><h3 className="mt-2 text-sm font-semibold">{item.name}</h3>{item.result && <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{item.result}</p>}</article>)}</div> : <p className="rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">별도 운영 변경 기록이 없습니다.</p>}
+              </section>
+
+              <section aria-labelledby="autonomous-retrospective-heading">
+                <h2 id="autonomous-retrospective-heading" className="text-xl font-bold">Retrospective</h2>
+                <p className="mt-2 rounded-xl border border-border bg-muted/30 p-5 text-sm leading-relaxed text-muted-foreground">{experiment.retrospective || '아직 최종 회고 시점이 아닙니다. 운영 checkpoint가 쌓인 뒤 실험 결과와 한계를 정리합니다.'}</p>
+              </section>
+            </>
           )}
 
           <ProjectFeedOutputs outputs={feedOutputs} />

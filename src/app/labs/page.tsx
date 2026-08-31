@@ -8,7 +8,7 @@ import { experiments } from '@/data/experiments'
 import { DEMO_ASSETS } from '@/lib/ia'
 import { getReclassifiedLabPosts } from '@/lib/ia/hub-data'
 import { getLabCollectionProjects, getRelatedAssets, projectLegacyLabPosts } from '@/lib/ia/hub-projections'
-import { getFeaturedExperiment, getKeyFinding, getLabBoardMetadata, getLabStatusCounts, getLatestResult, getRecentFindings, LAB_FILTERS, parseLabFilter, type LabFilter } from '@/lib/labs'
+import { getFeaturedExperiment, getProjectFinding, getLabBoardMetadata, getLabStatusCounts, getLatestResult, getRecentFindings, LAB_FILTERS, parseLabFilter, type LabFilter } from '@/lib/labs'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
 
 export const revalidate = 60
@@ -34,7 +34,7 @@ function filterProjects<T extends { boardStatus: Exclude<LabFilter, 'all'> }>(pr
 
 function LatestFinding({ experiment }: { experiment: ReturnType<typeof getFeaturedExperiment> }) {
   if (!experiment) return null
-  const finding = getKeyFinding(experiment) || getLatestResult(experiment)?.result
+  const finding = getProjectFinding(experiment)?.statement
   if (!finding) return null
   const boardStatus = getLabBoardMetadata(experiment).status
   const boardStatusLabel = LAB_FILTERS.find(item => item.key === boardStatus)?.label || boardStatus
@@ -43,7 +43,7 @@ function LatestFinding({ experiment }: { experiment: ReturnType<typeof getFeatur
     <section className="mt-8 overflow-hidden rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 via-white to-white dark:border-blue-900/60 dark:from-blue-950/30 dark:via-gray-900 dark:to-gray-900" aria-labelledby="latest-finding-heading">
       <div className="grid gap-6 p-5 md:grid-cols-[minmax(0,1fr)_220px] md:p-7">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-blue-700 dark:text-blue-300"><Sparkles className="h-4 w-4" aria-hidden="true" />Latest Finding</div>
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-blue-700 dark:text-blue-300"><Sparkles className="h-4 w-4" aria-hidden="true" />Latest Verified Finding</div>
           <h2 id="latest-finding-heading" className="mt-3 text-2xl font-bold leading-tight md:text-3xl">{experiment.name}</h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{finding}</p>
           <p className="mt-4 text-xs text-muted-foreground">Project Context · {boardStatusLabel} · {getLatestResult(experiment)?.date || '날짜 미기록'}</p>
@@ -57,7 +57,7 @@ function LatestFinding({ experiment }: { experiment: ReturnType<typeof getFeatur
 function FindingStrip({ experimentId }: { experimentId: string }) {
   const experiment = experiments.find(item => item.id === experimentId)
   if (!experiment) return null
-  const finding = getKeyFinding(experiment) || getLatestResult(experiment)?.result
+  const finding = getProjectFinding(experiment)?.statement
   if (!finding) return null
   return <Link href={`/labs/${experiment.id}`} className="group rounded-xl border border-border bg-white p-4 no-underline transition-colors hover:border-blue-300 dark:bg-gray-900 dark:hover:border-blue-700"><div className="flex items-start justify-between gap-3"><h3 className="line-clamp-2 text-sm font-bold leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400">{experiment.name}</h3><ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" /></div><p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground">{finding}</p></Link>
 }
@@ -95,7 +95,7 @@ export default async function LabsPage({ searchParams }: { searchParams: SearchP
 
         <LatestFinding experiment={featured} />
 
-        {recentFindings.length > 0 && <section className="mt-10" aria-labelledby="recent-findings-heading"><div className="mb-4 flex items-end justify-between gap-3"><div><h2 id="recent-findings-heading" className="text-xl font-bold">Recent Findings</h2><p className="mt-1 text-sm text-muted-foreground">상태나 진행률보다 최근에 확인한 결과를 먼저 봅니다.</p></div><span className="text-xs text-muted-foreground">{recentFindings.length} findings</span></div><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{recentFindings.map(experiment => <FindingStrip key={experiment.id} experimentId={experiment.id} />)}</div></section>}
+        {recentFindings.length > 0 && <section className="mt-10" aria-labelledby="recent-findings-heading"><div className="mb-4 flex items-end justify-between gap-3"><div><h2 id="recent-findings-heading" className="text-xl font-bold">Recent Verified Findings</h2><p className="mt-1 text-sm text-muted-foreground">최근 활동이나 발행물이 아니라, 근거가 있는 Project Finding만 보여줍니다.</p></div><span className="text-xs text-muted-foreground">{recentFindings.length} findings</span></div><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{recentFindings.map(experiment => <FindingStrip key={experiment.id} experimentId={experiment.id} />)}</div></section>}
 
         {legacyLabPosts.length > 0 && (
           <section className="mt-10" aria-labelledby="legacy-lab-source-heading">

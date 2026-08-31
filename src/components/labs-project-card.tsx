@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight, FlaskConical } from 'lucide-react'
 import type { Experiment } from '@/data/experiments'
-import { getDomainLabel, getKeyFinding, getLatestResult } from '@/lib/labs'
+import { getDomainLabel, getProjectFinding, getLatestResult } from '@/lib/labs'
 
 const STATUS_CLASS: Record<string, string> = {
   진행중: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
@@ -19,7 +19,7 @@ const CATEGORY_CLASS: Record<string, string> = {
 }
 
 export function LabsProjectCard({ experiment }: { experiment: Experiment }) {
-  const keyFinding = getKeyFinding(experiment)
+  const projectFinding = getProjectFinding(experiment)
   const latestActivity = getLatestResult(experiment)
   const categoryClass = CATEGORY_CLASS[experiment.color] || CATEGORY_CLASS.blue
 
@@ -45,12 +45,21 @@ export function LabsProjectCard({ experiment }: { experiment: Experiment }) {
         {experiment.description}
       </p>
 
-      <div className="mt-4 flex-1 rounded-lg border-l-2 border-blue-400 bg-blue-50/60 px-3 py-2.5 dark:border-blue-600 dark:bg-blue-950/20">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Key Finding</p>
-        <p className="mt-1 line-clamp-4 text-sm leading-relaxed text-foreground">
-          {keyFinding || '핵심 발견을 정리 중인 실험입니다.'}
-        </p>
-      </div>
+      {projectFinding ? (
+        <div className="mt-4 flex-1 rounded-lg border-l-2 border-blue-400 bg-blue-50/60 px-3 py-2.5 dark:border-blue-600 dark:bg-blue-950/20">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Project Finding</p>
+          <p className="mt-1 line-clamp-4 text-sm leading-relaxed text-foreground">
+            {projectFinding.statement}
+          </p>
+        </div>
+      ) : (
+        <div className="mt-4 flex-1 rounded-lg border border-dashed border-border bg-muted/30 px-3 py-2.5">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Latest Activity</p>
+          <p className="mt-1 line-clamp-4 text-sm leading-relaxed text-muted-foreground">
+            {latestActivity?.result || '아직 독립적인 Project Finding이 없습니다.'}
+          </p>
+        </div>
+      )}
 
       <div className="mt-4 flex items-center justify-between gap-3 border-t border-border pt-3 text-xs text-muted-foreground">
         <span>

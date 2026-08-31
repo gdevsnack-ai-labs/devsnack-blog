@@ -32,6 +32,8 @@ expectEqual(labProjects.find(project => project.id === 'hook')?.displayType, 'Bu
 expectEqual(labProjects.find(project => project.id === 'isekai-instagram-mage-experiment')?.displayType, 'Creative Test', 'Isekai must be labeled Creative Test')
 expectEqual(labProjects.find(project => project.id === 'autonomous-ai-blog')?.displayType, 'Experiment', 'autonomous AI project must be labeled Experiment')
 expectEqual(labProjects.find(project => project.id === 'ai-game-assets-sprite-lab')?.displayType, 'Creative Test', 'AI Game Assets must be labeled Creative Test')
+expectEqual(labProjects.find(project => project.id === 'autonomous-ai-blog')?.projectFinding, undefined, 'autonomous publication activity must not project as a finding')
+expectEqual(Boolean(labProjects.find(project => project.id === 'ai-omok')?.projectFinding), true, 'AI Omok must retain its bounded project finding')
 expectEqual(labProjects.find(project => project.id === 'ai-omok')?.boardStatus, 'paused', 'AI Omok board projection must expose the reviewed Paused state')
 expectEqual(getRelatedAssets('project:ai-game-assets-sprite-lab').some(link => link.href === '/demos/html'), true, 'AI Game Assets must retain its Showcase relation')
 

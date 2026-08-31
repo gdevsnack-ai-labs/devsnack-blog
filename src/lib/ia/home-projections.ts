@@ -11,7 +11,7 @@ import {
   type RelatedAssetLink,
 } from '@/lib/ia/hub-projections'
 import { assetFromLegacyPost, projectRef, type AssetRef } from '@/lib/ia'
-import { getKeyFinding, getRecentFindings } from '@/lib/labs'
+import { getProjectFinding, getRecentFindings } from '@/lib/labs'
 
 export const HOME_CURATED_OVERRIDES = {
   featured: {
@@ -103,7 +103,7 @@ function toFindingProjection(project: LabProjectProjection, eyebrow = 'Lab · Fi
     kind: 'finding',
     eyebrow,
     title: project.title,
-    summary: compactText(getKeyFinding(project.experiment) || project.latestResult || project.description),
+    summary: compactText(getProjectFinding(project.experiment)?.statement || '아직 독립적인 Project Finding이 없습니다.'),
     href: project.href,
     related,
     project,

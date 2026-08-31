@@ -11,11 +11,6 @@ const findingRef = (projectId: string) => `finding:${projectId}:key`
  */
 export const ASSET_RELATIONS: AssetRelation[] = [
   {
-    from: projectRef('autonomous-ai-blog'),
-    relation: 'produces',
-    to: findingRef('autonomous-ai-blog'),
-  },
-  {
     from: 'post:research:dflash-2-qwen3-8-27b-vs-mtp',
     relation: 'informs',
     to: projectRef('local-llm-benchmark'),

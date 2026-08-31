@@ -1,5 +1,10 @@
 import { experiments } from './experiments'
-import { getKeyFinding } from '../lib/labs'
+import { getProjectFinding } from '../lib/labs'
+
+const autonomous = experiments.find(experiment => experiment.id === 'autonomous-ai-blog')
+if (!autonomous) throw new Error('Autonomous AI Blog experiment is missing')
+if (getProjectFinding(autonomous)) throw new Error('Autonomous publication summary must not become a project finding')
+if ((autonomous.externalLinks || []).some(link => link.label === 'Latest Note')) throw new Error('Autonomous publications must use the Recent Publications projection')
 
 const blog = experiments.find(experiment => experiment.id === 'blog')
 if (!blog) throw new Error('Blog Automation experiment is missing')
@@ -15,9 +20,9 @@ for (const marker of ['매일', '사실과 다른', 'v2', 'GitHub Pages', 'DevSn
 
 if ((blog.blogPosts || []).length !== 0) throw new Error('AI Tech v1 Lab must not expose daily feed post links')
 
-const keyFinding = getKeyFinding(blog) || ''
+const projectFinding = getProjectFinding(blog)?.statement || ''
 for (const marker of ['v1', 'v2', 'GitHub Pages']) {
-  if (!keyFinding.includes(marker)) throw new Error(`AI Tech Lab finding is missing marker: ${marker}`)
+  if (!projectFinding.includes(marker)) throw new Error(`AI Tech Lab project finding is missing marker: ${marker}`)
 }
 
 const stockpulse = experiments.find(experiment => experiment.id === 'stockpulse-ai-self-improvement')
@@ -32,9 +37,9 @@ for (const marker of ['v1', '68개', '54개', 'GitHub Pages', 'v2']) {
 }
 if ((stockpulse.blogPosts || []).length !== 0) throw new Error('StockPulse v1 must not expose daily Lab post links')
 if (!(stockpulse.externalLinks || []).some(link => link.href.includes('stockpulse-publication'))) throw new Error('StockPulse v1 must link to external publication')
-const stockpulseFinding = getKeyFinding(stockpulse) || ''
+const stockpulseFinding = getProjectFinding(stockpulse)?.statement || ''
 for (const marker of ['v1', '68개', '54개', 'GitHub Pages']) {
-  if (!stockpulseFinding.includes(marker)) throw new Error(`StockPulse finding is missing marker: ${marker}`)
+  if (!stockpulseFinding.includes(marker)) throw new Error(`StockPulse project finding is missing marker: ${marker}`)
 }
 
 console.log('AI Tech and StockPulse v1 completion tests passed')

@@ -3,7 +3,7 @@ import {
   getCurrentStage,
   getDomainLabel,
   getFeaturedExperiment,
-  getKeyFinding,
+  getProjectFinding,
   getLabBoardMetadata,
   getLabStatusCounts,
   getLatestResult,
@@ -57,8 +57,12 @@ const completedSameDate: Experiment = {
   timeline: [{ name: '완료 실험', status: '완료', date: '2026.08.20', result: '완료 결과' }],
 }
 
-expectEqual(getFeaturedExperiment([completedSameDate, activeSameDate])?.id, 'active-same-date', 'featured experiment must prefer active work on a date tie')
-expectEqual(getKeyFinding({ ...experiment, id: 'local-llm-benchmark' })?.includes('Qwen3.8-27B'), true, 'key finding must use curated verified knowledge')
+const knownActiveSameDate: Experiment = { ...activeSameDate, id: 'ai-omok' }
+const knownCompletedSameDate: Experiment = { ...completedSameDate, id: 'stockpulse-ai-self-improvement' }
+expectEqual(getFeaturedExperiment([knownCompletedSameDate, knownActiveSameDate])?.id, 'ai-omok', 'featured experiment must prefer active work on a date tie')
+expectEqual(getProjectFinding({ ...experiment, id: 'local-llm-benchmark' })?.statement.includes('Qwen3.8-27B'), true, 'project finding must use curated verified knowledge')
+const autonomous = experiments.find(item => item.id === 'autonomous-ai-blog')!
+expectEqual(getProjectFinding(autonomous), undefined, 'autonomous publications must not become a project finding')
 expectEqual(getRecentFindings([experiment, activeSameDate]).length, 0, 'findings feed must exclude projects without curated findings')
 
 const aiOmok = experiments.find(item => item.id === 'ai-omok')!

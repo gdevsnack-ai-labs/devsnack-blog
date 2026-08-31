@@ -55,6 +55,11 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
         required_text=("Recent Findings", "Lab Board", "Experiments"),
         forbidden_text=("Mining",),
     ),
+    "/labs/autonomous-ai-blog": RouteExpectation(
+        "/labs/autonomous-ai-blog", 200, meta_robots="index, follow", canonical=True,
+        required_text=("Verified Project Finding", "아직 독립적인 Project Finding이 없습니다.", "Latest Activity", "Operational Snapshot", "Recent Publications", "bodyStored=false", "Agent Field Notes"),
+        forbidden_text=("Roman의 관측 가치는",),
+    ),
     "/benchmarks": RouteExpectation(
         "/benchmarks", 200, meta_robots="index, follow", canonical=True,
         required_text=("Evaluation Overview", "Latest Result", "Ornith-1.5"),
@@ -100,7 +105,7 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
 }
 
 INDEXABLE_HUB_PATHS = {
-    "/", "/devsnack", "/aitech", "/labs", "/benchmarks", "/data", "/demos", "/research",
+    "/", "/devsnack", "/aitech", "/labs", "/labs/autonomous-ai-blog", "/benchmarks", "/data", "/demos", "/research",
 }
 
 

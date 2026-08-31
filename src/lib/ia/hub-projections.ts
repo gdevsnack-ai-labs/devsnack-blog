@@ -3,7 +3,7 @@ import { toPlainTextExcerpt } from '@/lib/content-excerpt'
 import type { Experiment } from '@/data/experiments'
 import {
   getDomainLabel,
-  getKeyFinding,
+  getProjectFinding,
   getLabBoardMetadata,
   getLatestResult,
   getRecentFindings,
@@ -38,7 +38,7 @@ export interface LabProjectProjection {
   statusConfidence: ReturnType<typeof getLabBoardMetadata>['confidence']
   isDummy: boolean
   href: string
-  finding?: string
+  projectFinding?: string
   latestResult?: string
   latestDate?: string
   nextAction?: string
@@ -95,7 +95,7 @@ export function getLabProjectProjections(experiments: Experiment[]): LabProjectP
       statusConfidence: board.confidence,
       isDummy: Boolean(experiment.isDummy),
       href: `/labs/${experiment.id}`,
-      finding: getKeyFinding(experiment),
+      projectFinding: getProjectFinding(experiment)?.statement,
       latestResult: latest?.result,
       latestDate: board.lastActivity,
       nextAction: board.nextAction,
