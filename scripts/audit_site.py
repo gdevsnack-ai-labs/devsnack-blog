@@ -52,7 +52,7 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
     ),
     "/labs": RouteExpectation(
         "/labs", 200, meta_robots="index, follow", canonical=True,
-        required_text=("Recent Findings", "Lab Board", "Experiments"),
+        required_text=("Recent Verified Findings", "Lab Board", "Experiments"),
         forbidden_text=("Mining",),
     ),
     "/labs/autonomous-ai-blog": RouteExpectation(
