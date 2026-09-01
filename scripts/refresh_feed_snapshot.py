@@ -164,7 +164,7 @@ def run_git(*args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
 
 def push_snapshot(path: Path) -> None:
     relative = path.relative_to(REPO_ROOT)
-    status = run_git("status", "--porcelain", check=True).stdout.strip().splitlines()
+    status = run_git("status", "--porcelain", check=True).stdout.splitlines()
     allowed = {f"?? {relative}", f" M {relative}"}
     unexpected = [line for line in status if line not in allowed]
     if unexpected:

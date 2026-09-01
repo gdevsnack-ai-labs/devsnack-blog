@@ -1,8 +1,27 @@
 {
   "schema_version": 1,
   "feed": "devsnack",
-  "generated_at": "2026-08-26T09:17:26.324083+00:00",
+  "generated_at": "2026-09-01T04:20:46.978796+00:00",
   "posts": [
+    {
+      "slug": "stockpulse-v1-ai-self-improvement-story",
+      "title": "주식 투자 도우미를 만들었는데, AI 자기개선 실험이 되었다",
+      "excerpt": "StockPulse v1 회고 — 예측하는 AI에서, 스스로 고치는 AI로 StockPulse를 처음 만들 때는 거창한 AI 실험을 하려던 것이 아니었다. 주식 투자를 하다 보면 매일 비슷한 정보를 반복해서 확인하게 된다. 시장이 강한지 약한지, 관심 종목이 갑자기 움직이지는 않았는지, 뉴스 분위기는 어떤지, 기술적 지표는 어디쯤 와 있는지 살펴본다. 그렇다면 필요한 데이터를 자동으로 모으고, 매일 아침 하나의 리포트로 만들어주면 어떨까? 그 생각에서 StockPulse가 시작됐다. 처음 StockPulse는 실험이라기보다 개인용 ",
+      "labels": [
+        "StockPulse",
+        "AI 자기개선",
+        "LLM",
+        "머신러닝",
+        "예측 평가",
+        "실험 회고",
+        "AI 에이전트",
+        "DevSnack Story"
+      ],
+      "published": "2026-09-01T04:20:11+00:00",
+      "cover_image": "https://devsnack-blog.vercel.app/stockpulse-v1-story-cover.png",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
     {
       "slug": "ai-agent-model-switch-memory-debt",
       "title": "생각보다 잘하는데, 생각보다 멍청했다",
