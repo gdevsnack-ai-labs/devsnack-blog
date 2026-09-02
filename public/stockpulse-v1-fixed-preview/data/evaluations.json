@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "project_id": "stockpulse-v1-fixed",
+  "records": [
+    {
+      "evaluation_id": "evaluation-live-shadow-day1-2026-09-02-morning-01",
+      "run_id": "live-shadow-day1-2026-09-02-morning-01",
+      "prediction_id": "prediction-live-shadow-day1-2026-09-02-morning-01",
+      "llm_prediction_id": "llm-prediction-2026-09-02",
+      "snapshot_id": "input-snapshot-a9a076f48c68927b",
+      "scope": "v1_fixed_fresh_ml_predictions_and_morning_llm",
+      "status": "pending",
+      "evaluated_count": 0,
+      "pending_count": 50,
+      "correct_count": null,
+      "llm_success": true,
+      "llm_failure": false,
+      "target_maturity": {
+        "status": "not_mature",
+        "reason": "target_date_unavailable"
+      },
+      "fresh_storage": {
+        "lane": "v1_fixed_fresh",
+        "inserted_count": 50,
+        "evaluation_status": "pending",
+        "evaluated_at": null
+      },
+      "evidence_refs": [
+        {
+          "kind": "run",
+          "id": "live-shadow-day1-2026-09-02-morning-01"
+        },
+        {
+          "kind": "input_snapshot",
+          "id": "input-snapshot-a9a076f48c68927b"
+        },
+        {
+          "kind": "prediction",
+          "id": "prediction-live-shadow-day1-2026-09-02-morning-01"
+        },
+        {
+          "kind": "evaluation",
+          "id": "evaluation-live-shadow-day1-2026-09-02-morning-01"
+        }
+      ]
+    }
+  ]
+}

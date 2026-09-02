@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "project_id": "stockpulse-v1-fixed",
+  "promotion_policy": "promote_only_material_experiment_results; no_daily_lab_slug",
+  "records": []
+}

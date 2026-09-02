@@ -1,0 +1,358 @@
+{
+  "schema_version": 1,
+  "projection_type": "stockpulse_v1_fixed_public_projection",
+  "projected_at": "2026-09-02T16:05:20+00:00",
+  "project": {
+    "id": "stockpulse-v1-fixed",
+    "title": "StockPulse V1 Fixed",
+    "route": "/labs/stockpulse-v1-fixed",
+    "lifecycle": "active",
+    "activation_status": "not_activated",
+    "role": "AI prediction, evaluation, applied-change experiment dashboard",
+    "daily_lab_slug_policy": "disabled",
+    "canonical_evidence": "private_run_artifacts",
+    "public_projection_is_canonical": false
+  },
+  "source_manifest": {
+    "source_kind": "read_only_v1_fixed_run_artifact_set",
+    "run_id": "live-shadow-day1-2026-09-02-morning-01",
+    "snapshot_id": "input-snapshot-a9a076f48c68927b",
+    "trading_date": "2026-09-02",
+    "artifact_count": 7,
+    "artifact_hashes": {
+      "run.json": "b3c78592c19c592c9d8119f22927bc2fae3c9a788b3952cc1f48a4955f8cf353",
+      "input_manifest.json": "89b4b1b0838d4e9e540a4c93c0939d641eef539a11ab029cff8c5cd6f0658dc0",
+      "quality.json": "0f14f5a393ca997aa39e6eb31c028cbe6801dbc6bd6c7fc2188a28d452e93971",
+      "ml_prediction.json": "01b1820a635501a98399b4cfba0e3384c85d24accccc0fbf4a4ada9e6eaf8977",
+      "llm_prediction.json": "4a854cd6f0c4272dfdbe15994ae1ccb55a4d77c5222fb933ef930a0077a6cf9f",
+      "improvement.json": "866882bf6c99651954c04c8b8cc802471e4bb808c0b03f5ab0609f4fa34ab047",
+      "day1-morning-verification.json": "11c58643d18fbf459a2f313e4921cc7288bfc8f7dc6a13696817c237302ced5c"
+    },
+    "generator_version": "stockpulse-v1-fixed-projector-1.1.0",
+    "generator_command_template": "python3 scripts/project_publication.py --source-run <private-run-dir> --output-dir <output-dir> [--projected-at <iso>]",
+    "source_path_projected": false
+  },
+  "snapshot": {
+    "live_shadow_day": "Day 1 Morning",
+    "current_state": "day1_complete",
+    "run_count": 1,
+    "llm_evaluated": 1,
+    "llm_correct": true,
+    "ml_prediction_count": 50,
+    "ml_evaluated": 0,
+    "ml_correct": null,
+    "ml_evaluation_state": "pending",
+    "improvement_cycles": 0,
+    "improvement_status": "none",
+    "applied_count": 0,
+    "rejected_count": 0,
+    "pending_count": 0,
+    "current_effective_config": {
+      "lgb": {
+        "learning_rate": 0.03,
+        "n_estimators": 500
+      },
+      "xgb": {
+        "learning_rate": 0.03,
+        "n_estimators": 500
+      },
+      "lstm": {
+        "sequence_length": 20
+      },
+      "ensemble": {
+        "lgb": 0.3,
+        "xgb": 0.3,
+        "lstm": 0.4
+      }
+    }
+  },
+  "runs": {
+    "schema_version": 1,
+    "project_id": "stockpulse-v1-fixed",
+    "records": [
+      {
+        "run_id": "live-shadow-day1-2026-09-02-morning-01",
+        "project_id": "stockpulse-v1-fixed",
+        "experiment_id": "stockpulse-v1-fixed",
+        "source_experiment_id": "stockpulse-v1-fixed-phase8b",
+        "run_mode": "live_shadow",
+        "stage": "morning",
+        "overall_status": "complete",
+        "lane": "v1_fixed_fresh",
+        "trading_date": "2026-09-02",
+        "run_status": "success",
+        "quality_status": "ok",
+        "input_snapshot_id": "input-snapshot-a9a076f48c68927b",
+        "input_snapshot_readback_verified": true,
+        "requested_model_set": [
+          "LightGBM",
+          "XGBoost",
+          "LSTM"
+        ],
+        "actual_model_set": [
+          "LightGBM",
+          "XGBoost",
+          "LSTM"
+        ],
+        "skipped_models": [],
+        "morning_llm_prediction": {
+          "llm_prediction_id": "llm-prediction-2026-09-02",
+          "generation_status": "generated",
+          "evaluation_status": "evaluated",
+          "success": true,
+          "failure": false,
+          "market": "KOSPI",
+          "direction": "하락",
+          "confidence": 0.62,
+          "confidence_label": "중간",
+          "confidence_type": "subjective_assessment_not_calibrated_probability",
+          "snapshot_cutoff": "2026-09-02T10:15:28.500799+09:00",
+          "generated_at": "2026-09-02T11:08:06.426080+09:00",
+          "summary": "2026-09-02 KOSPI는 해외 위험회피와 반도체 약세 연동으로 하락 마감 가능성을 기본 시나리오로 판단해요. 다만 국내 지수의 최근 상승 흐름과 탐욕 구간 심리가 있어 일방적 급락으로 단정하지 않고 중간 confidence를 부여했어요.",
+          "market_summary": "동결된 snapshot의 직전 KOSPI는 6,835.80으로 전일 대비 +0.23%, KOSDAQ은 821.25이며 20일 이격도는 -0.93%예요. KOSPI는 20일선 6,661.97 대비 +2.61%로 최근 추세가 아직 높지만, 이날 장중·장마감 실측값은 이 Morning 판단의 입력으로 사용하지 않아요.",
+          "overseas_market_and_overnight": "2026-09-01 해외 snapshot은 S&P500 -0.71%, Nasdaq -1.03%, Dow -0.79%, SOX -2.14%였어요. NVDA -1.51%, AMD -2.36%, MU -2.64%, QQQ -1.27%, SMH -2.05%로 성장주·반도체가 함께 약했고, VIX는 16.34로 +9.52%, VXN은 21.96으로 +8.82%였어요. 10년물 금리는 4.8로 +0.8%였어요. 이 조합을 국내 대형주와 반도체에 불리한 overnight risk-off 신호로 해석했어요.",
+          "macro": "Macro snapshot의 최신 관측일은 모두 2026-07-01이에요. CPI는 전년비 +3.54%, 전월비 +0.07%, PPI는 전년비 +8.27%, 전월비 -0.78%, 실업률은 4.1%예요. Calendar에는 US CPI 2026-09-11, FOMC 2026-09-16, 한은 금통위 2026-10-16이 기록돼 있어요. 오늘 실시간 환율·유가·추가 macro 수치는 snapshot에 없으므로 방향 근거로 보강하지 않았어요.",
+          "sentiment_and_supply": "Fear/greed는 67/100 탐욕이고, snapshot KOSPI는 +0.23%, 최근 10일 중 7일 상승으로 기록돼 있어요. 변동성 component는 100, 거래량 5일/20일 비율은 0.94x, 52주 고점 근접 종목은 1개예요. sentiment snapshot은 19개 종목 중 긍정 4·중립 11·부정 4이고, 신한지주 +28·셀트리온 +25가 강했으며 리노공업 -25·삼성바이오로직스 -21·NAVER -18이 약했어요. 관심종목 투자자별 수급은 전체적으로 supply_available=false라 실제 외국인·기관·개인 순매수 방향은 판단하지 않았어요.",
+          "ml_summary": "ML snapshot은 LightGBM·XGBoost·LSTM 50개 예측이며 market_bias는 50개 모두 약세예요. Tree AUC 0.7663/accuracy 0.7022, LSTM AUC 0.7698/accuracy 0.7035가 기록돼 있어요. 상위 상대강도에는 티엠씨·HD한국조선해양·삼성물산·현대모비스·신한지주가 있고, 하위에는 삼성전자·NAVER·한미반도체가 있어요. 이 ML target은 5일 후 KOSPI 대비 초과수익인 상대성과라서 KOSPI 절대 방향 예측과 동일시하지 않고 보조 근거로만 사용했어요.",
+          "forecast": "오늘 KOSPI 정규장 종가 방향은 하락으로 판단해요. 숫자형 KOSPI 예상 범위는 frozen snapshot에 제공되지 않아 만들지 않았어요. 해외 지수·반도체 동반 약세와 변동성 상승이 하방 우세를 만들지만, KOSPI의 최근 상승·탐욕 심리와 일부 금융·방어 상대강도가 하락폭을 완화하거나 장중 반등을 만들 수 있어 confidence는 0.62로 제한했어요.",
+          "rationale": [
+            "S&P500·Nasdaq·Dow가 모두 하락했고 SOX와 주요 반도체 종목 하락폭이 더 커 국내 대형주·반도체의 개장 및 추세 부담으로 연결될 가능성이 높아요.",
+            "VIX/VXN 상승과 10년물 금리 상승이 위험선호 약화 신호를 보태요.",
+            "KOSPI는 20일선 위이고 fear/greed 67, 최근 10일 중 7일 상승이라 추세가 즉시 붕괴한다고 단정할 수 없어요.",
+            "ML 50개가 모두 약세 market_bias를 보이지만 상대성과 target이므로 시장 방향 판단의 독립적인 확정 근거로 사용하지 않았어요.",
+            "투자자별 수급이 snapshot에서 누락돼 하락 확신을 상향할 핵심 확인 항목이 비어 있어요."
+          ],
+          "observation_points": [
+            "국내 반도체 대형주의 해외 반도체 약세 반영 정도",
+            "장중 breadth와 외국인·기관 수급 전환 여부 — 현재 snapshot에는 없음",
+            "KOSPI가 snapshot의 6,835.80 기준을 회복하거나 이탈하는 흐름",
+            "변동성 확대가 탐욕 심리를 상쇄하는지 여부",
+            "snapshot에 없는 환율·유가 및 추가 macro 발표"
+          ],
+          "uncertainties": [
+            "supply/investor-flow 데이터 unavailable",
+            "snapshot의 macro 최신 관측치가 2026-07-01로 오늘과 시차가 있음",
+            "frozen snapshot에 숫자형 KOSPI 예상 범위가 없어 범위를 제시하지 않음",
+            "confidence 0.62는 보정된 확률이 아닌 Yura의 정성 판단을 수치화한 값임",
+            "Morning snapshot cutoff 이후 데이터·웹 검색·실시간 시장 확인은 사용하지 않음"
+          ],
+          "freeze": {
+            "evaluation_session": "day1_evening",
+            "post_cutoff_edit_allowed": false,
+            "frozen_for_comparison": true
+          },
+          "evaluation_reference": {
+            "evaluation_session": "day1_evening",
+            "frozen": true,
+            "post_cutoff_edit_allowed": false
+          },
+          "publication_path": "reports/2026-09-02/morning/"
+        },
+        "actual_market_result": {
+          "status": "available",
+          "reason": null,
+          "kospi_close": 6627.22,
+          "kosdaq_close": 813.81,
+          "direction": "하락",
+          "return_pct": -3.05128880306621,
+          "observed_at": "2026-09-02T16:05:20.246709+09:00",
+          "llm_success": true
+        },
+        "llm_evaluation": {
+          "status": "evaluated",
+          "success": true,
+          "failure": false
+        },
+        "ml_evaluation": {
+          "prediction_count": 50,
+          "status": "pending",
+          "evaluated_count": 0,
+          "pending_count": 50,
+          "correct_count": null,
+          "reason": "target_date_unavailable"
+        },
+        "improvement": {
+          "status": "none",
+          "proposal_id": null,
+          "actual_applied": false,
+          "observation_state": "not_started"
+        },
+        "publications": {
+          "morning": {
+            "status": "available",
+            "path": "reports/2026-09-02/morning/"
+          },
+          "evening": {
+            "status": "available",
+            "path": "reports/2026-09-02/evening/"
+          }
+        },
+        "evidence_refs": [
+          {
+            "kind": "run",
+            "id": "live-shadow-day1-2026-09-02-morning-01"
+          },
+          {
+            "kind": "input_snapshot",
+            "id": "input-snapshot-a9a076f48c68927b"
+          },
+          {
+            "kind": "prediction",
+            "id": "prediction-live-shadow-day1-2026-09-02-morning-01"
+          },
+          {
+            "kind": "evaluation",
+            "id": "evaluation-live-shadow-day1-2026-09-02-morning-01"
+          }
+        ]
+      }
+    ]
+  },
+  "evaluations": {
+    "schema_version": 1,
+    "project_id": "stockpulse-v1-fixed",
+    "records": [
+      {
+        "evaluation_id": "evaluation-live-shadow-day1-2026-09-02-morning-01",
+        "run_id": "live-shadow-day1-2026-09-02-morning-01",
+        "prediction_id": "prediction-live-shadow-day1-2026-09-02-morning-01",
+        "llm_prediction_id": "llm-prediction-2026-09-02",
+        "snapshot_id": "input-snapshot-a9a076f48c68927b",
+        "scope": "v1_fixed_fresh_ml_predictions_and_morning_llm",
+        "status": "pending",
+        "evaluated_count": 0,
+        "pending_count": 50,
+        "correct_count": null,
+        "llm_success": true,
+        "llm_failure": false,
+        "target_maturity": {
+          "status": "not_mature",
+          "reason": "target_date_unavailable"
+        },
+        "fresh_storage": {
+          "lane": "v1_fixed_fresh",
+          "inserted_count": 50,
+          "evaluation_status": "pending",
+          "evaluated_at": null
+        },
+        "evidence_refs": [
+          {
+            "kind": "run",
+            "id": "live-shadow-day1-2026-09-02-morning-01"
+          },
+          {
+            "kind": "input_snapshot",
+            "id": "input-snapshot-a9a076f48c68927b"
+          },
+          {
+            "kind": "prediction",
+            "id": "prediction-live-shadow-day1-2026-09-02-morning-01"
+          },
+          {
+            "kind": "evaluation",
+            "id": "evaluation-live-shadow-day1-2026-09-02-morning-01"
+          }
+        ]
+      }
+    ]
+  },
+  "improvements": {
+    "schema_version": 1,
+    "project_id": "stockpulse-v1-fixed",
+    "summary": {
+      "status": "none",
+      "reason": "no_evaluated_failure_observed",
+      "proposal_count": 0,
+      "applied_count": 0,
+      "pending_count": 0
+    },
+    "records": []
+  },
+  "findings": {
+    "schema_version": 1,
+    "project_id": "stockpulse-v1-fixed",
+    "promotion_policy": "promote_only_material_experiment_results; no_daily_lab_slug",
+    "records": []
+  },
+  "metrics": {
+    "schema_version": 1,
+    "project_id": "stockpulse-v1-fixed",
+    "snapshot": {
+      "live_shadow_day": "Day 1 Morning",
+      "current_state": "day1_complete",
+      "run_count": 1,
+      "llm_evaluated": 1,
+      "llm_correct": true,
+      "ml_prediction_count": 50,
+      "ml_evaluated": 0,
+      "ml_correct": null,
+      "ml_evaluation_state": "pending",
+      "improvement_cycles": 0,
+      "improvement_status": "none",
+      "applied_count": 0,
+      "rejected_count": 0,
+      "pending_count": 0,
+      "current_effective_config": {
+        "lgb": {
+          "learning_rate": 0.03,
+          "n_estimators": 500
+        },
+        "xgb": {
+          "learning_rate": 0.03,
+          "n_estimators": 500
+        },
+        "lstm": {
+          "sequence_length": 20
+        },
+        "ensemble": {
+          "lgb": 0.3,
+          "xgb": 0.3,
+          "lstm": 0.4
+        }
+      }
+    },
+    "runs": [
+      {
+        "run_id": "live-shadow-day1-2026-09-02-morning-01",
+        "trading_date": "2026-09-02",
+        "prediction_count": 50,
+        "ml_evaluated_count": 0,
+        "ml_pending_count": 50,
+        "ml_correct_count": null,
+        "llm_evaluated": true,
+        "llm_correct": true,
+        "improvement_cycles": 0,
+        "actual_applied_count": 0,
+        "evaluation_status": "pending"
+      }
+    ]
+  },
+  "publication": {
+    "publication_id": "stockpulse-v1-fixed-publication",
+    "status": "projection_only_not_published",
+    "morning": {
+      "status": "available",
+      "path": "reports/2026-09-02/morning/",
+      "run_id": "live-shadow-day1-2026-09-02-morning-01"
+    },
+    "evening": {
+      "status": "available",
+      "path": "reports/2026-09-02/evening/",
+      "run_id": "live-shadow-day1-2026-09-02-morning-01"
+    },
+    "daily_lab_slug_policy": "disabled"
+  },
+  "security": {
+    "private_source_read_only": true,
+    "credentials_projected": false,
+    "raw_prompt_projected": false,
+    "execution_log_projected": false,
+    "internal_absolute_paths_projected": false,
+    "publication_attempted": false,
+    "telegram_attempted": false,
+    "cron_activation_attempted": false,
+    "historical_mutation": false,
+    "archive_mutation": false,
+    "deploy_attempted": false
+  }
+}

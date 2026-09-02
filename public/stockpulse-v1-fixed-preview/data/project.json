@@ -1,0 +1,12 @@
+{
+  "id": "stockpulse-v1-fixed",
+  "title": "StockPulse V1 Fixed",
+  "route": "/labs/stockpulse-v1-fixed",
+  "lifecycle": "active",
+  "activation_status": "not_activated",
+  "role": "AI prediction, evaluation, applied-change experiment dashboard",
+  "daily_lab_slug_policy": "disabled",
+  "canonical_evidence": "private_run_artifacts",
+  "public_projection_is_canonical": false,
+  "schema_version": 1
+}

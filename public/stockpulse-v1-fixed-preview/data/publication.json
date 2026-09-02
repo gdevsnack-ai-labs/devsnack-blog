@@ -1,0 +1,17 @@
+{
+  "publication_id": "stockpulse-v1-fixed-publication",
+  "status": "projection_only_not_published",
+  "morning": {
+    "status": "available",
+    "path": "reports/2026-09-02/morning/",
+    "run_id": "live-shadow-day1-2026-09-02-morning-01"
+  },
+  "evening": {
+    "status": "available",
+    "path": "reports/2026-09-02/evening/",
+    "run_id": "live-shadow-day1-2026-09-02-morning-01"
+  },
+  "daily_lab_slug_policy": "disabled",
+  "schema_version": 1,
+  "project_id": "stockpulse-v1-fixed"
+}

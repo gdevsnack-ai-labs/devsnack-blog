@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Morning report · 2026-09-02 · StockPulse V1 Fixed</title>
+<style>
+:root { color-scheme: light; --ink:#142033; --muted:#617086; --line:#dbe3ed; --soft:#f4f7fb; --blue:#2563eb; --green:#087f5b; --amber:#9a6700; }
+* { box-sizing:border-box; }
+body { margin:0; background:#f7f9fc; color:var(--ink); font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height:1.65; }
+a { color:var(--blue); text-decoration:none; }
+a:hover { text-decoration:underline; }
+.site-header { border-bottom:1px solid var(--line); background:rgba(255,255,255,.94); }
+.nav { display:flex; align-items:center; justify-content:space-between; gap:1rem; max-width:1120px; margin:0 auto; padding:1rem 1.25rem; }
+.brand { color:var(--ink); font-weight:800; letter-spacing:-.02em; }
+.nav-links { display:flex; flex-wrap:wrap; gap:.75rem; font-size:.82rem; }
+.container { max-width:1120px; margin:0 auto; padding:2.5rem 1.25rem 4rem; }
+.eyebrow { color:var(--blue); font-size:.75rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+h1,h2,h3 { line-height:1.18; letter-spacing:-.03em; }
+h1 { margin:.6rem 0 1rem; font-size:clamp(2rem, 5vw, 4rem); }
+h2 { margin:0 0 .7rem; font-size:1.45rem; }
+h3 { margin:0; font-size:1.05rem; }
+.lede { max-width:720px; color:var(--muted); font-size:1.02rem; }
+.hero { border:1px solid #cfe0ff; border-radius:24px; background:linear-gradient(135deg,#eaf2ff 0%,#fff 72%); padding:clamp(1.25rem, 4vw, 2.5rem); }
+.badges { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1rem; }
+.badge { display:inline-flex; align-items:center; border-radius:999px; background:#e8eef7; color:#43526a; padding:.25rem .7rem; font-size:.75rem; font-weight:700; }
+.badge.green { background:#d9f7eb; color:var(--green); }
+.badge.amber { background:#fff2cc; color:var(--amber); }
+.grid { display:grid; gap:1rem; }
+.metrics { grid-template-columns:repeat(5,minmax(0,1fr)); margin-top:1.5rem; }
+.card { border:1px solid var(--line); border-radius:16px; background:#fff; padding:1rem; }
+.metric-label { color:var(--muted); font-size:.75rem; }
+.metric-value { margin-top:.35rem; font-size:1.35rem; font-weight:800; letter-spacing:-.03em; }
+.metric-note { color:var(--muted); font-size:.72rem; }
+.section { margin-top:3rem; }
+.section-header { display:flex; align-items:end; justify-content:space-between; gap:1rem; margin-bottom:1rem; }
+.section-header p { margin:.2rem 0 0; color:var(--muted); font-size:.9rem; }
+.table-wrap { overflow-x:auto; border:1px solid var(--line); border-radius:16px; background:#fff; }
+table { width:100%; min-width:860px; border-collapse:collapse; font-size:.88rem; }
+th,td { padding:.9rem 1rem; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+th { background:var(--soft); color:var(--muted); font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; }
+tr:last-child td { border-bottom:0; }
+.report-links { display:flex; flex-direction:column; gap:.35rem; }
+.empty { border:1px dashed #b9c5d4; border-radius:16px; background:var(--soft); padding:1.4rem; }
+.empty p { margin:.35rem 0 0; color:var(--muted); }
+.report { max-width:820px; margin:0 auto; }
+.report-body { margin-top:2rem; border:1px solid var(--line); border-radius:18px; background:#fff; padding:clamp(1.2rem,4vw,2.4rem); overflow-wrap:anywhere; word-break:break-word; }
+.report-body h1 { margin-top:0; font-size:clamp(1.8rem,4vw,3rem); }
+.report-body h2 { margin-top:2.2rem; }
+.report-body h3 { margin-top:1.6rem; }
+.report-body p { color:#35445a; }
+.report-body li { margin:.35rem 0; color:#35445a; }
+.report-body blockquote { margin:1rem 0; border-left:3px solid #9ebeff; background:#f3f7ff; padding:.8rem 1rem; color:#52627a; }
+.report-body code { border-radius:5px; background:#eef2f7; padding:.1rem .3rem; font-size:.9em; }
+.footer { margin-top:2rem; color:var(--muted); font-size:.78rem; }
+@media (max-width:800px) { .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .metrics .card:last-child { grid-column:span 2; } }
+@media (max-width:520px) { .container { padding-top:1.5rem; } .nav { align-items:flex-start; flex-direction:column; } .nav-links { gap:.5rem .8rem; } .metrics { grid-template-columns:1fr 1fr; } .hero { border-radius:18px; } .section-header { align-items:flex-start; flex-direction:column; } }
+</style>
+</head>
+<body>
+<header class="site-header"><nav class="nav"><a class="brand" href="../../../index.html">StockPulse V1 Fixed</a><div class="nav-links"><a href="../../../index.html">Publication home</a><a href="../../../index.html#archive">Archive</a><a href="../../../index.htmldata/projection.json">Projection JSON</a></div></nav></header>
+<main class="container report">
+<div class="eyebrow">morning report · 2026-09-02</div>
+<div class="badges"><span class="badge">V1 Fixed · Live Shadow</span><span class="badge green">available</span></div>
+<article class="report-body"><h1>StockPulse V1 Fixed — 2026-09-02 Morning</h1>
+<blockquote>사람을 위한 아침 시장 브리핑입니다. 실험 원본은 private run artifact에 보존되고, 이 문서는 public projection입니다.</blockquote>
+<h2>시장 전망</h2>
+<ul>
+<li>대상 시장: KOSPI</li>
+<li>Yura LLM 전망: <strong>하락</strong></li>
+<li>Confidence: <strong>0.62</strong> (중간)</li>
+<li>Confidence 성격: subjective_assessment_not_calibrated_probability</li>
+<li>판단 요약: 2026-09-02 KOSPI는 해외 위험회피와 반도체 약세 연동으로 하락 마감 가능성을 기본 시나리오로 판단해요. 다만 국내 지수의 최근 상승 흐름과 탐욕 구간 심리가 있어 일방적 급락으로 단정하지 않고 중간 confidence를 부여했어요.</li>
+</ul>
+<h2>해외시장 · macro · overnight</h2>
+<p>2026-09-01 해외 snapshot은 S&amp;P500 -0.71%, Nasdaq -1.03%, Dow -0.79%, SOX -2.14%였어요. NVDA -1.51%, AMD -2.36%, MU -2.64%, QQQ -1.27%, SMH -2.05%로 성장주·반도체가 함께 약했고, VIX는 16.34로 +9.52%, VXN은 21.96으로 +8.82%였어요. 10년물 금리는 4.8로 +0.8%였어요. 이 조합을 국내 대형주와 반도체에 불리한 overnight risk-off 신호로 해석했어요.</p>
+<h3>Macro</h3>
+<p>Macro snapshot의 최신 관측일은 모두 2026-07-01이에요. CPI는 전년비 +3.54%, 전월비 +0.07%, PPI는 전년비 +8.27%, 전월비 -0.78%, 실업률은 4.1%예요. Calendar에는 US CPI 2026-09-11, FOMC 2026-09-16, 한은 금통위 2026-10-16이 기록돼 있어요. 오늘 실시간 환율·유가·추가 macro 수치는 snapshot에 없으므로 방향 근거로 보강하지 않았어요.</p>
+<h2>국내 시장 기준</h2>
+<p>동결된 snapshot의 직전 KOSPI는 6,835.80으로 전일 대비 +0.23%, KOSDAQ은 821.25이며 20일 이격도는 -0.93%예요. KOSPI는 20일선 6,661.97 대비 +2.61%로 최근 추세가 아직 높지만, 이날 장중·장마감 실측값은 이 Morning 판단의 입력으로 사용하지 않아요.</p>
+<h2>Sentiment · 수급 · 주요 시장 이슈</h2>
+<p>Fear/greed는 67/100 탐욕이고, snapshot KOSPI는 +0.23%, 최근 10일 중 7일 상승으로 기록돼 있어요. 변동성 component는 100, 거래량 5일/20일 비율은 0.94x, 52주 고점 근접 종목은 1개예요. sentiment snapshot은 19개 종목 중 긍정 4·중립 11·부정 4이고, 신한지주 +28·셀트리온 +25가 강했으며 리노공업 -25·삼성바이오로직스 -21·NAVER -18이 약했어요. 관심종목 투자자별 수급은 전체적으로 supply_available=false라 실제 외국인·기관·개인 순매수 방향은 판단하지 않았어요.</p>
+<h3>주요 이슈</h3>
+<ul>
+<li>S&amp;P500·Nasdaq·Dow가 모두 하락했고 SOX와 주요 반도체 종목 하락폭이 더 커 국내 대형주·반도체의 개장 및 추세 부담으로 연결될 가능성이 높아요.</li>
+<li>VIX/VXN 상승과 10년물 금리 상승이 위험선호 약화 신호를 보태요.</li>
+<li>KOSPI는 20일선 위이고 fear/greed 67, 최근 10일 중 7일 상승이라 추세가 즉시 붕괴한다고 단정할 수 없어요.</li>
+<li>ML 50개가 모두 약세 market_bias를 보이지만 상대성과 target이므로 시장 방향 판단의 독립적인 확정 근거로 사용하지 않았어요.</li>
+<li>투자자별 수급이 snapshot에서 누락돼 하락 확신을 상향할 핵심 확인 항목이 비어 있어요.</li>
+</ul>
+<h2>ML prediction 요약</h2>
+<p>ML snapshot은 LightGBM·XGBoost·LSTM 50개 예측이며 market_bias는 50개 모두 약세예요. Tree AUC 0.7663/accuracy 0.7022, LSTM AUC 0.7698/accuracy 0.7035가 기록돼 있어요. 상위 상대강도에는 티엠씨·HD한국조선해양·삼성물산·현대모비스·신한지주가 있고, 하위에는 삼성전자·NAVER·한미반도체가 있어요. 이 ML target은 5일 후 KOSPI 대비 초과수익인 상대성과라서 KOSPI 절대 방향 예측과 동일시하지 않고 보조 근거로만 사용했어요.</p>
+<ul>
+<li>예측 수: <strong>50개</strong></li>
+<li>ML evaluation: <strong>pending</strong> (50 pending)</li>
+</ul>
+<h2>관찰 포인트</h2>
+<ul>
+<li>국내 반도체 대형주의 해외 반도체 약세 반영 정도</li>
+<li>장중 breadth와 외국인·기관 수급 전환 여부 — 현재 snapshot에는 없음</li>
+<li>KOSPI가 snapshot의 6,835.80 기준을 회복하거나 이탈하는 흐름</li>
+<li>변동성 확대가 탐욕 심리를 상쇄하는지 여부</li>
+<li>snapshot에 없는 환율·유가 및 추가 macro 발표</li>
+</ul>
+<h2>실험 상태</h2>
+<ul>
+<li>Morning: ML prediction 및 Yura LLM prediction 생성 완료</li>
+<li>실제 시장 결과: 확인됨</li>
+<li>Improvement: none</li>
+<li>Daily Lab Note slug: 생성하지 않음</li>
+</ul>
+<h2>불확실성·누락</h2>
+<ul>
+<li>supply/investor-flow 데이터 unavailable</li>
+<li>snapshot의 macro 최신 관측치가 2026-07-01로 오늘과 시차가 있음</li>
+<li>frozen snapshot에 숫자형 KOSPI 예상 범위가 없어 범위를 제시하지 않음</li>
+<li>confidence 0.62는 보정된 확률이 아닌 Yura의 정성 판단을 수치화한 값임</li>
+<li>Morning snapshot cutoff 이후 데이터·웹 검색·실시간 시장 확인은 사용하지 않음</li>
+</ul>
+<h2>Public boundary</h2>
+<ul>
+<li>이 문서는 private run artifact의 읽기 전용 projection입니다.</li>
+<li>private execution material은 포함하지 않습니다.</li>
+<li>Evening report는 장 마감 후 별도 evaluation이 끝난 경우에만 생성합니다.</li>
+</ul></article>
+<p class="footer"><a href="../../../index.html">← Publication home</a> · <a href="../evening/index.html">Open Evening report ↗</a></p>
+</main>
+</body>
+</html>

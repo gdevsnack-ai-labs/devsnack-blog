@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "project_id": "stockpulse-v1-fixed",
+  "summary": {
+    "status": "none",
+    "reason": "no_evaluated_failure_observed",
+    "proposal_count": 0,
+    "applied_count": 0,
+    "pending_count": 0
+  },
+  "records": []
+}

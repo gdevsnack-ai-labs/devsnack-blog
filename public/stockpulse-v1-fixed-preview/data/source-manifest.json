@@ -1,0 +1,21 @@
+{
+  "source_kind": "read_only_v1_fixed_run_artifact_set",
+  "run_id": "live-shadow-day1-2026-09-02-morning-01",
+  "snapshot_id": "input-snapshot-a9a076f48c68927b",
+  "trading_date": "2026-09-02",
+  "artifact_count": 7,
+  "artifact_hashes": {
+    "run.json": "b3c78592c19c592c9d8119f22927bc2fae3c9a788b3952cc1f48a4955f8cf353",
+    "input_manifest.json": "89b4b1b0838d4e9e540a4c93c0939d641eef539a11ab029cff8c5cd6f0658dc0",
+    "quality.json": "0f14f5a393ca997aa39e6eb31c028cbe6801dbc6bd6c7fc2188a28d452e93971",
+    "ml_prediction.json": "01b1820a635501a98399b4cfba0e3384c85d24accccc0fbf4a4ada9e6eaf8977",
+    "llm_prediction.json": "4a854cd6f0c4272dfdbe15994ae1ccb55a4d77c5222fb933ef930a0077a6cf9f",
+    "improvement.json": "866882bf6c99651954c04c8b8cc802471e4bb808c0b03f5ab0609f4fa34ab047",
+    "day1-morning-verification.json": "11c58643d18fbf459a2f313e4921cc7288bfc8f7dc6a13696817c237302ced5c"
+  },
+  "generator_version": "stockpulse-v1-fixed-projector-1.1.0",
+  "generator_command_template": "python3 scripts/project_publication.py --source-run <private-run-dir> --output-dir <output-dir> [--projected-at <iso>]",
+  "source_path_projected": false,
+  "schema_version": 1,
+  "project_id": "stockpulse-v1-fixed"
+}
