@@ -1,5 +1,6 @@
 import type { Experiment, TimelineItem } from '@/data/experiments'
 import { AUTONOMOUS_AI_BLOG_LIVE } from '@/data/autonomous-ai-blog-live'
+import fixedProjection from '@/data/stockpulse-v1-fixed-projection.json'
 
 export type LabBoardStatus = 'active' | 'next' | 'backlog' | 'paused' | 'completed'
 export type LabStatusConfidence = 'confirmed' | 'inferred' | 'ambiguous'
@@ -237,9 +238,39 @@ function isActualResult(item: TimelineItem): boolean {
   return Boolean(item.result?.trim()) && (item.status === '완료' || item.status === '진행중')
 }
 
+/** The V1 Fixed detail page is projection-driven; mirror its latest actual run on the Lab hub. */
+type FixedProjectionForHub = {
+  runs?: {
+    records?: Array<{
+      stage?: string
+      trading_date?: string
+      overall_status?: string
+      actual_market_result?: {
+        status?: string
+        kospi_close?: number | null
+        direction?: string | null
+      }
+    }>
+  }
+}
+
+function getStockpulseFixedProjectionResult(experiment: Experiment): TimelineItem | undefined {
+  if (experiment.id !== 'stockpulse-v1-fixed') return undefined
+  const record = (fixedProjection as FixedProjectionForHub).runs?.records?.[0]
+  const actual = record?.actual_market_result
+  if (!record?.trading_date || record.overall_status !== 'complete' || actual?.status !== 'available') return undefined
+  const close = typeof actual.kospi_close === 'number' ? actual.kospi_close.toLocaleString('en-US', { maximumFractionDigits: 2 }) : '미확인'
+  return {
+    name: record.stage === 'evening' ? 'Day 1 Evening Evaluation' : 'Day 1 Morning Live Shadow',
+    status: '완료',
+    date: record.trading_date.replaceAll('-', '.'),
+    result: `실제 KOSPI ${close}, 방향 ${actual.direction || '미확인'}을 최신 projection에서 read-back했습니다.`,
+  }
+}
+
 /** 계획 문구가 아니라 실제 결과가 기록된 가장 최근 항목을 반환합니다. */
 export function getLatestResult(experiment: Experiment): TimelineItem | undefined {
-  return getSortedTimeline(experiment).find(isActualResult)
+  return getStockpulseFixedProjectionResult(experiment) || getSortedTimeline(experiment).find(isActualResult)
 }
 
 export function getKeyResults(experiment: Experiment, limit = 3): TimelineItem[] {

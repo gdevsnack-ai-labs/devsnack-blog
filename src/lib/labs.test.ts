@@ -91,6 +91,10 @@ for (const projectId of ['blog', 'local-llm-benchmark', 'ai-omok', 'stockpulse-a
   expectValidProjectFinding(getProjectFinding(project), projectId)
 }
 
+const stockpulseFixed = experiments.find(item => item.id === 'stockpulse-v1-fixed')!
+expectEqual(getLatestResult(stockpulseFixed)?.date, '2026.09.03', 'StockPulse V1 Fixed hub activity must follow the latest projection')
+expectEqual(getLatestResult(stockpulseFixed)?.name, 'Day 1 Evening Evaluation', 'StockPulse V1 Fixed hub activity must use the completed Evening stage')
+
 const aiOmok = experiments.find(item => item.id === 'ai-omok')!
 const aiGameAssets = experiments.find(item => item.id === 'ai-game-assets-sprite-lab')!
 expectEqual(getLabBoardMetadata(aiOmok).status, 'paused', 'AI Omok with completed runs and only planned next steps should project as Paused')
