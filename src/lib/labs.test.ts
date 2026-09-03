@@ -4,6 +4,7 @@ import {
   getDomainLabel,
   getFeaturedExperiment,
   getProjectFinding,
+  validateProjectFinding,
   getLabBoardMetadata,
   getLabStatusCounts,
   getLatestResult,
@@ -22,6 +23,23 @@ function expectArray(actual: unknown[], expected: unknown[], message: string) {
     throw new Error(`${message}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`)
   }
 }
+
+function expectValidProjectFinding(finding: ReturnType<typeof getProjectFinding>, label: string) {
+  const errors = validateProjectFinding(finding)
+  if (errors.length > 0) throw new Error(`${label} Project Finding is invalid: ${errors.join(', ')}`)
+}
+
+const validFinding = {
+  statement: 'scoped conclusion',
+  evidence: ['supporting evidence'],
+  scope: 'bounded scope',
+  confidence: 'limited',
+}
+expectEqual(validateProjectFinding(undefined).includes('missing'), true, 'missing Project Finding must be rejected')
+expectEqual(validateProjectFinding({ ...validFinding, statement: '' }).includes('statement'), true, 'empty Finding statement must be rejected')
+expectEqual(validateProjectFinding({ ...validFinding, evidence: [] }).includes('evidence'), true, 'empty Finding evidence must be rejected')
+expectEqual(validateProjectFinding({ ...validFinding, scope: '' }).includes('scope'), true, 'missing Finding scope must be rejected')
+expectEqual(validateProjectFinding({ ...validFinding, confidence: undefined }).includes('confidence'), true, 'missing Finding confidence must be rejected')
 
 const experiment: Experiment = {
   id: 'fixture',
@@ -60,10 +78,18 @@ const completedSameDate: Experiment = {
 const knownActiveSameDate: Experiment = { ...activeSameDate, id: 'ai-omok' }
 const knownCompletedSameDate: Experiment = { ...completedSameDate, id: 'stockpulse-ai-self-improvement' }
 expectEqual(getFeaturedExperiment([knownCompletedSameDate, knownActiveSameDate])?.id, 'ai-omok', 'featured experiment must prefer active work on a date tie')
-expectEqual(getProjectFinding({ ...experiment, id: 'local-llm-benchmark' })?.statement.includes('Qwen3.8-27B'), true, 'project finding must use curated verified knowledge')
+const localLlmFinding = getProjectFinding({ ...experiment, id: 'local-llm-benchmark' })
+expectValidProjectFinding(localLlmFinding, 'Local LLM')
 const autonomous = experiments.find(item => item.id === 'autonomous-ai-blog')!
 expectEqual(getProjectFinding(autonomous), undefined, 'autonomous publications must not become a project finding')
+expectEqual(getProjectFinding({ ...experiment, id: 'activity-only-project' }), undefined, 'Latest Activity must not become a Project Finding')
 expectEqual(getRecentFindings([experiment, activeSameDate]).length, 0, 'findings feed must exclude projects without curated findings')
+
+for (const projectId of ['blog', 'local-llm-benchmark', 'ai-omok', 'stockpulse-ai-self-improvement', 'hermes-memory', 'luna-agentic-game-dev', 'isekai-instagram-mage-experiment']) {
+  const project = experiments.find(item => item.id === projectId)
+  if (!project) throw new Error(`Finding-bearing project is missing: ${projectId}`)
+  expectValidProjectFinding(getProjectFinding(project), projectId)
+}
 
 const aiOmok = experiments.find(item => item.id === 'ai-omok')!
 const aiGameAssets = experiments.find(item => item.id === 'ai-game-assets-sprite-lab')!

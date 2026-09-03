@@ -1,3 +1,4 @@
+import { experiments } from '@/data/experiments'
 import { createIAFoundation, PRIMARY_TYPES, validateIAFoundation } from './index'
 import { assetFromLegacyPost } from './asset-catalog'
 import { ASSET_RELATIONS } from './relation-registry'
@@ -42,7 +43,7 @@ const foundation = createIAFoundation(fixturePosts, ASSET_RELATIONS)
 const errors = validateIAFoundation(foundation)
 if (errors.length > 0) throw new Error(`IA foundation validation failed: ${errors.join('; ')}`)
 
-expectEqual(foundation.projects.length, 11, 'all legacy projects must project into ProjectCatalog')
+expectEqual(foundation.projects.length, experiments.length, 'all experiment registry projects must project into ProjectCatalog')
 expectIncludes(PRIMARY_TYPES, 'benchmark', 'benchmark must be an official primary type')
 expectIncludes(PRIMARY_TYPES, 'tracker', 'tracker must be an official primary type')
 const fixture = (slug: string) => fixturePosts.find(post => post.slug === slug)!

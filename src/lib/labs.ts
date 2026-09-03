@@ -250,6 +250,22 @@ export function getProjectFinding(experiment: Experiment): ProjectFinding | unde
   return LAB_KNOWLEDGE[experiment.id]?.projectFinding
 }
 
+/** Validate the semantic contract for a promoted, scoped Project Finding. */
+export function validateProjectFinding(finding: ProjectFinding | undefined): string[] {
+  if (!finding) return ['missing']
+
+  const errors: string[] = []
+  if (!finding.statement.trim()) errors.push('statement')
+  if (!Array.isArray(finding.evidence) || finding.evidence.length === 0) {
+    errors.push('evidence')
+  } else if (finding.evidence.some(item => !item.trim())) {
+    errors.push('evidence_item')
+  }
+  if (!finding.scope.trim()) errors.push('scope')
+  if (!finding.confidence?.trim()) errors.push('confidence')
+  return errors
+}
+
 export function getKeyMetrics(experiment: Experiment): LabMetric[] {
   return LAB_KNOWLEDGE[experiment.id]?.metrics || []
 }
