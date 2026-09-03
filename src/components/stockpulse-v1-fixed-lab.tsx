@@ -281,7 +281,7 @@ export function StockpulseV1FixedLab({ projection }: { projection: StockpulseFix
               <SnapshotMetric label="Morning" value={view.snapshot.morning} note="LLM prediction" />
               <SnapshotMetric label="Actual" value={view.snapshot.actual} note={`KOSPI ${view.actualClose}`} tone="positive" />
               <SnapshotMetric label="LLM result" value={view.snapshot.llmResult} note="Morning vs actual" tone="positive" />
-              <SnapshotMetric label="ML evaluation" value={view.snapshot.ml} note="evaluated 0 · pending 50" tone="warning" />
+              <SnapshotMetric label="ML evaluation" value={view.snapshot.ml} note={`evaluated ${view.run.ml_evaluation.evaluated_count} · pending ${view.run.ml_evaluation.pending_count}`} tone="warning" />
               <SnapshotMetric label="Improvement" value={view.snapshot.improvement} note="No evaluated failure" />
             </div>
           </div>
@@ -303,7 +303,7 @@ export function StockpulseV1FixedLab({ projection }: { projection: StockpulseFix
 
           <section aria-labelledby="publication-preview-heading">
             <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><div className="flex items-center gap-2"><FileText className="h-5 w-5 text-muted-foreground" aria-hidden="true" /><h2 id="publication-preview-heading" className="text-xl font-bold">Morning / Evening publication</h2></div><p className="mt-1 text-sm text-muted-foreground">Lab에는 요약만 두고, 실제 report 원문은 static publication preview로 연결합니다.</p></div><Link href={`${STOCKPULSE_V1_FIXED_PUBLICATION_ROOT}/`} className="inline-flex items-center gap-1 text-sm font-medium text-blue-700 no-underline hover:underline dark:text-blue-300">Publication home <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></Link></div>
-            <div className="grid gap-3 sm:grid-cols-2"><ReportLink href={view.publication.morning.href} label="Morning report · 2026-09-02" status={view.publication.morning.status} /><ReportLink href={view.publication.evening.href} label="Evening report · 2026-09-02" status={view.publication.evening.status} /></div>
+            <div className="grid gap-3 sm:grid-cols-2"><ReportLink href={view.publication.morning.href} label={`Morning report · ${view.date}`} status={view.publication.morning.status} /><ReportLink href={view.publication.evening.href} label={`Evening report · ${view.date}`} status={view.publication.evening.status} /></div>
           </section>
 
           <section aria-labelledby="config-heading">
