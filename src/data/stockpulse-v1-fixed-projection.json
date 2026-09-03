@@ -129,7 +129,7 @@
     "route": "/labs/stockpulse-v1-fixed",
     "title": "StockPulse V1 Fixed"
   },
-  "projected_at": "2026-09-03T22:36:07+00:00",
+  "projected_at": "2026-09-03T22:36:34+00:00",
   "projection_type": "stockpulse_v1_fixed_public_projection",
   "publication": {
     "daily_lab_slug_policy": "disabled",
