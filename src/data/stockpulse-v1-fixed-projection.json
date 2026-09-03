@@ -55,23 +55,58 @@
   },
   "improvements": {
     "project_id": "stockpulse-v1-fixed",
-    "records": [],
+    "records": [
+      {
+        "actual_applied": true,
+        "application_kind": "prompt",
+        "approved": true,
+        "cycle_id": "improvement-cycle-live-shadow-2026-09-03-morning-01",
+        "effective_runtime_readback": null,
+        "evaluation_id": "evaluation-live-shadow-2026-09-03-morning-01",
+        "evidence_refs": [
+          {
+            "id": "live-shadow-2026-09-03-morning-01",
+            "kind": "run"
+          },
+          {
+            "id": "evaluation-live-shadow-2026-09-03-morning-01",
+            "kind": "evaluation"
+          }
+        ],
+        "observation_state": "pending",
+        "proposal_id": "proposal-8c6f8e12974860f6",
+        "readback_verified": true,
+        "requested_change": {
+          "action_detail": "절대 방향 판단에서 국내 추세 약세와 해외 위험선호·반도체·환율 반등이 충돌할 때, 해외 counter-signal을 별도 평가한 뒤 최종 방향을 결정합니다. 장중 breadth·외국인/기관 수급이 없으면 이를 불확실성으로 표시하고 국내 약세 근거로 대체하지 않습니다.",
+          "action_type": "prompt",
+          "analysis_scope": "yura_evening_full_context",
+          "evaluation": {
+            "fail_reason": "Yura LLM의 KOSPI 절대 방향 예측은 실제 상승과 불일치했습니다. 관찰 가능한 원인은 국내 추세·전일 급락·수급 부재를 해외 위험선호 회복보다 강하게 가중한 점과, 전일 급락 뒤 반발 매수 및 해외 반등의 국내 전이 가능성을 충분히 반영하지 못한 점입니다. 다만 당일 breadth, 장중 고저·거래대금, 외국인·기관 실수급은 보존된 입력에서 확인되지 않으므로 단일 원인으로 확정하지 않습니다. ML 50건은 5개 관측 세션이 아직 없어 평가 실패가 아니며, 개선 제안은 생성하지 않습니다.",
+            "is_correct": false
+          },
+          "expected_impact": "국내 추세 신호와 반대되는 해외·환율 counter-signal의 누락을 줄이고 다음 Morning의 방향 판단 근거를 균형화합니다."
+        },
+        "run_id": "live-shadow-2026-09-03-morning-01",
+        "status": "applied",
+        "trigger": {}
+      }
+    ],
     "schema_version": 1,
     "summary": {
-      "applied_count": 0,
+      "applied_count": 1,
       "pending_count": 0,
-      "proposal_count": 0,
-      "reason": "no_evaluated_failure_observed",
-      "status": "none"
+      "proposal_count": 1,
+      "reason": null,
+      "status": "applied"
     }
   },
   "metrics": {
     "project_id": "stockpulse-v1-fixed",
     "runs": [
       {
-        "actual_applied_count": 0,
+        "actual_applied_count": 1,
         "evaluation_status": "pending",
-        "improvement_cycles": 0,
+        "improvement_cycles": 1,
         "llm_correct": false,
         "llm_evaluated": true,
         "ml_correct_count": null,
@@ -84,7 +119,7 @@
     ],
     "schema_version": 1,
     "snapshot": {
-      "applied_count": 0,
+      "applied_count": 1,
       "current_effective_config": {
         "ensemble": {
           "lgb": 0.3,
@@ -104,8 +139,8 @@
         }
       },
       "current_state": "day1_complete",
-      "improvement_cycles": 0,
-      "improvement_status": "none",
+      "improvement_cycles": 1,
+      "improvement_status": "applied",
       "live_shadow_day": "Day 1 Morning",
       "llm_correct": false,
       "llm_evaluated": 1,
@@ -129,7 +164,7 @@
     "route": "/labs/stockpulse-v1-fixed",
     "title": "StockPulse V1 Fixed"
   },
-  "projected_at": "2026-09-03T08:12:29+00:00",
+  "projected_at": "2026-09-03T08:43:17+00:00",
   "projection_type": "stockpulse_v1_fixed_public_projection",
   "publication": {
     "daily_lab_slug_policy": "disabled",
@@ -1866,10 +1901,10 @@
           ]
         },
         "improvement": {
-          "actual_applied": false,
-          "observation_state": "not_started",
-          "proposal_id": null,
-          "status": "none"
+          "actual_applied": true,
+          "observation_state": "pending",
+          "proposal_id": "proposal-8c6f8e12974860f6",
+          "status": "applied"
         },
         "input_snapshot_id": "input-snapshot-b31efaba14c81c01",
         "input_snapshot_readback_verified": true,
@@ -1980,7 +2015,7 @@
     "telegram_attempted": false
   },
   "snapshot": {
-    "applied_count": 0,
+    "applied_count": 1,
     "current_effective_config": {
       "ensemble": {
         "lgb": 0.3,
@@ -2000,8 +2035,8 @@
       }
     },
     "current_state": "day1_complete",
-    "improvement_cycles": 0,
-    "improvement_status": "none",
+    "improvement_cycles": 1,
+    "improvement_status": "applied",
     "live_shadow_day": "Day 1 Morning",
     "llm_correct": false,
     "llm_evaluated": 1,
@@ -2016,13 +2051,13 @@
   "source_manifest": {
     "artifact_count": 7,
     "artifact_hashes": {
-      "day1-morning-verification.json": "878e9acc7ce4d7627d94e5a2f9797706d9d9df021ed3057993685ec82e2062cb",
-      "improvement.json": "866882bf6c99651954c04c8b8cc802471e4bb808c0b03f5ab0609f4fa34ab047",
+      "day1-morning-verification.json": "fe535322b009067be499abfccf4c3cb41cfbd5fd04b1f8f8395a3afaf6b2700d",
+      "improvement.json": "e83eafcc6e48b3b1a3e1d9bfafcc8085d30147e95bb7825395f1e047be615132",
       "input_manifest.json": "883a4733a16c637a5ff4df908d43f5d16c5ff666ab30b06feb6c36b7a88ddc7c",
       "llm_prediction.json": "b9efaf939f76a66bde6a595f94e8699208ee129637d2e5342f42403f6f9302df",
       "ml_prediction.json": "03db16d3e0505c369b5448161a03df4ec5f9cd5545ae623a7453e10f516ba1b1",
       "quality.json": "d44e9a90ea28a20563b40a44f77bdddf4aca5498717254186e374f1615906b7d",
-      "run.json": "d4e8b7b3aaed2f52f991d2a63dd21e403c9c5f6c6c72d614b90ef5ba3e1193ce"
+      "run.json": "581873c64e0c9d0742100b7ca959465ae283dbca8ddb18b0d10ccaa34f5bafc0"
     },
     "generator_command_template": "python3 scripts/project_publication.py --source-run <private-run-dir> --output-dir <output-dir> [--projected-at <iso>]",
     "generator_version": "stockpulse-v1-fixed-projector-1.2.0",
