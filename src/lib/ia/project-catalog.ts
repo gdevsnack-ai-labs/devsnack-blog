@@ -8,6 +8,11 @@ type ProjectOverride = {
 }
 
 const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
+  'stockpulse-v1-fixed': {
+    domain: ['finance', 'automation'],
+    lifecycle: 'active',
+    isOpenEnded: true,
+  },
   'autonomous-ai-blog': {
     domain: ['automation', 'infrastructure'],
     lifecycle: 'active',

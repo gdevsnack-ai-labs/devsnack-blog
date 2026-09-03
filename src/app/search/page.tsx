@@ -8,7 +8,7 @@ import { destinationLabel, postHref } from '@/config/site-catalog'
 import { trackSiteEvent } from '@/lib/analytics'
 
 type SearchResult = {
-  id: number
+  id: number | string
   slug: string
   title: string
   excerpt: string | null
@@ -16,6 +16,7 @@ type SearchResult = {
   published: string | null
   cover_image: string | null
   blog_id: string
+  href?: string
 }
 
 export default function SearchPage() {
@@ -115,7 +116,7 @@ export default function SearchPage() {
 
         <div className="space-y-4">
           {results.map(post => {
-            const href = postHref(post.blog_id, post.slug)
+            const href = post.href || postHref(post.blog_id, post.slug)
             if (!href) return null
             const label = destinationLabel(post.blog_id)
 

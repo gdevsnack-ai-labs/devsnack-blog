@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase'
+import { experiments, getPublicLabProjects } from '@/data/experiments'
 import type { MetadataRoute } from 'next'
 import { postHref } from '@/config/site-catalog'
 import { isIndexableSitemapRoute } from '@/lib/seo/sitemap-policy'
@@ -38,8 +39,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/stock`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: `${baseUrl}/aitech`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: `${baseUrl}/labs`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.85 },
-    { url: `${baseUrl}/labs/autonomous-ai-blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${baseUrl}/labs/stockpulse-ai-self-improvement`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
+    ...getPublicLabProjects(experiments).map(project => ({
+      url: `${baseUrl}/labs/${project.id}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    })),
     { url: `${baseUrl}/benchmarks`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.85 },
     { url: `${baseUrl}/data`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.85 },
     { url: `${baseUrl}/demos`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },

@@ -1,3 +1,4 @@
+import { experiments, getPublicLabProjects } from '@/data/experiments'
 // @ts-expect-error Node's strip-types runner requires the explicit extension.
 import { isIndexableSearchPolicy, searchPolicyForPath } from './search-policy.ts'
 
@@ -10,7 +11,6 @@ const INDEX_ROUTES = new Set([
 
   '/aitech',
   '/labs',
-  '/labs/autonomous-ai-blog',
   '/benchmarks',
   '/data',
   '/demos',
@@ -21,6 +21,10 @@ const INDEX_ROUTES = new Set([
   '/privacy',
   '/contact',
 ])
+
+const PUBLIC_LAB_PROJECT_PATHS = new Set(
+  getPublicLabProjects(experiments).map(project => `/labs/${project.id}`),
+)
 
 const NAVIGATION_ONLY_PREFIXES = [
   '/demos/',
@@ -41,7 +45,7 @@ const UTILITY_PREFIXES = [
 
 export function routePolicy(pathname: string): SitemapRoutePolicy {
   const path = pathname === '' ? '/' : pathname.replace(/\/$/, '') || '/'
-  if (INDEX_ROUTES.has(path)) return 'INDEX'
+  if (INDEX_ROUTES.has(path) || PUBLIC_LAB_PROJECT_PATHS.has(path)) return 'INDEX'
   if (UTILITY_PREFIXES.some(prefix => path === prefix || path.startsWith(`${prefix}/`))) return 'UTILITY'
   if (NAVIGATION_ONLY_PREFIXES.some(prefix => path.startsWith(prefix))) return 'NAVIGATION_ONLY'
   return 'NAVIGATION_ONLY'

@@ -10,16 +10,11 @@ import {
   classifyResearch,
 } from '@/lib/content-taxonomy'
 import { isMigratedResearchSlug } from '@/lib/research-note-migration'
+import { projectResearchListPosts, type ResearchListPost } from '@/lib/research-list-projection'
 
 export { RESEARCH_CATEGORIES }
 
-interface ResearchPost {
-  slug: string
-  title: string
-  excerpt: string
-  labels: string[]
-  published: string
-}
+type ResearchPost = ResearchListPost
 
 async function getResearchPosts() {
   const { data } = await supabase
@@ -28,7 +23,8 @@ async function getResearchPosts() {
     .eq('blog_id', 'research')
     .eq('status', 'live')
     .order('published', { ascending: false })
-  return (data || []).filter(post => !isMigratedResearchSlug(post.slug)) as ResearchPost[]
+  const visiblePosts = (data || []).filter(post => !isMigratedResearchSlug(post.slug)) as ResearchPost[]
+  return projectResearchListPosts(visiblePosts)
 }
 
 function extractMeta(post: ResearchPost) {

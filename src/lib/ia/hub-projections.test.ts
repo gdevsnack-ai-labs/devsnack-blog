@@ -26,7 +26,9 @@ expectEqual(getLabCollection('isekai-instagram-mage-experiment'), 'creative-test
 expectEqual(getLabCollection('ai-game-assets-sprite-lab'), 'creative-tests', 'AI Game Assets must project to Creative Tests')
 
 const labProjects = getLabProjectProjections(experiments)
-expectEqual(labProjects.length, 10, 'Lab board should expose all non-Benchmark projects')
+expectEqual(labProjects.length, 11, 'Lab board should expose all non-Benchmark projects')
+expectEqual(getLabProjectProjections(experiments).find(project => project.id === 'stockpulse-v1-fixed')?.href, '/labs/stockpulse-v1-fixed', 'StockPulse V1 Fixed must use the canonical Lab project route')
+expectEqual(getLabProjectProjections(experiments).find(project => project.id === 'stockpulse-v1-fixed')?.displayType, 'Experiment', 'StockPulse V1 Fixed must be a Lab Experiment')
 expectEqual(labProjects.find(project => project.id === 'blog')?.displayType, 'System', 'Blog Automation must be labeled System')
 expectEqual(labProjects.find(project => project.id === 'hook')?.displayType, 'Build', 'Hook Engine must be labeled Build')
 expectEqual(labProjects.find(project => project.id === 'isekai-instagram-mage-experiment')?.displayType, 'Creative Test', 'Isekai must be labeled Creative Test')

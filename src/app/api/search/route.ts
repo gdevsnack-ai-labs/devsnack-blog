@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { publicFeedOrFilter } from '@/lib/ia/feed-lifecycle'
+import { getPublicLabProjects } from '@/data/experiments'
+import { getPublicLabProjectSearchResults } from '@/lib/lab-discovery'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -24,5 +26,6 @@ export async function GET(request: NextRequest) {
     .order('published', { ascending: false })
     .limit(20)
 
-  return NextResponse.json({ results: data ?? [] })
+  const projectResults = getPublicLabProjectSearchResults(q, getPublicLabProjects())
+  return NextResponse.json({ results: [...projectResults, ...(data ?? [])].slice(0, 20) })
 }

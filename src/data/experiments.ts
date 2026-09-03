@@ -47,6 +47,8 @@ export interface Experiment {
   operatingModel?: string
   humanInterventionPolicy?: string
   retrospective?: string | null
+  /** Include this formal project in public Search and Sitemap discovery. */
+  publicDiscovery?: boolean
 }
 
 // ── AI 완전 자율 블로그 운영 실험 ──
@@ -59,6 +61,7 @@ const AUTONOMOUS_AI_BLOG: Experiment = {
   status: '진행중',
   category: 'running',
   startedAt: '2026.08.22',
+  publicDiscovery: true,
   whyText: '사람이 매번 주제와 방향을 정해주는 자동화가 아니라, AI에게 편집권 자체를 맡기면 어떤 콘텐츠 취향과 매체의 색깔이 생기는지 관찰한다. GitHub·Supabase·Vercel을 기존 블로그와 분리하고, AI가 주제·출처·형식·발행 여부를 결정한다. 첫 단계는 7일 블라인드 운영이며, 이후 1개월·3개월·6개월 단위로 판단의 변화와 운영 지속성을 비교한다.',
   operatingModel: 'AI가 주제 선택·출처 탐색·형식 선택·작성·검증·발행 또는 보류를 한 유한 cycle 안에서 결정합니다. 각 cycle의 결과와 운영 지표는 별도 기록으로 남기고, Agent Field Notes가 실제 publication을 담당합니다.',
   humanInterventionPolicy: '사람의 개입은 계정·보안·인프라·서비스 장애·실험 중단 또는 연장 결정으로 제한합니다. 개입은 AI의 편집 취향으로 재해석하지 않고 별도 intervention 기록으로 보존합니다.',
@@ -220,6 +223,39 @@ const LLM_BENCH: Experiment = {
   ],
 }
 
+// ── StockPulse V1 Fixed — 정식 Live Shadow Project (2026.09.02 시작) ──
+const STOCKPULSE_V1_FIXED: Experiment = {
+  id: 'stockpulse-v1-fixed',
+  name: 'StockPulse V1 Fixed',
+  description: '예측·실제 결과·평가·개선 상태를 Run Board로 확인하는 별도 Live Shadow 실험 대시보드입니다.',
+  progress: 0,
+  color: 'blue',
+  status: '진행중',
+  category: 'running',
+  startedAt: '2026.09.02',
+  publicDiscovery: true,
+  nextGoals: [
+    'ML 50개 예측의 target maturity 이후 평가',
+    '다음 trading day Live Shadow run',
+    '평가 결과에 따른 개선 cycle 검토',
+  ],
+  timeline: [
+    {
+      name: 'Day 1 Morning Live Shadow',
+      status: '완료',
+      date: '2026.09.02',
+      result: 'Morning LLM prediction은 실제 결과 평가까지 완료했고, ML 50개 예측은 target maturity 이후 평가 대기입니다.',
+    },
+    {
+      name: 'Day 1 Evening Evaluation',
+      status: '완료',
+      date: '2026.09.02',
+      result: '실제 KOSPI·KOSDAQ 결과를 read-back했으며, ML 50개는 아직 평가되지 않았습니다.',
+    },
+  ],
+  blogPosts: [],
+}
+
 const ISEKAI_MAGE: Experiment = {
   id: 'isekai-instagram-mage-experiment',
   name: '이세계 인스타 여신 마법사 — GPT Image 2 + LTX 2.5',
@@ -320,4 +356,8 @@ const AI_GAME_ASSETS: Experiment = {
   ],
 }
 
-export const experiments: Experiment[] = [AUTONOMOUS_AI_BLOG, STOCKPULSE_SELF, AI_OMOK, BLOG_AUTO, LLM_BENCH, ISEKAI_MAGE, HERMES_MEMORY, LUNA_AGENTIC_GAME_DEV, AI_GAME_ASSETS, ...DUMMIES]
+export const experiments: Experiment[] = [AUTONOMOUS_AI_BLOG, STOCKPULSE_V1_FIXED, STOCKPULSE_SELF, AI_OMOK, BLOG_AUTO, LLM_BENCH, ISEKAI_MAGE, HERMES_MEMORY, LUNA_AGENTIC_GAME_DEV, AI_GAME_ASSETS, ...DUMMIES]
+
+export function getPublicLabProjects(source: readonly Experiment[] = experiments): Experiment[] {
+  return source.filter(experiment => !experiment.isDummy && experiment.publicDiscovery)
+}

@@ -46,6 +46,7 @@ export interface LabProjectProjection {
 }
 
 const LAB_COLLECTION_BY_PROJECT: Record<string, Exclude<LabCollectionId, 'showcase'>> = {
+  'stockpulse-v1-fixed': 'experiments',
   'autonomous-ai-blog': 'experiments',
   'ai-omok': 'experiments',
   'stockpulse-ai-self-improvement': 'experiments',
@@ -59,6 +60,7 @@ const LAB_COLLECTION_BY_PROJECT: Record<string, Exclude<LabCollectionId, 'showca
 }
 
 const LAB_TYPE_BY_PROJECT: Record<string, LabDisplayType> = {
+  'stockpulse-v1-fixed': 'Experiment',
   'autonomous-ai-blog': 'Experiment',
   'ai-omok': 'Experiment',
   'stockpulse-ai-self-improvement': 'Experiment',

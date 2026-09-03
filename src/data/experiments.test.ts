@@ -42,4 +42,10 @@ for (const marker of ['v1', '68개', '54개', 'GitHub Pages']) {
   if (!stockpulseFinding.includes(marker)) throw new Error(`StockPulse project finding is missing marker: ${marker}`)
 }
 
-console.log('AI Tech and StockPulse v1 completion tests passed')
+const stockpulseFixed = experiments.find(experiment => experiment.id === 'stockpulse-v1-fixed')
+if (!stockpulseFixed) throw new Error('StockPulse V1 Fixed experiment is missing')
+if (stockpulseFixed.isDummy) throw new Error('StockPulse V1 Fixed must be a formal Lab project')
+if (stockpulseFixed.status !== '진행중' || stockpulseFixed.category !== 'running') throw new Error('StockPulse V1 Fixed must be an active running project')
+if (!stockpulseFixed.publicDiscovery) throw new Error('StockPulse V1 Fixed must participate in public discovery')
+
+console.log('AI Tech, StockPulse v1, and StockPulse V1 Fixed tests passed')

@@ -22,6 +22,7 @@ export interface LabBoardMetadata {
 }
 
 const DOMAIN_BY_ID: Record<string, string> = {
+  'stockpulse-v1-fixed': 'StockPulse',
   'autonomous-ai-blog': 'Autonomous AI',
   'ai-omok': 'Game AI',
   'ai-game-assets-sprite-lab': 'Creative AI',
@@ -38,6 +39,11 @@ const DOMAIN_BY_ID: Record<string, string> = {
 type ExperimentNature = { label: string; description: string; openEnded: boolean }
 
 const NATURE_BY_ID: Record<string, ExperimentNature> = {
+  'stockpulse-v1-fixed': {
+    label: 'Live Shadow 실험',
+    description: '고정된 입력 snapshot에서 예측·실제 결과·평가·개선 상태를 분리해 관찰하는 실험입니다.',
+    openEnded: true,
+  },
   'autonomous-ai-blog': {
     label: '자율 운영 실험',
     description: 'AI가 편집권을 갖고 블로그를 직접 운영하는 장기 실험입니다.',

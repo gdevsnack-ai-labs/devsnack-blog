@@ -1,11 +1,9 @@
-import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { ArrowRight, FlaskConical, Hammer, Play, Sparkles } from 'lucide-react'
 import { HubHeader } from '@/components/hub-header'
 import { LabHubProjectCard } from '@/components/lab-hub-project-card'
 import { LegacyLabSourceCard } from '@/components/legacy-lab-source-card'
 import { RelatedAssets } from '@/components/related-assets'
-import { StockpulseV1FixedProjectCard } from '@/components/stockpulse-v1-fixed-project-card'
 import { experiments } from '@/data/experiments'
 import { DEMO_ASSETS } from '@/lib/ia'
 import { getReclassifiedLabPosts } from '@/lib/ia/hub-data'
@@ -64,14 +62,14 @@ function FindingStrip({ experimentId }: { experimentId: string }) {
   return <Link href={`/labs/${experiment.id}`} className="group rounded-xl border border-border bg-white p-4 no-underline transition-colors hover:border-blue-300 dark:bg-gray-900 dark:hover:border-blue-700"><div className="flex items-start justify-between gap-3"><h3 className="line-clamp-2 text-sm font-bold leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400">{experiment.name}</h3><ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" /></div><p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground">{finding}</p></Link>
 }
 
-function CollectionSection({ collection, projects, extra }: { collection: keyof typeof COLLECTION_META; projects: ReturnType<typeof getLabCollectionProjects>; extra?: ReactNode }) {
+function CollectionSection({ collection, projects }: { collection: keyof typeof COLLECTION_META; projects: ReturnType<typeof getLabCollectionProjects> }) {
   const meta = COLLECTION_META[collection]
   const Icon = meta.icon
-  const projectCount = projects.length + (extra ? 1 : 0)
+  const projectCount = projects.length
   return (
     <section className="mt-10" aria-labelledby={`lab-${collection}-heading`}>
       <div className="mb-4 flex items-end justify-between gap-3"><div><div className="flex items-center gap-2"><Icon className="h-5 w-5 text-muted-foreground" aria-hidden="true" /><h2 id={`lab-${collection}-heading`} className="text-xl font-bold">{meta.label}</h2></div><p className="mt-1 text-sm text-muted-foreground">{meta.description}</p></div><span className="text-xs text-muted-foreground">{projectCount} projects</span></div>
-      {projectCount > 0 ? <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{extra}{projects.map(project => <LabHubProjectCard key={project.id} project={project} />)}</div> : <div className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">이 Collection에는 아직 Project가 없습니다.</div>}
+      {projectCount > 0 ? <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{projects.map(project => <LabHubProjectCard key={project.id} project={project} />)}</div> : <div className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">이 Collection에는 아직 Project가 없습니다.</div>}
     </section>
   )
 }
@@ -133,7 +131,7 @@ export default async function LabsPage({ searchParams }: { searchParams: SearchP
           </div>
         </section>
 
-        <CollectionSection collection="experiments" projects={visibleExperiments} extra={filter === 'all' || filter === 'active' ? <StockpulseV1FixedProjectCard /> : null} />
+        <CollectionSection collection="experiments" projects={visibleExperiments} />
         <CollectionSection collection="builds-systems" projects={visibleBuilds} />
         <CollectionSection collection="creative-tests" projects={visibleCreativeTests} />
 
