@@ -165,7 +165,13 @@ function ImprovementLedger({ view }: { view: StockpulseFixedViewModel }) {
 }
 
 function ImprovementRecord({ record }: { record: FixedProjectionRecord }) {
-  const applied = record.actual_applied === true && record.effective_runtime_readback !== null
+  const effectiveReadback = record.effective_runtime_readback
+  const effectiveReadbackVerified = typeof effectiveReadback === 'object' && effectiveReadback !== null
+    && (effectiveReadback as FixedProjectionRecord).readback_verified === true
+  const applied = record.status === 'applied' && (
+    (record.application_kind === 'prompt' && record.readback_verified === true)
+    || effectiveReadbackVerified
+  )
   return (
     <article className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -282,7 +288,7 @@ export function StockpulseV1FixedLab({ projection }: { projection: StockpulseFix
               <SnapshotMetric label="Actual" value={view.snapshot.actual} note={`KOSPI ${view.actualClose}`} tone="positive" />
               <SnapshotMetric label="LLM result" value={view.snapshot.llmResult} note="Morning vs actual" tone="positive" />
               <SnapshotMetric label="ML evaluation" value={view.snapshot.ml} note={`evaluated ${view.run.ml_evaluation.evaluated_count} · pending ${view.run.ml_evaluation.pending_count}`} tone="warning" />
-              <SnapshotMetric label="Improvement" value={view.snapshot.improvement} note="No evaluated failure" />
+              <SnapshotMetric label="Improvement" value={view.snapshot.improvement} note={view.snapshot.improvementNote} />
             </div>
           </div>
           <div className="border-t border-white/10 bg-white/[0.03] px-5 py-4 md:px-8"><div className="flex flex-col gap-2 text-sm sm:flex-row sm:items-center sm:justify-between"><span className="text-slate-400">Latest meaningful finding</span><span className="font-medium text-slate-200">{view.snapshot.finding}</span></div></div>

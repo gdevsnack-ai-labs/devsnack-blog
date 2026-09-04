@@ -41,8 +41,13 @@ export interface StockpulseFixedProjection {
           post_cutoff_edit_allowed: boolean
           evaluation_session: string
         }
-        evaluation_status: string
-        success: boolean | null
+        runtime_improvement: {
+          status: string
+          source: string
+          readback_verified: boolean
+          sha256: string | null
+        }
+        snapshot_cutoff: string | null
       }
       actual_market_result: {
         status: string
@@ -105,6 +110,7 @@ export interface StockpulseFixedViewModel {
     llmResult: string
     ml: string
     improvement: string
+    improvementNote: string
     finding: string
   }
   run: StockpulseFixedProjection['runs']['records'][number]
@@ -169,6 +175,15 @@ export function getStockpulseFixedViewModel(
   const finding = projection.findings.records.length > 0
     ? `${projection.findings.records.length} Finding`
     : '아직 승격된 Finding이 없습니다.'
+  const improvementRecord = projection.improvements.records.find(record => record.proposal_id === run.improvement.proposal_id)
+  const improvementNote = run.improvement.actual_applied === true && improvementRecord?.readback_verified === true
+    ? 'Prompt applied · read-back verified'
+    : run.improvement.status === 'failed'
+      ? 'Application failed'
+      : run.improvement.status === 'proposed' || run.improvement.status === 'approved'
+        ? 'Proposal pending'
+        : 'No new applied change'
+  const publications = run.publications ?? projection.publication
 
   return {
     project: {
@@ -186,6 +201,7 @@ export function getStockpulseFixedViewModel(
       llmResult,
       ml: `${run.ml_evaluation.prediction_count} ${titleCaseStatus(run.ml_evaluation.status)}`,
       improvement: titleCaseStatus(run.improvement.status),
+      improvementNote,
       finding,
     },
     run,
@@ -201,11 +217,11 @@ export function getStockpulseFixedViewModel(
     findings: projection.findings.records,
     publication: {
       morning: {
-        status: projection.publication.morning.status,
+        status: publications.morning.status,
         href: reportPreviewHref(run.trading_date, 'morning'),
       },
       evening: {
-        status: projection.publication.evening.status,
+        status: publications.evening.status,
         href: reportPreviewHref(run.trading_date, 'evening'),
       },
     },
