@@ -423,22 +423,38 @@ async def check_browser(failures: list[str]) -> None:
         finally:
             await page.close()
 
-        for path, marker, forbidden in (
-            ("/aitech", "185개 기록", "페이지"),
-            ("/devsnack", "전체 9개", None),
-        ):
-            page = await browser.new_page(viewport={"width": 1440, "height": 900})
-            try:
-                await page.goto(f"{BASE_URL}{path}", wait_until="networkidle", timeout=60_000)
-                visible_text = await page.locator("body").inner_text()
-                if marker not in visible_text:
-                    failures.append(f"{path}: missing hydrated marker {marker!r}")
-                if forbidden and forbidden in visible_text:
-                    failures.append(f"{path}: stale pagination marker {forbidden!r}")
-            except Exception as error:
-                failures.append(f"{path} archive browser check: {type(error).__name__}: {error}")
-            finally:
-                await page.close()
+        page = await browser.new_page(viewport={"width": 1440, "height": 900})
+        try:
+            await page.goto(f"{BASE_URL}/aitech", wait_until="networkidle", timeout=60_000)
+            visible_text = await page.locator("body").inner_text()
+            if "185개 기록" not in visible_text:
+                failures.append("/aitech: missing hydrated marker '185개 기록'")
+            if "페이지" in visible_text:
+                failures.append("/aitech: stale pagination marker '페이지'")
+        except Exception as error:
+            failures.append(f"/aitech archive browser check: {type(error).__name__}: {error}")
+        finally:
+            await page.close()
+
+        page = await browser.new_page(viewport={"width": 1440, "height": 900})
+        try:
+            await page.goto(f"{BASE_URL}/devsnack", wait_until="networkidle", timeout=60_000)
+            visible_text = await page.locator("body").inner_text()
+            marker = re.search(r"전체\s+(\d+)개\s+·\s+(\d+)\s*/\s*(\d+)페이지", visible_text)
+            if not marker:
+                failures.append("/devsnack: missing hydrated pagination/count marker")
+            else:
+                count, current_page, total_pages = (int(value) for value in marker.groups())
+                if count < 1 or current_page < 1 or total_pages < 1 or current_page > total_pages:
+                    failures.append(f"/devsnack: invalid pagination/count marker {marker.group(0)!r}")
+                card_count = await page.locator('main a[href^="/devsnack/"]').count()
+                expected_card_count = min(count, 24) if current_page == 1 else None
+                if expected_card_count is not None and card_count != expected_card_count:
+                    failures.append(f"/devsnack: marker count {count} disagrees with {card_count} rendered cards")
+        except Exception as error:
+            failures.append(f"/devsnack archive browser check: {type(error).__name__}: {error}")
+        finally:
+            await page.close()
 
         page = await browser.new_page(viewport={"width": 1440, "height": 900})
         try:
