@@ -1,4 +1,5 @@
 import { experiments } from '@/data/experiments'
+import { loadPublicBenchmarkRelease } from '@/lib/benchmarks/public-release'
 import { projectKnowledgePost } from './hub-projections'
 import { createHomeProjection, projectHomeDataServices } from './home-projections'
 
@@ -41,6 +42,7 @@ const projection = createHomeProjection({
     stockPulse: { slug: 'stock-latest', title: 'StockPulse latest', published: '2026-08-20T15:00:00+00:00', updated: null },
 
   },
+  publicBenchmark: loadPublicBenchmarkRelease(),
 })
 
 expectEqual(projection.featured.length, 3, 'Home should keep Featured compact')

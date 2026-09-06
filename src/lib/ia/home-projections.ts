@@ -1,4 +1,5 @@
 import type { Experiment } from '@/data/experiments'
+import type { PublicBenchmarkRelease } from '@/lib/benchmarks/public-release'
 import type { DataHubSnapshot, StoryPostInput } from '@/lib/ia/hub-data'
 import {
   BENCHMARK_PROJECTIONS,
@@ -53,11 +54,21 @@ export interface HomeDataService {
   updated?: string
 }
 
+export interface HomePublishedBenchmarkProjection {
+  title: string
+  target: string
+  environment: string
+  result: string
+  comparison: string
+  contentHref: string
+  jsonHref: string
+}
+
 export interface HomeProjection {
   featured: HomeFeaturedItem[]
   labFinding: LabProjectProjection | undefined
   labItems: LabProjectProjection[]
-  benchmark: BenchmarkProjection | undefined
+  benchmark: HomePublishedBenchmarkProjection | undefined
   knowledge: KnowledgeProjection[]
   dataServices: HomeDataService[]
   stories: HomeStoryProjection[]
@@ -158,16 +169,32 @@ export function projectHomeDataServices(snapshot: DataHubSnapshot): HomeDataServ
   return services
 }
 
+export function projectHomePublishedBenchmark(release: PublicBenchmarkRelease): HomePublishedBenchmarkProjection {
+  const { scope } = release
+  const reasoning = scope.reasoning_mode.toUpperCase()
+  return {
+    title: 'DGX Spark GB10 — 18개 GGUF 모델 통합 Benchmark',
+    target: `${scope.model_variant_count} variants · ${scope.suite_count} suites · ${release.generated_at}`,
+    environment: `${scope.hardware} · ${scope.runtime} · reasoning ${reasoning}`,
+    result: `${scope.revalidated_evaluator_runs}개 evaluator run과 ${scope.reused_source_runs}개 검증된 source run을 합친 고정 public release입니다.`,
+    comparison: `Performance·Server·Knowledge·Coding·Tool-call·Agent 결과를 같은 GB10 기준으로 비교하며 raw run은 공개하지 않습니다.`,
+    contentHref: `/benchmarks/${release.release_id}`,
+    jsonHref: `/data/benchmarks/${release.release_id}.json`,
+  }
+}
+
 export function createHomeProjection({
   experiments,
   knowledge,
   stories,
   data,
+  publicBenchmark,
 }: {
   experiments: Experiment[]
   knowledge: KnowledgeProjection[]
   stories: StoryPostInput[]
   data: DataHubSnapshot
+  publicBenchmark: PublicBenchmarkRelease
 }): HomeProjection {
   const labProjects = getLabProjectProjections(experiments)
   const recentFindingProjects = getRecentFindings(experiments.filter(experiment => experiment.id !== 'local-llm-benchmark'), 3)
@@ -175,10 +202,10 @@ export function createHomeProjection({
     .filter((project): project is LabProjectProjection => Boolean(project))
   const labFinding = recentFindingProjects[0]
   const labItems = recentFindingProjects.slice(1, 3)
-  const benchmark = BENCHMARK_PROJECTIONS[0]
+  const benchmark = projectHomePublishedBenchmark(publicBenchmark)
   const recentKnowledge = selectHomeKnowledge(knowledge, 2)
   const curatedAiOmok = labProjects.find(project => project.id === HOME_CURATED_OVERRIDES.featured.aiOmokProjectId)
-  const curatedBenchmark = BENCHMARK_PROJECTIONS.find(item => item.asset.assetId === HOME_CURATED_OVERRIDES.featured.benchmarkAssetId) || benchmark
+  const curatedBenchmark = BENCHMARK_PROJECTIONS.find(item => item.asset.assetId === HOME_CURATED_OVERRIDES.featured.benchmarkAssetId)
   const curatedKnowledge = knowledge.find(post => post.asset.assetId === HOME_CURATED_OVERRIDES.featured.knowledgeAssetId) || recentKnowledge[0]
   const featured = [
     ...(curatedAiOmok ? [toFindingProjection(curatedAiOmok, 'Lab · Featured Finding')] : []),

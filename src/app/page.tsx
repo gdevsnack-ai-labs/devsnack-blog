@@ -4,6 +4,7 @@ import { HomeDataStrip, HomeExploreLink, HomeFeatureCard, HomeFindingItem, HomeK
 import { experiments } from '@/data/experiments'
 import { getDataHubSnapshot, getKnowledgePosts, getRecentStories } from '@/lib/ia/hub-data'
 import { createHomeProjection } from '@/lib/ia/home-projections'
+import { loadPublicBenchmarkRelease } from '@/lib/benchmarks/public-release'
 import { projectKnowledgePosts } from '@/lib/ia/hub-projections'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
 
@@ -16,6 +17,7 @@ export const metadata = buildRouteMetadata({
 })
 
 export default async function Home() {
+  const publicBenchmark = loadPublicBenchmarkRelease()
   const [knowledgePosts, dataSnapshot, storyPosts] = await Promise.all([
     getKnowledgePosts(),
     getDataHubSnapshot(),
@@ -26,6 +28,7 @@ export default async function Home() {
     knowledge: projectKnowledgePosts(knowledgePosts),
     stories: storyPosts,
     data: dataSnapshot,
+    publicBenchmark,
   })
   const featuredRelations = projection.featured.filter(item => item.related)
   const dataServices = projection.dataServices
@@ -73,7 +76,28 @@ export default async function Home() {
 
         <section className="mx-auto max-w-6xl px-4 py-8 md:py-10" aria-labelledby="home-benchmark-heading">
           <div className="mb-4 flex items-end justify-between gap-3"><div><div className="flex items-center gap-2"><BarChart3 className="h-5 w-5 text-amber-600 dark:text-amber-400" aria-hidden="true" /><h2 id="home-benchmark-heading" className="text-xl font-bold">Benchmarks</h2></div><p className="mt-1 text-sm text-muted-foreground">현재 published 된 실측 결과만 compact하게 보여줍니다.</p></div><Link href="/benchmarks" className="text-sm text-muted-foreground no-underline hover:text-foreground">전체 결과 →</Link></div>
-          {projection.benchmark ? <div className="rounded-2xl border border-amber-200 bg-amber-50/60 p-5 dark:border-amber-900/60 dark:bg-amber-950/20"><div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300"><span>Published Benchmark</span><span className="rounded-full bg-white/70 px-2 py-0.5 text-[10px] normal-case dark:bg-gray-900/60">{projection.benchmark.target}</span></div><div className="mt-3 grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] md:items-end"><div><h3 className="text-lg font-bold leading-snug">{projection.benchmark.title}</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{projection.benchmark.result}</p></div><div className="text-sm text-muted-foreground"><p><strong className="text-foreground">Environment:</strong> {projection.benchmark.environment}</p><p className="mt-1"><strong className="text-foreground">Comparison:</strong> {projection.benchmark.comparison}</p></div><Link href="/benchmarks" className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-foreground px-3 py-2 text-sm text-background no-underline hover:opacity-80">상세 보기 <BarChart3 className="h-4 w-4" aria-hidden="true" /></Link></div></div> : <div className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">Published benchmark가 없습니다.</div>}
+          {projection.benchmark ? (
+            <div className="rounded-2xl border border-amber-200 bg-amber-50/60 p-5 dark:border-amber-900/60 dark:bg-amber-950/20">
+              <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">
+                <span>Latest Published Benchmark</span>
+                <span className="rounded-full bg-white/70 px-2 py-0.5 text-[10px] normal-case dark:bg-gray-900/60">{projection.benchmark.target}</span>
+              </div>
+              <div className="mt-3 grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] md:items-end">
+                <div>
+                  <h3 className="text-lg font-bold leading-snug">{projection.benchmark.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{projection.benchmark.result}</p>
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  <p><strong className="text-foreground">Environment:</strong> {projection.benchmark.environment}</p>
+                  <p className="mt-1"><strong className="text-foreground">Comparison:</strong> {projection.benchmark.comparison}</p>
+                </div>
+                <div className="flex flex-wrap gap-2 md:flex-col">
+                  <Link href={projection.benchmark.contentHref} className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-foreground px-3 py-2 text-sm text-background no-underline hover:opacity-80">상세 보기 <BarChart3 className="h-4 w-4" aria-hidden="true" /></Link>
+                  <Link href={projection.benchmark.jsonHref} className="inline-flex items-center justify-center rounded-lg border border-amber-300 px-3 py-2 text-xs font-medium text-amber-900 no-underline hover:bg-amber-100 dark:border-amber-800 dark:text-amber-200 dark:hover:bg-amber-950/50">JSON 데이터</Link>
+                </div>
+              </div>
+            </div>
+          ) : <div className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">Published benchmark가 없습니다.</div>}
         </section>
 
         <section className="border-y border-border bg-muted/20" aria-labelledby="home-knowledge-heading">
