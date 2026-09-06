@@ -12,6 +12,7 @@ if (routePolicy('/lab') === 'INDEX') throw new Error('legacy Lab hub must not be
 if (!isIndexableSitemapRoute('/research')) throw new Error('Knowledge hub must remain indexable')
 if (!isIndexableSitemapRoute('/privacy')) throw new Error('Privacy must remain indexable')
 if (!isIndexableSitemapRoute('/demos/html')) throw new Error('populated HTML Showcase category must remain in sitemap')
+if (!isIndexableSitemapRoute('/benchmarks/gb10-llm-benchmark-v1-20260906')) throw new Error('public benchmark release must remain in sitemap')
 if (isIndexableSitemapRoute('/search')) throw new Error('utility route must not be sitemap-indexable')
 if (isIndexableSitemapRoute('/links')) throw new Error('utility Links must not be sitemap-indexable')
 if (isIndexableSitemapRoute('/en')) throw new Error('English pilot must not be sitemap-indexable')

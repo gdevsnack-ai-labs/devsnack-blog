@@ -1,11 +1,13 @@
 import Link from 'next/link'
 import { BarChart3, BookOpen, CheckCircle2, FlaskConical } from 'lucide-react'
 import { BenchmarkResultCard } from '@/components/benchmark-result-card'
+import { BenchmarkReleaseCard } from '@/components/benchmark-release-card'
 import { HubHeader } from '@/components/hub-header'
 import { RelatedAssets } from '@/components/related-assets'
 import { LegacyBenchmarkSourceCard } from '@/components/legacy-benchmark-source-card'
 import { getReclassifiedBenchmarkPosts } from '@/lib/ia/hub-data'
 import { BENCHMARK_OVERVIEW, BENCHMARK_PROJECTIONS, getBenchmarksByCategory, getRelatedAssets, projectLegacyBenchmarkPosts } from '@/lib/ia/hub-projections'
+import { loadPublicBenchmarkRelease } from '@/lib/benchmarks/public-release'
 import { buildRouteMetadata, absoluteSiteUrl } from '@/lib/seo/metadata'
 import { buildBreadcrumbJsonLd, buildCollectionPageJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 
@@ -53,6 +55,7 @@ export default async function BenchmarksPage() {
       return groups
     }, new Map<string, typeof BENCHMARK_PROJECTIONS>()),
   )
+  const publicRelease = loadPublicBenchmarkRelease()
   const jsonLd = buildJsonLdGraph(
     buildCollectionPageJsonLd({
       name: 'DevSnack Benchmarks',
@@ -146,6 +149,11 @@ export default async function BenchmarksPage() {
             <div><p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Remaining failure patterns</p><ul className="mt-2 list-disc space-y-1 pl-5 text-sm">{BENCHMARK_OVERVIEW.calibration.remaining.map(item => <li key={item}>{item}</li>)}</ul></div>
             <p className="text-sm leading-relaxed text-muted-foreground">{BENCHMARK_OVERVIEW.calibration.limitation}</p>
           </div>
+        </section>
+
+        <section className="mt-8" aria-labelledby="public-release-heading">
+          <h2 id="public-release-heading" className="sr-only">Public benchmark release</h2>
+          <BenchmarkReleaseCard release={publicRelease} />
         </section>
 
         <section className="mt-10" aria-labelledby="benchmark-collections-heading">

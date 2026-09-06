@@ -6,6 +6,7 @@ import { isIndexableSitemapRoute } from '@/lib/seo/sitemap-policy'
 import { SITE_URL } from '@/lib/seo/metadata'
 import { publicFeedOrFilter } from '@/lib/ia/feed-lifecycle'
 import { isIndexablePostSitemapEntry } from '@/lib/seo/search-policy'
+import { PUBLIC_RELEASE_ID } from '@/lib/benchmarks/public-release'
 
 export const dynamic = 'force-dynamic'
 
@@ -46,6 +47,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     })),
     { url: `${baseUrl}/benchmarks`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.85 },
+    { url: `${baseUrl}/benchmarks/${PUBLIC_RELEASE_ID}`, lastModified: new Date('2026-09-06T00:00:00Z'), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/data`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.85 },
     { url: `${baseUrl}/demos`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
     { url: `${baseUrl}/demos/html`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.75 },

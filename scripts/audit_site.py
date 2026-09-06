@@ -64,6 +64,11 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
         "/benchmarks", 200, meta_robots="index, follow", canonical=True,
         required_text=("Evaluation Overview", "Latest Result", "Ornith-1.5"),
     ),
+    "/benchmarks/gb10-llm-benchmark-v1-20260906": RouteExpectation(
+        "/benchmarks/gb10-llm-benchmark-v1-20260906", 200,
+        meta_robots="index, follow", canonical=True,
+        required_text=("DGX Spark GB10", "Model comparison matrix", "18 model variants", "Suite guide", "Download JSON"),
+    ),
     "/research": RouteExpectation(
         "/research", 200, meta_robots="index, follow", canonical=True,
         required_text=("Knowledge Domains", "Recent Knowledge", "Research Notes Board"),
