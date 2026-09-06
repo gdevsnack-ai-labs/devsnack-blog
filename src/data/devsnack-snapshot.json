@@ -1,8 +1,29 @@
 {
   "schema_version": 1,
   "feed": "devsnack",
-  "generated_at": "2026-09-01T04:20:46.978796+00:00",
+  "generated_at": "2026-09-06T12:14:53.724571+00:00",
   "posts": [
+    {
+      "slug": "dgx-spark-gb10-local-llm-benchmark",
+      "title": "DGX Spark GB10 로컬 LLM 벤치마크 — 18개 GGUF 모델 성능·코딩·에이전트 비교",
+      "excerpt": "로컬에서 실행할 수 있는 LLM이 빠르게 늘고 있다. 같은 모델도 Q4, Q5, Q6, Q8, NVFP4, MXFP4, UD quant처럼 여러 형태로 배포되고, MTP 지원 여부나 튜닝 방식에 따라 실제 사용감도 크게 달라진다. 모델 카드에는 다양한 공개 벤치마크 결과가 있지만, 내가 궁금했던 것은 조금 더 단순했다. 내 NVIDIA DGX Spark GB10에서 실제로 돌렸을 때 어떤 모델이 빠르고, 어떤 모델이 코드를 잘 만들며, 어떤 모델이 도구를 잘 사용하고 여러 단계의 작업을 끝까지 수행하는가? 그래서 직접 로컬 LLM ",
+      "labels": [
+        "벤치마크",
+        "로컬 LLM",
+        "DGX Spark",
+        "GB10",
+        "GGUF",
+        "llama.cpp",
+        "Qwen",
+        "Gemma",
+        "AI 에이전트",
+        "DevSnack Story"
+      ],
+      "published": "2026-09-06T12:14:37+00:00",
+      "cover_image": "https://devsnack-blog.vercel.app/images/stories/gb10-llm-benchmark/cover.webp",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
     {
       "slug": "stockpulse-v1-ai-self-improvement-story",
       "title": "주식 투자 도우미를 만들었는데, AI 자기개선 실험이 되었다",
