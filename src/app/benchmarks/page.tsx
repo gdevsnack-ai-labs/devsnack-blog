@@ -7,18 +7,19 @@ import { RelatedAssets } from '@/components/related-assets'
 import { LegacyBenchmarkSourceCard } from '@/components/legacy-benchmark-source-card'
 import { getReclassifiedBenchmarkPosts } from '@/lib/ia/hub-data'
 import { BENCHMARK_OVERVIEW, BENCHMARK_PROJECTIONS, getBenchmarksByCategory, getRelatedAssets, projectLegacyBenchmarkPosts } from '@/lib/ia/hub-projections'
-import { loadPublicBenchmarkRelease } from '@/lib/benchmarks/public-release'
+import { PUBLIC_RELEASE_ID, loadPublicBenchmarkRelease } from '@/lib/benchmarks/public-release'
 import { buildRouteMetadata, absoluteSiteUrl } from '@/lib/seo/metadata'
 import { buildBreadcrumbJsonLd, buildCollectionPageJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 
 export const revalidate = 60
 
 export const metadata = buildRouteMetadata({
-  title: 'Benchmarks — DevSnack',
-  description: '실행 조건과 측정 프로토콜을 공개한 DevSnack Benchmark 결과 모음',
+  title: 'LLM Benchmarks — DevSnack',
+  description: 'NVIDIA DGX Spark GB10에서 GGUF·llama.cpp 로컬 LLM을 직접 측정한 성능·코딩·에이전트 Benchmark 결과 모음',
   canonicalPath: '/benchmarks',
   language: 'ko',
   section: 'Benchmarks',
+  keywords: ['NVIDIA DGX Spark', 'GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'Qwen', 'Gemma', 'local AI'],
 })
 
 const CATEGORY_META = [
@@ -65,8 +66,9 @@ export default async function BenchmarksPage() {
       section: 'Benchmarks',
       breadcrumbs: [],
       parts: [
-        ...BENCHMARK_PROJECTIONS.map((benchmark, index) => ({ name: benchmark.title, url: absoluteSiteUrl(benchmark.contentHref), position: index + 1 })),
-        ...legacyBenchmarks.map((benchmark, index) => ({ name: benchmark.title, url: absoluteSiteUrl(benchmark.href), position: BENCHMARK_PROJECTIONS.length + index + 1 })),
+        { name: 'DGX Spark GB10 — Local LLM Benchmark', url: absoluteSiteUrl(`/benchmarks/${PUBLIC_RELEASE_ID}`), position: 1 },
+        ...BENCHMARK_PROJECTIONS.map((benchmark, index) => ({ name: benchmark.title, url: absoluteSiteUrl(benchmark.contentHref), position: index + 2 })),
+        ...legacyBenchmarks.map((benchmark, index) => ({ name: benchmark.title, url: absoluteSiteUrl(benchmark.href), position: BENCHMARK_PROJECTIONS.length + index + 2 })),
       ],
     }),
     buildBreadcrumbJsonLd([
@@ -82,9 +84,14 @@ export default async function BenchmarksPage() {
         <HubHeader
           eyebrow="Measured Results"
           title="Benchmarks"
-          description="조건을 고정하고 직접 측정한 결과를 모읍니다. Research 자료나 계획이 아니라, Target·Environment·Protocol·Result를 확인할 수 있는 published benchmark만 보여줍니다."
+          description="NVIDIA DGX Spark GB10에서 GGUF·llama.cpp로 직접 측정한 local LLM benchmark를 모읍니다. 속도, 서버 처리량, Coding, Tool-call, Agent 결과를 Target·Environment·Protocol·Result와 함께 확인할 수 있습니다."
           icon={BarChart3}
         />
+
+        <section className="mt-8" aria-labelledby="public-release-heading">
+          <h2 id="public-release-heading" className="sr-only">Latest public benchmark release</h2>
+          <BenchmarkReleaseCard release={publicRelease} />
+        </section>
 
         <section className="mt-8 rounded-2xl border border-border bg-white p-5 dark:bg-gray-900 md:p-6" aria-labelledby="benchmark-start-heading">
           <div className="flex items-start gap-3">
@@ -149,11 +156,6 @@ export default async function BenchmarksPage() {
             <div><p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Remaining failure patterns</p><ul className="mt-2 list-disc space-y-1 pl-5 text-sm">{BENCHMARK_OVERVIEW.calibration.remaining.map(item => <li key={item}>{item}</li>)}</ul></div>
             <p className="text-sm leading-relaxed text-muted-foreground">{BENCHMARK_OVERVIEW.calibration.limitation}</p>
           </div>
-        </section>
-
-        <section className="mt-8" aria-labelledby="public-release-heading">
-          <h2 id="public-release-heading" className="sr-only">Public benchmark release</h2>
-          <BenchmarkReleaseCard release={publicRelease} />
         </section>
 
         <section className="mt-10" aria-labelledby="benchmark-collections-heading">

@@ -3,7 +3,7 @@ import { ArrowLeft, BookOpen, Database, ExternalLink, FlaskConical, Gauge, GitBr
 import { BenchmarkReleaseMatrix } from '@/components/benchmark-release-matrix'
 import { PUBLIC_RELEASE_ID, benchmarkSuiteLabel, loadPublicBenchmarkRelease } from '@/lib/benchmarks/public-release'
 import { absoluteSiteUrl, buildRouteMetadata } from '@/lib/seo/metadata'
-import { buildBreadcrumbJsonLd, buildCollectionPageJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
+import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildCollectionPageJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 
 export const dynamic = 'force-static'
 export const revalidate = false
@@ -18,12 +18,13 @@ export async function generateMetadata({ params }: { params: Promise<{ releaseId
   if (releaseId !== PUBLIC_RELEASE_ID) return { title: 'Benchmark Release Not Found' }
   const release = loadPublicBenchmarkRelease(releaseId)
   return buildRouteMetadata({
-    title: 'DGX Spark GB10 — Local LLM Benchmark',
-    description: `${release.scope.model_variant_count}개 모델 변형과 ${release.scope.suite_count}개 suite를 비교한 GB10 로컬 LLM Benchmark 공개 release`,
+    title: 'DGX Spark GB10 로컬 LLM 벤치마크 — 18개 GGUF 모델 비교',
+    description: 'NVIDIA DGX Spark GB10에서 18개 GGUF 모델을 동일 조건으로 비교했습니다. llama.cpp 속도·서버 처리량, Knowledge, Coding, Tool-call, Single/Multi Agent 결과와 공개 JSON을 확인할 수 있습니다.',
     canonicalPath: `/benchmarks/${releaseId}`,
     language: 'ko',
     section: 'Benchmarks',
     kind: 'article',
+    keywords: ['NVIDIA DGX Spark', 'GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'Qwen', 'Gemma', 'Ornith', 'coding benchmark', 'tool call benchmark', 'agent benchmark', 'local AI'],
   })
 }
 
@@ -41,7 +42,38 @@ export default async function BenchmarkReleasePage({ params }: { params: Promise
   const { releaseId } = await params
   if (releaseId !== PUBLIC_RELEASE_ID) return null
   const release = loadPublicBenchmarkRelease(releaseId)
+  const jsonUrl = absoluteSiteUrl(`/data/benchmarks/${releaseId}.json`)
+  const benchmarkKeywords = ['NVIDIA DGX Spark', 'GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'Qwen', 'Gemma', 'Ornith', 'coding benchmark', 'tool call benchmark', 'agent benchmark', 'local AI']
   const jsonLd = buildJsonLdGraph(
+    buildArticleJsonLd({
+      type: 'TechArticle',
+      title: 'DGX Spark GB10 로컬 LLM 벤치마크 — 18개 GGUF 모델 비교',
+      description: 'NVIDIA DGX Spark GB10에서 llama.cpp로 18개 GGUF 모델 변형을 동일 조건으로 비교한 공개 benchmark release입니다.',
+      url: absoluteSiteUrl(`/benchmarks/${releaseId}`),
+      language: 'ko',
+      section: 'Benchmark',
+      published: release.generated_at,
+      modified: release.generated_at,
+      keywords: benchmarkKeywords,
+      about: { '@type': 'Thing', name: 'Measured local LLM benchmark on NVIDIA DGX Spark GB10' },
+      isPartOf: { '@type': 'CollectionPage', name: 'DevSnack Benchmarks', url: absoluteSiteUrl('/benchmarks') },
+    }),
+    {
+      '@type': 'Dataset',
+      name: 'GB10 LLM Benchmark v1 public dataset',
+      description: 'Versioned public JSON dataset containing 18 GGUF model variants measured across seven llama.cpp benchmark suites on NVIDIA DGX Spark GB10.',
+      url: jsonUrl,
+      inLanguage: 'ko-KR',
+      isAccessibleForFree: true,
+      creator: { '@type': 'Organization', name: 'DevSnack', url: absoluteSiteUrl('/') },
+      publisher: { '@type': 'Organization', name: 'DevSnack Blog', url: absoluteSiteUrl('/') },
+      datePublished: release.generated_at,
+      dateModified: release.generated_at,
+      keywords: benchmarkKeywords.join(', '),
+      measurementTechnique: 'Versioned llama.cpp benchmark recipes with reasoning-off evaluator conditions and source-run provenance.',
+      variableMeasured: ['Prompt processing throughput', 'Token generation throughput', 'Server latency', 'Knowledge accuracy', 'Coding pass rate', 'Tool-call success', 'Agent task completion'],
+      distribution: [{ '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: jsonUrl }],
+    },
     buildCollectionPageJsonLd({
       name: 'DGX Spark GB10 — Local LLM Benchmark',
       description: '18개 모델 변형과 7개 suite를 비교한 GB10 로컬 LLM Benchmark 공개 release',
@@ -66,7 +98,13 @@ export default async function BenchmarkReleasePage({ params }: { params: Promise
         <header className="mt-6 border-b border-border pb-8">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300"><Gauge className="h-4 w-4" aria-hidden="true" /> Public Benchmark Release <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] normal-case dark:bg-blue-900/30">{release.generated_at}</span></div>
           <h1 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">DGX Spark GB10 — Local LLM Benchmark</h1>
-          <p className="mt-4 max-w-4xl text-base leading-relaxed text-muted-foreground">{release.scope.model_variant_count} model variants · {release.scope.suite_count} suites · llama.cpp · reasoning off</p>
+          <div className="mt-5 max-w-4xl space-y-3 text-sm leading-relaxed text-muted-foreground">
+            <p>이 페이지는 NVIDIA DGX Spark GB10에서 직접 실행한 local LLM benchmark release입니다. 동일한 hardware와 recipe 조건에서 llama.cpp 기반 GGUF 모델의 속도와 실제 평가 결과를 비교했습니다.</p>
+            <p>18개 model variants를 Performance, Server-performance, Knowledge, Coding, Tool-call, Agent-single, Agent-multi 7개 suite로 측정했습니다. evaluator lane은 reasoning OFF이며, Performance·Server-performance·Coding의 기존 정식 결과와 새 evaluator revalidation 결과를 구분해 기록합니다.</p>
+            <p>전체 score는 모델의 절대 순위나 보편적인 품질 점수가 아니라 동일 조건 내 비교값입니다. 원본 raw run은 공개하지 않고, 재현에 필요한 methodology·dataset hash·source run provenance와 machine-readable JSON만 제공합니다.</p>
+          </div>
+          <p className="mt-4 max-w-5xl text-sm leading-relaxed text-muted-foreground"><strong className="text-foreground">Models covered:</strong> {release.models.map(model => `${model.model} ${model.variant}`).join(' · ')}</p>
+          <p className="mt-4 max-w-4xl text-sm leading-relaxed text-muted-foreground">{release.scope.model_variant_count} model variants · {release.scope.suite_count} suites · llama.cpp · reasoning off</p>
           <div className="mt-5 flex flex-wrap gap-2 text-xs text-muted-foreground">
             <span className="rounded-full border border-border px-3 py-1">18 model variants</span>
             <span className="rounded-full border border-border px-3 py-1">72 revalidated evaluator runs</span>

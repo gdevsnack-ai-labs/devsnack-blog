@@ -94,7 +94,7 @@ export function BenchmarkReleaseMatrix({ models }: { models: PublicBenchmarkMode
           </thead>
           <tbody>
             {filtered.map(model => (
-              <tr key={model.model_id} className="border-b border-border/70 last:border-0 hover:bg-muted/30">
+              <tr id={model.model_id} key={model.model_id} className="border-b border-border/70 last:border-0 hover:bg-muted/30">
                 <th scope="row" className="sticky left-0 z-[1] bg-white px-3 py-3 align-top dark:bg-gray-900">
                   <div className="font-semibold">{model.model}</div>
                   <div className="mt-1 text-[11px] font-normal text-muted-foreground">{model.variant} · {model.quantization}</div>

@@ -30,6 +30,7 @@ export interface RouteMetadataInput {
   indexable?: boolean
   searchPolicy?: SearchPolicy
   section?: string
+  keywords?: string[]
 }
 
 export function cleanMetaText(value: string | null | undefined, maxLength = 160): string {
@@ -69,6 +70,7 @@ export function buildRouteMetadata({
   indexable,
   searchPolicy,
   section,
+  keywords,
 }: RouteMetadataInput) {
   const canonical = absoluteSiteUrl(canonicalPath)
   const policy = searchPolicy ?? (indexable === false ? 'noindex' : searchPolicyForPath(canonicalPath))
@@ -101,6 +103,7 @@ export function buildRouteMetadata({
         }
       : { canonical },
     robots: robotsForSearchPolicy(policy),
+    ...(keywords?.length ? { keywords } : {}),
     openGraph,
     twitter: {
       card: image ? 'summary_large_image' : 'summary',

@@ -8,6 +8,7 @@ import { getCurrentStage, getDomainLabel, getProjectFinding, getKeyMetrics, getK
 import { getPublishedLabNotes } from '@/lib/lab-notes'
 import { mergePublishedLabNotes } from '@/lib/lab-note-projection'
 import { getRelatedAssets } from '@/lib/ia/hub-projections'
+import { PUBLIC_RELEASE_ID } from '@/lib/benchmarks/public-release'
 import { getProjectFeedOutputs } from '@/lib/ia/feed-output-projection'
 import { ProjectFeedOutputs } from '@/components/project-feed-outputs'
 import { RelatedAssets } from '@/components/related-assets'
@@ -289,6 +290,9 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 이 실험은 하나의 완료 과제가 아니라 모델별 측정을 계속 추가하는 부모 실험실로 운영할 수 있습니다. Qwen3.8, Ornith1.5 같은 하위 실험은 실제 측정 데이터가 연결될 때 이 영역에 추가합니다.
               </p>
+              <Link href={`/benchmarks/${PUBLIC_RELEASE_ID}`} className="mt-4 inline-flex items-center rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm font-medium text-blue-700 no-underline hover:border-blue-300 hover:text-blue-800 dark:border-blue-900/60 dark:bg-gray-900 dark:text-blue-300 dark:hover:border-blue-700">
+                최신 GB10 로컬 LLM 통합 벤치마크 보기 →
+              </Link>
             </section>
           )}
 
