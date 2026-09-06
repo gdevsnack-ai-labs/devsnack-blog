@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { DEMO_CATEGORIES, DEMOS } from '@/data/demos'
-import { ExternalLink } from 'lucide-react'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
 
 export const revalidate = 60
@@ -48,12 +47,6 @@ export default function DemosPage() {
           })}
         </div>
 
-        <div className="mt-12 border border-dashed border-border rounded-xl p-6">
-          <p className="text-sm text-muted-foreground text-center">
-            💡 데모도 직접 만들 수 있어요 — 하단 LNB의 서브 메뉴에서 카테고리별로 바로 탐색하세요. (외부 링크는 새 탭으로 열림
-            <ExternalLink className="inline w-3.5 h-3.5 ml-1" />)
-          </p>
-        </div>
       </div>
     </div>
   )
