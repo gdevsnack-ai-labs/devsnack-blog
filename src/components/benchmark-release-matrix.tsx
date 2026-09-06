@@ -72,7 +72,7 @@ export function BenchmarkReleaseMatrix({ models }: { models: PublicBenchmarkMode
       <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
           <h2 id="release-matrix-heading" className="text-xl font-bold">Model comparison matrix</h2>
-          <p className="mt-1 text-sm text-muted-foreground">서로 다른 suite의 수치를 하나의 총점으로 합치지 않고 그대로 보여줍니다.</p>
+          <div className="mt-1 max-w-4xl space-y-1 text-sm leading-relaxed text-muted-foreground"><p>서로 다른 suite의 수치를 하나의 총점으로 합치지 않고 그대로 보여줍니다.</p><p>빠른 모델이 꼭 코딩을 가장 잘하는 것은 아니고, Knowledge 점수가 높은 모델이 Agent 작업에서도 가장 높은 성공률을 보이는 것도 아니었습니다. 필요한 작업에 맞춰 항목별로 보는 편이 더 유용합니다.</p></div>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
           <label className="sr-only" htmlFor="benchmark-model-filter">Filter models</label>
