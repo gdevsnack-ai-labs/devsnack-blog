@@ -64,19 +64,31 @@ function SnapshotMetric({ label, value, note, tone = 'default' }: { label: strin
   )
 }
 
-function ReportLink({ href, label, status }: { href: string; label: string; status: string }) {
-  return (
-    <Link href={href} className="group flex min-w-0 w-full items-center justify-between gap-3 rounded-xl border border-border bg-white px-4 py-3 no-underline transition-colors hover:border-blue-300 hover:bg-blue-50/50 dark:bg-gray-900 dark:hover:border-blue-700 dark:hover:bg-blue-950/20">
+function ReportLink({ href, label, status }: { href: string | null; label: string; status: string }) {
+  const content = (
+    <>
       <span className="flex min-w-0 items-center gap-2">
         <FileText className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" aria-hidden="true" />
         <span className="min-w-0 truncate text-sm font-medium">{label}</span>
       </span>
       <span className="flex shrink-0 items-center gap-1.5 text-xs text-muted-foreground">
         <span className={`rounded-full px-2 py-0.5 font-medium ${statusClass(status)}`}>{status}</span>
-        <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+        {href && <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />}
       </span>
-    </Link>
+    </>
   )
+  const className = "group flex min-w-0 w-full items-center justify-between gap-3 rounded-xl border border-border bg-white px-4 py-3 no-underline dark:bg-gray-900"
+  if (!href) {
+    return <div aria-disabled="true" className={`${className} cursor-not-allowed opacity-75`}>{content}</div>
+  }
+  return <Link href={href} className={`${className} transition-colors hover:border-blue-300 hover:bg-blue-50/50 dark:hover:border-blue-700 dark:hover:bg-blue-950/20`}>{content}</Link>
+}
+
+function BoardPublicationLink({ href, label, status }: { href: string | null; label: string; status: string }) {
+  if (!href) {
+    return <span className="inline-flex items-center gap-1 text-xs text-muted-foreground" aria-disabled="true">{label} <span className={`rounded-full px-1.5 py-0.5 ${statusClass(status)}`}>{status}</span></span>
+  }
+  return <Link href={href} className="inline-flex items-center gap-1 text-xs font-medium text-blue-700 no-underline hover:underline dark:text-blue-300">{label} <ArrowUpRight className="h-3 w-3" aria-hidden="true" /></Link>
 }
 
 function EvidenceDetails({ view }: { view: StockpulseFixedViewModel }) {
@@ -227,7 +239,7 @@ function RunBoard({ views }: { views: StockpulseFixedViewModel[] }) {
               const detailId = runDetailId(view.run.run_id)
               return (
                 <Fragment key={view.run.run_id}>
-                  <tr key={view.run.run_id} className="border-b border-border align-top"><td className="px-4 py-4 font-medium">{formatDate(view.date)}</td><td className="px-4 py-4"><strong>{view.snapshot.morning}</strong></td><td className="px-4 py-4"><strong>{view.snapshot.actual}</strong><span className="mt-1 block text-xs text-muted-foreground">{view.actualClose}</span></td><td className="px-4 py-4">{view.snapshot.llmResult === 'Correct' ? <span className="inline-flex items-center gap-1.5 font-semibold text-emerald-700 dark:text-emerald-300"><Check className="h-4 w-4" aria-hidden="true" />Correct</span> : <span className="font-semibold">{view.snapshot.llmResult}</span>}</td><td className="px-4 py-4"><span className="font-medium">{view.run.ml_evaluation.evaluated_count}/{view.run.ml_evaluation.pending_count} · {titleCase(view.run.ml_evaluation.status)}</span></td><td className="px-4 py-4"><span className="rounded-full bg-muted px-2 py-1 text-xs font-medium">{view.snapshot.improvement}</span></td><td className="px-4 py-4"><div className="flex min-w-44 flex-col gap-2"><Link href={view.publication.morning.href} className="inline-flex items-center gap-1 text-xs font-medium text-blue-700 no-underline hover:underline dark:text-blue-300">Morning <ArrowUpRight className="h-3 w-3" aria-hidden="true" /></Link><Link href={view.publication.evening.href} className="inline-flex items-center gap-1 text-xs font-medium text-blue-700 no-underline hover:underline dark:text-blue-300">Evening <ArrowUpRight className="h-3 w-3" aria-hidden="true" /></Link></div></td><td className="px-4 py-4"><button type="button" onClick={() => onToggle(view.run.run_id)} aria-expanded={expanded} aria-controls={detailId} className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors hover:border-blue-300 hover:text-blue-700 dark:hover:border-blue-700 dark:hover:text-blue-300">{expanded ? '접기' : '상세 보기'}<ChevronDown className={`h-3.5 w-3.5 transition-transform ${expanded ? 'rotate-180' : ''}`} aria-hidden="true" /></button></td></tr>
+                  <tr key={view.run.run_id} className="border-b border-border align-top"><td className="px-4 py-4 font-medium">{formatDate(view.date)}</td><td className="px-4 py-4"><strong>{view.snapshot.morning}</strong></td><td className="px-4 py-4"><strong>{view.snapshot.actual}</strong><span className="mt-1 block text-xs text-muted-foreground">{view.actualClose}</span></td><td className="px-4 py-4">{view.snapshot.llmResult === 'Correct' ? <span className="inline-flex items-center gap-1.5 font-semibold text-emerald-700 dark:text-emerald-300"><Check className="h-4 w-4" aria-hidden="true" />Correct</span> : <span className="font-semibold">{view.snapshot.llmResult}</span>}</td><td className="px-4 py-4"><span className="font-medium">{view.run.ml_evaluation.evaluated_count}/{view.run.ml_evaluation.pending_count} · {titleCase(view.run.ml_evaluation.status)}</span></td><td className="px-4 py-4"><span className="rounded-full bg-muted px-2 py-1 text-xs font-medium">{view.snapshot.improvement}</span></td><td className="px-4 py-4"><div className="flex min-w-44 flex-col gap-2"><BoardPublicationLink href={view.publication.morning.href} label="Morning" status={view.publication.morning.status} /><BoardPublicationLink href={view.publication.evening.href} label="Evening" status={view.publication.evening.status} /></div></td><td className="px-4 py-4"><button type="button" onClick={() => onToggle(view.run.run_id)} aria-expanded={expanded} aria-controls={detailId} className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors hover:border-blue-300 hover:text-blue-700 dark:hover:border-blue-700 dark:hover:text-blue-300">{expanded ? '접기' : '상세 보기'}<ChevronDown className={`h-3.5 w-3.5 transition-transform ${expanded ? 'rotate-180' : ''}`} aria-hidden="true" /></button></td></tr>
                   {expanded && <tr key={`${view.run.run_id}-detail`}><td colSpan={8} className="p-3"><div id={detailId}><RunDetail view={view} /></div></td></tr>}
                 </Fragment>
               )
@@ -245,7 +257,7 @@ function RunBoard({ views }: { views: StockpulseFixedViewModel[] }) {
               <article className="rounded-2xl border border-border bg-white p-4 dark:bg-gray-900">
                 <div className="flex items-center justify-between gap-3"><div><p className="text-xs text-muted-foreground">Date</p><p className="mt-1 font-semibold">{formatDate(view.date)}</p></div><span className={`rounded-full px-2 py-1 text-xs font-semibold ${view.snapshot.llmResult === 'Correct' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300' : 'bg-muted text-muted-foreground'}`}>{view.snapshot.llmResult}</span></div>
                 <dl className="mt-4 grid grid-cols-2 gap-3 text-sm"><div><dt className="text-xs text-muted-foreground">Morning LLM</dt><dd className="mt-1 font-semibold">{view.snapshot.morning}</dd></div><div><dt className="text-xs text-muted-foreground">Market result</dt><dd className="mt-1 font-semibold">{view.snapshot.actual} · {view.actualClose}</dd></div><div><dt className="text-xs text-muted-foreground">ML evaluation</dt><dd className="mt-1 font-semibold">{view.run.ml_evaluation.evaluated_count}/{view.run.ml_evaluation.pending_count} · {titleCase(view.run.ml_evaluation.status)}</dd></div><div><dt className="text-xs text-muted-foreground">Improvement</dt><dd className="mt-1 font-semibold">{view.snapshot.improvement}</dd></div></dl>
-                <div className="mt-4 grid grid-cols-2 gap-2"><Link href={view.publication.morning.href} className="inline-flex items-center justify-center gap-1 rounded-lg border border-border px-3 py-2 text-xs font-medium no-underline hover:border-blue-300 hover:text-blue-700 dark:hover:border-blue-700 dark:hover:text-blue-300">Morning <ArrowUpRight className="h-3 w-3" aria-hidden="true" /></Link><Link href={view.publication.evening.href} className="inline-flex items-center justify-center gap-1 rounded-lg border border-border px-3 py-2 text-xs font-medium no-underline hover:border-blue-300 hover:text-blue-700 dark:hover:border-blue-700 dark:hover:text-blue-300">Evening <ArrowUpRight className="h-3 w-3" aria-hidden="true" /></Link></div>
+                <div className="mt-4 grid grid-cols-2 gap-2"><BoardPublicationLink href={view.publication.morning.href} label="Morning" status={view.publication.morning.status} /><BoardPublicationLink href={view.publication.evening.href} label="Evening" status={view.publication.evening.status} /></div>
                 <button type="button" onClick={() => onToggle(view.run.run_id)} aria-expanded={expanded} aria-controls={detailId} className="mt-3 flex w-full items-center justify-center gap-1 rounded-lg bg-foreground px-3 py-2.5 text-xs font-medium text-background">{expanded ? '상세 접기' : 'Run detail 열기'}<ChevronDown className={`h-3.5 w-3.5 transition-transform ${expanded ? 'rotate-180' : ''}`} aria-hidden="true" /></button>
               </article>
               {expanded && <div id={detailId} className="mt-3"><RunDetail view={view} /></div>}

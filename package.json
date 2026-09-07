@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "audit:site": "python3 scripts/audit_site.py",
+    "test": "npm run test:current && npm run test:audit",
+    "test:current": "node --experimental-strip-types src/lib/stockpulse-v1-fixed.test.ts",
+    "test:audit": "python3 -m unittest scripts/audit_site_test.py scripts/audit_public_content_test.py scripts/audit_source_security_test.py",
+    "audit:site": "SITE_URL=https://devsnack-blog.vercel.app python3 scripts/audit_site.py",
+    "audit:public-content": "python3 scripts/audit_public_content.py",
+    "audit:security": "python3 scripts/audit_source_security.py",
     "audit:links": "python3 scripts/check_internal_links.py"
   },
   "dependencies": {

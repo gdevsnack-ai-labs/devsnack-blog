@@ -1,119 +1,144 @@
-# DevSnack Blog — 시스템 아키텍처
+# DevSnack Blog — Current Architecture
 
-> 최종 업데이트: 2026-07-20 (v3 리디자인)
+> Current baseline verified against Production, Supabase, repository code, and active runtime on 2026-09-07.
+> Dated phase documents preserve earlier implementation evidence and are not current configuration by default.
 
----
+## System boundary
 
-## 🏗️ 전체 구조
+```text
+Reader
+  ↓
+Vercel / Next.js public routes
+  ├── static snapshots and curated releases
+  ├── Supabase public projections
+  └── external publication links
 
-```
-사용자 ──→ https://devsnack-blog.vercel.app
-                │
-           ┌────┴────┐
-           │  Vercel │ (Next.js 16, Hobby, $0)
-           └────┬────┘
-                │
-           ┌────┴────┐
-           │ Supabase│ (Postgres 17, 500MB, $0)
-           └────┬────┘
-                │
-           ┌────┴────┐
-           │  DGX    │ ← Hermes Agent, 로컬 LLM(Qwen3.5-35B), 크론잡
-           │  Spark  │
-           └─────────┘
-```
+Supabase posts
+  ├── devsnack / lab / research: current public lanes
+  ├── aitech: archived v1 rows, retired detail URLs
+  └── stockpulse: legacy archive rows, external archive mapping
 
-## 📦 기술 스택
-
-| 계층 | 기술 | 용도 |
-|:-----|:-----|:------|
-| **프론트엔드** | Next.js 16 (App Router) | SSR/ISR 페이지 렌더링 |
-| **스타일링** | Tailwind CSS v4 + shadcn/ui | UI 컴포넌트 |
-| **DB** | Supabase (Postgres 17) | 블로그 글, FTS |
-| **배포** | Vercel (Hobby, $0) | Git push → 자동 배포 |
-| **아이콘** | lucide-react | UI 아이콘 |
-| **차트** | Recharts | 부동산/주식 차트 |
-
-## 🧭 라우트 구조
-
-| 경로 | 타입 | 설명 |
-|:-----|:----:|:------|
-| `/` | ISR 60s | 랜딩 페이지 (Lab Stats + 블로그 카드) |
-| `/devsnack` | ISR 60s | DevSnack 블로그 목록 |
-| `/devsnack/[slug]` | Dynamic | DevSnack 개별 글 |
-| `/stock` | ISR 60s | StockPulse 주식 분석 |
-| `/stock/[slug]` | Dynamic | StockPulse 개별 리포트 |
-
-| `/aitech` | ISR 60s | AI Tech Insight 목록 |
-| `/aitech/[slug]` | Dynamic | AI Tech 개별 글 |
-| `/lab` | ISR 60s | Lab 대시보드 (실험 목록) |
-| `/lab/[id]` | ISR 60s | Lab 개별 실험 상세 |
-| `/search` | Static | 통합 검색 |
-| `/about` | Static | 소개 |
-| `/privacy` | Static | 개인정보처리방침 |
-| `/contact` | Static | 문의 |
-| `/links` | Static | YouTube/GitHub 링크 |
-| `/rss.xml` | Dynamic | RSS 피드 |
-| `/sitemap.xml` | Static | Sitemap |
-
-## 🧩 컴포넌트 구조
-
-```
-src/
-├── app/                    # Pages (App Router)
-├── components/
-│   ├── ui/                # shadcn/ui (badge, button, card, nav-menu, sheet)
-│   ├── app-layout.tsx     # LNB + Content + MobileTabBar 래퍼
-│   ├── side-nav.tsx       # PC 좌측 LNB (접힘 가능)
-│   ├── mobile-tab-bar.tsx # 모바일 하단 탭
-│   ├── blog-header.tsx    # 페이지별 상단 헤더 (간소화)
-│   ├── blog-card.tsx      # 블로그 카드
-│   ├── blog-sidebar.tsx   # 블로그 내 사이드바 (검색/태그/월별)
-│   ├── lab-dashboard.tsx  # Lab 통계 카드
-│   ├── lab-project-card.tsx # Lab 프로젝트 카드
-│   ├── current-experiment-card.tsx # 현재 진행 중 실험 박스
-│   ├── experiment-strip.tsx # 진행 중 실험 스트립
-│   ├── latest-post-card.tsx  # 최신 글 카드
-│   ├── latest-video-card.tsx # 최신 영상 카드
-│   ├── progress-bar.tsx   # 진행률 바
-│   ├── subscribe-cta.tsx  # 구독 CTA
-│   ├── tag-chip.tsx       # 태그 칩
-│   └── view-counter.tsx   # 조회수
-├── data/
-│   ├── experiments.ts     # Lab 실험 데이터 모델
-│   └── current-experiment.ts  # 현재 진행 중 실험
-└── lib/
-    ├── supabase.ts        # Supabase 클라이언트
-    └── colors.ts          # 블로그별 색상 테마
+Hermes / content-factory runtime
+  ├── StockPulse V1 Fixed current Morning/Evening experiment
+  ├── controlled operations refresh
+  └── legacy sync tools, manually gated and not scheduled
 ```
 
-## 🔄 데이터 흐름
+The public application does not depend on the local LLM, Hindsight, or ComfyUI service being active. Their current stopped/optional state belongs to the infrastructure Wiki, not to the public deployment contract.
 
-### 블로그 발행 (StockPulse 예시)
+## Current route contract
 
+| Route | Role | Current behavior |
+|:------|:-----|:-----------------|
+| `/` | public entry point | indexable home projection |
+| `/devsnack` | Stories collection | bounded static snapshot with public detail links |
+| `/devsnack/[slug]` | Story detail | dynamic public detail |
+| `/research` | Knowledge collection | Supabase knowledge projection plus Research Notebook board |
+| `/research/[slug]` | Research detail | public detail unless an explicit external migration redirect applies |
+| `/labs` | Lab hub | canonical experiments/builds/creative tests hub |
+| `/labs/[id]` | Lab project | project projection and verified findings |
+| `/labs/stockpulse-v1-fixed` | current experiment | read-only Live Shadow projection |
+| `/lab` | legacy Lab hub | HTTP 308 to `/labs` |
+| `/lab/[id]` | compatibility detail | retained only where a mapped legacy detail route is required |
+| `/benchmarks` | curated benchmark hub | indexable public release collection |
+| `/data` | publication/tracker hub | archive gateways and aggregate tracker links |
+| `/stock` | StockPulse legacy archive | `noindex, follow`; external old publication gateway |
+| `/stock/[slug]` | legacy StockPulse detail | mapped external redirect when an exact publication exists |
+| `/aitech` | AI Tech v1 archive hub | indexable compact title/date history |
+| `/aitech/[slug]` | AI Tech v1 detail | HTTP 410 and `noindex`; never in sitemap/RSS/search |
+| `/demos` | Showcase hub | public interactive artifacts |
+| `/rss.xml` | Korean RSS | live public rows with valid Vercel detail routes |
+| `/en/rss.xml` | English pilot RSS | existing English publication lane |
+| `/sitemap.xml` | discovery contract | indexable hubs and eligible public details only |
+
+## Data projection rules
+
+### Supabase posts
+
+`blog_id`, `status`, and `lifecycle_status` are evaluated together. The current database retains historical rows so that archive evidence and compatibility mappings are not destroyed.
+
+- `devsnack`, `lab`, and `research` live rows may project to public Vercel surfaces when route and safety policy permit.
+- `aitech` rows remain `status=live` with `lifecycle_status=archived`, but their detail paths are retired by the root proxy.
+- `stockpulse` rows remain historical archive records with `archived` or `consolidated` lifecycle state; the old `/stock` route is not the V1 Fixed experiment surface.
+- draft rows are never promoted or deleted by a legacy sync merely because they are absent from a queue source.
+
+### Static and external projections
+
+- DevSnack Stories use the bounded `src/data/devsnack-snapshot.json` projection.
+- AI Tech uses `src/data/aitech-v1-archive.json` for title/date history only.
+- StockPulse `/stock` uses the legacy external-publication mapping and does not represent the current V1 Fixed Live Shadow.
+- StockPulse V1 Fixed uses `src/data/stockpulse-v1-fixed-projection.json` for the Vercel Lab view. Reader-facing reports live under the separate GitHub Pages publication. A report link is rendered only when the projection has an available status and a real path.
+- Research Notebook is an external publication surface for mapped notes; migrated Vercel Research details redirect there.
+
+## Publication flows
+
+### Current direct content path
+
+```text
+reviewed content
+  → public-content safety gate
+  → explicit publisher or guarded sync
+  → Supabase read-back
+  → Vercel route / metadata / link read-back
 ```
-16:00 크론잡 (Hermes)
-  → web_search + reasoning → 장 마감 분석 리포트
-  → ~/.hermes/cron/output/0f06bf00b795/*.md
 
-17:00 stockpulse_publish.py (no_agent)
-  → 리포트 읽기
-  → 로컬 Qwen3.5-35B (제목 생성)
-  → matplotlib (차트 썸네일)
-  → Supabase REST API (direct INSERT)
-  → Vercel ISR 60초 내 반영
+### Current StockPulse V1 Fixed path
+
+```text
+active Morning/Evening scheduler
+  → private canonical run evidence
+  → public-safe projection
+  → GitHub Pages report when the real publication path exists
+  → Vercel /labs/stockpulse-v1-fixed read-only projection
 ```
 
-### Lab 데이터
+The Vercel Lab is the experiment-record surface. It is not a daily article feed, and a pending publication must not receive an inferred URL.
 
+### Research sync boundary
+
+```text
+Hermes Wiki Research Backlog
+  → legacy sync parser (dry-run by default)
+  → explicit reviewed apply only
+  → Supabase research rows
+  → Vercel /research
 ```
-정적: src/data/experiments.ts (수동 관리)
-동적: Supabase posts 테이블 (블로그 글 수)
-정적: public/data/youtube-latest.json (DGX Spark → 매일 sync)
-```
 
-## 🔐 보안
+The legacy parser protects draft and non-live lifecycle rows and is not an unattended cron path.
 
-- Supabase 키: Vercel 환경변수 (`NEXT_PUBLIC_SUPABASE_*`)
-- OAuth 토큰: Google Drive image upload only (Blogger publishing removed)
-- `.env*.local` → `.gitignore` (`.env.example`만 공개)
+## Discovery and syndication
+
+- RSS selects `status` explicitly and then applies the public-feed/lifecycle filter.
+- RSS excludes retired AI Tech and StockPulse detail paths and migrated Research detail paths.
+- Sitemap excludes noindex hubs, retired details, migrated Research details, and the legacy `/lab` hub.
+- Public search uses the same lifecycle boundary and must not return archived external Feed rows.
+- `npm run audit:site` verifies RSS population, sitemap exclusions, route metadata, visible public safety, and current V1 Fixed publication targets.
+
+## Runtime status
+
+The active scheduler is the StockPulse V1 Fixed Morning/Evening lane plus separate operational/Agent Field Notes jobs. No active Hermes job was found for the legacy Blogger, Research, or Misc sync writers.
+
+At the current verification point, these local services are stopped and their ports are unused:
+
+- llama server: 8080
+- Wiki embedding: 8082
+- Wiki reranker: 8083
+- ComfyUI: 8188
+- Hindsight services: 18888/19999
+
+The stopped state does not block the Vercel public application. Reactivation requires a separate infrastructure decision.
+
+## Security boundary
+
+- Supabase and OAuth credentials come from ignored environment files or platform secret storage.
+- Tracked source must not contain key/token literals.
+- Public content must not contain actual local paths, internal hosts/ports, credentials, raw prompts, execution logs, or internal operator context.
+- The public-surface audit evaluates rendered production text, not only newly inserted rows.
+
+## Historical architecture — superseded
+
+The earlier Blogger-era flow used a scheduled market analysis, local Qwen title generation, direct Blogger/Supabase publication, and post-publication self-healing. That flow is retained in dated phase documents as historical evidence. It is not the current `/stock` or V1 Fixed operating contract.
+
+The 2026-07-20 design also described `/lab` as the Lab hub and omitted the later `/labs`, `/benchmarks`, and `/data` projections. The current canonical route is `/labs`; `/lab` remains only as a compatibility redirect/detail namespace.
+
+See [`docs/operations/`](operations/README.md) for current operating rules and [`docs/operations/history.md`](operations/history.md) for the sanitized timeline.

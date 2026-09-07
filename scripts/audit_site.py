@@ -21,6 +21,8 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
 
+from audit_public_content import check_rss_contract, run_public_content_audit
+from audit_source_security import scan_tracked_source
 BASE_URL = os.environ.get("SITE_URL", "http://127.0.0.1:3333").rstrip("/")
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -54,6 +56,10 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
         "/labs", 200, meta_robots="index, follow", canonical=True,
         required_text=("Recent Verified Findings", "Lab Board", "Experiments"),
         forbidden_text=("Mining",),
+    ),
+    "/labs/stockpulse-v1-fixed": RouteExpectation(
+        "/labs/stockpulse-v1-fixed", 200, meta_robots="index, follow", canonical=True,
+        required_text=("StockPulse V1 Fixed", "Live Shadow", "Morning / Evening publication"),
     ),
     "/labs/autonomous-ai-blog": RouteExpectation(
         "/labs/autonomous-ai-blog", 200, meta_robots="index, follow", canonical=True,
@@ -347,11 +353,17 @@ def check_http_contract(failures: list[str]) -> None:
         failures.extend(check_route_expectation(expectation, status, headers, body, BASE_URL))
 
     status, _, sitemap_body = fetch("/sitemap.xml")
+    public_detail_paths: list[str] = []
     if status != 200:
         failures.append(f"/sitemap.xml: expected HTTP 200, got {status}")
     else:
         urls = re.findall(r"<loc>(.*?)</loc>", sitemap_body, flags=re.IGNORECASE | re.DOTALL)
         failures.extend(check_sitemap_policy(urls, BASE_URL))
+        public_detail_paths = [
+            urlparse(url).path
+            for url in urls
+            if re.match(r"^/(?:devsnack|research|lab)/[^/]+$", urlparse(url).path)
+        ]
         if len(urls) == 0:
             failures.append("/sitemap.xml: no URLs found")
         print(f"- sitemap policy: {len(urls)} URLs checked")
@@ -361,6 +373,14 @@ def check_http_contract(failures: list[str]) -> None:
         failures.append(f"/rss.xml: expected HTTP 200, got {status}")
     else:
         failures.extend(check_syndication_policy(rss_body))
+        failures.extend(check_rss_contract(rss_body, feed_path="/rss.xml", public_detail_paths=public_detail_paths))
+
+    status, _, english_rss_body = fetch("/en/rss.xml")
+    if status != 200:
+        failures.append(f"/en/rss.xml: expected HTTP 200, got {status}")
+    else:
+        failures.extend(check_syndication_policy(english_rss_body))
+        failures.extend(check_rss_contract(english_rss_body, feed_path="/en/rss.xml", public_detail_paths=[]))
 
     status, _, robots_body = fetch("/robots.txt")
     if status != 200:
@@ -482,7 +502,9 @@ async def check_browser(failures: list[str]) -> None:
 def main() -> int:
     failures: list[str] = []
     print(f"DevSnack policy audit: {BASE_URL}")
+    failures.extend(f"source security: {finding}" for finding in scan_tracked_source(REPO_ROOT))
     check_http_contract(failures)
+    failures.extend(run_public_content_audit(BASE_URL))
     asyncio.run(check_browser(failures))
     if failures:
         print("SITE POLICY AUDIT FAILED")

@@ -1,7 +1,7 @@
 ---
 title: StockPulse v1 Daily Report and Experiment Migration Inventory
 created: 2026-08-30
-updated: 2026-08-30
+updated: 2026-09-07
 status: inventory-and-strategy-only
 phase: stockpulse-v1-to-v2
 tags: [stockpulse, migration, github-pages, daily-report, weekly-lab, lifecycle]
@@ -9,7 +9,7 @@ tags: [stockpulse, migration, github-pages, daily-report, weekly-lab, lifecycle]
 
 # StockPulse v1 Daily Report·실험 기록 Migration Inventory
 
-> 기준 시각: 2026-08-30T23:20:06+09:00 KST. 이 문서는 **읽기 전용 조사 결과와 실행 전 전략**이다. DB·Vercel·GitHub Pages·크론 변경은 아직 실행하지 않았다.
+> Historical inventory and pre-execution strategy as of 2026-08-30. The current follow-up at the end of this file is authoritative for the present StockPulse split.
 
 ## 0. 결론
 
@@ -212,3 +212,13 @@ StockPulse Daily Report는 raw 내부 데이터로 축소하지 않는다. 기�
 - `~/wiki/postmortems/stockpulse-direct-publish-content-safety-2026-08-26.md` — public-content safety incident and fail-closed policy
 - `~/wiki/designs/stockpulse-self-improvement-pipeline.md` — prediction/raw/self-improvement design
 - `~/yura_workspace/projects/devsnack-research-notes/README.md` — Research Notebook excludes StockPulse/AITech output
+
+## Current follow-up read-back (2026-09-07)
+
+The inventory above is historical planning evidence. The current operating split is:
+
+- `/stock` → `stockpulse-publication`: 68-row legacy archive/publication gateway, `noindex, follow`, latest old publication observed on 2026-08-27.
+- `/labs/stockpulse-v1-fixed` → `stockpulse-v1-fixed-publication`: current Live Shadow experiment projection; latest projection run is 2026-09-07.
+- Active Hermes jobs are the V1 Fixed Morning/Evening lane. The old Blogger publisher and the inventory's paused cron chain are not active.
+- The V1 Fixed projection exposes a report link only when an actual publication path exists and its status is `available`; a pending Evening is status-only.
+- Historical DB rows and old publication links remain preserved. No old `/stock` row was converted into the V1 Fixed project.

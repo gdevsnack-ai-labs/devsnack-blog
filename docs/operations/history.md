@@ -30,3 +30,12 @@ This documentation change does not alter routes, Supabase rows, or publication b
 ## Ongoing rule
 
 Add a dated record for each material migration. Link the detailed evidence, state what was not changed, and separate historical observations from current live verification.
+
+## 2026-09-07 — consistency recovery
+
+- Fixed Korean RSS field selection so live posts can become RSS items; added population and retired/noindex checks to the production audit.
+- Fixed StockPulse V1 Fixed publication projection so only `available` records with a real path become links; pending reports remain status-only.
+- Added current projection, public-surface, and source-security tests to the normal npm test/audit path.
+- Sanitized 15 existing live DevSnack/Research rows after preflight; DB identity/lifecycle and content hashes were read back per row. Draft, archived, and consolidated rows were not touched.
+- Marked Research/Misc sync tools as guarded legacy utilities. Research defaults to dry-run and protects drafts; the retired Misc writer is fail-closed.
+- Updated current README/Architecture and Wiki pointers without rewriting dated phase evidence.

@@ -11,7 +11,7 @@ export const revalidate = 60
 
 export const metadata = buildRouteMetadata({
   title: 'Data — DevSnack',
-  description: 'StockPulse처럼 현재 운영 중인 자동 갱신 정보를 한 곳에서 확인하는 DevSnack Data Hub',
+  description: '현재 공개 publication·archive·tracker와 별도 Live Shadow 실험을 구분해 확인하는 DevSnack Data Hub',
   canonicalPath: '/data',
 })
 
@@ -38,7 +38,7 @@ export default async function DataPage() {
         />
 
         <section className="mt-8 grid gap-3 sm:grid-cols-3" aria-label="Data principles">
-          <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Radio className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Feeds</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">현재 운영 중인 StockPulse 시장 분석 정보</p></div>
+          <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Radio className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Feeds</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">StockPulse legacy archive와 외부 publication 연결 상태</p></div>
           <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Database className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Project → Assets</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">StockPulse처럼 하나의 Project가 Feed·Dataset·Experiment를 함께 만듭니다.</p></div>
           <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><BarChart3 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">해석의 한계</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">자동 생성 수치와 editorial 판단은 다르며, 스냅샷 시점·측정 조건에 따라 해석이 달라질 수 있습니다.</p></div>
         </section>
@@ -67,8 +67,8 @@ export default async function DataPage() {
               latestTitle={snapshot.stockPulse?.title || 'GitHub Pages StockPulse publication'}
               href="/stock"
               provenance="External daily market publication"
-              relatedHref="/labs/stockpulse-ai-self-improvement"
-              relatedLabel="StockPulse v1 결과"
+              relatedHref="/labs/stockpulse-v1-fixed"
+              relatedLabel="현재 V1 Fixed Lab"
             />
             <DataServiceCard
               title="DevSnack 모델 사용량"

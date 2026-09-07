@@ -8,7 +8,7 @@ const SITE_URL = 'https://devsnack-blog.vercel.app'
 export async function GET() {
   const { data: posts } = await supabase
     .from('posts')
-    .select('slug, title, excerpt, blog_id, published, updated, cover_image')
+    .select('slug, title, excerpt, blog_id, status, published, updated, cover_image')
     .eq('status', 'live')
     .or(publicFeedOrFilter())
     .order('published', { ascending: false })

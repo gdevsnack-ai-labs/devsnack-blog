@@ -125,8 +125,8 @@ export interface StockpulseFixedViewModel {
   improvements: FixedProjectionRecord[]
   findings: FixedProjectionRecord[]
   publication: {
-    morning: { status: string; href: string }
-    evening: { status: string; href: string }
+    morning: { status: string; href: string | null }
+    evening: { status: string; href: string | null }
   }
   publicSecurityHits: string[]
 }
@@ -148,8 +148,11 @@ function titleCaseStatus(value: string): string {
   return value.slice(0, 1).toUpperCase() + value.slice(1)
 }
 
-function reportPreviewHref(date: string, stage: 'morning' | 'evening'): string {
-  return `${STOCKPULSE_V1_FIXED_PUBLICATION_ROOT}/reports/${date}/${stage}/`
+function reportPreviewHref(publication: { status: string; path: string | null }): string | null {
+  if (publication.status !== 'available' || !publication.path?.trim()) return null
+  const path = publication.path.replace(/^\/+/, '')
+  if (/^(?:https?:)?\/\//i.test(path)) return null
+  return `${STOCKPULSE_V1_FIXED_PUBLICATION_ROOT}/${path}`
 }
 
 export function publicProjectionSecurityHits(projection: unknown): string[] {
@@ -218,11 +221,11 @@ export function getStockpulseFixedViewModel(
     publication: {
       morning: {
         status: publications.morning.status,
-        href: reportPreviewHref(run.trading_date, 'morning'),
+        href: reportPreviewHref(publications.morning),
       },
       evening: {
         status: publications.evening.status,
-        href: reportPreviewHref(run.trading_date, 'evening'),
+        href: reportPreviewHref(publications.evening),
       },
     },
     publicSecurityHits: publicProjectionSecurityHits(projection),

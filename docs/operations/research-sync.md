@@ -46,17 +46,23 @@ Review:
 - stale deletion candidates
 - unexpected content or masking output
 
-Only after an explicit review should a live sync be considered:
+The legacy Research sync is safe by default:
 
 ```bash
 python3 sync_research.py
+# equivalent explicit read-only mode
+python3 sync_research.py --dry
 ```
 
-After a live run, read back the exact affected `research` rows and the corresponding Vercel `/research/<slug>` routes. Do not rely on the process exit code alone.
+A database mutation requires an explicit reviewed apply:
 
-## Known risk boundary
+```bash
+python3 sync_research.py --apply
+```
 
-The legacy implementation writes parsed items with `status=live` regardless of the backlog workflow state and can delete stale rows. Until that behavior is separately hardened, the live command is a controlled operator action, not an unattended content mirror.
+The guarded implementation protects DB-only draft rows and non-live lifecycle rows from stale deletion, and refuses to promote an existing draft row automatically. Review parsed items, slug changes, status changes, protected rows, and deletable stale candidates before any apply.
+
+After an apply run, read back the exact affected `research` rows and the corresponding Vercel `/research/<slug>` routes. Do not rely on the process exit code alone.
 
 ## Future source migration
 

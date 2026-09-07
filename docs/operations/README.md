@@ -38,6 +38,12 @@ This directory is the management surface for the child repository. It contains d
 5. Append operational history; do not rewrite a past result to make it look like a current run.
 6. Keep the wiki page as a concise navigation hub. Put implementation detail, checklists, and history here.
 
-## Current boundary
+## Current operating boundary
 
-The current reorganization changes documentation only. It does not change Next.js routes, Supabase schema, published rows, or the Research sync input contract. Moving the Research Backlog source out of the wiki is a separate migration that must include parser tests, a dry run, and production read-back.
+The current public application and its verified projections are maintained from Production, Supabase, repository code, and active runtime read-back. The child repository contains the route, RSS, public-surface audit, and V1 Fixed projection contracts; the parent workspace contains guarded legacy utilities and the current StockPulse execution lane. The Research Backlog remains the source input for the legacy sync until a separately verified migration.
+
+- `/stock` is the paused legacy archive/publication gateway.
+- `/labs/stockpulse-v1-fixed` is the current Live Shadow experiment projection.
+- Archived AI Tech detail routes return HTTP 410 and are excluded from discovery.
+- Public-content safety is checked both before writes and against rendered Production routes.
+- Legacy `sync_research.py` and `sync_junk.py` are not scheduled; Research defaults to dry-run and protects drafts, while the retired `/misc` writer is fail-closed even with `--apply`.

@@ -1,123 +1,101 @@
 # DevSnack Blog
 
-> NVIDIA DGX Spark GB10 기반 AI 연구실 블로그
-> **Next.js 16 + Supabase + Vercel** — AI와 함께 만드는 블로그
+> 기술 콘텐츠, 공개 리서치, 실험 기록을 분리해 운영하는 Next.js 블로그.
+> **Next.js + Supabase + Vercel** 구조이며, 현재 Production 상태를 기준으로 문서를 유지합니다.
 
----
+## Current operating boundary
 
-## 🤖 AI와 함께하는 블로그 관리
+- **Production**: <https://devsnack-blog.vercel.app>
+- **Canonical application repository**: <https://github.com/gdevsnack-ai-labs/devsnack-blog>
+- **Published-data authority**: Supabase `posts` rows with explicit `blog_id`, `status`, and `lifecycle_status`
+- **Deployment**: child repository push followed by Vercel deployment and production read-back
+- **Current local execution boundary**: the public site does not require the local LLM, Hindsight, or ComfyUI services to be running. Their stopped/optional state is recorded in the Wiki infrastructure pages.
 
-이 블로그의 모든 과정 — 디자인, 코딩, 배포, 장애 대응 — 은
-**Hermes Agent (AI)**와 **사장님 (사람)**이 함께합니다.
+## Public information architecture
 
-- **AI가 초안을 작성하고 코드를 구현합니다**
-- **사장님이 검증하고 방향을 결정합니다**
-- **실패와 디버깅 과정도 모두 기록으로 남깁니다**
+### Current public surfaces
 
-운영 로그는 [Hermes Wiki](https://github.com/kahros82/hermes_wiki)에서 확인할 수 있습니다.
+- **Stories** — `/devsnack`: DevSnack Story snapshot and detail routes
+- **Knowledge** — `/research`: public technical research and the Research Notebook links
+- **Lab** — `/labs`: experiments, builds, creative tests, and verified project context
+- **Benchmarks** — `/benchmarks`: curated benchmark releases
+- **Data** — `/data`: archive/publication gateways and aggregate trackers
+- **Showcase** — `/demos`: public interactive artifacts
 
----
+### Archived or compatibility surfaces
 
-## 🧪 구성
+- **StockPulse legacy archive** — `/stock`: `noindex, follow`; links to the paused `stockpulse-publication` archive
+- **AI Tech v1 archive hub** — `/aitech`: indexable historical title/date index
+- **AI Tech detail** — `/aitech/<slug>`: retired with HTTP 410 and `noindex`
+- **Legacy Lab hub** — `/lab`: HTTP 308 redirect to canonical `/labs`
 
-### 공개 콘텐츠 3개 (Supabase 단일 DB, `blog_id`로 분리)
+The Supabase store retains historical `aitech` and `stockpulse` rows for evidence and mapped external publication links. A `status=live` row is not by itself proof that the row is indexable: lifecycle, route policy, and publication mapping are evaluated separately.
 
-| 블로그 | URL | blog_id | 성격 |
-|:-------|:----|:--------|:-----|
-| **DevSnack** | `/devsnack` | `devsnack` | AI 인프라 실험, LLM 벤치마크, 기술 칼럼 |
-| **StockPulse** | `/stock` | `stockpulse` | AI 기반 KOSPI/KOSDAQ 일일 분석 |
-| **AI Tech Insight** | `/aitech` | `aitech` | AI 기술/산업 뉴스 분석 |
+## Content and operations
 
-부동산 수집·계산 pipeline은 별도 서비스로 유지하지만 DevSnack 공개 route, asset, navigation, sitemap에서는 분리되어 있습니다.
+- **Current content writes**: reviewed direct publisher or an explicitly approved sync
+- **Research source**: Hermes Wiki Research Backlog remains the single queue source until a separately verified migration
+- **Current active experiment publication**: StockPulse V1 Fixed uses GitHub Pages for reader-facing reports and `/labs/stockpulse-v1-fixed` for the Vercel experiment projection
+- **Legacy Blogger tools**: historical/DRAFT compatibility only; not the default LIVE path
+- **Public safety**: internal paths, private hosts, credentials, raw prompts, execution logs, and private operator context are blocked before publication and checked again on the public surface
 
-### Lab (진행 중인 실험)
+Canonical operating documents live in [`docs/operations/`](docs/operations/README.md):
 
-DevSnack의 핵심은 **Lab** — AI와 함께 진행 중인 실험들을 추적합니다.
-각 실험은 블로그 시리즈, YouTube 영상, GitHub 저장소와 연결됩니다.
+- [Content publishing](docs/operations/content-publishing.md)
+- [Research sync](docs/operations/research-sync.md)
+- [Content inventory](docs/operations/content-inventory.md)
+- [Management history](docs/operations/history.md)
 
-[👉 Lab 바로가기](/lab)
+## Repository structure
 
----
-
-## 🏗️ 기술 스택
-
-| 계층 | 기술 | 버전 |
-|:-----|:-----|:----:|
-| **프레임워크** | Next.js (App Router) | 16.2 |
-| **스타일링** | Tailwind CSS + shadcn/ui | v4 |
-| **DB** | Supabase (Postgres) | 17 |
-| **배포** | Vercel (Hobby, \$0) | — |
-| **아이콘** | lucide-react | 1.25 |
-| **차트** | Recharts | 3.9 |
-
-### 백엔드 (DGX Spark GB10)
-
-| 서비스 | 역할 |
-|:-------|:-----|
-| **Hermes Agent** | AI 비서 (크론잡, 분석, 블로그 발행 자동화) |
-| **llama.cpp + Qwen3.5-35B** | 로컬 LLM (제목 생성, 리포트 요약) |
-| **GPT Image 2 + ComfyUI/Krea 2** | 이미지 생성 (GPT Image 2 우선, ComfyUI/Krea2 선택적) |
-| **FinanceDataReader** | 주식/환율 데이터 수집 |
-
----
-
-## 📁 프로젝트 구조
-
-```
-src/
-├── app/                    # Next.js App Router 페이지
-│   ├── page.tsx           # 랜딩 페이지
-│   ├── devsnack/          # DevSnack 블로그
-│   ├── stock/             # StockPulse
-│   ├── aitech/            # AI Tech Insight
-│   ├── lab/               # ⭐ Lab (진행 중인 실험)
-│   ├── search/            # 통합 검색
-│   └── about/             # 소개
-├── components/             # UI 컴포넌트
-│   ├── ui/                # shadcn/ui 컴포넌트
-│   ├── side-nav.tsx       # ⭐ 좌측 네비게이션 (LNB)
-│   ├── mobile-tab-bar.tsx # ⭐ 모바일 하단 탭
-│   └── blog-header.tsx    # 상단 네비게이션
-├── data/                   # 정적 데이터
-│   ├── experiments.ts     # Lab 실험 목록
-│   └── current-experiment.ts # 현재 진행 중 실험
-└── lib/                    # 유틸리티
-    ├── supabase.ts        # Supabase 클라이언트
-    └── colors.ts          # 블로그별 색상 테마
-docs/
-├── operations/           # ⭐ canonical 운영·발행·Research sync·history 문서
-├── PLAN-2026-07-20.md     # 리디자인 계획
-├── ARCHITECTURE.md        # 시스템 아키텍처
-└── AI-COLLAB.md           # AI 협업 워크플로우 기록
+```text
+src/app/                  # Next.js App Router routes
+├── devsnack/             # Stories
+├── research/             # Knowledge
+├── labs/                 # Canonical Lab hub and projects
+├── lab/                  # Legacy-compatible detail routes
+├── benchmarks/           # Benchmark releases
+├── data/                 # Data hub and trackers
+├── demos/                # Showcase artifacts
+├── aitech/               # AI Tech v1 archive hub and retired detail boundary
+└── stock/                # StockPulse legacy archive and mapped external details
+src/components/           # Shared UI and public projections
+src/data/                 # Bounded static snapshots and experiment registry
+src/lib/                  # Supabase access, IA, lifecycle, SEO, and projections
+scripts/                  # Read-only audits, focused checks, and approved publishers
+docs/operations/          # Current operating rules and history
+docs/phase*/              # Dated historical implementation evidence
 ```
 
----
-
-## 🚀 로컬 개발
+## Local development
 
 ```bash
-# 1. 저장소 클론
-git clone https://github.com/gdevsnack-ai-labs/devsnack-blog.git
-cd devsnack-blog
-
-# 2. 의존성 설치
 npm install
-
-# 3. 환경 변수 설정
 cp .env.example .env.local
-# .env.local에 Supabase 키 입력
-
-# 4. 개발 서버 실행
+# .env.local에 Supabase 환경변수 설정
 npm run dev
 ```
 
----
+Do not commit `.env.local`, OAuth files, tokens, cookies, or service-role values. Supabase configuration is supplied through ignored environment files or the Vercel environment, not tracked source literals.
 
-## 📜 라이선스
+## Verification
 
-MIT — 자유롭게 사용하고 연구하세요.
-다만 이 블로그의 콘텐츠(글, 이미지)는 별도 라이선스가 적용될 수 있습니다.
+From the repository root:
 
----
+```bash
+npm test
+npm run lint
+npm run build
+SITE_URL=https://devsnack-blog.vercel.app npm run audit:site
+npm run audit:links -- --base-url https://devsnack-blog.vercel.app
+```
 
-*이 프로젝트는 AI(Hermes Agent)와 사람(문규 강)의 협업으로 운영됩니다.*
+`npm test` includes the current StockPulse projection contract and Python public-surface/source-security tests. `audit:site` also checks RSS population, retired sitemap/RSS entries, public safety, and V1 Fixed publication links.
+
+## Historical evidence
+
+Dated `docs/phase*` documents preserve the state observed during earlier migrations. They are evidence, not current configuration. When an old result differs from Production, use the current route, DB, repository code, and active runtime as the source of truth, and keep the dated result under an explicit historical label.
+
+## License
+
+MIT for the application code. Blog articles, images, and publication content may have separate rights.

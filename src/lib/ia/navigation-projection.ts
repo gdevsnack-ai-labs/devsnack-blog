@@ -33,9 +33,8 @@ export interface NavigationDestination {
 }
 
 /**
- * Phase 2 navigation registry. It deliberately contains only destinations
- * that already exist. Benchmarks is kept as a disabled registry entry until
- * the Phase 3 `/benchmarks` hub exists.
+ * Current navigation registry. Every enabled destination has a verified route;
+ * retired or compatibility-only paths are represented separately.
  */
 export const NAV_GROUP_REGISTRY: NavGroup[] = [
   {

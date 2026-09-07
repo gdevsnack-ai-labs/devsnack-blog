@@ -16,9 +16,9 @@ The legacy Blogger integration is retained only for historical or explicitly mar
 
 ## Content boundaries
 
-- `blog_id` identifies the public content area (`devsnack`, `stockpulse`, `aitech`, and `research`).
-- `slug` is a public identifier. Do not change it casually; route compatibility depends on it.
+- `blog_id` identifies a content lane (`devsnack`, `lab`, `research`) or a retained historical archive lane (`stockpulse`, `aitech`).
 - `status`, `lifecycle_status`, and publication timestamps must be set explicitly by the publisher.
+- The old `/stock` archive and the current `/labs/stockpulse-v1-fixed` Live Shadow publication are separate surfaces.
 - `content`, `excerpt`, `labels`, `seo_desc`, `cover_image`, and `updated` must be treated as a single write contract.
 - Images and media must use approved public URLs or repository assets. Do not publish local filesystem paths, internal IPs, credentials, or private instructions.
 
@@ -35,6 +35,7 @@ The legacy Blogger integration is retained only for historical or explicitly mar
 Run from the child repository root:
 
 ```bash
+npm test
 npm run audit:site
 npm run audit:links
 npm run lint
@@ -56,8 +57,12 @@ After a publication write:
 
 ## Research publication caution
 
-The legacy Research sync currently parses the Hermes Wiki Research Backlog and upserts its parsed items into `blog_id=research`. Its implementation should be treated as a write-capable legacy tool, not as a harmless exporter. Always use its dry mode first and review stale-delete candidates before a live run.
+The legacy Research sync parses the Hermes Wiki Research Backlog and can update `blog_id=research` only with an explicit `--apply`. It defaults to dry-run, protects DB-only drafts/non-live lifecycle rows, and is not an unattended content mirror.
+
+## Retired Misc sync
+
+`sync_junk.py` is preserved as a historical parser only. It defaults to dry-run, skips archived/retired items, and refuses all live apply while `/misc` remains retired. Do not use it to recreate a `misc` row; a future Misc replacement needs a separately approved route and publication contract.
 
 ## Legacy Blogger tools
 
-Blogger scripts under `scripts/legacy/` are historical/DRAFT helpers. Their token files must stay outside the repository. Do not use them as evidence that the canonical Vercel/Supabase path succeeded.
+Blogger scripts under `scripts/legacy/` are historical/DRAFT helpers. The parent `sync_devsnack.py` is blocked unless `--apply` is explicit, and the parent AI Tech Blogger sync is fail-closed because its detail lane is retired. No legacy Blogger sync is registered in the active Hermes cron list.

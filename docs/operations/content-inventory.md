@@ -12,6 +12,13 @@
 | Phase implementation evidence | `docs/phase*` | Preserve dates, scope, and verification results |
 | One-off drafts or local credentials | ignored local files | Never commit or document secret values |
 
+## Current verified split (2026-09-07)
+
+- `/stock` and `stockpulse-publication` are the paused legacy archive/publication gateway.
+- `/labs/stockpulse-v1-fixed` and `stockpulse-v1-fixed-publication` are the current Live Shadow experiment surfaces.
+- `/aitech` is the current compact archive hub; archived details are HTTP 410 and not discoverable.
+- The public production audit reads rendered routes, RSS, sitemap, and external publication targets; a static count alone is not sufficient.
+
 ## Avoid duplicate inventories
 
 The public post list is dynamic and belongs to Supabase plus the production routes. Do not maintain another hand-edited list in the wiki or repository that can drift from production. A dated inventory is acceptable only when it includes its query scope, timestamp, and purpose.

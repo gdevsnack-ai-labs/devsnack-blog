@@ -1,8 +1,8 @@
 ---
 title: AI Tech v1 Archive and v2 Source Pipeline Preparation Result
 created: 2026-08-26
-updated: 2026-08-26
-status: v1-archived-v2-preparation
+updated: 2026-09-07
+status: historical-baseline-with-current-retirement-followup
 phase: ai-tech-policy-transition
 tags: [ai-tech, archive, lifecycle, source-evidence, searxng, devsnack]
 ---
@@ -115,7 +115,9 @@ entries: 185
 
 따라서 기존 185개 body/excerpt를 `/aitech` client에 싣지 않고, title/date만 담은 별도 작은 snapshot으로 분리했다.
 
-## 4. Public projection read-back
+## 4. Historical pre-retirement checkpoint (2026-08-26)
+
+The following result is preserved as the pre-retirement baseline. It is superseded by Section 11 for the current URL lifecycle.
 
 Production:
 
@@ -150,11 +152,10 @@ new /aitech/[slug] links in archive: 0
 대표 archived article detail을 확인했다.
 
 ```text
-/aitech/post-1784461354: HTTP 200
-기존 제목 본문: present
+At the 2026-08-26 pre-retirement checkpoint, one representative archived detail returned HTTP 200 with its existing body. This was later superseded by the explicit all-detail retirement in Section 11.
 ```
 
-이는 archive index에서 새로 링크하지 않는 것과 기존 URL을 즉시 404/410으로 만들지 않는 것을 동시에 만족한다.
+이는 2026-08-26 archive checkpoint에서의 접근성 결과다. 현재 정책은 Section 11의 HTTP 410 retirement이며, archive index에서 새로 링크하지 않는 원칙은 그대로 유지된다.
 
 ## 5. Public publish pause
 
@@ -299,7 +300,9 @@ Vercel production read-back은 위 projection 결과와 같이 완료했다.
 
 다음 단계는 별도 승인 후 v2 Source & Evidence Pipeline 설계안을 실제 observability·resolver·source-role·independent-source 수집 계층으로 나누어 구현하는 것이다. public publish 재개는 구현 완료와 분리해 별도로 판단한다.
 
-## 11. URL lifecycle 후속 결과 — 2026-08-30
+## Current URL lifecycle read-back (2026-09-07)
+
+Section 11 records the 2026-08-30 rollout and remains the current policy: all 185 archived AI Tech detail URLs return HTTP 410; only the `/aitech` hub remains public and indexable.
 
 v1 전문을 별도 archive로 복제하지 않고 `/aitech` compact history에만 흔적을 남긴다는 정책을 확정해, 기존 AI Tech detail URL 185개를 전부 public retirement 처리했다.
 
