@@ -109,7 +109,9 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
         required_text=("Local LLM Benchmark", "Model Sub-Labs"),
     ),
     "/lab/ornith15-server-quality-speed-benchmark": RouteExpectation(
-        "/lab/ornith15-server-quality-speed-benchmark", 404,
+        "/lab/ornith15-server-quality-speed-benchmark", 200,
+        meta_robots="index, follow", canonical=True,
+        required_text=("Target", "Environment", "Method / Protocol", "Result", "Limitations"),
     ),
 }
 
