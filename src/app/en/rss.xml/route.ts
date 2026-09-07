@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import { publicFeedOrFilter } from '@/lib/ia/feed-lifecycle'
+import { isFeedListable } from '@/lib/ia/feed-lifecycle'
 
 const SITE_URL = 'https://devsnack-blog.vercel.app'
 
@@ -34,7 +34,7 @@ export async function GET() {
 
   const postIds = (translations ?? []).map(row => row.post_id)
   const postQuery = postIds.length
-    ? await supabase.from('posts').select('id,slug,blog_id,published,updated,cover_image').in('id', postIds).eq('status', 'live').or(publicFeedOrFilter())
+    ? await supabase.from('posts').select('id,slug,blog_id,status,lifecycle_status,published,updated,cover_image').in('id', postIds).eq('status', 'live')
     : { data: [], error: null }
   if (postQuery.error) console.error('[en/rss] post query failed:', postQuery.error.message)
   const posts = postQuery.data
@@ -43,7 +43,7 @@ export async function GET() {
   const items = (translations ?? []).flatMap(translation => {
     const post = postById.get(translation.post_id)
     const path = post ? englishPostHref(post.blog_id, post.slug) : null
-    if (!post || !path) return []
+    if (!post || !path || !isFeedListable(post)) return []
     const url = `${SITE_URL}${path}`
     const pubDate = post.published
       ? new Date(post.published).toUTCString()
