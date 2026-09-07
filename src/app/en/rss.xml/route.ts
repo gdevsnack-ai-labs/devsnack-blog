@@ -18,7 +18,8 @@ function xml(value: string): string {
   return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;')
 }
 
-export const revalidate = 3600
+export const revalidate = 0
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
   const { data: translations } = await supabase
@@ -71,7 +72,7 @@ ${items}
     headers: {
       'Content-Type': 'application/rss+xml; charset=utf-8',
       'X-Robots-Tag': 'noindex, follow',
-      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+      'Cache-Control': 'no-store',
     },
   })
 }

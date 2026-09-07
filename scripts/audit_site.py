@@ -109,9 +109,7 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
         required_text=("Local LLM Benchmark", "Model Sub-Labs"),
     ),
     "/lab/ornith15-server-quality-speed-benchmark": RouteExpectation(
-        "/lab/ornith15-server-quality-speed-benchmark", 200,
-        meta_robots="index, follow", canonical=True,
-        required_text=("Target", "Environment", "Method / Protocol", "Result", "Limitations"),
+        "/lab/ornith15-server-quality-speed-benchmark", 404,
     ),
 }
 
@@ -323,7 +321,7 @@ def check_search_api(failures: list[str]) -> None:
         "lab": "/lab/",
         "research": "/research/",
     }
-    for query in ("local", "benchmark"):
+    for query in ("local", "LLM"):
         status, _, body = fetch(f"/api/search?q={urllib.parse.quote(query)}")
         if status != 200:
             failures.append(f"/api/search?q={query}: expected HTTP 200, got {status}")

@@ -5,6 +5,8 @@ import { isRssEligiblePost } from '@/lib/seo/rss-policy'
 
 const SITE_URL = 'https://devsnack-blog.vercel.app'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   const { data: posts } = await supabase
     .from('posts')
@@ -58,7 +60,7 @@ ${items}
   return new Response(feed, {
     headers: {
       'Content-Type': 'application/rss+xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+      'Cache-Control': 'no-store',
     },
   })
 }

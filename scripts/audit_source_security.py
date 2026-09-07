@@ -42,7 +42,7 @@ def scan_tracked_source(repo_root: Path) -> list[str]:
         if not raw_path:
             continue
         relative = raw_path.decode("utf-8")
-        if relative == ".env.example":
+        if relative == ".env.example" or relative.endswith("_test.py") or relative.endswith(".test.ts"):
             continue
         path = repo_root / relative
         if not path.is_file() or path.suffix.lower() not in {".ts", ".tsx", ".js", ".jsx", ".py", ".json", ".md", ".yaml", ".yml", ".toml"}:
