@@ -8,13 +8,15 @@ const SITE_URL = 'https://devsnack-blog.vercel.app'
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
-  const { data: posts } = await supabase
+  const { data: posts, error } = await supabase
     .from('posts')
     .select('slug, title, excerpt, blog_id, status, published, updated, cover_image')
     .eq('status', 'live')
     .or(publicFeedOrFilter())
     .order('published', { ascending: false })
     .limit(50)
+
+  if (error) console.error('[rss] Supabase query failed:', error.message)
 
   const items = (posts ?? []).flatMap((post) => {
     if (!isRssEligiblePost(post)) return []

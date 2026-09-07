@@ -22,7 +22,7 @@ export const revalidate = 0
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
-  const { data: translations } = await supabase
+  const { data: translations, error: translationError } = await supabase
     .from('post_translations')
     .select('post_id,title,excerpt,updated_at,translation_status')
     .eq('locale', 'en')
@@ -30,10 +30,14 @@ export async function GET() {
     .order('updated_at', { ascending: false })
     .limit(50)
 
+  if (translationError) console.error('[en/rss] translation query failed:', translationError.message)
+
   const postIds = (translations ?? []).map(row => row.post_id)
-  const { data: posts } = postIds.length
+  const postQuery = postIds.length
     ? await supabase.from('posts').select('id,slug,blog_id,published,updated,cover_image').in('id', postIds).eq('status', 'live').or(publicFeedOrFilter())
-    : { data: [] }
+    : { data: [], error: null }
+  if (postQuery.error) console.error('[en/rss] post query failed:', postQuery.error.message)
+  const posts = postQuery.data
   const postById = new Map((posts ?? []).map(post => [post.id, post]))
 
   const items = (translations ?? []).flatMap(translation => {
