@@ -30,10 +30,10 @@
           "inserted_count": 50,
           "lane": "v1_fixed_fresh"
         },
-        "llm_failure": null,
+        "llm_failure": false,
         "llm_prediction_id": "llm-prediction-2026-09-07",
-        "llm_success": null,
-        "pending_count": 50,
+        "llm_success": true,
+        "pending_count": 200,
         "prediction_id": "prediction-live-shadow-2026-09-07-morning-01",
         "run_id": "live-shadow-2026-09-07-morning-01",
         "scope": "v1_fixed_fresh_ml_predictions_and_morning_llm",
@@ -72,11 +72,11 @@
         "actual_applied_count": 0,
         "evaluation_status": "pending",
         "improvement_cycles": 0,
-        "llm_correct": null,
-        "llm_evaluated": false,
+        "llm_correct": true,
+        "llm_evaluated": true,
         "ml_correct_count": null,
         "ml_evaluated_count": 0,
-        "ml_pending_count": 50,
+        "ml_pending_count": 200,
         "prediction_count": 50,
         "run_id": "live-shadow-2026-09-07-morning-01",
         "trading_date": "2026-09-07"
@@ -103,12 +103,12 @@
           "n_estimators": 500
         }
       },
-      "current_state": "morning_complete_evening_not_started",
+      "current_state": "day1_complete",
       "improvement_cycles": 0,
       "improvement_status": "none",
       "live_shadow_day": "Day 1 Morning",
-      "llm_correct": null,
-      "llm_evaluated": 0,
+      "llm_correct": true,
+      "llm_evaluated": 1,
       "ml_correct": null,
       "ml_evaluated": 0,
       "ml_evaluation_state": "pending",
@@ -129,14 +129,14 @@
     "route": "/labs/stockpulse-v1-fixed",
     "title": "StockPulse V1 Fixed"
   },
-  "projected_at": "2026-09-06T22:35:23+00:00",
+  "projected_at": "2026-09-07T07:32:57+00:00",
   "projection_type": "stockpulse_v1_fixed_public_projection",
   "publication": {
     "daily_lab_slug_policy": "disabled",
     "evening": {
-      "path": null,
+      "path": "reports/2026-09-07/evening/",
       "run_id": "live-shadow-2026-09-07-morning-01",
-      "status": "not_started"
+      "status": "available"
     },
     "morning": {
       "path": "reports/2026-09-07/morning/",
@@ -151,21 +151,44 @@
     "records": [
       {
         "actual_market_result": {
-          "direction": null,
-          "kosdaq_close": null,
-          "kospi_close": null,
-          "llm_success": null,
-          "observed_at": null,
-          "reason": "evening_not_started",
-          "return_pct": null,
-          "status": "not_available"
+          "direction": "상승",
+          "kosdaq_close": 822.19,
+          "kospi_close": 6995.39,
+          "llm_success": true,
+          "observed_at": "2026-09-07T16:30:50.071548+09:00",
+          "reason": null,
+          "return_pct": 4.60849891,
+          "status": "available"
         },
         "actual_model_set": [
           "LightGBM",
           "XGBoost",
           "LSTM"
         ],
-        "evening_analysis": {},
+        "evening_analysis": {
+          "actual_driver_analysis": "실제 상승을 설명하는 핵심 요인은 세 가지입니다. 첫째, Morning 직전 국내 KOSPI와 KOSDAQ이 각각 1.64%, 2.95% 상승하며 단기 위험선호의 출발점이 형성되어 있었습니다. 둘째, SOX +3.37%, SMH +2.61%, AMD +4.69%, Micron +6.10% 등 반도체 중심의 해외 강세가 국내 대형 기술주에 우호적인 선행 신호로 작용했습니다. 셋째, 달러/원 1,345.12 및 전일 대비 -0.76%의 원화 강세가 외국인 위험선호에 우호적인 금융 여건을 제공했습니다. 반면 S&P500 -0.38%, Nasdaq -0.29%, Dow -0.51%, 미국 10년물 4.78%, 브렌트유 96.28달러는 상승을 제한할 수 있는 반대 신호였습니다. 장 마감 결과는 이 중 반도체·국내 위험선호 신호가 단기적으로 우세했음을 보여줍니다.",
+          "data_synthesis": {
+            "domestic_market": "Morning 기준 KOSPI 6,687.21, KOSDAQ 813.50에서 출발했고 실제 장 마감은 KOSPI 6,995.39, KOSDAQ 822.19였습니다. 실제 KOSPI 방향은 상승이며 기준 대비 수익률은 4.60849891%입니다. Morning 당시 최근 10일 중 7일 상승, KOSPI 20일선 6,690.76, 20일 변동성 2.70%로 단기 강세와 추세 불확실성이 공존했습니다.",
+            "fear_greed": "공포·탐욕 지수는 61로 탐욕 구간이었지만, 모멘텀 점수 50, 거래량 추세 점수 33, 20일선 대비 -0.05%로 과열과 추세 확산이 완전히 확인된 상태는 아니었습니다. 실제 상승은 이 낙관 심리와 반도체 선행 신호가 단기적으로 작동했음을 보여주지만, 지속성은 별도 확인이 필요합니다.",
+            "flows": "외국인·기관 수급은 KRX provider_auth_required 상태로 KOSPI·KOSDAQ 및 관심종목 모두 결측입니다. 수급 숫자를 0으로 대체하지 않았으며, 이번 상승의 원인을 수급으로 단정하지 않습니다.",
+            "intraday_context": "장중 분봉·breadth의 상세 수치는 보존된 자료에서 제공되지 않았습니다. 따라서 상승 종목 확산, 장중 고점 유지 여부, 거래대금의 방향은 판정하지 않습니다. Morning 자료의 거래량 5일/20일 비율은 1.00배였고 52주 고가·저가 근접 종목은 각각 0개였습니다.",
+            "leaders_and_breadth": "해외 반도체 강세가 국내 대형 기술주에 우호적이었고, 삼성전자·SK하이닉스 관련 뉴스 심리는 긍정 또는 중립으로 집계되었습니다. 자동차·일부 대형주는 약세 신호가 남아 있었습니다. 상세 국내 breadth는 결측이므로 시장 전체의 폭넓은 리더십으로 확대 해석하지 않습니다.",
+            "macro_and_events": "미국 10년물 금리는 4.78%로 부담을 남겼고 브렌트유 96.28달러, WTI 91.48달러도 인플레이션 위험을 유지했습니다. 9월 11일 미국 8월 CPI와 9월 16일 FOMC가 예정되어 있어 다음 세션 이후에도 금리 민감도가 높습니다. 금 선물은 1.06% 상승해 방어 수요도 관찰되었습니다.",
+            "ml_relative_context": "ML은 KOSPI 절대 방향이 아니라 5거래일 후 종목별 KOSPI 대비 상대수익률을 예측합니다. Morning 산출은 50종목이며 상대 강세 6, 중립 22, 약세 22, 시장 편향 약세였습니다. 이번 장 마감만으로 ML 정확도나 실패를 판정하지 않으며, evaluated_count 0, pending_count 200으로 기록합니다.",
+            "news": "뉴스 감성은 삼성전자와 셀트리온 등에서 주주환원·반도체·성장 기대가 긍정적으로 나타났고, 자동차·기아 및 일부 종목에는 하락·목표가 하향·부진 신호가 공존했습니다. 뉴스는 방향을 보조했지만 가격 결과를 단독으로 설명하는 근거로 사용하지 않습니다.",
+            "overnight_cross_asset": "S&P500, Nasdaq, Dow는 약세였으나 SOX·SMH와 AMD·Micron은 강했습니다. Nikkei225와 항셍도 상승했고, 원화는 강세였습니다. 반도체 업종의 차별적 강세가 미국 지수 전체 방향보다 국내 결과에 더 가까운 선행 신호로 작용했습니다.",
+            "technical": "Morning 당시 KOSPI는 20일선 바로 아래였고 개별 종목 기술 신호는 정배열과 역배열이 혼재했습니다. 실제 종가 상승은 단기 모멘텀 확인에 해당하지만, 20일선 상회가 지속되는지와 거래량·breadth 확산이 이어지는지는 아직 확인되지 않았습니다."
+          },
+          "failure_analysis": "LLM 절대 방향 판단은 실패하지 않았습니다. 이번 결과는 LLM 방향 성공 사례이며, ML 상대강도 예측은 5회 관측 세션이 아직 성숙하지 않아 평가하지 않았습니다. 따라서 개선 실패나 ML 실패를 기록할 근거가 없습니다. 다만 수급 결측과 상세 breadth 부재 때문에 결과의 원인 귀속에는 제한이 남아 있습니다.",
+          "improvement": {
+            "action_detail": "평가된 LLM 실패와 성숙한 ML 실패가 관측되지 않았으므로 이번 Evening에는 개선 제안을 생성하지 않습니다.",
+            "action_type": "none",
+            "expected_impact": "none",
+            "reason": "llm_direction_correct_and_ml_target_not_mature"
+          },
+          "rationale_vs_actual": "Morning은 KOSPI 상승을 우선 시나리오로 제시하면서도 20일선 부근의 약한 추세, 미국 주요 지수 약세, 금리·유가 부담, 수급 결측을 함께 반영해 confidence 0.62를 부여했습니다. 실제로 KOSPI는 6,995.39로 마감해 Morning 기준 대비 상승했고 방향 판단은 적중했습니다. 따라서 방향 판단의 근거인 국내 동반 상승, 반도체 해외 강세, 원화 강세의 조합은 유효했습니다. 다만 실제 상승폭은 기준값 대비 4.60849891%로 크게 나타났으므로, 다음 분석에서는 방향 적중과 별개로 장중 확장 폭을 설명하는 breadth·거래량·수급 자료를 분리해 확인해야 합니다. KRX 인증 문제로 외국인·기관 수급은 끝까지 확인되지 않았으므로 수급이 상승을 만들었다고 주장하지 않습니다.",
+          "summary": "Morning의 상승 전망은 실제 장 마감에서도 확인되었습니다. KOSPI는 Morning 기준 6,687.21에서 6,995.39로 상승했고, 실제 방향은 상승으로 판정되었습니다. 국내 위험선호와 반도체 중심의 해외 counter-signal이 미국 주요 지수 약세와 금리·유가 부담을 상쇄한 결과로 해석됩니다. 다만 Morning이 경고한 추세 확산의 한계와 수급 데이터 결측은 여전히 유효하며, 이번 결과만으로 전면적인 추세 전환이나 구조적 개선을 판단하지 않습니다."
+        },
         "evidence_refs": [
           {
             "id": "live-shadow-2026-09-07-morning-01",
@@ -1828,14 +1851,14 @@
         "input_snapshot_readback_verified": true,
         "lane": "v1_fixed_fresh",
         "llm_evaluation": {
-          "failure": null,
-          "status": "pending",
-          "success": null
+          "failure": false,
+          "status": "evaluated",
+          "success": true
         },
         "ml_evaluation": {
           "correct_count": null,
           "evaluated_count": 0,
-          "pending_count": 50,
+          "pending_count": 200,
           "prediction_count": 50,
           "reason": "target_date_unavailable",
           "status": "pending"
@@ -1850,8 +1873,8 @@
             "frozen": true,
             "post_cutoff_edit_allowed": false
           },
-          "evaluation_status": "pending",
-          "failure": null,
+          "evaluation_status": "evaluated",
+          "failure": false,
           "forecast": "다음 거래일 KOSPI는 상승을 우선 시나리오로 봅니다. 국내 전일 강세, KOSDAQ 동반 상승, SOX·반도체 리더 강세, 원화 강세가 상승을 지지합니다. 다만 KOSPI가 20일선 아래에 있고 미국 주요 지수·금리·유가가 부담이며 수급 데이터가 없어, 상승이 확인되더라도 반도체 중심의 선택적 반등 또는 변동성 확대 가능성을 함께 열어둡니다.",
           "freeze": {
             "evaluation_session": "day1_evening",
@@ -1894,7 +1917,7 @@
           },
           "sentiment_and_supply": "공포·탐욕 지수는 61(탐욕)이며 모멘텀 점수 50, 심리 점수 70, 거래량 추세 점수 33(5일/20일 1.00배), 52주 고가·저가 근접 종목은 각각 0개로 과열과 추세 확산이 동시에 강하다고 보기는 어렵습니다. 뉴스 심리는 삼성전자·셀트리온·삼성SDI 등에서 긍정적이고 반도체·주주환원 기대가 존재하지만, 자동차·리노공업·일부 종목에는 하락·목표가 하향·블록딜 우려가 함께 나타납니다. 외국인·기관 수급은 KRX 인증 문제로 전 시장 및 관심종목 모두 결측이며, 이를 매수 근거 또는 국내 약세 근거로 사용하지 않습니다.",
           "snapshot_cutoff": "2026-09-07T07:31:41.738821+09:00",
-          "success": null,
+          "success": true,
           "summary": "KOSPI는 전 거래일 1.64% 상승한 6,687.21로 마감했고 KOSDAQ도 2.95% 상승해 국내 단기 위험선호가 우세합니다. 다만 KOSPI는 20일선 6,690.76을 0.05% 밑돌고 변동성이 2.70%이며, 미국 주요 지수는 하락해 상승 추세의 확신은 제한됩니다. SOX와 주요 반도체주는 강했고 원화 강세도 우호적이지만, 외국인·기관 수급과 공급 데이터가 인증 문제로 비어 있습니다. 이를 종합해 다음 거래일 KOSPI 방향은 상승으로 판단하되, 반도체·해외 신호가 국내 약한 추세와 충돌할 가능성을 반영해 중간 수준의 주관적 확신을 부여합니다.",
           "uncertainties": [
             "외국인·기관 수급과 관심종목별 순매수 데이터는 KRX provider_auth_required로 결측입니다.",
@@ -1904,12 +1927,12 @@
             "confidence 0.62는 관측치에 기반한 주관적 확신이며 보정된 확률이 아닙니다."
           ]
         },
-        "overall_status": "in_progress_evening_not_started",
+        "overall_status": "complete",
         "project_id": "stockpulse-v1-fixed",
         "publications": {
           "evening": {
-            "path": null,
-            "status": "not_started"
+            "path": "reports/2026-09-07/evening/",
+            "status": "available"
           },
           "morning": {
             "path": "reports/2026-09-07/morning/",
@@ -1967,12 +1990,12 @@
         "n_estimators": 500
       }
     },
-    "current_state": "morning_complete_evening_not_started",
+    "current_state": "day1_complete",
     "improvement_cycles": 0,
     "improvement_status": "none",
     "live_shadow_day": "Day 1 Morning",
-    "llm_correct": null,
-    "llm_evaluated": 0,
+    "llm_correct": true,
+    "llm_evaluated": 1,
     "ml_correct": null,
     "ml_evaluated": 0,
     "ml_evaluation_state": "pending",
@@ -1984,13 +2007,13 @@
   "source_manifest": {
     "artifact_count": 7,
     "artifact_hashes": {
-      "day1-morning-verification.json": "876f9cac1945666706527500408d305cc4bd3a35bdfaa66b97a4e23b17835b5a",
+      "day1-morning-verification.json": "177fd8291971092c7c1721211c0782afec14cf3828cc341c043f1f606533acbf",
       "improvement.json": "00f34e244a8473e1e55fa11989981bb5e9474f8fcd3bcc04a4466c15713e4d13",
       "input_manifest.json": "65d19e325cb228c3985345f440d794dca834206f72952c43444b6119f4693239",
-      "llm_prediction.json": "bba70aedb238cd33817727728db7e06a229b240d4cb2fff8747fb383b30fd2a7",
+      "llm_prediction.json": "b9f602e0ec481c1856272cdd9a6645041a91142dbc8d2b302c5ea564fa67b2c3",
       "ml_prediction.json": "b902127955a2b31c729f648d14c101e814f14805bfcd9f81faa70cecfe182d5d",
       "quality.json": "d6b9dad034c15bd595390bbe9e4739daa790654dae0705e827d0c603d555325d",
-      "run.json": "655337817c5a52809165789e504c07a10b5d0ea154f2678aa1fa05607c33ee83"
+      "run.json": "b27a9e795140e239ee56ba1225704f5df0466b14d5a68e185c2518542be67726"
     },
     "generator_command_template": "python3 scripts/project_publication.py --source-run <private-run-dir> --output-dir <output-dir> [--projected-at <iso>]",
     "generator_version": "stockpulse-v1-fixed-projector-1.2.0",
