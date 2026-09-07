@@ -56,7 +56,7 @@ DevSnack의 핵심은 **Lab** — AI와 함께 진행 중인 실험들을 추적
 |:-------|:-----|
 | **Hermes Agent** | AI 비서 (크론잡, 분석, 블로그 발행 자동화) |
 | **llama.cpp + Qwen3.5-35B** | 로컬 LLM (제목 생성, 리포트 요약) |
-| **ComfyUI + Krea 2** | 이미지 생성 (블로그 썸네일) |
+| **GPT Image 2 + ComfyUI/Krea 2** | 이미지 생성 (GPT Image 2 우선, ComfyUI/Krea2 선택적) |
 | **FinanceDataReader** | 주식/환율 데이터 수집 |
 
 ---
@@ -85,6 +85,7 @@ src/
     ├── supabase.ts        # Supabase 클라이언트
     └── colors.ts          # 블로그별 색상 테마
 docs/
+├── operations/           # ⭐ canonical 운영·발행·Research sync·history 문서
 ├── PLAN-2026-07-20.md     # 리디자인 계획
 ├── ARCHITECTURE.md        # 시스템 아키텍처
 └── AI-COLLAB.md           # AI 협업 워크플로우 기록
