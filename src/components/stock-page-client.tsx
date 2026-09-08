@@ -55,7 +55,7 @@ function reportBadges(report: StockPulseExternalReport) {
 
 function ReportCard({ report }: { report: StockPulseExternalReport }) {
   return (
-    <a href={report.external_url} className="group block rounded-xl border border-border bg-white p-4 no-underline transition-all hover:-translate-y-0.5 hover:border-green-300 hover:shadow-md dark:bg-gray-900 dark:hover:border-green-700">
+    <a href={report.external_url} className="group block min-w-0 rounded-xl border border-border bg-white p-4 no-underline transition-all hover:-translate-y-0.5 hover:border-green-300 hover:shadow-md dark:bg-gray-900 dark:hover:border-green-700">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">{reportBadges(report)}</div>
         <span className="shrink-0 text-xs text-muted-foreground">{report.report_date}</span>

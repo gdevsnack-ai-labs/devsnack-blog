@@ -463,19 +463,20 @@ async def check_browser(failures: list[str]) -> None:
         for width in (320, 360, 375, 390):
             page = await browser.new_page(viewport={"width": width, "height": 844})
             try:
-                await page.goto(f"{BASE_URL}/", wait_until="networkidle", timeout=60_000)
-                metrics = await page.evaluate(
-                    """() => {
-                        const nav = document.querySelector('nav[data-mobile-nav]');
-                        return {
-                            navScrollWidth: nav?.scrollWidth ?? -1,
-                            navClientWidth: nav?.clientWidth ?? -1,
-                            documentScrollWidth: document.documentElement.scrollWidth,
-                        };
-                    }"""
-                )
-                if metrics["navScrollWidth"] != metrics["navClientWidth"] or metrics["documentScrollWidth"] != width:
-                    failures.append(f"mobile {width}px overflow: {metrics}")
+                for path in ("/", "/stock"):
+                    await page.goto(f"{BASE_URL}{path}", wait_until="networkidle", timeout=60_000)
+                    metrics = await page.evaluate(
+                        """() => {
+                            const nav = document.querySelector('nav[data-mobile-nav]');
+                            return {
+                                navScrollWidth: nav?.scrollWidth ?? -1,
+                                navClientWidth: nav?.clientWidth ?? -1,
+                                documentScrollWidth: document.documentElement.scrollWidth,
+                            };
+                        }"""
+                    )
+                    if metrics["navScrollWidth"] != metrics["navClientWidth"] or metrics["documentScrollWidth"] != width:
+                        failures.append(f"mobile {path} {width}px overflow: {metrics}")
             finally:
                 await page.close()
 
