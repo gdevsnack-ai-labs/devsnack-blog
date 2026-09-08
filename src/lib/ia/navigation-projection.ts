@@ -64,7 +64,8 @@ export const NAV_GROUP_REGISTRY: NavGroup[] = [
     label: 'Benchmarks',
     icon: 'fileText',
     items: [
-      { id: 'benchmarks-hub', href: '/benchmarks', label: 'Benchmarks Hub' },
+      { id: 'benchmarks-standard', href: '/benchmarks', label: 'Standard Benchmark' },
+      { id: 'benchmarks-custom', href: '/benchmarks/custom', label: 'Custom Benchmarks' },
     ],
   },
   {
@@ -120,7 +121,8 @@ export const MOBILE_NAV_GROUPS: NavGroup[] = NAV_GROUPS
     ? {
         ...group,
         items: [
-          { id: 'more-benchmarks', href: '/benchmarks', label: 'Benchmarks' },
+          { id: 'more-benchmarks-standard', href: '/benchmarks', label: 'Standard Benchmark' },
+          { id: 'more-benchmarks-custom', href: '/benchmarks/custom', label: 'Custom Benchmarks' },
           ...group.items,
         ],
       }

@@ -7,7 +7,7 @@ export function BenchmarkResultCard({ benchmark }: { benchmark: BenchmarkProject
     <article className="rounded-2xl border border-blue-200 bg-white p-5 dark:border-blue-900/60 dark:bg-gray-900 md:p-6">
       <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">
         <Gauge className="h-4 w-4" aria-hidden="true" />
-        Published Benchmark Result
+        Custom Benchmark Result
         <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] normal-case text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">{benchmark.asset.primaryType}</span>
         <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] normal-case text-muted-foreground">{benchmark.family}</span>
         <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] normal-case text-muted-foreground">{benchmark.measurement}</span>

@@ -40,7 +40,8 @@ The public application does not depend on the local LLM, Hindsight, or ComfyUI s
 | `/labs/stockpulse-v1-fixed` | current experiment | read-only Live Shadow projection |
 | `/lab` | legacy Lab hub | HTTP 308 to `/labs` |
 | `/lab/[id]` | compatibility detail | retained only where a mapped legacy detail route is required |
-| `/benchmarks` | curated benchmark hub | indexable public release collection |
+| `/benchmarks` | Standard Benchmark | canonical indexable public release comparison |
+| `/benchmarks/custom` | Custom Benchmarks | standard suite 밖의 개별 측정·showcase·심층 분석 |
 | `/data` | publication/tracker hub | archive gateways and aggregate tracker links |
 | `/stock` | StockPulse legacy archive | `noindex, follow`; external old publication gateway |
 | `/stock/[slug]` | legacy StockPulse detail | mapped external redirect when an exact publication exists |

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
 import type { BenchmarkSuiteKey, PublicBenchmarkModel } from '@/lib/benchmarks/public-release'
 
 const SUITES: Array<{ key: BenchmarkSuiteKey; label: string }> = [
@@ -24,7 +25,9 @@ function number(value: unknown): number | null {
 
 function percent(value: unknown): string {
   const n = number(value)
-  return n === null ? '—' : `${(n * 100).toFixed(1)}%`
+  if (n === null) return '—'
+  const percentage = n * 100
+  return `${Number.isInteger(percentage) ? percentage.toFixed(0) : percentage.toFixed(1)}%`
 }
 
 function tps(value: unknown): string {
@@ -36,14 +39,14 @@ function benchmarkMtpLabel(mode: PublicBenchmarkModel['mtp_mode']): string {
   return mode === 'mtp' ? 'MTP' : 'non-MTP'
 }
 
-function scoreCell(model: PublicBenchmarkModel, suiteKey: BenchmarkSuiteKey): string {
+function scoreCell(model: PublicBenchmarkModel, suiteKey: BenchmarkSuiteKey): ReactNode {
   const suite = record(model.suites[suiteKey])
   if (suite.status !== 'available') return '—'
   if (suiteKey === 'performance') {
     const metrics = record(suite.metrics)
     const pp = record(metrics.pp)
     const tg = record(metrics.tg)
-    return `PP ${tps(pp.mean_tps)} · TG ${tps(tg.mean_tps)}`
+    return <><span className="block">PP {tps(pp.mean_tps)}</span><span className="block">TG {tps(tg.mean_tps)}</span></>
   }
   if (suiteKey === 'server_performance') {
     const conditions = Array.isArray(suite.conditions) ? suite.conditions.map(record) : []
@@ -51,11 +54,11 @@ function scoreCell(model: PublicBenchmarkModel, suiteKey: BenchmarkSuiteKey): st
     const last = conditions.find(condition => condition.concurrency === 8) || conditions.at(-1)
     const firstAgg = record(record(first).aggregate_generation_throughput_tps)
     const lastAgg = record(record(last).aggregate_generation_throughput_tps)
-    return `c1 ${tps(firstAgg.mean)} · c8 ${tps(lastAgg.mean)}`
+    return <><span className="block">c1 {tps(firstAgg.mean)}</span><span className="block">c8 {tps(lastAgg.mean)}</span></>
   }
   const total = number(suite.total)
   const passed = number(suite.passed) ?? number(suite.correct)
-  if (total !== null && passed !== null) return `${passed}/${total} · ${percent(suite.pass_rate)}`
+  if (total !== null && passed !== null) return <><span className="block">{percent(suite.pass_rate)}</span><span className="block">{passed}/{total}</span></>
   return percent(suite.pass_rate)
 }
 
@@ -102,20 +105,20 @@ export function BenchmarkReleaseMatrix({ models }: { models: PublicBenchmarkMode
 
   return (
     <section aria-labelledby="release-matrix-heading">
-      <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
         <div>
           <h2 id="release-matrix-heading" className="text-xl font-bold">Model comparison matrix</h2>
-          <div className="mt-1 max-w-4xl space-y-1 text-sm leading-relaxed text-muted-foreground"><p>서로 다른 suite의 수치를 하나의 총점으로 합치지 않고 그대로 보여줍니다.</p><p>검색·정렬·모델군·양자화·MTP 조건으로 필요한 비교만 좁혀볼 수 있습니다.</p></div>
         </div>
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="flex flex-wrap items-center gap-2 xl:justify-end">
           <label className="sr-only" htmlFor="benchmark-model-filter">Filter models</label>
-          <input id="benchmark-model-filter" value={query} onChange={event => setQuery(event.target.value)} placeholder="모델·변형 검색" className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900" />
+          <input id="benchmark-model-filter" value={query} onChange={event => setQuery(event.target.value)} placeholder="모델·변형 검색" className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm sm:w-40 dark:bg-gray-900" />
           <label className="sr-only" htmlFor="benchmark-family-filter">Filter model family</label>
           <select id="benchmark-family-filter" value={family} onChange={event => setFamily(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="all">모든 모델군</option>{families.map(value => <option key={value} value={value}>{familyNames.get(value) || value}</option>)}</select>
           <label className="sr-only" htmlFor="benchmark-quant-filter">Filter quantization</label>
           <select id="benchmark-quant-filter" value={quantization} onChange={event => setQuantization(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="all">모든 quantization</option>{quantizations.map(value => <option key={value} value={value}>{value}</option>)}</select>
           <label className="sr-only" htmlFor="benchmark-mtp-filter">Filter MTP mode</label>
           <select id="benchmark-mtp-filter" value={mtpMode} onChange={event => setMtpMode(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="all">MTP 전체</option><option value="mtp">MTP</option><option value="non-mtp">non-MTP</option></select>
+          <span className="ml-1 text-xs text-muted-foreground">정렬</span>
           <label className="sr-only" htmlFor="benchmark-sort">Sort benchmark models</label>
           <select id="benchmark-sort" value={sort} onChange={event => setSort(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="model">모델명순</option><option value="tg">TG 속도순</option><option value="server">Server c8순</option><option value="knowledge">Knowledge순</option><option value="coding">Coding순</option></select>
         </div>
@@ -132,8 +135,7 @@ export function BenchmarkReleaseMatrix({ models }: { models: PublicBenchmarkMode
                   <div className="mt-1 text-[10px] font-semibold text-blue-700 dark:text-blue-300">{benchmarkMtpLabel(model.mtp_mode)}</div>
                 </th>
                 {SUITES.map(suite => {
-                  const entry = model.suites[suite.key]
-                  return <td key={suite.key} className="px-3 py-3 align-top leading-relaxed"><div className="font-medium">{scoreCell(model, suite.key)}</div><div className="mt-1 text-[10px] text-muted-foreground">{entry.source_type === 'revalidated_evaluator' ? 'revalidated' : 'reused'} · {entry.source_run_id}</div></td>
+                  return <td key={suite.key} className="px-3 py-3 align-top leading-relaxed"><div className="font-medium">{scoreCell(model, suite.key)}</div></td>
                 })}
               </tr>
             ))}
@@ -141,7 +143,7 @@ export function BenchmarkReleaseMatrix({ models }: { models: PublicBenchmarkMode
         </table>
         {filtered.length === 0 && <p className="p-8 text-center text-sm text-muted-foreground">조건에 맞는 모델이 없습니다.</p>}
       </div>
-      <p className="mt-2 text-xs text-muted-foreground">{filtered.length} / {models.length} model variants · Performance는 PP/TG, Server는 c=1/c=8 aggregate throughput 기준입니다.</p>
+
     </section>
   )
 }

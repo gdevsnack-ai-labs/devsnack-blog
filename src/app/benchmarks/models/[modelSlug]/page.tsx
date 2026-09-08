@@ -104,12 +104,12 @@ export default async function BenchmarkModelPage({ params }: { params: Promise<{
       modified: family.last_updated,
       keywords: ['DGX Spark', 'GB10', family.name, 'llama.cpp', 'MTP', 'GGUF'],
       about: { '@type': 'Thing', name: family.name },
-      isPartOf: { '@type': 'CollectionPage', name: 'DevSnack Benchmarks', url: absoluteSiteUrl(`/benchmarks/${PUBLIC_RELEASE_ID}`) },
+      isPartOf: { '@type': 'CollectionPage', name: 'DevSnack Benchmarks', url: absoluteSiteUrl('/benchmarks') },
     }),
     buildBreadcrumbJsonLd([
       { name: '홈', url: absoluteSiteUrl('/') },
       { name: 'Benchmarks', url: absoluteSiteUrl('/benchmarks') },
-      { name: '통합 Benchmark', url: absoluteSiteUrl(`/benchmarks/${PUBLIC_RELEASE_ID}`) },
+      { name: '통합 Benchmark', url: absoluteSiteUrl('/benchmarks') },
       { name: family.name, url: absoluteSiteUrl(`/benchmarks/models/${modelSlug}`) },
     ], 'ko'),
   )
@@ -127,7 +127,7 @@ export default async function BenchmarkModelPage({ params }: { params: Promise<{
     <div className="min-h-screen bg-background">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-7xl px-4 py-8 md:py-10">
-        <Link href={`/benchmarks/${PUBLIC_RELEASE_ID}`} className="inline-flex items-center gap-1 text-sm text-muted-foreground no-underline hover:text-foreground"><ArrowLeft className="h-4 w-4" /> 통합 Benchmark로 돌아가기</Link>
+        <Link href="/benchmarks" className="inline-flex items-center gap-1 text-sm text-muted-foreground no-underline hover:text-foreground"><ArrowLeft className="h-4 w-4" /> 통합 Benchmark로 돌아가기</Link>
         <header className="mt-6 border-b border-border pb-8">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300"><Gauge className="h-4 w-4" aria-hidden="true" /> Benchmark Model Family <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] normal-case dark:bg-blue-900/30">Updated {family.last_updated}</span></div>
           <h1 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">{family.name}</h1>
@@ -148,13 +148,13 @@ export default async function BenchmarkModelPage({ params }: { params: Promise<{
 
           <section aria-labelledby="model-results-heading">
             <div className="flex items-center gap-2"><Database className="h-5 w-5 text-muted-foreground" aria-hidden="true" /><h2 id="model-results-heading" className="text-xl font-bold">DGX Spark GB10 측정 결과</h2></div>
-            <div className="mt-4 overflow-x-auto rounded-2xl border border-border bg-white dark:bg-gray-900"><table className="min-w-[1180px] w-full text-left text-xs"><thead className="border-b border-border bg-muted/40 text-muted-foreground"><tr><th className="px-3 py-3 font-semibold">Variant</th>{BENCHMARK_SUITE_KEYS.map(suite => <th key={suite} className="px-3 py-3 font-semibold">{benchmarkSuiteLabel(suite)}</th>)}</tr></thead><tbody>{models.map(model => <tr key={model.model_id} className="border-b border-border/70 last:border-0"><th scope="row" className="px-3 py-3 align-top"><div className="font-semibold">{model.variant}</div><div className="mt-1 font-normal text-muted-foreground">{model.quantization} · {benchmarkMtpLabel(model.mtp_mode)} · {modelServerCondition(model)}</div></th>{BENCHMARK_SUITE_KEYS.map(suite => <td key={suite} className="px-3 py-3 align-top leading-relaxed"><div className="font-medium">{suiteSummary(model, suite)}</div><div className="mt-1 text-[10px] text-muted-foreground">{model.suites[suite].source_run_id}</div></td>)}</tr>)}</tbody></table></div>
-            <p className="mt-2 text-xs text-muted-foreground">서로 다른 MTP/non-MTP 조건은 통합 총점으로 합산하지 않으며, 각 variant의 실제 조건과 source run을 함께 표시합니다.</p>
+            <div className="mt-4 overflow-x-auto rounded-2xl border border-border bg-white dark:bg-gray-900"><table className="min-w-[1180px] w-full text-left text-xs"><thead className="border-b border-border bg-muted/40 text-muted-foreground"><tr><th className="px-3 py-3 font-semibold">Variant</th>{BENCHMARK_SUITE_KEYS.map(suite => <th key={suite} className="px-3 py-3 font-semibold">{benchmarkSuiteLabel(suite)}</th>)}</tr></thead><tbody>{models.map(model => <tr key={model.model_id} className="border-b border-border/70 last:border-0"><th scope="row" className="px-3 py-3 align-top"><div className="font-semibold">{model.variant}</div><div className="mt-1 font-normal text-muted-foreground">{model.quantization} · {benchmarkMtpLabel(model.mtp_mode)} · {modelServerCondition(model)}</div></th>{BENCHMARK_SUITE_KEYS.map(suite => <td key={suite} className="px-3 py-3 align-top leading-relaxed"><div className="font-medium">{suiteSummary(model, suite)}</div></td>)}</tr>)}</tbody></table></div>
+            <p className="mt-2 text-xs text-muted-foreground">서로 다른 MTP/non-MTP 조건은 통합 총점으로 합산하지 않으며, 각 variant의 실제 조건을 함께 표시합니다.</p>
           </section>
 
           <section aria-labelledby="server-command-heading">
             <div className="flex items-center gap-2"><Terminal className="h-5 w-5 text-muted-foreground" aria-hidden="true" /><h2 id="server-command-heading" className="text-xl font-bold">실제 llama-server 실행 명령</h2></div>
-            <p className="mt-2 max-w-4xl text-sm leading-relaxed text-muted-foreground">아래 명령은 실제 benchmark runner가 사용한 llama-server flag 조합입니다. 공개 페이지에서는 로컬 모델 경로·host·port만 placeholder로 치환했으며, raw run과 원본 manifest는 내부 benchmark 저장소에 immutable하게 보존합니다.</p>
+            <p className="mt-2 max-w-4xl text-sm leading-relaxed text-muted-foreground">아래 명령은 실제 benchmark runner가 사용한 llama-server flag 조합입니다. 공개 페이지에서는 로컬 모델 경로·host·port만 placeholder로 치환했습니다.</p>
             <div className="mt-4 space-y-4">{models.map(model => <article key={model.model_id} className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><div className="flex flex-wrap items-center justify-between gap-2"><h3 className="font-bold">{model.variant} · {benchmarkMtpLabel(model.mtp_mode)}</h3><span className="text-xs text-muted-foreground">Server: {modelServerCondition(model)}</span></div><pre className="mt-3 overflow-x-auto rounded-lg bg-gray-100 p-4 text-xs leading-relaxed text-gray-800 dark:bg-gray-950 dark:text-gray-200"><code>{model.server_command || 'Command not included in this projection.'}</code></pre></article>)}</div>
           </section>
 
