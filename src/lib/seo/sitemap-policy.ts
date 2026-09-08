@@ -12,6 +12,7 @@ const INDEX_ROUTES = new Set([
 
   '/aitech',
   '/labs',
+  '/labs/board',
   '/benchmarks',
   '/data',
   '/demos',

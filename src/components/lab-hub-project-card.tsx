@@ -36,21 +36,15 @@ export function LabHubProjectCard({ project }: { project: LabProjectProjection }
           <span className={`rounded px-2 py-0.5 text-[11px] font-medium ${status.className}`}>
             {status.label}
           </span>
-          {project.statusConfidence === 'inferred' && <span className="text-[10px] text-muted-foreground" title="기존 기록을 바탕으로 한 상태 투영">추정</span>}
         </div>
       </div>
       <h3 className="mt-4 line-clamp-2 text-lg font-bold leading-snug transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400">{project.title}</h3>
       <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
 
-      {project.projectFinding ? (
+      {project.projectFinding && (
         <div className="mt-4 flex-1 rounded-lg border-l-2 border-blue-400 bg-blue-50/60 px-3 py-2.5 dark:border-blue-600 dark:bg-blue-950/20">
           <p className="text-[11px] font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Project Finding</p>
           <p className="mt-1 line-clamp-4 text-sm leading-relaxed">{project.projectFinding}</p>
-        </div>
-      ) : (
-        <div className="mt-4 flex-1 rounded-lg border border-dashed border-border bg-muted/30 px-3 py-2.5">
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Next Action</p>
-          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{project.nextAction || (project.isDummy ? '아이디어로 보관 중인 Project입니다.' : '다음 활동을 정리 중인 Project입니다.')}</p>
         </div>
       )}
 

@@ -4,6 +4,7 @@ import { isIndexableSitemapRoute, routePolicy } from './sitemap-policy.ts'
 if (routePolicy('/tools/operations') !== 'UTILITY') throw new Error('operations must remain utility')
 if (routePolicy('/search') !== 'UTILITY') throw new Error('search must remain utility')
 if (routePolicy('/demos/html') !== 'INDEX') throw new Error('populated HTML Showcase category must remain indexable')
+if (!isIndexableSitemapRoute('/labs/board')) throw new Error('Lab Board must remain in sitemap')
 if (routePolicy('/labs/local-llm-benchmark') !== 'NAVIGATION_ONLY') throw new Error('lab project detail is navigation-only in this phase')
 if (routePolicy('/labs/autonomous-ai-blog') !== 'INDEX') throw new Error('Autonomous AI Blog Project must remain indexable')
 if (routePolicy('/labs/stockpulse-v1-fixed') !== 'INDEX') throw new Error('StockPulse V1 Fixed Project must be indexable')

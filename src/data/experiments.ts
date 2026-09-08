@@ -226,7 +226,7 @@ const LLM_BENCH: Experiment = {
 const STOCKPULSE_V1_FIXED: Experiment = {
   id: 'stockpulse-v1-fixed',
   name: 'StockPulse V1 Fixed',
-  description: '예측·실제 결과·평가·개선 상태를 Run Board로 확인하는 별도 Live Shadow 실험 대시보드입니다.',
+  description: 'AI의 KOSPI·KOSDAQ 예측을 실제 장 마감 결과와 비교하고, 평가와 다음 개선 방향을 기록하는 실험',
   progress: 0,
   color: 'blue',
   status: '진행중',

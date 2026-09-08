@@ -40,6 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/stock`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: `${baseUrl}/aitech`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: `${baseUrl}/labs`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.85 },
+    { url: `${baseUrl}/labs/board`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.75 },
     ...getPublicLabProjects(experiments).map(project => ({
       url: `${baseUrl}/labs/${project.id}`,
       lastModified: new Date(),

@@ -56,6 +56,7 @@ export const NAV_GROUP_REGISTRY: NavGroup[] = [
         label: 'Experiments',
         activeHrefs: ['/labs', '/lab'],
       },
+      { id: 'lab-board', href: '/labs/board', label: 'Lab Board' },
       { id: 'lab-showcase', href: '/demos', label: 'Showcase', icon: 'play' },
     ],
   },
