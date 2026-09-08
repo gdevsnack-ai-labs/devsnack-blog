@@ -67,7 +67,21 @@ function ReportCard({ report }: { report: StockPulseExternalReport }) {
   )
 }
 
-function StockPulseHubView({ page, type, month, query, latestPublication }: { page: number; type?: StockPulseReportType; month?: string; query?: string; latestPublication: StockpulseFixedPublicationSummary | null }) {
+function FixedReportCard({ publication }: { publication: StockpulseFixedPublicationSummary }) {
+  const stageLabel = publication.stage === 'morning' ? 'Morning' : 'Evening'
+  return (
+    <a href={publication.href} target="_blank" rel="noopener noreferrer" className="group flex min-w-0 items-start justify-between gap-4 rounded-xl border border-green-200 bg-white p-4 no-underline transition-colors hover:border-green-400 hover:bg-green-50/50 dark:border-green-900/60 dark:bg-gray-900 dark:hover:border-green-700 dark:hover:bg-green-950/20">
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-green-700 dark:text-green-300"><span className="rounded-full bg-green-100 px-2 py-0.5 dark:bg-green-950/50">{stageLabel}</span><span>{publication.date}</span><span className="rounded-full bg-emerald-100 px-2 py-0.5 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300">{publication.status}</span></div>
+        <h3 className="mt-2 line-clamp-2 text-base font-bold leading-snug group-hover:text-green-700 dark:group-hover:text-green-300">{publication.title}</h3>
+        <p className="mt-2 text-xs font-medium text-green-700 dark:text-green-300">GitHub Pages에서 읽기 →</p>
+      </div>
+      <span className="shrink-0 text-sm text-muted-foreground" aria-hidden="true">↗</span>
+    </a>
+  )
+}
+
+function StockPulseHubView({ page, type, month, query, latestPublication, currentPublications }: { page: number; type?: StockPulseReportType; month?: string; query?: string; latestPublication: StockpulseFixedPublicationSummary | null; currentPublications: StockpulseFixedPublicationSummary[] }) {
   const { reports, count } = getReports(page, type, month, query)
   const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE))
   const months = [...new Set(allReports.map(report => report.report_date.slice(0, 7)))].sort().reverse()
@@ -92,7 +106,15 @@ function StockPulseHubView({ page, type, month, query, latestPublication }: { pa
           </div>
         </section>
 
-        <section className="mt-8 grid gap-3 sm:grid-cols-4" aria-label="StockPulse archive summary">
+        <section className="mt-8" aria-labelledby="stockpulse-fixed-reports-heading">
+          <div className="mb-4 flex flex-wrap items-end justify-between gap-3"><div><h2 id="stockpulse-fixed-reports-heading" className="text-2xl font-bold">V1 Fixed Daily Reports</h2><p className="mt-1 text-sm text-muted-foreground">2026-09-01 이후 projection에서 실제 available 상태인 Morning·Evening publication입니다.</p></div><p className="text-sm text-muted-foreground">{currentPublications.length}개</p></div>
+          {currentPublications.length > 0 ? <div className="grid gap-3">{currentPublications.map(publication => <FixedReportCard key={publication.href} publication={publication} />)}</div> : <p className="rounded-xl border border-dashed border-border p-8 text-center text-muted-foreground">현재 발행된 V1 Fixed Report가 없습니다.</p>}
+        </section>
+
+        <details id="stockpulse-historical-archive" className="mt-10 rounded-2xl border border-border bg-white dark:bg-gray-900">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 text-sm font-semibold [&::-webkit-details-marker]:hidden md:px-6"><span>StockPulse V1 Historical Archive · {allReports.length} reports</span><span className="text-xs font-normal text-muted-foreground">과거 V1 Daily Reports</span></summary>
+          <div className="border-t border-border px-4 pb-6 md:px-6 md:pb-8">
+        <section className="pt-6 grid gap-3 sm:grid-cols-4" aria-label="StockPulse archive summary">
           {[
             ['V1 Archive Reports', '68', 'Historical V1 archive'],
             ['Morning', '32', 'Historical V1 report'],
@@ -113,18 +135,20 @@ function StockPulseHubView({ page, type, month, query, latestPublication }: { pa
           {reports.length === 0 ? <p className="rounded-xl border border-dashed border-border p-8 text-center text-muted-foreground">해당 조건의 Report가 없습니다.</p> : <div className="grid gap-4">{reports.map(report => <ReportCard key={`${report.source_record_id}-${report.target_path}`} report={report} />)}</div>}
           <Pagination page={page} totalPages={totalPages} searchParams={{ type, month, query }} />
         </section>
+          </div>
+        </details>
       </main>
     </div>
   )
 }
 
-function StockPulseHubQueryView({ latestPublication }: { latestPublication: StockpulseFixedPublicationSummary | null }) {
+function StockPulseHubQueryView({ latestPublication, currentPublications }: { latestPublication: StockpulseFixedPublicationSummary | null; currentPublications: StockpulseFixedPublicationSummary[] }) {
   const searchParams = useSearchParams()
   const rawType = searchParams.get('type')
   const type = rawType === 'morning' || rawType === 'close' || rawType === 'daily' ? rawType : undefined
-  return <StockPulseHubView page={getPage(searchParams.get('page'))} type={type} month={searchParams.get('month') || undefined} query={searchParams.get('query') || undefined} latestPublication={latestPublication} />
+  return <StockPulseHubView page={getPage(searchParams.get('page'))} type={type} month={searchParams.get('month') || undefined} query={searchParams.get('query') || undefined} latestPublication={latestPublication} currentPublications={currentPublications} />
 }
 
-export function StockPageClient({ latestPublication }: { latestPublication: StockpulseFixedPublicationSummary | null }) {
-  return <Suspense fallback={<StockPulseHubView page={1} latestPublication={latestPublication} />}><StockPulseHubQueryView latestPublication={latestPublication} /></Suspense>
+export function StockPageClient({ latestPublication, currentPublications }: { latestPublication: StockpulseFixedPublicationSummary | null; currentPublications: StockpulseFixedPublicationSummary[] }) {
+  return <Suspense fallback={<StockPulseHubView page={1} latestPublication={latestPublication} currentPublications={currentPublications} />}><StockPulseHubQueryView latestPublication={latestPublication} currentPublications={currentPublications} /></Suspense>
 }

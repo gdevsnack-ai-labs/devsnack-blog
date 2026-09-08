@@ -1,7 +1,7 @@
 import { buildRouteMetadata } from '@/lib/seo/metadata'
 import { StockPageClient } from '@/components/stock-page-client'
 import fixedProjection from '@/data/stockpulse-v1-fixed-projection.json'
-import { getLatestAvailableStockpulsePublication, type StockpulseFixedProjection } from '@/lib/stockpulse-v1-fixed'
+import { getAvailableStockpulsePublications, type StockpulseFixedProjection } from '@/lib/stockpulse-v1-fixed'
 
 export const metadata = buildRouteMetadata({
   title: 'StockPulse — Daily Report Hub',
@@ -14,6 +14,6 @@ export const dynamic = 'force-static'
 export const revalidate = false
 
 export default function StockPage() {
-  const latestPublication = getLatestAvailableStockpulsePublication(fixedProjection as StockpulseFixedProjection)
-  return <StockPageClient latestPublication={latestPublication} />
+  const currentPublications = getAvailableStockpulsePublications(fixedProjection as StockpulseFixedProjection)
+  return <StockPageClient latestPublication={currentPublications[0] || null} currentPublications={currentPublications} />
 }

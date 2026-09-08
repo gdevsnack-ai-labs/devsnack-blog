@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 // @ts-expect-error Node's strip-types runner requires the explicit extension.
 import {
+  getAvailableStockpulsePublications,
   getLatestAvailableStockpulsePublication,
   getStockpulseFixedViewModel,
   STOCKPULSE_V1_FIXED_PUBLICATION_ROOT,
@@ -28,6 +29,10 @@ expect(projection.project.id === 'stockpulse-v1-fixed', 'wrong Project ID')
 expect(projection.project.route === '/labs/stockpulse-v1-fixed', 'wrong Project route')
 
 const latestPublication = getLatestAvailableStockpulsePublication(projection)
+const fixedPublications = getAvailableStockpulsePublications(projection)
+expect(fixedPublications.length === 1, 'current projection must expose only its available Morning publication')
+expect(fixedPublications[0]?.stage === 'morning', 'current projection publication stage must be Morning')
+expect(fixedPublications[0]?.status === 'available', 'current publication list must contain available records only')
 expect(latestPublication?.stage === 'morning', 'latest available publication must use the current Morning report')
 expect(latestPublication?.date === '2026-09-08', 'latest available publication must use the latest trading date')
 expect(latestPublication?.title === 'Morning report · 2026-09-08 · StockPulse V1 Fixed', 'latest publication title must identify the actual report')
@@ -60,6 +65,31 @@ eveningFixture.runs.records[0].publications = {
 }
 const latestEvening = getLatestAvailableStockpulsePublication(eveningFixture)
 expect(latestEvening?.stage === 'evening', 'same-date Evening must be preferred when it is available')
+const historyFixture = JSON.parse(JSON.stringify(projection)) as StockpulseFixedProjection
+const baseRun = historyFixture.runs.records[0]
+historyFixture.runs.records.push(
+  {
+    ...baseRun,
+    run_id: 'live-shadow-2026-09-07-01',
+    trading_date: '2026-09-07',
+    publications: {
+      morning: { status: 'available', path: 'reports/2026-09-07/morning/' },
+      evening: { status: 'available', path: 'reports/2026-09-07/evening/' },
+    },
+  },
+  {
+    ...baseRun,
+    run_id: 'live-shadow-2026-08-31-01',
+    trading_date: '2026-08-31',
+    publications: {
+      morning: { status: 'available', path: 'reports/2026-08-31/morning/' },
+      evening: { status: 'not_started', path: null },
+    },
+  },
+)
+const historyPublications = getAvailableStockpulsePublications(historyFixture)
+expect(historyPublications.length === 3, 'fixed feed history must filter out dates before September and pending publications')
+expect(historyPublications.map(item => `${item.date}:${item.stage}`).join(',') === '2026-09-08:morning,2026-09-07:evening,2026-09-07:morning', 'fixed feed history must sort newest date and Evening before Morning')
 expect(!/2026-09-0\d/.test(componentSource), 'component must not hardcode a publication date')
 expect(!componentSource.includes('<Link href={view.publication.'), 'component must not pass a nullable pending href directly to Link')
 expect(fixtureView.publicSecurityHits.length === 0, 'public security scan failed for the projection')

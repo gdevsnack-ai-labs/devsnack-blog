@@ -93,7 +93,7 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
     ),
     "/stock": RouteExpectation(
         "/stock", 200, meta_robots="noindex, follow", canonical=True,
-        required_text=("V1 Fixed Daily Feed 운영 중", "V1 Historical Report Archive", "GitHub Pages"),
+        required_text=("V1 Fixed Daily Feed 운영 중", "V1 Fixed Daily Reports", "StockPulse V1 Historical Archive", "68 reports", "GitHub Pages"),
         required_hrefs=("https://gdevsnack-ai-labs.github.io/stockpulse-publication/",),
         forbidden_hrefs=("/stock/",),
     ),
@@ -228,17 +228,19 @@ def fetch(path: str) -> tuple[int, dict[str, str], str]:
     return fetch_url(f"{BASE_URL.rstrip('/')}{path}")
 
 
-def latest_v1_fixed_publication_url() -> str | None:
+def v1_fixed_publication_urls() -> list[str]:
     projection_path = REPO_ROOT / "src" / "data" / "stockpulse-v1-fixed-projection.json"
     try:
         projection = json.loads(projection_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
-        return None
+        return []
 
     candidates: list[tuple[str, int, str]] = []
     for run in projection.get("runs", {}).get("records", []):
         trading_date = str(run.get("trading_date") or "")
         if not trading_date:
+            continue
+        if trading_date < "2026-09-01":
             continue
         publications = run.get("publications") or projection.get("publication") or {}
         for stage, priority in (("morning", 0), ("evening", 1)):
@@ -251,25 +253,39 @@ def latest_v1_fixed_publication_url() -> str | None:
                 continue
             candidates.append((trading_date, priority, f"{STOCKPULSE_V1_FIXED_PUBLICATION_ROOT}/{clean_path}"))
 
-    return max(candidates, key=lambda item: (item[0], item[1]))[2] if candidates else None
+    candidates.sort(key=lambda item: (item[0], item[1]), reverse=True)
+    return [item[2] for item in candidates]
+
+
+def latest_v1_fixed_publication_url() -> str | None:
+    urls = v1_fixed_publication_urls()
+    return urls[0] if urls else None
 
 
 def check_v1_fixed_publication_contract(failures: list[str]) -> None:
-    url = latest_v1_fixed_publication_url()
-    if url is None:
-        failures.append("StockPulse V1 Fixed: no available publication path in projection")
+    urls = v1_fixed_publication_urls()
+    if not urls:
+        failures.append("StockPulse V1 Fixed: no available September publication path in projection")
         return
 
-    status, _, _ = fetch_url(url)
-    if status != 200:
-        failures.append(f"StockPulse V1 Fixed latest publication: expected HTTP 200 for {url}, got {status}")
+    for url in urls:
+        status, _, _ = fetch_url(url)
+        if status != 200:
+            failures.append(f"StockPulse V1 Fixed publication: expected HTTP 200 for {url}, got {status}")
 
-    for path in ("/data", "/stock"):
-        page_status, _, body = fetch(path)
-        if page_status != 200:
-            failures.append(f"{path}: cannot verify latest StockPulse publication link because page returned HTTP {page_status}")
-        elif url not in body:
-            failures.append(f"{path}: latest StockPulse V1 Fixed publication link missing {url!r}")
+    stock_status, _, stock_body = fetch("/stock")
+    if stock_status != 200:
+        failures.append(f"/stock: cannot verify V1 Fixed publication list because page returned HTTP {stock_status}")
+    else:
+        for url in urls:
+            if url not in stock_body:
+                failures.append(f"/stock: V1 Fixed publication list missing {url!r}")
+
+    data_status, _, data_body = fetch("/data")
+    if data_status != 200:
+        failures.append(f"/data: cannot verify latest StockPulse publication link because page returned HTTP {data_status}")
+    elif urls[0] not in data_body:
+        failures.append(f"/data: latest StockPulse V1 Fixed publication link missing {urls[0]!r}")
 
 
 def check_route_expectation(
@@ -479,6 +495,33 @@ async def check_browser(failures: list[str]) -> None:
                         failures.append(f"mobile {path} {width}px overflow: {metrics}")
             finally:
                 await page.close()
+
+        page = await browser.new_page(viewport={"width": 390, "height": 844})
+        try:
+            await page.goto(f"{BASE_URL}/stock", wait_until="networkidle", timeout=60_000)
+            archive = page.locator("details#stockpulse-historical-archive")
+            if await archive.get_attribute("open") is not None:
+                failures.append("/stock historical archive: details must be closed by default")
+            current_count = await page.locator('section[aria-labelledby="stockpulse-fixed-reports-heading"] a[target="_blank"]').count()
+            expected_current_count = len(v1_fixed_publication_urls())
+            if current_count != expected_current_count:
+                failures.append(f"/stock V1 Fixed feed: expected {expected_current_count} current publication cards, got {current_count}")
+            if await archive.locator('section[aria-labelledby="stockpulse-reports-heading"]').is_visible():
+                failures.append("/stock historical archive: archive content must be hidden by default")
+            await archive.locator("summary").click()
+            if await archive.get_attribute("open") is None:
+                failures.append("/stock historical archive: details did not open")
+            archive_text = await page.locator("body").inner_text()
+            for marker in ("V1 Archive Reports", "68", "Morning", "Market Close", "Daily Report"):
+                if marker not in archive_text:
+                    failures.append(f"/stock historical archive: missing expanded marker {marker!r}")
+            archive_cards = await page.locator('section[aria-labelledby="stockpulse-reports-heading"] a.group').count()
+            if archive_cards != 24:
+                failures.append(f"/stock historical archive: expected 24 first-page cards, got {archive_cards}")
+        except Exception as error:
+            failures.append(f"/stock current/archive browser check: {type(error).__name__}: {error}")
+        finally:
+            await page.close()
 
         page = await browser.new_page(viewport={"width": 390, "height": 844})
         try:
