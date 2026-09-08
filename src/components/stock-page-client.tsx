@@ -153,7 +153,7 @@ function StockPulseHubView({ page, type, month, query, latestPublication, curren
 function StockPulseHubQueryView({ latestPublication, currentPublications }: { latestPublication: StockpulseFixedPublicationSummary | null; currentPublications: StockpulseFixedPublicationSummary[] }) {
   const searchParams = useSearchParams()
   const rawType = searchParams.get('type')
-  const type = rawType === 'morning' || rawType === 'close' || rawType === 'daily' ? rawType : undefined
+  const type = rawType === 'morning' || rawType === 'close' ? rawType : undefined
   return <StockPulseHubView page={getPage(searchParams.get('page'))} type={type} month={searchParams.get('month') || undefined} query={searchParams.get('query') || undefined} latestPublication={latestPublication} currentPublications={currentPublications} />
 }
 
