@@ -27,6 +27,9 @@ BASE_URL = os.environ.get("SITE_URL", "http://127.0.0.1:3333").rstrip("/")
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
+STOCKPULSE_V1_FIXED_PUBLICATION_ROOT = "https://gdevsnack-ai-labs.github.io/stockpulse-v1-fixed-publication"
+
+
 @dataclass(frozen=True)
 class RouteExpectation:
     path: str
@@ -54,7 +57,7 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
     ),
     "/labs": RouteExpectation(
         "/labs", 200, meta_robots="index, follow", canonical=True,
-        required_text=("Recent Verified Findings", "Lab Board", "Experiments"),
+        required_text=("Recent Verified Findings", "Lab Board", "Experiments", "Current Active Project", "StockPulse V1 Fixed"),
         forbidden_text=("Mining",),
     ),
     "/labs/stockpulse-v1-fixed": RouteExpectation(
@@ -81,7 +84,7 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
     ),
     "/data": RouteExpectation(
         "/data", 200, meta_robots="index, follow", canonical=True,
-        required_text=("Publications & Trackers", "StockPulse"),
+        required_text=("Publications & Trackers", "StockPulse", "V1 Fixed daily market publication"),
     ),
     "/aitech": RouteExpectation(
         "/aitech", 200, meta_robots="index, follow", canonical=True,
@@ -90,7 +93,7 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
     ),
     "/stock": RouteExpectation(
         "/stock", 200, meta_robots="noindex, follow", canonical=True,
-        required_text=("Daily Feed 발행 중단", "v1 Report Archive", "GitHub Pages"),
+        required_text=("V1 Fixed Daily Feed 운영 중", "V1 Historical Report Archive", "GitHub Pages"),
         required_hrefs=("https://gdevsnack-ai-labs.github.io/stockpulse-publication/",),
         forbidden_hrefs=("/stock/",),
     ),
@@ -207,9 +210,9 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 OPENER = urllib.request.build_opener(NoRedirect)
 
 
-def fetch(path: str) -> tuple[int, dict[str, str], str]:
+def fetch_url(url: str) -> tuple[int, dict[str, str], str]:
     request = urllib.request.Request(
-        f"{BASE_URL.rstrip('/')}{path}",
+        url,
         headers={"User-Agent": "devsnack-policy-audit/2.0", "Accept": "*/*"},
     )
     try:
@@ -219,6 +222,54 @@ def fetch(path: str) -> tuple[int, dict[str, str], str]:
         return error.code, dict(error.headers), error.read().decode("utf-8", "ignore")
     except Exception as error:  # pragma: no cover - live network failure
         return 0, {}, f"AUDIT_FETCH_ERROR {type(error).__name__}: {error}"
+
+
+def fetch(path: str) -> tuple[int, dict[str, str], str]:
+    return fetch_url(f"{BASE_URL.rstrip('/')}{path}")
+
+
+def latest_v1_fixed_publication_url() -> str | None:
+    projection_path = REPO_ROOT / "src" / "data" / "stockpulse-v1-fixed-projection.json"
+    try:
+        projection = json.loads(projection_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+
+    candidates: list[tuple[str, int, str]] = []
+    for run in projection.get("runs", {}).get("records", []):
+        trading_date = str(run.get("trading_date") or "")
+        if not trading_date:
+            continue
+        publications = run.get("publications") or projection.get("publication") or {}
+        for stage, priority in (("morning", 0), ("evening", 1)):
+            publication = publications.get(stage) or {}
+            path = publication.get("path")
+            if publication.get("status") != "available" or not isinstance(path, str) or not path.strip():
+                continue
+            clean_path = path.lstrip("/")
+            if re.match(r"^(?:https?:)?//", clean_path):
+                continue
+            candidates.append((trading_date, priority, f"{STOCKPULSE_V1_FIXED_PUBLICATION_ROOT}/{clean_path}"))
+
+    return max(candidates, key=lambda item: (item[0], item[1]))[2] if candidates else None
+
+
+def check_v1_fixed_publication_contract(failures: list[str]) -> None:
+    url = latest_v1_fixed_publication_url()
+    if url is None:
+        failures.append("StockPulse V1 Fixed: no available publication path in projection")
+        return
+
+    status, _, _ = fetch_url(url)
+    if status != 200:
+        failures.append(f"StockPulse V1 Fixed latest publication: expected HTTP 200 for {url}, got {status}")
+
+    for path in ("/data", "/stock"):
+        page_status, _, body = fetch(path)
+        if page_status != 200:
+            failures.append(f"{path}: cannot verify latest StockPulse publication link because page returned HTTP {page_status}")
+        elif url not in body:
+            failures.append(f"{path}: latest StockPulse V1 Fixed publication link missing {url!r}")
 
 
 def check_route_expectation(
@@ -351,6 +402,8 @@ def check_http_contract(failures: list[str]) -> None:
     for expectation in CURRENT_POLICY.values():
         status, headers, body = fetch(expectation.path)
         failures.extend(check_route_expectation(expectation, status, headers, body, BASE_URL))
+
+    check_v1_fixed_publication_contract(failures)
 
     status, _, sitemap_body = fetch("/sitemap.xml")
     public_detail_paths: list[str] = []

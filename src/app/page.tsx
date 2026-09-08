@@ -69,7 +69,7 @@ export default async function Home() {
 
         <section className="border-y border-border bg-muted/20" aria-labelledby="home-lab-heading">
           <div className="mx-auto max-w-6xl px-4 py-8 md:py-10">
-            <div className="mb-4 flex items-end justify-between gap-3"><div><div className="flex items-center gap-2"><FlaskConical className="h-5 w-5 text-blue-600 dark:text-blue-400" aria-hidden="true" /><h2 id="home-lab-heading" className="text-xl font-bold">Lab</h2></div><p className="mt-1 text-sm text-muted-foreground">프로젝트 목록보다 최근 Finding과 Result를 먼저 봅니다.</p></div><Link href="/labs" className="text-sm text-muted-foreground no-underline hover:text-foreground">Lab 전체 보기 →</Link></div>
+            <div className="mb-4 flex items-end justify-between gap-3"><div><div className="flex items-center gap-2"><FlaskConical className="h-5 w-5 text-blue-600 dark:text-blue-400" aria-hidden="true" /><h2 id="home-lab-heading" className="text-xl font-bold">Lab</h2></div><p className="mt-1 text-sm text-muted-foreground">현재 진행 중인 Project를 먼저 보고, 검증된 Finding을 이어서 확인합니다.</p></div><Link href="/labs" className="text-sm text-muted-foreground no-underline hover:text-foreground">Lab 전체 보기 →</Link></div>
             <div className="grid gap-3 md:grid-cols-2">{projection.labFinding && <HomeFindingItem project={projection.labFinding} />}{projection.labItems.map(project => <HomeFindingItem key={project.id} project={project} />)}</div>
           </div>
         </section>

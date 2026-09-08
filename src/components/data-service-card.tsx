@@ -10,6 +10,7 @@ export interface DataServiceCardProps {
   href: string
   provenance: string
   latestTitle?: string | null
+  latestHref?: string
   relatedHref?: string
   relatedLabel?: string
 }
@@ -23,6 +24,7 @@ export function DataServiceCard({
   href,
   provenance,
   latestTitle,
+  latestHref,
   relatedHref,
   relatedLabel,
 }: DataServiceCardProps) {
@@ -36,7 +38,7 @@ export function DataServiceCard({
       <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">{description}</p>
       <div className="mt-4 space-y-2 border-t border-border pt-4 text-xs text-muted-foreground">
         <p className="flex items-start gap-2"><RefreshCw className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" /><span><strong className="text-foreground">Update:</strong> {updateDescription}</span></p>
-        <p><strong className="text-foreground">Latest:</strong> {latestTitle || lastUpdated}</p>
+        <p><strong className="text-foreground">Latest:</strong> {latestHref && latestTitle ? <a href={latestHref} target="_blank" rel="noopener noreferrer" className="underline decoration-border underline-offset-2 hover:text-emerald-700 dark:hover:text-emerald-300">{latestTitle}</a> : latestTitle || lastUpdated}</p>
         <p><strong className="text-foreground">Data date:</strong> {lastUpdated}</p>
       </div>
       <div className="mt-5 flex flex-wrap gap-2">

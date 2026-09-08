@@ -6,6 +6,8 @@ import { getDataHubSnapshot } from '@/lib/ia/hub-data'
 import { getHermesUsageSnapshot } from '@/lib/hermes-usage-data'
 import { getRelatedAssets } from '@/lib/ia/hub-projections'
 import { buildRouteMetadata } from '@/lib/seo/metadata'
+import fixedProjection from '@/data/stockpulse-v1-fixed-projection.json'
+import { getLatestAvailableStockpulsePublication, type StockpulseFixedProjection } from '@/lib/stockpulse-v1-fixed'
 
 export const revalidate = 60
 
@@ -26,6 +28,7 @@ export default async function DataPage() {
     getHermesUsageSnapshot(),
   ])
   const stockPulseRelated = getRelatedAssets('project:stockpulse-ai-self-improvement')
+  const latestStockpulse = getLatestAvailableStockpulsePublication(fixedProjection as StockpulseFixedProjection)
 
   return (
     <div className="min-h-screen bg-background">
@@ -38,7 +41,7 @@ export default async function DataPage() {
         />
 
         <section className="mt-8 grid gap-3 sm:grid-cols-3" aria-label="Data principles">
-          <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Radio className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Feeds</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">StockPulse legacy archive와 외부 publication 연결 상태</p></div>
+          <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Radio className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Feeds</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">StockPulse V1 Fixed current feed와 V1 historical archive 연결 상태</p></div>
           <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><Database className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">Project → Assets</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">StockPulse처럼 하나의 Project가 Feed·Dataset·Experiment를 함께 만듭니다.</p></div>
           <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><BarChart3 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" /><h2 className="mt-3 text-sm font-bold">해석의 한계</h2><p className="mt-1 text-xs leading-relaxed text-muted-foreground">자동 생성 수치와 editorial 판단은 다르며, 스냅샷 시점·측정 조건에 따라 해석이 달라질 수 있습니다.</p></div>
         </section>
@@ -61,12 +64,13 @@ export default async function DataPage() {
             <DataServiceCard
               title="StockPulse"
               type="Publication"
-              description="GitHub Pages에서 제공하는 StockPulse Daily Morning·Market Close publication입니다. DevSnack의 /stock은 현재 상태·archive·외부 원문을 연결하는 Hub입니다."
-              updateDescription="GitHub Pages publication · v1 archive · v2 재설계 전 발행 중단"
-              lastUpdated={formatDate(snapshot.stockPulse?.updated || snapshot.stockPulse?.published)}
-              latestTitle={snapshot.stockPulse?.title || 'GitHub Pages StockPulse publication'}
+              description="현재 StockPulse Feed는 V1 Fixed에서 Morning·Evening 시장 분석을 생성하고, 실제 리포트 전문은 GitHub Pages publication으로 제공합니다. 과거 V1 Daily Report는 기존 archive에서 계속 확인할 수 있습니다."
+              updateDescription="V1 Fixed Daily Feed · Morning / Evening publication"
+              lastUpdated={formatDate(latestStockpulse?.date)}
+              latestTitle={latestStockpulse?.title || 'V1 Fixed latest report pending'}
+              latestHref={latestStockpulse?.href}
               href="/stock"
-              provenance="External daily market publication"
+              provenance="V1 Fixed daily market publication"
               relatedHref="/labs/stockpulse-v1-fixed"
               relatedLabel="현재 V1 Fixed Lab"
             />

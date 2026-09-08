@@ -410,7 +410,7 @@ export const CURATED_FINDING_ASSETS: AssetRef[] = [
     projectId: 'stockpulse-ai-self-improvement',
     domain: ['finance', 'automation'],
     provenance: 'automated',
-    lifecycle: 'active',
+    lifecycle: 'completed',
     source: 'manual',
     classification: 'confirmed',
   },

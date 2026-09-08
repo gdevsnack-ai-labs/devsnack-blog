@@ -311,10 +311,22 @@ function sortByImportanceAndActivity(a: Experiment, b: Experiment): number {
   return Number(Boolean(getProjectFinding(b))) - Number(Boolean(getProjectFinding(a)))
 }
 
-/** 최신 활동을 우선하되, 같은 날짜에는 현재 진행 중인 실험을 대표 실험으로 선택합니다. */
+/** The currently operating StockPulse generation experiment. */
+export const CURRENT_STOCKPULSE_EXPERIMENT_ID = 'stockpulse-v1-fixed'
+
+export function getCurrentStockpulseExperiment(experiments: Experiment[]): Experiment | undefined {
+  return experiments.find(experiment =>
+    experiment.id === CURRENT_STOCKPULSE_EXPERIMENT_ID
+    && !experiment.isDummy
+    && experiment.category === 'running'
+    && experiment.status === '진행중'
+  )
+}
+
+/** Current StockPulse takes precedence; completed findings remain historical. */
 export function getFeaturedExperiment(experiments: Experiment[]): Experiment | undefined {
-  return experiments
-    .filter(experiment => !experiment.isDummy && Boolean(getProjectFinding(experiment)))
+  return getCurrentStockpulseExperiment(experiments) || experiments
+    .filter(experiment => !experiment.isDummy && experiment.category !== 'completed' && Boolean(getProjectFinding(experiment)))
     .sort(sortByImportanceAndActivity)[0]
 }
 

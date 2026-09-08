@@ -1,5 +1,6 @@
 import { experiments } from './experiments'
-import { getProjectFinding, validateProjectFinding } from '../lib/labs'
+import { getLabBoardMetadata, getProjectFinding, validateProjectFinding } from '../lib/labs'
+import { PROJECT_CATALOG } from '../lib/ia/project-catalog'
 
 const autonomous = experiments.find(experiment => experiment.id === 'autonomous-ai-blog')
 if (!autonomous) throw new Error('Autonomous AI Blog experiment is missing')
@@ -41,5 +42,8 @@ if (!stockpulseFixed) throw new Error('StockPulse V1 Fixed experiment is missing
 if (stockpulseFixed.isDummy) throw new Error('StockPulse V1 Fixed must be a formal Lab project')
 if (stockpulseFixed.status !== '진행중' || stockpulseFixed.category !== 'running') throw new Error('StockPulse V1 Fixed must be an active running project')
 if (!stockpulseFixed.publicDiscovery) throw new Error('StockPulse V1 Fixed must participate in public discovery')
+if (getLabBoardMetadata(stockpulse).status !== 'completed') throw new Error('StockPulse v1 Lab Board status must remain completed')
+const stockpulseProject = PROJECT_CATALOG.find(project => project.id === 'stockpulse-ai-self-improvement')
+if (!stockpulseProject || stockpulseProject.lifecycle !== 'completed' || stockpulseProject.isOpenEnded) throw new Error('StockPulse v1 Project Catalog lifecycle must be completed and closed')
 
 console.log('AI Tech, StockPulse v1, and StockPulse V1 Fixed tests passed')

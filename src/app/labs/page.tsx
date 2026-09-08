@@ -35,7 +35,7 @@ function filterProjects<T extends { boardStatus: Exclude<LabFilter, 'all'> }>(pr
 function LatestFinding({ experiment }: { experiment: ReturnType<typeof getFeaturedExperiment> }) {
   if (!experiment) return null
   const finding = getProjectFinding(experiment)?.statement
-  if (!finding) return null
+  const currentProject = experiment.id === 'stockpulse-v1-fixed'
   const boardStatus = getLabBoardMetadata(experiment).status
   const boardStatusLabel = LAB_FILTERS.find(item => item.key === boardStatus)?.label || boardStatus
 
@@ -43,12 +43,12 @@ function LatestFinding({ experiment }: { experiment: ReturnType<typeof getFeatur
     <section className="mt-8 overflow-hidden rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 via-white to-white dark:border-blue-900/60 dark:from-blue-950/30 dark:via-gray-900 dark:to-gray-900" aria-labelledby="latest-finding-heading">
       <div className="grid gap-6 p-5 md:grid-cols-[minmax(0,1fr)_220px] md:p-7">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-blue-700 dark:text-blue-300"><Sparkles className="h-4 w-4" aria-hidden="true" />Latest Verified Finding</div>
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-blue-700 dark:text-blue-300"><Sparkles className="h-4 w-4" aria-hidden="true" />{currentProject ? 'Current Active Project' : 'Latest Verified Finding'}</div>
           <h2 id="latest-finding-heading" className="mt-3 text-2xl font-bold leading-tight md:text-3xl">{experiment.name}</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{finding}</p>
-          <p className="mt-4 text-xs text-muted-foreground">Project Context · {boardStatusLabel} · {getLatestResult(experiment)?.date || '날짜 미기록'}</p>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{finding || experiment.description}</p>
+          <p className="mt-4 text-xs text-muted-foreground">Project Context · {boardStatusLabel} · {currentProject ? 'Live Shadow' : getLatestResult(experiment)?.date || '날짜 미기록'}</p>
         </div>
-        <div className="flex items-end md:justify-end"><Link href={`/labs/${experiment.id}`} className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-foreground px-4 py-3 text-sm font-medium text-background no-underline transition-opacity hover:opacity-80 md:w-auto">Finding과 Run 보기 <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link></div>
+        <div className="flex items-end md:justify-end"><Link href={`/labs/${experiment.id}`} className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-foreground px-4 py-3 text-sm font-medium text-background no-underline transition-opacity hover:opacity-80 md:w-auto">{currentProject ? 'Current project 보기' : 'Finding과 Run 보기'} <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link></div>
       </div>
     </section>
   )

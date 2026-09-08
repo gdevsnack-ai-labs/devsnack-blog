@@ -7,6 +7,7 @@ from audit_site import (  # noqa: E402
     CURRENT_POLICY,
     check_route_expectation,
     check_sitemap_policy,
+    latest_v1_fixed_publication_url,
 )
 
 
@@ -34,6 +35,12 @@ class AuditPolicyTest(unittest.TestCase):
             'https://example.test',
         )
         self.assertEqual(failures, [])
+
+    def test_current_stockpulse_publication_comes_from_available_projection_path(self):
+        self.assertEqual(
+            latest_v1_fixed_publication_url(),
+            'https://gdevsnack-ai-labs.github.io/stockpulse-v1-fixed-publication/reports/2026-09-08/morning/',
+        )
 
     def test_sitemap_rejects_retired_and_migrated_detail_urls(self):
         urls = [

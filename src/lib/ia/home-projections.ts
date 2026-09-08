@@ -12,7 +12,9 @@ import {
   type RelatedAssetLink,
 } from '@/lib/ia/hub-projections'
 import { assetFromLegacyPost, projectRef, type AssetRef } from '@/lib/ia'
-import { getProjectFinding, getRecentFindings } from '@/lib/labs'
+import fixedProjection from '@/data/stockpulse-v1-fixed-projection.json'
+import { getFeaturedExperiment, getProjectFinding, getRecentFindings } from '@/lib/labs'
+import { getLatestAvailableStockpulsePublication, type StockpulseFixedProjection } from '@/lib/stockpulse-v1-fixed'
 
 export const HOME_CURATED_OVERRIDES = {
   featured: {
@@ -158,13 +160,14 @@ export function projectHomeDataServices(snapshot: DataHubSnapshot): HomeDataServ
       updated: formatDate(snapshot.aiTech.updated || snapshot.aiTech.published),
     })
   }
+  const latestStockpulse = getLatestAvailableStockpulsePublication(fixedProjection as StockpulseFixedProjection)
   services.push({
     title: 'StockPulse',
     type: 'Feed',
     href: '/stock',
-    description: 'Automated market analysis',
-    status: snapshot.stockPulse?.title,
-    updated: formatDate(snapshot.stockPulse?.updated || snapshot.stockPulse?.published),
+    description: 'V1 Fixed daily market analysis feed',
+    status: latestStockpulse?.title,
+    updated: formatDate(latestStockpulse?.date),
   })
   return services
 }
@@ -200,8 +203,11 @@ export function createHomeProjection({
   const recentFindingProjects = getRecentFindings(experiments.filter(experiment => experiment.id !== 'local-llm-benchmark'), 3)
     .map(experiment => labProjects.find(project => project.id === experiment.id))
     .filter((project): project is LabProjectProjection => Boolean(project))
-  const labFinding = recentFindingProjects[0]
-  const labItems = recentFindingProjects.slice(1, 3)
+  const featuredLabExperiment = getFeaturedExperiment(experiments.filter(experiment => experiment.id !== 'local-llm-benchmark'))
+  const labFinding = featuredLabExperiment
+    ? labProjects.find(project => project.id === featuredLabExperiment.id)
+    : recentFindingProjects[0]
+  const labItems = recentFindingProjects.filter(project => project.id !== labFinding?.id).slice(0, 2)
   const benchmark = projectHomePublishedBenchmark(publicBenchmark)
   const recentKnowledge = selectHomeKnowledge(knowledge, 2)
   const curatedAiOmok = labProjects.find(project => project.id === HOME_CURATED_OVERRIDES.featured.aiOmokProjectId)

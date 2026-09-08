@@ -155,6 +155,38 @@ function reportPreviewHref(publication: { status: string; path: string | null })
   return `${STOCKPULSE_V1_FIXED_PUBLICATION_ROOT}/${path}`
 }
 
+export interface StockpulseFixedPublicationSummary {
+  stage: 'morning' | 'evening'
+  date: string
+  title: string
+  href: string
+}
+
+/** Select the newest real V1 Fixed publication; pending records stay unlinked. */
+export function getLatestAvailableStockpulsePublication(
+  projection: StockpulseFixedProjection,
+): StockpulseFixedPublicationSummary | null {
+  const candidates = projection.runs.records.flatMap(run => {
+    const publications = run.publications ?? projection.publication
+    return (['morning', 'evening'] as const).flatMap(stage => {
+      const href = reportPreviewHref(publications[stage])
+      if (!href) return []
+      return [{
+        stage,
+        date: run.trading_date,
+        title: `${stage === 'morning' ? 'Morning' : 'Evening'} report · ${run.trading_date} · StockPulse V1 Fixed`,
+        href,
+      }]
+    })
+  })
+
+  return candidates.sort((a, b) => {
+    const dateDiff = b.date.localeCompare(a.date)
+    if (dateDiff) return dateDiff
+    return Number(b.stage === 'evening') - Number(a.stage === 'evening')
+  })[0] || null
+}
+
 export function publicProjectionSecurityHits(projection: unknown): string[] {
   const text = JSON.stringify(projection)
   return PUBLIC_PRIVATE_MARKERS

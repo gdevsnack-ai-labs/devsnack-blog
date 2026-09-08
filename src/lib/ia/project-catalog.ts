@@ -24,8 +24,8 @@ const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
   },
   'stockpulse-ai-self-improvement': {
     domain: ['finance', 'automation'],
-    lifecycle: 'active',
-    isOpenEnded: true,
+    lifecycle: 'completed',
+    isOpenEnded: false,
   },
   blog: {
     domain: ['automation', 'infrastructure'],
