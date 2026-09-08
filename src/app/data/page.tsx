@@ -19,7 +19,10 @@ export const metadata = buildRouteMetadata({
 
 function formatDate(value?: string | null): string {
   if (!value) return '업데이트 시각 미기록'
-  return new Date(value).toLocaleString('ko-KR', { dateStyle: 'medium', timeStyle: 'short' })
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return '업데이트 시각 미기록'
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(value)
+  return date.toLocaleString('ko-KR', dateOnly ? { dateStyle: 'medium' } : { dateStyle: 'medium', timeStyle: 'short' })
 }
 
 export default async function DataPage() {
