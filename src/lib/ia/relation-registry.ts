@@ -131,11 +131,6 @@ export const ASSET_RELATIONS: AssetRelation[] = [
     to: findingRef('stockpulse-ai-self-improvement'),
   },
   {
-    from: projectRef('stockpulse-ai-self-improvement'),
-    relation: 'published_as',
-    to: postRef('lab', 'stockpulse-self-2026-08-21'),
-  },
-  {
     from: projectRef('isekai-instagram-mage-experiment'),
     relation: 'produces',
     to: findingRef('isekai-instagram-mage-experiment'),

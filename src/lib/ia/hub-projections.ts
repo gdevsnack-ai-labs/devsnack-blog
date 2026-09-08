@@ -432,20 +432,20 @@ const KNOWN_POST_TITLES: Record<string, string> = {
   'post:lab:qwen36-youtube-script-reliability-benchmark': 'Qwen3.6 YouTube Script Reliability Benchmark',
   'post:devsnack:ai-llm-omok-experiment': 'AI Omok 실험 이야기',
   'post:devsnack:ai-built-gomoku-engine-vs-rapfi': 'AI가 만든 Gomoku 엔진 이야기',
-  'post:lab:stockpulse-self-2026-08-21': 'StockPulse 자기개선 실험 — 2026-08-21',
   'post:lab:isekai-instagram-mage-prologue': 'GPT Image 2 + LTX 2.5 숏 무비 실험',
   'post:lab:hermes-memory-experiment': 'Hermes Memory Experiment — Phase 1',
+  'post:lab:luna-agentic-game-dev-e2e': 'Luna Agentic Game Development — 첫 E2E 실험',
 }
 
 const RELATION_LABEL: Record<RelationType, string> = {
-  informs: 'informs',
-  measures: 'measures',
-  produces: 'produces',
-  published_as: 'published as',
-  implemented_in: 'implemented in',
-  derived_from: 'derived from',
-  supports: 'supports',
-  outputs: 'outputs',
+  informs: 'Informed by',
+  measures: 'Measures',
+  produces: 'Finding',
+  published_as: 'Lab Note',
+  implemented_in: 'Implemented in',
+  derived_from: 'Based on',
+  supports: 'Supports',
+  outputs: 'Demo',
 }
 
 function endpointToRelatedLink(endpoint: string, relation: RelationType): RelatedAssetLink | null {

@@ -24,7 +24,7 @@ export function RelatedAssets({ links, title = 'Related' }: RelatedAssetsProps) 
             className="inline-flex max-w-full min-w-0 items-center gap-1.5 rounded-lg border border-border bg-white px-3 py-2 text-sm no-underline transition-colors hover:border-blue-300 hover:text-blue-600 dark:bg-gray-900 dark:hover:border-blue-700 dark:hover:text-blue-400"
           >
             <span className="text-[10px] uppercase tracking-wide text-muted-foreground">{link.relationLabel}</span>
-            <span className="min-w-0 max-w-[18rem] flex-1 truncate">{link.title}</span>
+            <span className="min-w-0 max-w-[18rem] flex-1 truncate" title={link.title}>{link.title}</span>
             <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
           </Link>
         ))}

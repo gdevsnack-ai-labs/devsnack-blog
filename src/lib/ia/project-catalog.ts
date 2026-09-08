@@ -37,6 +37,11 @@ const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
     lifecycle: 'testing',
     isOpenEnded: true,
   },
+  'luna-agentic-game-dev': {
+    domain: ['game_ai', 'automation'],
+    lifecycle: 'active',
+    isOpenEnded: true,
+  },
   'hermes-memory': {
     domain: ['agent_memory', 'automation'],
     lifecycle: 'active',

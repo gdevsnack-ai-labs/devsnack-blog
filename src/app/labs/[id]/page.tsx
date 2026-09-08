@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowLeft, Calendar, CheckCircle2, ExternalLink, FileText, FlaskConical, PlayCircle } from 'lucide-react'
+import { ArrowLeft, Calendar, CheckCircle2, FlaskConical } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import { experiments } from '@/data/experiments'
 import { AUTONOMOUS_AI_BLOG_LIVE } from '@/data/autonomous-ai-blog-live'
@@ -7,7 +7,7 @@ import { ProgressBar } from '@/components/progress-bar'
 import { getCurrentStage, getDomainLabel, getProjectFinding, getKeyMetrics, getKeyResults, getLabBoardMetadata, getLatestResult, getNature, getSortedTimeline, LAB_FILTERS } from '@/lib/labs'
 import { getPublishedLabNotes } from '@/lib/lab-notes'
 import { mergePublishedLabNotes } from '@/lib/lab-note-projection'
-import { getRelatedAssets } from '@/lib/ia/hub-projections'
+import { getRelatedAssets, type RelatedAssetLink } from '@/lib/ia/hub-projections'
 import { getProjectFeedOutputs } from '@/lib/ia/feed-output-projection'
 import { ProjectFeedOutputs } from '@/components/project-feed-outputs'
 import { RelatedAssets } from '@/components/related-assets'
@@ -30,11 +30,37 @@ const BOARD_STATUS_CLASS: Record<string, string> = {
   completed: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
 }
 
-function relatedLabel(href: string): string {
-  if (href.startsWith('/research/')) return 'Knowledge'
-  if (href.startsWith('/devsnack/')) return 'Stories'
-  if (href.startsWith('/lab/')) return 'Lab'
-  return 'Related'
+function getProjectRelatedLinks(experiment: (typeof experiments)[number], projectId: string): RelatedAssetLink[] {
+  const projectHref = `/labs/${projectId}`
+  const registered = getRelatedAssets(`project:${projectId}`).filter(link => link.href !== projectHref)
+  const seen = new Set(registered.map(link => link.href))
+  const directLinks: RelatedAssetLink[] = [
+    ...(experiment.youtubeVideos || []).map(videoId => ({
+      assetId: `youtube:${videoId}`,
+      relation: 'supports' as const,
+      relationLabel: 'YouTube',
+      title: 'YouTube video',
+      href: `https://youtube.com/watch?v=${videoId}`,
+      kind: 'showcase' as const,
+    })),
+    ...(experiment.githubUrl ? [{
+      assetId: `github:${experiment.githubUrl}`,
+      relation: 'supports' as const,
+      relationLabel: 'GitHub',
+      title: 'GitHub repository',
+      href: experiment.githubUrl,
+      kind: 'knowledge' as const,
+    }] : []),
+    ...(experiment.externalLinks || []).map(link => ({
+      assetId: `external:${link.href}`,
+      relation: 'supports' as const,
+      relationLabel: 'External',
+      title: link.label,
+      href: link.href,
+      kind: 'knowledge' as const,
+    })),
+  ]
+  return [...registered, ...directLinks.filter(link => !seen.has(link.href))]
 }
 
 export const revalidate = 60
@@ -295,40 +321,7 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
             </section>
           )}
 
-          <section aria-labelledby="related-heading">
-            <div className="mb-4 flex items-center gap-2">
-              <ExternalLink className="h-5 w-5 text-muted-foreground" />
-              <h2 id="related-heading" className="text-xl font-bold">Related</h2>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {(experiment.blogPosts || []).map(href => (
-                <Link key={href} href={href} className="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-2 text-sm text-blue-700 no-underline transition-colors hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-300 dark:hover:bg-blue-900/40">
-                  <FileText className="h-4 w-4" />
-                  {relatedLabel(href)}
-                </Link>
-              ))}
-              {(experiment.youtubeVideos || []).map(videoId => (
-                <a key={videoId} href={`https://youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 no-underline transition-colors hover:bg-red-100 dark:bg-red-900/20 dark:text-red-300 dark:hover:bg-red-900/40">
-                  <PlayCircle className="h-4 w-4" />
-                  YouTube
-                </a>
-              ))}
-              {experiment.githubUrl && (
-                <a href={experiment.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-lg bg-muted px-3 py-2 text-sm text-muted-foreground no-underline transition-colors hover:text-foreground">
-                  <ExternalLink className="h-4 w-4" />
-                  GitHub
-                </a>
-              )}
-              {(experiment.externalLinks || []).map(link => (
-                <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-lg bg-purple-50 px-3 py-2 text-sm text-purple-700 no-underline transition-colors hover:bg-purple-100 dark:bg-purple-900/20 dark:text-purple-300 dark:hover:bg-purple-900/40">
-                  <ExternalLink className="h-4 w-4" />
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </section>
-
-          <RelatedAssets links={getRelatedAssets(`project:${id}`)} title="Registered Relations" />
+          <RelatedAssets links={getProjectRelatedLinks(experiment, id)} title="Related" />
         </main>
       </div>
     </div>

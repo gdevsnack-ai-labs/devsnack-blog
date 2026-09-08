@@ -274,7 +274,6 @@ const ISEKAI_MAGE: Experiment = {
     { name: '최종 MP4 합성 + 출력 검증', status: '완료', date: '2026.08.20', blogSlug: '/lab/isekai-instagram-mage-prologue', result: '6개 클립을 0.45초 xfade/acrossfade로 합성. 최종 58초·1280×704·H.264 NVENC·AAC 생성, ffprobe 및 faststart/yuv420p 검증, 공개 게시' },
   ],
   blogPosts: ['/lab/isekai-instagram-mage-prologue'],
-  githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
 }
 
 // ── Luna Agentic Game Development Lab — AI 개발팀 E2E 실험 (2026.08.23 시작) ──
