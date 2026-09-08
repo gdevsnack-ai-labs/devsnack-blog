@@ -46,8 +46,17 @@ export interface StockpulseFixedProjection {
           source: string
           readback_verified: boolean
           sha256: string | null
+          used?: boolean
+          used_fields?: string[]
+          application_note?: string | null
         }
         snapshot_cutoff: string | null
+      }
+      evening_analysis?: {
+        summary?: string
+        actual_driver_analysis?: string
+        failure_analysis?: string
+        improvement?: { action_detail?: string; expected_impact?: string }
       }
       actual_market_result: {
         status: string
@@ -121,6 +130,15 @@ export interface StockpulseFixedViewModel {
   modelSet: string[]
   evaluationStatus: string
   evidenceRefs: Array<{ kind: string; id: string }>
+  runtimeImprovement: {
+    status: string
+    source: string
+    readbackVerified: boolean
+    sha256: string | null
+    used: boolean
+    usedFields: string[]
+    applicationNote: string | null
+  }
   effectiveConfig: FixedProjectionRecord
   improvements: FixedProjectionRecord[]
   findings: FixedProjectionRecord[]
@@ -232,6 +250,16 @@ export function getStockpulseFixedViewModel(
         ? 'Proposal pending'
         : 'No new applied change'
   const publications = run.publications ?? projection.publication
+  const runtimeContext = run.morning_llm_prediction.runtime_improvement
+  const runtimeImprovement = {
+    status: runtimeContext?.status || 'not_evidenced',
+    source: runtimeContext?.source || 'morning_artifact',
+    readbackVerified: runtimeContext?.readback_verified === true,
+    sha256: typeof runtimeContext?.sha256 === 'string' ? runtimeContext.sha256 : null,
+    used: runtimeContext?.used === true,
+    usedFields: Array.isArray(runtimeContext?.used_fields) ? runtimeContext.used_fields : [],
+    applicationNote: typeof runtimeContext?.application_note === 'string' ? runtimeContext.application_note : null,
+  }
 
   return {
     project: {
@@ -260,6 +288,7 @@ export function getStockpulseFixedViewModel(
     modelSet: run.actual_model_set,
     evaluationStatus: run.ml_evaluation.status,
     evidenceRefs: run.evidence_refs,
+    runtimeImprovement,
     effectiveConfig: projection.snapshot.current_effective_config,
     improvements: projection.improvements.records,
     findings: projection.findings.records,

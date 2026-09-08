@@ -6,7 +6,7 @@ import type { StockpulseFixedProjection } from '@/lib/stockpulse-v1-fixed'
 
 export const metadata: Metadata = buildRouteMetadata({
   title: 'StockPulse V1 Fixed — DevSnack Lab',
-  description: 'StockPulse V1 Fixed의 Live Shadow 예측·실제 결과·평가·개선 상태를 보여주는 별도 Experiment Dashboard',
+  description: 'AI가 KOSPI·KOSDAQ 방향을 예측하고, 실제 장 마감 결과와 비교해 다음 판단을 개선하는 StockPulse V1 Fixed 실험',
   canonicalPath: '/labs/stockpulse-v1-fixed',
   section: 'Lab Project',
 })

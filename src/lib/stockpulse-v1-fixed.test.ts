@@ -112,6 +112,12 @@ expect(historyPublications.length === 3, 'fixed feed history must filter out dat
 expect(historyPublications.map(item => `${item.date}:${item.stage}`).join(',') === '2026-09-08:morning,2026-09-07:evening,2026-09-07:morning', 'fixed feed history must sort newest date and Evening before Morning')
 expect(!/2026-09-0\d/.test(componentSource), 'component must not hardcode a publication date')
 expect(!componentSource.includes('<Link href={view.publication.'), 'component must not pass a nullable pending href directly to Link')
+expect(!componentSource.includes('Evidence detail'), 'public Lab must not expose raw evidence detail')
+expect(!componentSource.includes('Runtime evidence'), 'public Lab must not expose runtime evidence')
+expect(!componentSource.includes('Read-only snapshot'), 'public Lab must not expose operator snapshot wording')
+expect(!componentSource.includes('Day 1'), 'public Lab must not hardcode Day 1 wording')
+expect(componentSource.includes('5개 거래 세션 후 확인'), 'public ML status must explain evaluation maturity')
+expect(componentSource.includes('이날의 판단과 결과'), 'Run detail must use reader-facing wording')
 expect(fixtureView.publicSecurityHits.length === 0, 'public security scan failed for the projection')
 
 console.log(`StockPulse V1 Fixed view model test passed: runs=${projection.runs.records.length}`)
