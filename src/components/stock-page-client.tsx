@@ -91,7 +91,7 @@ function StockPulseHubView({ page, type, month, query, latestPublication, curren
       <BlogHeader title="StockPulse" subtitle="Daily market publication · KOSPI / KOSDAQ" icon="trending" color="green" />
       <main className="mx-auto max-w-6xl px-4 py-8">
         <section className="rounded-2xl border border-green-200 bg-green-50/60 p-6 dark:border-green-900/50 dark:bg-green-950/20 md:p-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-green-700 dark:text-green-300">StockPulse Feed · V1 Fixed current / V1 historical archive</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-green-700 dark:text-green-300">StockPulse Feed · V1 Fixed current</p>
           <h1 className="mt-2 text-2xl font-bold tracking-tight md:text-4xl">매일 읽는 한국 증시 리포트</h1>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground md:text-base">현재 StockPulse Feed는 V1 Fixed에서 생성되는 Morning·Evening Daily Report를 연결합니다. 최신 리포트 전문은 GitHub Pages publication에서 읽고, 과거 V1 Daily Report는 기존 archive에서 계속 확인합니다.</p>
           <div className="mt-5 rounded-xl border-l-4 border-green-600 bg-green-50 p-4 text-sm leading-relaxed text-green-950 dark:bg-green-950/30 dark:text-green-100">
@@ -100,9 +100,7 @@ function StockPulseHubView({ page, type, month, query, latestPublication, curren
           </div>
           <div className="mt-5 flex flex-wrap gap-2">
             {latestPublication && <a href={latestPublication.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-lg bg-green-700 px-3 py-2 text-sm font-medium text-white no-underline hover:bg-green-800">최신 {latestPublication.stage === 'morning' ? 'Morning' : 'Evening'} Report</a>}
-            <a href="https://gdevsnack-ai-labs.github.io/stockpulse-publication/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-lg border border-green-300 px-3 py-2 text-sm font-medium text-green-800 no-underline hover:bg-green-100 dark:border-green-800 dark:text-green-200 dark:hover:bg-green-900/30">V1 Publication</a>
-            <a href="https://gdevsnack-ai-labs.github.io/stockpulse-publication/archive/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-lg border border-green-300 px-3 py-2 text-sm font-medium text-green-800 no-underline hover:bg-green-100 dark:border-green-800 dark:text-green-200 dark:hover:bg-green-900/30">V1 전체 Archive</a>
-            <Link href="/labs/stockpulse-ai-self-improvement" className="inline-flex items-center rounded-lg border border-border px-3 py-2 text-sm font-medium no-underline hover:border-green-300 hover:text-green-700 dark:hover:border-green-700 dark:hover:text-green-300">V1 실험 결과</Link>
+            <Link href="/labs/stockpulse-v1-fixed" className="inline-flex items-center rounded-lg border border-green-300 px-3 py-2 text-sm font-medium text-green-800 no-underline hover:bg-green-100 dark:border-green-800 dark:text-green-200 dark:hover:bg-green-900/30">현재 실험 페이지</Link>
           </div>
         </section>
 
@@ -114,6 +112,14 @@ function StockPulseHubView({ page, type, month, query, latestPublication, curren
         <details id="stockpulse-historical-archive" className="mt-10 rounded-2xl border border-border bg-white dark:bg-gray-900">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 text-sm font-semibold [&::-webkit-details-marker]:hidden md:px-6"><span>StockPulse V1 Historical Archive · {allReports.length} reports</span><span className="text-xs font-normal text-muted-foreground">과거 V1 Daily Reports</span></summary>
           <div className="border-t border-border px-4 pb-6 md:px-6 md:pb-8">
+        <section className="pt-6" aria-label="V1 legacy resources">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Legacy V1 resources</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <a href="https://gdevsnack-ai-labs.github.io/stockpulse-publication/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-lg border border-green-300 px-3 py-2 text-sm font-medium text-green-800 no-underline hover:bg-green-100 dark:border-green-800 dark:text-green-200 dark:hover:bg-green-900/30">V1 Publication</a>
+            <a href="https://gdevsnack-ai-labs.github.io/stockpulse-publication/archive/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-lg border border-green-300 px-3 py-2 text-sm font-medium text-green-800 no-underline hover:bg-green-100 dark:border-green-800 dark:text-green-200 dark:hover:bg-green-900/30">V1 전체 Archive</a>
+            <Link href="/labs/stockpulse-ai-self-improvement" className="inline-flex items-center rounded-lg border border-border px-3 py-2 text-sm font-medium no-underline hover:border-green-300 hover:text-green-700 dark:hover:border-green-700 dark:hover:text-green-300">V1 실험 결과</Link>
+          </div>
+        </section>
         <section className="pt-6 grid gap-3 sm:grid-cols-4" aria-label="StockPulse archive summary">
           {[
             ['V1 Archive Reports', '68', 'Historical V1 archive'],
@@ -127,9 +133,9 @@ function StockPulseHubView({ page, type, month, query, latestPublication, curren
 
         <section className="mt-10" aria-labelledby="stockpulse-reports-heading">
           <div className="mb-4 flex flex-wrap items-end justify-between gap-3"><div><h2 id="stockpulse-reports-heading" className="text-2xl font-bold">V1 Historical Report Archive</h2><p className="mt-1 text-sm text-muted-foreground">과거 V1 publication의 날짜별 원문으로 이동합니다.</p></div><p className="text-sm text-muted-foreground">{count}개 · {page}/{totalPages}페이지</p></div>
-          <div className="mb-5 flex flex-wrap gap-2 rounded-xl border border-border bg-muted/30 p-3">
+          <div id="stockpulse-historical-filters" className="mb-5 flex flex-wrap gap-2 rounded-xl border border-border bg-muted/30 p-3">
             <Link href="/stock" className={`rounded-lg px-3 py-1.5 text-sm no-underline ${!type && !month && !query ? 'bg-foreground text-background' : 'hover:bg-muted'}`}>전체</Link>
-            {(['morning', 'close', 'daily'] as StockPulseReportType[]).map(key => <Link key={key} href={`/stock?type=${key}`} className={`rounded-lg px-3 py-1.5 text-sm no-underline ${type === key ? 'bg-foreground text-background' : 'hover:bg-muted'}`}>{TYPE_LABEL[key]}</Link>)}
+            {(['morning', 'close'] as StockPulseReportType[]).map(key => <Link key={key} href={`/stock?type=${key}`} className={`rounded-lg px-3 py-1.5 text-sm no-underline ${type === key ? 'bg-foreground text-background' : 'hover:bg-muted'}`}>{TYPE_LABEL[key]}</Link>)}
             <label className="ml-auto flex items-center gap-2 text-sm text-muted-foreground">월<select defaultValue={month || ''} onChange={event => { window.location.href = event.target.value ? `/stock?month=${event.target.value}` : '/stock' }} className="rounded-md border border-border bg-background px-2 py-1 text-sm text-foreground"><option value="">전체</option>{months.map(item => <option key={item} value={item}>{item}</option>)}</select></label>
           </div>
           {reports.length === 0 ? <p className="rounded-xl border border-dashed border-border p-8 text-center text-muted-foreground">해당 조건의 Report가 없습니다.</p> : <div className="grid gap-4">{reports.map(report => <ReportCard key={`${report.source_record_id}-${report.target_path}`} report={report} />)}</div>}

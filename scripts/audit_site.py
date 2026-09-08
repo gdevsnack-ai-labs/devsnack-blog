@@ -511,6 +511,19 @@ async def check_browser(failures: list[str]) -> None:
             await archive.locator("summary").click()
             if await archive.get_attribute("open") is None:
                 failures.append("/stock historical archive: details did not open")
+            current_section = page.locator('section[aria-labelledby="stockpulse-fixed-reports-heading"]')
+            if await current_section.locator('a[href*="stockpulse-publication"]').count() > 0:
+                failures.append("/stock current feed: legacy V1 publication link must stay in historical archive")
+            if await current_section.locator('a[href="/labs/stockpulse-ai-self-improvement"]').count() > 0:
+                failures.append("/stock current feed: completed V1 experiment link must stay in historical archive")
+            if await current_section.locator('a[href*="stockpulse-v1-fixed-publication"]').count() != current_count:
+                failures.append("/stock current feed: current cards must link to V1 Fixed publication URLs")
+            archive_legacy = archive.locator('section[aria-label="V1 legacy resources"]')
+            if await archive_legacy.locator('a[href*="stockpulse-publication"]').count() != 2 or await archive_legacy.locator('a[href="/labs/stockpulse-ai-self-improvement"]').count() != 1:
+                failures.append("/stock historical archive: legacy V1 resources are not grouped in the archive")
+            historical_filters = archive.locator("#stockpulse-historical-filters")
+            if await historical_filters.get_by_role("link", name="Daily Report", exact=True).count() != 0:
+                failures.append("/stock historical filters: Daily Report filter must be removed")
             archive_text = await page.locator("body").inner_text()
             for marker in ("V1 Archive Reports", "68", "Morning", "Market Close", "Daily Report"):
                 if marker not in archive_text:
