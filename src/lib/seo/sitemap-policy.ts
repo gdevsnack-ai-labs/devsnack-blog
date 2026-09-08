@@ -1,5 +1,5 @@
 import { experiments, getPublicLabProjects } from '@/data/experiments'
-import { PUBLIC_RELEASE_ID } from '@/lib/benchmarks/public-release'
+import { getPublicBenchmarkModelSlugs, PUBLIC_RELEASE_ID } from '@/lib/benchmarks/public-release'
 // @ts-expect-error Node's strip-types runner requires the explicit extension.
 import { isIndexableSearchPolicy, searchPolicyForPath } from './search-policy.ts'
 
@@ -29,6 +29,7 @@ const PUBLIC_LAB_PROJECT_PATHS = new Set(
 
 const PUBLIC_BENCHMARK_RELEASE_PATHS = new Set([
   `/benchmarks/${PUBLIC_RELEASE_ID}`,
+  ...getPublicBenchmarkModelSlugs().map(slug => `/benchmarks/models/${slug}`),
 ])
 
 const NAVIGATION_ONLY_PREFIXES = [

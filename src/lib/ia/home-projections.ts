@@ -176,7 +176,7 @@ export function projectHomePublishedBenchmark(release: PublicBenchmarkRelease): 
   const { scope } = release
   const reasoning = scope.reasoning_mode.toUpperCase()
   return {
-    title: 'DGX Spark GB10 — 18개 GGUF 모델 통합 Benchmark',
+    title: `DGX Spark GB10 — ${scope.model_variant_count}개 모델 통합 Benchmark`,
     target: `${scope.model_variant_count} variants · ${scope.suite_count} suites · ${release.generated_at}`,
     environment: `${scope.hardware} · ${scope.runtime} · reasoning ${reasoning}`,
     result: `${scope.revalidated_evaluator_runs}개 evaluator run과 ${scope.reused_source_runs}개 검증된 source run을 합친 고정 public release입니다.`,

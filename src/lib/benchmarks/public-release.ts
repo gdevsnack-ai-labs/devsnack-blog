@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
-export const PUBLIC_RELEASE_ID = 'gb10-llm-benchmark-v1-20260906'
+export const PUBLIC_RELEASE_ID = 'gb10-local-llm-benchmark'
+export const PUBLIC_RELEASE_JSON_PATH = `/data/benchmarks/${PUBLIC_RELEASE_ID}.json`
 
 export const BENCHMARK_SUITE_KEYS = [
   'performance',
@@ -14,6 +15,7 @@ export const BENCHMARK_SUITE_KEYS = [
 ] as const
 
 export type BenchmarkSuiteKey = typeof BENCHMARK_SUITE_KEYS[number]
+export type BenchmarkMtpMode = 'mtp' | 'non-mtp'
 
 export type PublicBenchmarkSuite = {
   status: 'available' | 'unavailable' | 'not_in_public_export'
@@ -30,6 +32,9 @@ export type PublicBenchmarkModel = {
   model: string
   variant: string
   quantization: string
+  model_family_slug: string
+  mtp_mode: BenchmarkMtpMode
+  server_command?: string
   benchmark_versions: Record<string, string>
   suites: Record<BenchmarkSuiteKey, PublicBenchmarkSuite>
   provenance: {
@@ -39,10 +44,21 @@ export type PublicBenchmarkModel = {
   }
 }
 
+export type PublicBenchmarkFamily = {
+  slug: string
+  name: string
+  summary: string
+  variant_count: number
+  model_ids: string[]
+  last_updated: string
+  [key: string]: unknown
+}
+
 export type PublicBenchmarkRelease = {
   schema_version: string
   release_id: string
   generated_at: string
+  updated_at?: string
   title: string
   status: string
   scope: {
@@ -70,6 +86,7 @@ export type PublicBenchmarkRelease = {
     limitations: string[]
   }
   source_policy: Record<string, string>
+  model_families: Record<string, PublicBenchmarkFamily>
   models: PublicBenchmarkModel[]
   counts: Record<string, number>
 }
@@ -82,6 +99,7 @@ export function validatePublicBenchmarkRelease(value: unknown): PublicBenchmarkR
   const release = asRecord(value)
   const models = Array.isArray(release.models) ? release.models : []
   const scope = asRecord(release.scope)
+  const families = asRecord(release.model_families)
 
   if (release.release_id !== PUBLIC_RELEASE_ID) {
     throw new Error(`Unexpected benchmark release: ${String(release.release_id)}`)
@@ -89,10 +107,10 @@ export function validatePublicBenchmarkRelease(value: unknown): PublicBenchmarkR
   if (release.schema_version !== 'gb10-benchmark-public-v1') {
     throw new Error(`Unsupported benchmark schema: ${String(release.schema_version)}`)
   }
-  if (models.length !== 18 || scope.model_variant_count !== 18) {
+  if (models.length === 0 || scope.model_variant_count !== models.length) {
     throw new Error(`Benchmark model count contract failed: ${models.length}`)
   }
-  if (scope.suite_count !== 7 || scope.source_run_references !== 126) {
+  if (scope.suite_count !== BENCHMARK_SUITE_KEYS.length || scope.source_run_references !== models.length * BENCHMARK_SUITE_KEYS.length) {
     throw new Error('Benchmark suite/source count contract failed')
   }
 
@@ -100,7 +118,11 @@ export function validatePublicBenchmarkRelease(value: unknown): PublicBenchmarkR
   for (const rawModel of models) {
     const model = asRecord(rawModel)
     const id = String(model.model_id || '')
+    const familySlug = String(model.model_family_slug || '')
+    const mtpMode = String(model.mtp_mode || '')
     if (!id || ids.has(id)) throw new Error(`Duplicate or empty benchmark model_id: ${id}`)
+    if (!familySlug || !families[familySlug]) throw new Error(`Unknown benchmark model family: ${familySlug}`)
+    if (mtpMode !== 'mtp' && mtpMode !== 'non-mtp') throw new Error(`Invalid MTP mode for ${id}: ${mtpMode}`)
     ids.add(id)
     const suites = asRecord(model.suites)
     for (const suite of BENCHMARK_SUITE_KEYS) {
@@ -114,13 +136,35 @@ export function validatePublicBenchmarkRelease(value: unknown): PublicBenchmarkR
     }
   }
 
+  for (const [slug, rawFamily] of Object.entries(families)) {
+    const family = asRecord(rawFamily)
+    if (family.slug !== slug || !family.name || !Array.isArray(family.model_ids)) {
+      throw new Error(`Invalid benchmark family metadata: ${slug}`)
+    }
+  }
+
   return value as PublicBenchmarkRelease
 }
 
-export function loadPublicBenchmarkRelease(releaseId = PUBLIC_RELEASE_ID): PublicBenchmarkRelease {
-  if (releaseId !== PUBLIC_RELEASE_ID) throw new Error(`Unknown benchmark release: ${releaseId}`)
+export function loadPublicBenchmarkRelease(): PublicBenchmarkRelease {
   const path = join(process.cwd(), 'public', 'data', 'benchmarks', `${PUBLIC_RELEASE_ID}.json`)
   return validatePublicBenchmarkRelease(JSON.parse(readFileSync(path, 'utf8')))
+}
+
+export function getPublicBenchmarkFamilies(release = loadPublicBenchmarkRelease()): PublicBenchmarkFamily[] {
+  return Object.values(release.model_families).sort((a, b) => a.name.localeCompare(b.name))
+}
+
+export function getPublicBenchmarkModelSlugs(release = loadPublicBenchmarkRelease()): string[] {
+  return getPublicBenchmarkFamilies(release).map(family => family.slug)
+}
+
+export function getPublicBenchmarkFamily(release: PublicBenchmarkRelease, slug: string): PublicBenchmarkFamily | null {
+  return release.model_families[slug] || null
+}
+
+export function benchmarkMtpLabel(mode: BenchmarkMtpMode): string {
+  return mode === 'mtp' ? 'MTP' : 'non-MTP'
 }
 
 export function benchmarkSuiteLabel(key: BenchmarkSuiteKey): string {

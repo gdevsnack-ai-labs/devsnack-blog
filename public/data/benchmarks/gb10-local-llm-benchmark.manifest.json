@@ -1,0 +1,21 @@
+{
+  "release_id": "gb10-local-llm-benchmark",
+  "schema_version": "gb10-benchmark-public-v1",
+  "sha256": "f96180b69871dbd3c9ed7fc6c190e48c0aa88a68eb9376255a0cbf1423e44fae",
+  "generated_at": "2026-09-08",
+  "updated_at": "2026-09-08",
+  "counts": {
+    "models": 19,
+    "suites": 7,
+    "revalidated_evaluator_runs": 76,
+    "reused_source_runs": 57,
+    "source_run_references": 133
+  },
+  "raw_runs_public": false,
+  "generated_from": [
+    "results-public/releases/gb10-llm-benchmark-v1-20260906.json",
+    "docs/public/LING30_FLASH_FULL_BENCHMARK_V1.md",
+    "runs/full-cycles/ling30-flash-mxfp4-v1-full-20260907-183412-190139/manifest.json",
+    "runs/<source-run-id>/manifest.json + result.json"
+  ]
+}
