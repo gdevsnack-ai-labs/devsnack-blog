@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "npm run test:current && npm run test:audit",
-    "test:current": "node --experimental-strip-types src/lib/stockpulse-v1-fixed.test.ts",
+    "test:current": "node --experimental-strip-types src/lib/stockpulse-v1-fixed.test.ts && node --experimental-strip-types src/lib/stockpulse-migration.test.ts",
     "test:audit": "python3 -m unittest scripts/audit_site_test.py scripts/audit_public_content_test.py scripts/audit_source_security_test.py",
     "audit:site": "SITE_URL=https://devsnack-blog.vercel.app python3 scripts/audit_site.py",
     "audit:public-content": "python3 scripts/audit_public_content.py",

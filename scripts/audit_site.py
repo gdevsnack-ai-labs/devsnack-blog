@@ -512,15 +512,22 @@ async def check_browser(failures: list[str]) -> None:
             if await archive.get_attribute("open") is None:
                 failures.append("/stock historical archive: details did not open")
             current_section = page.locator('section[aria-labelledby="stockpulse-fixed-reports-heading"]')
+            intro = page.locator('main > section').first
             if await current_section.locator('a[href*="stockpulse-publication"]').count() > 0:
                 failures.append("/stock current feed: legacy V1 publication link must stay in historical archive")
             if await current_section.locator('a[href="/labs/stockpulse-ai-self-improvement"]').count() > 0:
                 failures.append("/stock current feed: completed V1 experiment link must stay in historical archive")
             if await current_section.locator('a[href*="stockpulse-v1-fixed-publication"]').count() != current_count:
                 failures.append("/stock current feed: current cards must link to V1 Fixed publication URLs")
+            fixed_publication_cta = intro.locator('a[href="https://gdevsnack-ai-labs.github.io/stockpulse-v1-fixed-publication/"]')
+            if await fixed_publication_cta.count() != 1:
+                failures.append("/stock current intro: V1 Fixed Publication link is missing")
             archive_legacy = archive.locator('section[aria-label="V1 legacy resources"]')
             if await archive_legacy.locator('a[href*="stockpulse-publication"]').count() != 2 or await archive_legacy.locator('a[href="/labs/stockpulse-ai-self-improvement"]').count() != 1:
                 failures.append("/stock historical archive: legacy V1 resources are not grouped in the archive")
+            archive_cards = archive.locator('section[aria-labelledby="stockpulse-reports-heading"] a.group')
+            if await archive.locator('section[aria-labelledby="stockpulse-reports-heading"] a.group[href*="stockpulse-v1-fixed-publication"]').count() > 0:
+                failures.append("/stock historical archive: historical cards must not link to V1 Fixed publication")
             historical_filters = archive.locator("#stockpulse-historical-filters")
             if await historical_filters.get_by_role("link", name="Daily Report", exact=True).count() != 0:
                 failures.append("/stock historical filters: Daily Report filter must be removed")

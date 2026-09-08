@@ -7,6 +7,7 @@ import { BlogHeader } from '@/components/blog-header'
 import { Pagination } from '@/components/pagination'
 import { stockpulseV1ExternalReports, type StockPulseExternalReport, type StockPulseReportType } from '@/lib/stockpulse-migration'
 import type { StockpulseFixedPublicationSummary } from '@/lib/stockpulse-v1-fixed'
+import { STOCKPULSE_V1_FIXED_PUBLICATION_ROOT } from '@/lib/stockpulse-v1-fixed'
 
 const PAGE_SIZE = 24
 const allReports = stockpulseV1ExternalReports
@@ -100,6 +101,7 @@ function StockPulseHubView({ page, type, month, query, latestPublication, curren
           </div>
           <div className="mt-5 flex flex-wrap gap-2">
             {latestPublication && <a href={latestPublication.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-lg bg-green-700 px-3 py-2 text-sm font-medium text-white no-underline hover:bg-green-800">최신 {latestPublication.stage === 'morning' ? 'Morning' : 'Evening'} Report</a>}
+            <a href={`${STOCKPULSE_V1_FIXED_PUBLICATION_ROOT}/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-lg border border-green-300 px-3 py-2 text-sm font-medium text-green-800 no-underline hover:bg-green-100 dark:border-green-800 dark:text-green-200 dark:hover:bg-green-900/30">V1 Fixed Publication</a>
             <Link href="/labs/stockpulse-v1-fixed" className="inline-flex items-center rounded-lg border border-green-300 px-3 py-2 text-sm font-medium text-green-800 no-underline hover:bg-green-100 dark:border-green-800 dark:text-green-200 dark:hover:bg-green-900/30">현재 실험 페이지</Link>
           </div>
         </section>
