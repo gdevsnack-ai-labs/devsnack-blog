@@ -33,14 +33,18 @@ const fixedPublications = getAvailableStockpulsePublications(projection)
 const expectedAvailableCount = projection.runs.records.reduce((count, run) => count + [run.publications.morning, run.publications.evening].filter(publication => publication.status === 'available' && Boolean(publication.path)).length, 0)
 expect(projection.runs.records.length >= 5, 'current projection must retain the recovered multi-date run history')
 expect(fixedPublications.length === expectedAvailableCount, 'current projection must expose every available publication in its history')
-expect(fixedPublications.length === 9, 'current recovered projection must expose the 9 available September publications')
-expect(fixedPublications[0]?.date === '2026-09-08' && fixedPublications[0]?.stage === 'morning', 'current publication history must start with the latest Morning report')
-expect(fixedPublications.at(-1)?.date === '2026-09-02' && fixedPublications.at(-1)?.stage === 'morning', 'current publication history must retain the oldest available Morning report')
+expect(fixedPublications.length >= 9, 'current recovered projection must retain the September publication history')
+expect(fixedPublications[0]?.date === '2026-09-08', 'current publication history must start with the latest trading date')
+const latestRun = projection.runs.records[0]
+const latestStage = latestRun.publications.evening.status === 'available' && Boolean(latestRun.publications.evening.path) ? 'evening' : 'morning'
+const latestRunPublication = latestRun.publications[latestStage]
+expect(fixedPublications[0]?.stage === latestStage, 'latest available publication must prefer the same-date Evening when it exists')
+expect(fixedPublications.some(item => item.date === '2026-09-02' && item.stage === 'morning'), 'current publication history must retain the oldest recovered Morning report')
 expect(fixedPublications.every(item => item.status === 'available'), 'current publication list must contain available records only')
-expect(latestPublication?.stage === 'morning', 'latest available publication must use the current Morning report')
-expect(latestPublication?.date === '2026-09-08', 'latest available publication must use the latest trading date')
-expect(latestPublication?.title === 'Morning report · 2026-09-08 · StockPulse V1 Fixed', 'latest publication title must identify the actual report')
-expect(latestPublication?.href === `${STOCKPULSE_V1_FIXED_PUBLICATION_ROOT}/reports/2026-09-08/morning/`, 'latest publication must use the supplied publication path')
+expect(latestPublication?.stage === latestStage, 'latest available publication must follow the latest run availability')
+expect(latestPublication?.date === latestRun.trading_date, 'latest publication must use the latest trading date')
+expect(latestPublication?.title === `${latestStage === 'morning' ? 'Morning' : 'Evening'} report · ${latestRun.trading_date} · StockPulse V1 Fixed`, 'latest publication title must identify the actual report')
+expect(latestPublication?.href === `${STOCKPULSE_V1_FIXED_PUBLICATION_ROOT}/${latestRunPublication.path?.replace(/^\/+/, '')}`, 'latest publication must use the supplied publication path')
 
 for (const run of projection.runs.records) {
   const view = getStockpulseFixedViewModel(projection, run)
@@ -71,7 +75,16 @@ const latestEvening = getLatestAvailableStockpulsePublication(eveningFixture)
 expect(latestEvening?.stage === 'evening', 'same-date Evening must be preferred when it is available')
 const historyFixture = JSON.parse(JSON.stringify({
   ...projection,
-  runs: { ...projection.runs, records: [projection.runs.records[0]] },
+  runs: {
+    ...projection.runs,
+    records: [{
+      ...projection.runs.records[0],
+      publications: {
+        morning: { status: 'available', path: 'reports/2026-09-08/morning/' },
+        evening: { status: 'not_started', path: null },
+      },
+    }],
+  },
 })) as StockpulseFixedProjection
 const baseRun = historyFixture.runs.records[0]
 historyFixture.runs.records.push(

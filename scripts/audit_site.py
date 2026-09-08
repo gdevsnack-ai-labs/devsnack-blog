@@ -538,6 +538,13 @@ async def check_browser(failures: list[str]) -> None:
             archive_cards = await page.locator('section[aria-labelledby="stockpulse-reports-heading"] a.group').count()
             if archive_cards != 24:
                 failures.append(f"/stock historical archive: expected 24 first-page cards, got {archive_cards}")
+            await historical_filters.scroll_into_view_if_needed()
+            before_filter_scroll = await page.evaluate("window.scrollY")
+            await historical_filters.get_by_role("link", name="Morning", exact=True).click()
+            await page.wait_for_timeout(500)
+            after_filter_scroll = await page.evaluate("window.scrollY")
+            if before_filter_scroll > 80 and after_filter_scroll < before_filter_scroll - 80:
+                failures.append(f"/stock historical filters: scroll position reset from {before_filter_scroll} to {after_filter_scroll}")
         except Exception as error:
             failures.append(f"/stock current/archive browser check: {type(error).__name__}: {error}")
         finally:

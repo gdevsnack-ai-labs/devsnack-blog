@@ -32,6 +32,7 @@ export function Pagination({ page, totalPages, searchParams = {} }: PaginationPr
     <nav aria-label="페이지 이동" className="flex flex-wrap items-center justify-center gap-1 mt-8">
       {page > 1 && (
         <Link
+          scroll={false}
           href={pageHref(page - 1, searchParams)}
           className="px-3 py-1.5 rounded-lg border border-border text-sm hover:bg-muted no-underline"
         >
@@ -42,6 +43,7 @@ export function Pagination({ page, totalPages, searchParams = {} }: PaginationPr
         <span key={`ellipsis-${index}`} className="px-2 text-sm text-muted-foreground">…</span>
       ) : (
         <Link
+          scroll={false}
           key={item}
           href={pageHref(item, searchParams)}
           aria-current={item === page ? 'page' : undefined}
@@ -56,6 +58,7 @@ export function Pagination({ page, totalPages, searchParams = {} }: PaginationPr
       ))}
       {page < totalPages && (
         <Link
+          scroll={false}
           href={pageHref(page + 1, searchParams)}
           className="px-3 py-1.5 rounded-lg border border-border text-sm hover:bg-muted no-underline"
         >

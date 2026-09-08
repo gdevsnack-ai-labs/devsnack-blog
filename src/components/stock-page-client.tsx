@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { BlogHeader } from '@/components/blog-header'
 import { Pagination } from '@/components/pagination'
 import { stockpulseV1ExternalReports, type StockPulseExternalReport, type StockPulseReportType } from '@/lib/stockpulse-migration'
@@ -83,6 +83,7 @@ function FixedReportCard({ publication }: { publication: StockpulseFixedPublicat
 }
 
 function StockPulseHubView({ page, type, month, query, latestPublication, currentPublications }: { page: number; type?: StockPulseReportType; month?: string; query?: string; latestPublication: StockpulseFixedPublicationSummary | null; currentPublications: StockpulseFixedPublicationSummary[] }) {
+  const router = useRouter()
   const { reports, count } = getReports(page, type, month, query)
   const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE))
   const months = [...new Set(allReports.map(report => report.report_date.slice(0, 7)))].sort().reverse()
@@ -136,9 +137,9 @@ function StockPulseHubView({ page, type, month, query, latestPublication, curren
         <section className="mt-10" aria-labelledby="stockpulse-reports-heading">
           <div className="mb-4 flex flex-wrap items-end justify-between gap-3"><div><h2 id="stockpulse-reports-heading" className="text-2xl font-bold">V1 Historical Report Archive</h2><p className="mt-1 text-sm text-muted-foreground">과거 V1 publication의 날짜별 원문으로 이동합니다.</p></div><p className="text-sm text-muted-foreground">{count}개 · {page}/{totalPages}페이지</p></div>
           <div id="stockpulse-historical-filters" className="mb-5 flex flex-wrap gap-2 rounded-xl border border-border bg-muted/30 p-3">
-            <Link href="/stock" className={`rounded-lg px-3 py-1.5 text-sm no-underline ${!type && !month && !query ? 'bg-foreground text-background' : 'hover:bg-muted'}`}>전체</Link>
-            {(['morning', 'close'] as StockPulseReportType[]).map(key => <Link key={key} href={`/stock?type=${key}`} className={`rounded-lg px-3 py-1.5 text-sm no-underline ${type === key ? 'bg-foreground text-background' : 'hover:bg-muted'}`}>{TYPE_LABEL[key]}</Link>)}
-            <label className="ml-auto flex items-center gap-2 text-sm text-muted-foreground">월<select defaultValue={month || ''} onChange={event => { window.location.href = event.target.value ? `/stock?month=${event.target.value}` : '/stock' }} className="rounded-md border border-border bg-background px-2 py-1 text-sm text-foreground"><option value="">전체</option>{months.map(item => <option key={item} value={item}>{item}</option>)}</select></label>
+            <Link scroll={false} href="/stock" className={`rounded-lg px-3 py-1.5 text-sm no-underline ${!type && !month && !query ? 'bg-foreground text-background' : 'hover:bg-muted'}`}>전체</Link>
+            {(['morning', 'close'] as StockPulseReportType[]).map(key => <Link scroll={false} key={key} href={`/stock?type=${key}`} className={`rounded-lg px-3 py-1.5 text-sm no-underline ${type === key ? 'bg-foreground text-background' : 'hover:bg-muted'}`}>{TYPE_LABEL[key]}</Link>)}
+            <label className="ml-auto flex items-center gap-2 text-sm text-muted-foreground">월<select defaultValue={month || ''} onChange={event => { router.push(event.target.value ? `/stock?month=${event.target.value}` : '/stock', { scroll: false }) }} className="rounded-md border border-border bg-background px-2 py-1 text-sm text-foreground"><option value="">전체</option>{months.map(item => <option key={item} value={item}>{item}</option>)}</select></label>
           </div>
           {reports.length === 0 ? <p className="rounded-xl border border-dashed border-border p-8 text-center text-muted-foreground">해당 조건의 Report가 없습니다.</p> : <div className="grid gap-4">{reports.map(report => <ReportCard key={`${report.source_record_id}-${report.target_path}`} report={report} />)}</div>}
           <Pagination page={page} totalPages={totalPages} searchParams={{ type, month, query }} />

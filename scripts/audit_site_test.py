@@ -39,7 +39,7 @@ class AuditPolicyTest(unittest.TestCase):
     def test_current_stockpulse_publication_comes_from_available_projection_path(self):
         self.assertEqual(
             latest_v1_fixed_publication_url(),
-            'https://gdevsnack-ai-labs.github.io/stockpulse-v1-fixed-publication/reports/2026-09-08/morning/',
+            'https://gdevsnack-ai-labs.github.io/stockpulse-v1-fixed-publication/reports/2026-09-08/evening/',
         )
 
     def test_sitemap_rejects_retired_and_migrated_detail_urls(self):
