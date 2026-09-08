@@ -4,6 +4,7 @@ interface PaginationProps {
   page: number
   totalPages: number
   searchParams?: Record<string, string | undefined>
+  onNavigate?: () => void
 }
 
 function pageHref(page: number, searchParams: Record<string, string | undefined>) {
@@ -16,7 +17,7 @@ function pageHref(page: number, searchParams: Record<string, string | undefined>
   return query ? `?${query}` : ''
 }
 
-export function Pagination({ page, totalPages, searchParams = {} }: PaginationProps) {
+export function Pagination({ page, totalPages, searchParams = {}, onNavigate }: PaginationProps) {
   if (totalPages <= 1) return null
 
   const visiblePages = new Set<number>([1, totalPages, page - 1, page, page + 1])
@@ -33,6 +34,7 @@ export function Pagination({ page, totalPages, searchParams = {} }: PaginationPr
       {page > 1 && (
         <Link
           scroll={false}
+          onClick={onNavigate}
           href={pageHref(page - 1, searchParams)}
           className="px-3 py-1.5 rounded-lg border border-border text-sm hover:bg-muted no-underline"
         >
@@ -44,6 +46,7 @@ export function Pagination({ page, totalPages, searchParams = {} }: PaginationPr
       ) : (
         <Link
           scroll={false}
+          onClick={onNavigate}
           key={item}
           href={pageHref(item, searchParams)}
           aria-current={item === page ? 'page' : undefined}
@@ -59,6 +62,7 @@ export function Pagination({ page, totalPages, searchParams = {} }: PaginationPr
       {page < totalPages && (
         <Link
           scroll={false}
+          onClick={onNavigate}
           href={pageHref(page + 1, searchParams)}
           className="px-3 py-1.5 rounded-lg border border-border text-sm hover:bg-muted no-underline"
         >

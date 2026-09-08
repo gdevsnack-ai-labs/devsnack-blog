@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { BlogHeader } from '@/components/blog-header'
@@ -11,6 +11,11 @@ import { STOCKPULSE_V1_FIXED_PUBLICATION_ROOT } from '@/lib/stockpulse-v1-fixed'
 
 const PAGE_SIZE = 24
 const allReports = stockpulseV1ExternalReports
+const ARCHIVE_SCROLL_STORAGE_KEY = 'stockpulse-historical-archive-scroll'
+
+function rememberArchiveScroll() {
+  if (typeof window !== 'undefined') window.sessionStorage.setItem(ARCHIVE_SCROLL_STORAGE_KEY, String(window.scrollY))
+}
 
 const TYPE_LABEL: Record<StockPulseReportType, string> = {
   morning: 'Morning',
@@ -112,7 +117,7 @@ function StockPulseHubView({ page, type, month, query, latestPublication, curren
           {currentPublications.length > 0 ? <div className="grid gap-3">{currentPublications.map(publication => <FixedReportCard key={publication.href} publication={publication} />)}</div> : <p className="rounded-xl border border-dashed border-border p-8 text-center text-muted-foreground">현재 발행된 V1 Fixed Report가 없습니다.</p>}
         </section>
 
-        <details id="stockpulse-historical-archive" className="mt-10 rounded-2xl border border-border bg-white dark:bg-gray-900">
+        <details open={Boolean(type || month || query || page > 1)} id="stockpulse-historical-archive" className="mt-10 rounded-2xl border border-border bg-white dark:bg-gray-900">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 text-sm font-semibold [&::-webkit-details-marker]:hidden md:px-6"><span>StockPulse V1 Historical Archive · {allReports.length} reports</span><span className="text-xs font-normal text-muted-foreground">과거 V1 Daily Reports</span></summary>
           <div className="border-t border-border px-4 pb-6 md:px-6 md:pb-8">
         <section className="pt-6" aria-label="V1 legacy resources">
@@ -137,12 +142,12 @@ function StockPulseHubView({ page, type, month, query, latestPublication, curren
         <section className="mt-10" aria-labelledby="stockpulse-reports-heading">
           <div className="mb-4 flex flex-wrap items-end justify-between gap-3"><div><h2 id="stockpulse-reports-heading" className="text-2xl font-bold">V1 Historical Report Archive</h2><p className="mt-1 text-sm text-muted-foreground">과거 V1 publication의 날짜별 원문으로 이동합니다.</p></div><p className="text-sm text-muted-foreground">{count}개 · {page}/{totalPages}페이지</p></div>
           <div id="stockpulse-historical-filters" className="mb-5 flex flex-wrap gap-2 rounded-xl border border-border bg-muted/30 p-3">
-            <Link scroll={false} href="/stock" className={`rounded-lg px-3 py-1.5 text-sm no-underline ${!type && !month && !query ? 'bg-foreground text-background' : 'hover:bg-muted'}`}>전체</Link>
-            {(['morning', 'close'] as StockPulseReportType[]).map(key => <Link scroll={false} key={key} href={`/stock?type=${key}`} className={`rounded-lg px-3 py-1.5 text-sm no-underline ${type === key ? 'bg-foreground text-background' : 'hover:bg-muted'}`}>{TYPE_LABEL[key]}</Link>)}
-            <label className="ml-auto flex items-center gap-2 text-sm text-muted-foreground">월<select defaultValue={month || ''} onChange={event => { router.push(event.target.value ? `/stock?month=${event.target.value}` : '/stock', { scroll: false }) }} className="rounded-md border border-border bg-background px-2 py-1 text-sm text-foreground"><option value="">전체</option>{months.map(item => <option key={item} value={item}>{item}</option>)}</select></label>
+            <Link scroll={false} onClick={rememberArchiveScroll} href="/stock" className={`rounded-lg px-3 py-1.5 text-sm no-underline ${!type && !month && !query ? 'bg-foreground text-background' : 'hover:bg-muted'}`}>전체</Link>
+            {(['morning', 'close'] as StockPulseReportType[]).map(key => <Link scroll={false} onClick={rememberArchiveScroll} key={key} href={`/stock?type=${key}`} className={`rounded-lg px-3 py-1.5 text-sm no-underline ${type === key ? 'bg-foreground text-background' : 'hover:bg-muted'}`}>{TYPE_LABEL[key]}</Link>)}
+            <label className="ml-auto flex items-center gap-2 text-sm text-muted-foreground">월<select defaultValue={month || ''} onChange={event => { rememberArchiveScroll(); router.push(event.target.value ? `/stock?month=${event.target.value}` : '/stock', { scroll: false }) }} className="rounded-md border border-border bg-background px-2 py-1 text-sm text-foreground"><option value="">전체</option>{months.map(item => <option key={item} value={item}>{item}</option>)}</select></label>
           </div>
           {reports.length === 0 ? <p className="rounded-xl border border-dashed border-border p-8 text-center text-muted-foreground">해당 조건의 Report가 없습니다.</p> : <div className="grid gap-4">{reports.map(report => <ReportCard key={`${report.source_record_id}-${report.target_path}`} report={report} />)}</div>}
-          <Pagination page={page} totalPages={totalPages} searchParams={{ type, month, query }} />
+          <Pagination page={page} totalPages={totalPages} searchParams={{ type, month, query }} onNavigate={rememberArchiveScroll} />
         </section>
           </div>
         </details>
@@ -153,8 +158,20 @@ function StockPulseHubView({ page, type, month, query, latestPublication, curren
 
 function StockPulseHubQueryView({ latestPublication, currentPublications }: { latestPublication: StockpulseFixedPublicationSummary | null; currentPublications: StockpulseFixedPublicationSummary[] }) {
   const searchParams = useSearchParams()
+  const queryString = searchParams.toString()
   const rawType = searchParams.get('type')
   const type = rawType === 'morning' || rawType === 'close' ? rawType : undefined
+  useEffect(() => {
+    const saved = window.sessionStorage.getItem(ARCHIVE_SCROLL_STORAGE_KEY)
+    if (!saved) return
+    const scrollY = Number(saved)
+    window.sessionStorage.removeItem(ARCHIVE_SCROLL_STORAGE_KEY)
+    if (!Number.isFinite(scrollY)) return
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: scrollY, behavior: 'auto' })
+      requestAnimationFrame(() => window.scrollTo({ top: scrollY, behavior: 'auto' }))
+    })
+  }, [queryString])
   return <StockPulseHubView page={getPage(searchParams.get('page'))} type={type} month={searchParams.get('month') || undefined} query={searchParams.get('query') || undefined} latestPublication={latestPublication} currentPublications={currentPublications} />
 }
 
