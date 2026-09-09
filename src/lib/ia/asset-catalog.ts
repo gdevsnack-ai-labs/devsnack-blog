@@ -108,6 +108,12 @@ const POST_OVERRIDES: Record<string, Partial<PostClassification>> = {
   },
 
   // Step A Story audit: source-preserving projections for legacy DevSnack posts.
+  'devsnack:google-oauth-token-refresh-youtube-drive': {
+    primaryType: 'knowledge',
+    domain: ['infrastructure'],
+    provenance: 'ai_assisted',
+    classification: 'confirmed',
+  },
   'devsnack:ai-llm-omok-experiment': {
     primaryType: 'experiment',
     role: 'report',

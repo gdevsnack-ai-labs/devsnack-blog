@@ -21,6 +21,15 @@ const knowledge = assetFromLegacyPost({
 })
 assertEqual(knowledge.primaryType, 'knowledge', 'legacy DevSnack guide should project to Knowledge')
 
+const oauthKnowledge = assetFromLegacyPost({
+  slug: 'google-oauth-token-refresh-youtube-drive',
+  title: 'Google OAuth token recovery',
+  blog_id: 'devsnack',
+  status: 'live',
+})
+assertEqual(oauthKnowledge.primaryType, 'knowledge', 'OAuth recovery guide should project to Knowledge')
+assertEqual(oauthKnowledge.domain?.includes('infrastructure'), true, 'OAuth recovery guide should project to Infrastructure')
+
 const experiment = assetFromLegacyPost({
   slug: 'ai-llm-omok-experiment',
   title: 'Omok experiment',
