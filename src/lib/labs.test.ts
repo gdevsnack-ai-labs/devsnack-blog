@@ -78,14 +78,15 @@ const completedSameDate: Experiment = {
 const knownActiveSameDate: Experiment = { ...activeSameDate, id: 'ai-omok' }
 const knownCompletedSameDate: Experiment = { ...completedSameDate, id: 'stockpulse-ai-self-improvement' }
 expectEqual(getFeaturedExperiment([knownCompletedSameDate, knownActiveSameDate])?.id, 'ai-omok', 'featured experiment must prefer active work on a date tie')
-const localLlmFinding = getProjectFinding({ ...experiment, id: 'local-llm-benchmark' })
-expectValidProjectFinding(localLlmFinding, 'Local LLM')
+const localLlm = experiments.find(item => item.id === 'local-llm-benchmark')!
+expectEqual(getProjectFinding(localLlm), undefined, 'Local LLM initial history must not be promoted to an operational finding')
+expectEqual(localLlm.timeline?.length, 2, 'Local LLM public history must keep only the two high-level transition steps')
 const autonomous = experiments.find(item => item.id === 'autonomous-ai-blog')!
 expectEqual(getProjectFinding(autonomous), undefined, 'autonomous publications must not become a project finding')
 expectEqual(getProjectFinding({ ...experiment, id: 'activity-only-project' }), undefined, 'Latest Activity must not become a Project Finding')
 expectEqual(getRecentFindings([experiment, activeSameDate]).length, 0, 'findings feed must exclude projects without curated findings')
 
-for (const projectId of ['blog', 'local-llm-benchmark', 'ai-omok', 'stockpulse-ai-self-improvement', 'hermes-memory', 'luna-agentic-game-dev', 'isekai-instagram-mage-experiment']) {
+for (const projectId of ['blog', 'ai-omok', 'stockpulse-ai-self-improvement', 'hermes-memory', 'luna-agentic-game-dev', 'isekai-instagram-mage-experiment']) {
   const project = experiments.find(item => item.id === projectId)
   if (!project) throw new Error(`Finding-bearing project is missing: ${projectId}`)
   expectValidProjectFinding(getProjectFinding(project), projectId)
@@ -97,10 +98,16 @@ expectEqual(getLatestResult(stockpulseFixed)?.name, 'Day 1 Evening Evaluation', 
 
 const aiOmok = experiments.find(item => item.id === 'ai-omok')!
 const aiGameAssets = experiments.find(item => item.id === 'ai-game-assets-sprite-lab')!
+const musicQa = experiments.find(item => item.id === 'music-qa')!
+const hookEngine = experiments.find(item => item.id === 'hook')!
 expectEqual(getLabBoardMetadata(aiOmok).status, 'paused', 'AI Omok with completed runs and only planned next steps should project as Paused')
 expectEqual(getLabBoardMetadata(aiOmok).confidence, 'inferred', 'AI Omok status must retain inferred confidence')
 expectEqual(getLabBoardMetadata(aiGameAssets).status, 'completed', 'completed AI Game Assets experiment should project as Completed')
 expectEqual(getLabBoardMetadata(aiGameAssets).confidence, 'confirmed', 'explicitly completed AI Game Assets status should not be marked inferred')
+expectEqual(getCurrentStage(aiGameAssets), '실험 완료', 'completed AI Game Assets must not expose a stale in-progress harness stage')
+expectEqual(aiGameAssets.timeline?.some(item => item.status === '진행중'), false, 'AI Game Assets public Creative Test must not retain an active operations item')
+expectEqual(musicQa.isDummy, true, 'Music QA must remain an explicit backlog placeholder')
+expectEqual(hookEngine.isDummy, true, 'Hook Engine must remain an explicit backlog placeholder')
 expectEqual(getLabBoardMetadata(aiOmok).nextAction, 'MCTS 탐색 적용 (알파고 방식)', 'next action should use the first explicit next goal')
 expectEqual(getLabStatusCounts([aiOmok, aiGameAssets]).paused, 1, 'status counts must include Paused projects')
 expectEqual(getLabStatusCounts([aiOmok, aiGameAssets]).completed, 1, 'status counts must include Completed projects')

@@ -56,9 +56,9 @@ const NATURE_BY_ID: Record<string, ExperimentNature> = {
     openEnded: false,
   },
   'local-llm-benchmark': {
-    label: '확장형 벤치마크',
-    description: '모델별 하위 실험을 계속 추가할 수 있는 실험군입니다.',
-    openEnded: true,
+    label: '완료된 초기 실험',
+    description: '초기 실행 가능성을 확인한 뒤 현재 결과를 Standard·Custom Benchmarks로 분리한 종료 실험입니다.',
+    openEnded: false,
   },
   'hermes-memory': {
     label: '장기 실험',
@@ -114,25 +114,7 @@ const LAB_KNOWLEDGE: Record<string, LabKnowledge> = {
     projectFinding: AUTONOMOUS_AI_BLOG_LIVE.projectFinding || undefined,
     showInFindings: false,
   },
-  'local-llm-benchmark': {
-    projectFinding: {
-      statement: '현재 YouTube production contract와 반복 생성 비용을 함께 고려하면 Q5는 속도·용량·통과율의 균형이 좋고, Q6은 재시도 수렴성이 좋았습니다. Q8은 현재 조건에서 우위가 확인되지 않았습니다.',
-      evidence: ['Ornith Q5/Q6/Q8 서버 품질·속도 측정', 'Q5 2/2·64.6 tok/s, Q6 2/2·59.8 tok/s, Q8 0/2·54.4 tok/s'],
-      scope: 'DGX Spark GB10, Science·History 두 fixture, 모델당 1회 반복, 현재 structured output contract',
-      confidence: 'limited',
-    },
-    metrics: [
-      { label: 'Qwen3.8 단일 Decode', value: '17~19.5 t/s', note: '기존 MTP 실측' },
-      { label: 'Qwen3.8 4-slot', value: '18~22 t/s', note: '평균 acceptance 약 94%' },
-      { label: 'Hook contract fix', value: '90 passed', note: 'production regression tests' },
-      { label: 'External one-shot', value: '1/1', note: 'gpt-5.6-luna · hook refs=[]' },
-      { label: 'Ornith Q5 corrected', value: '67.6 tok/s', note: '5회 내 1/2 · single repeat' },
-      { label: 'Ornith Q6 corrected', value: '60.9 tok/s', note: '5회 내 2/2 · single repeat' },
-      { label: 'Ornith Q8 corrected', value: '52.5 tok/s', note: '5회 내 1/2 · single repeat' },
-      { label: 'Qwen3.6 quality', value: '9/12', note: '이전 6종·5회 내 최종 통과' },
-    ],
-    showInFindings: true,
-  },
+
   'ai-omok': {
     projectFinding: {
       statement: '현재 오목 실험 조건에서는 LLM 단독 구조보다 ThreatAnalyzer와 탐색 엔진을 결합한 구조가 더 오래 방어했지만, AI가 만든 Minimax 엔진은 Rapfi에 5:0으로 패배했고 자율 개선 루프도 승률을 높이지 못했습니다.',

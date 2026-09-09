@@ -18,6 +18,7 @@ expectEqual(BENCHMARK_PROJECTIONS[0].asset.primaryType, 'benchmark', 'Benchmark 
 expectEqual(BENCHMARK_PROJECTIONS[0].family, 'Ornith-1.5', 'Ornith result should be grouped under its model family')
 expectEqual(BENCHMARK_PROJECTIONS[0].measurement, 'Quality + Real-use Speed', 'Ornith result should expose its measurement lane')
 expectEqual(getLabCollection('local-llm-benchmark'), undefined, 'Local LLM Benchmark must not be duplicated as a generic Lab Experiment')
+expectEqual(getRelatedAssets('project:local-llm-benchmark').length, 0, 'Local LLM initial history must not expose stale publication or demo relations')
 expectEqual(getLabCollection('autonomous-ai-blog'), 'experiments', 'autonomous AI project must appear in the Lab board')
 expectEqual(getLabCollection('ai-omok'), 'experiments', 'AI Omok must remain an Experiment')
 expectEqual(getLabCollection('blog'), 'experiments', 'AI Tech v1 must project to Experiments')

@@ -186,39 +186,21 @@ const DUMMIES: Experiment[] = [
   },
 ]
 
-// ── Local LLM Benchmark — 초기 단일 실험 기록 (완료, 후속은 통합 Benchmark suite) ──
+// ── Local LLM Benchmark — 초기 실험 기록 (완료, 현재 결과는 Benchmark 영역) ──
 const LLM_BENCH: Experiment = {
   id: 'local-llm-benchmark',
   name: 'Local LLM Benchmark',
-  description: 'DGX Spark GB10에서 GGUF 로컬 LLM을 단일 프롬프트와 초기 서빙 조건으로 검증한 완료 실험. 후속 모델 측정은 현재 7-suite 통합 Benchmark로 운영한다.',
+  description: 'DGX Spark GB10에서 로컬 LLM의 초기 실행 가능성을 확인한 완료 실험. 현재 측정 결과는 Standard·Custom Benchmarks에서 관리한다.',
   progress: 100,
   color: 'blue',
   status: '완료',
   category: 'completed',
   startedAt: '2026.08.18',
-  whyText: '초기에는 GB10에서 27B급 모델의 프리필·디코드·MTP·서빙·실사용 산출물을 빠르게 확인했다. 이 단일 실험으로 초기 실행 가능성을 확인한 뒤, 조건이 서로 다른 측정을 한곳에 계속 덧붙이지 않고 모델·quantization·MTP 조건을 포함한 7-suite 통합 Benchmark로 운영 방식을 전환했다.',
-  nextGoals: ['초기 단일 실험 기록은 Custom Benchmarks에 보존', '새 모델·variant 측정은 최신 통합 Benchmark projection에 추가'],
+  whyText: '초기에는 GB10에서 로컬 LLM을 실제로 실행하고, 속도·서빙·실사용 산출물을 빠르게 확인했다. 이후 조건이 서로 다른 측정을 하나의 실험 기록에 계속 덧붙이지 않도록, 모델·variant·quantization·작업별 결과를 Standard·Custom Benchmarks로 분리해 운영하는 방식으로 전환했다.',
+  nextGoals: ['표준 Benchmark에서 모델·variant를 같은 기준으로 비교', 'Custom Benchmarks에서 특정 모델·사용 사례 측정을 보존'],
   timeline: [
-    { name: '실행 스크립트 4종 작성',     status: '완료',   date: '2026.08.18', result: 'HIGH/VERY-HIGH × thinking ON/OFF, MTP n-max 6 + p-min 0.75' },
-    { name: '단일 테스트 실측',            status: '완료',   date: '2026.08.18', result: '프리필 680~930 t/s, 디코드 17~19.5 t/s, 수락률 93.1%' },
-    { name: '장기 서빙 실측 (4슬롯 동시)', status: '완료',   date: '2026.08.18', result: '장문 생성 18~22 t/s 유지, 수락률 평균 ~94%, 초장문 8,287토큰 18.5 t/s' },
-    { name: '실사용 데모 (단일 프롬프트)', status: '완료',   date: '2026.08.18', result: 'Ragdoll Playground HTML — 1회 생성으로 완성, 데모 공개' },
-    { name: 'Self Bench Pack 자체 설계 (24종)', status: '완료', date: '2026.08.18', result: 'TokenChaser 84개 참고·한영 이중언어 + 자기검증 루프 내장, 오픈코드 에이전트 실행기 구축' },
-    { name: '실사용 데모 — Stock Dashboard (Ridge 3.7bpw)', status: '완료', date: '2026.08.19', result: 'Qwen3.8-27B Ridge 3.7bpw로 KOSPI/KOSDAQ 대시보드 1회 생성. 디코드 ~29 t/s, MTP 수락률 ~88%, worklog+llama_log 기록', blogSlug: '/lab/local-llm-benchmark-report' },
-    { name: 'HTML in Canvas 데모', status: '완료', date: '2026.08.20', result: 'Canvas bitmap + HTML DOM overlay + html2canvas snapshot을 단일 HTML로 공개', blogSlug: '/research/html-in-canvas-dom-overlay-rasterization' },
-    { name: 'Qwen3.6 YouTube 대본 품질 비교', status: '완료', date: '2026.08.24', result: '6종 파생 모델을 같은 Science·History production fixture로 비교. 12회 실행에서 5회 내 최종 통과 9/12, 평균 3.1회', blogSlug: '/lab/qwen36-youtube-script-reliability-benchmark' },
-    { name: 'Ornith-1.5 서버 품질·실사용 속도 (original protocol)', status: '완료', date: '2026.08.24', result: 'Q5/Q6/Q8을 모델당 한 번 로드해 실제 긴 품질 prompt에서 속도 측정. 원래 contract 기준 Q5 64.6 tok/s·2/2, Q6 59.8 tok/s·2/2, Q8 54.4 tok/s·0/2', blogSlug: '/lab/ornith15-server-quality-speed-benchmark' },
-    { name: 'Production contract calibration — pure hook refs', status: '완료', date: '2026.08.24', result: '순수 rhetorical/hypothetical hook의 fact_refs 규칙 충돌을 production과 benchmark에 반영. 외부 gpt-5.6-luna 1회 결과는 hook refs=[]로 통과했고, 새 local matrix는 Q6/Q8 1차 통과가 1/2로 개선됨', blogSlug: '/labs/local-llm-benchmark' },
-    { name: '초기 단일 실험 종료 및 통합 Benchmark suite 전환', status: '완료', result: '후속 측정은 7개 suite·모델 variant·quantization·MTP 조건을 포함한 통합 projection으로 운영' },
-  ],
-  blogPosts: [
-    '/research/qwen3-8-27b-nvfp4-mtp-gguf-gb10',
-    '/lab/qwen36-youtube-script-reliability-benchmark',
-    '/lab/ornith15-server-quality-speed-benchmark',
-  ],
-  githubUrl: 'https://github.com/gdevsnack-ai-labs/devsnack-blog',
-  externalLinks: [
-    { label: 'Public Prompt Packs', href: 'https://github.com/gdevsnack-ai-labs/llm-bench-prompt-packs' },
+    { name: 'GB10에서 로컬 LLM 실행 가능성 확인', status: '완료', date: '2026.08.18', result: '로컬 모델의 실행 속도·서빙·실사용 산출물을 확인해 후속 Benchmark의 출발점을 마련' },
+    { name: '통합 Benchmark 구조로 전환', status: '완료', date: '2026.08.24', result: '서로 다른 측정 조건을 분리하고, 현재 결과를 Standard·Custom Benchmarks에서 관리하는 구조로 이동' },
   ],
 }
 
@@ -335,8 +317,8 @@ const AI_GAME_ASSETS: Experiment = {
   status: '완료',
   category: 'completed',
   startedAt: '2026.08.23',
-  whyText: '이미지 한 장을 게임 캐릭터로 쓰는 것과, 실제로 움직이는 스프라이트를 만드는 것은 다른 문제다. 같은 로컬 AI 마법사를 기준으로 GPT Image에는 연속 포즈 시트를 직접 요청하고, LTX 2.5에는 1:1 시작 이미지와 단일 동작을 넣어 영상에서 프레임을 추출했다. 두 레인의 캐릭터 일관성·프레임 연결성·배경 제거·캔버스 설정 문제를 직접 비교한다. 동시에 사용자의 교정 지시가 에이전트 작업에 어떻게 반영되는지, 지시와 하네스가 결과 품질을 어떻게 바꾸는지도 관찰한다.',
-  nextGoals: ['생성 전 입력·출력 조건과 성공 기준을 고정하는 하네스 개선', '공격 모션의 수동 프레임 보정', 'Unity·Godot용 메타데이터 포맷 추가', '다른 캐릭터 실루엣으로 재현성 확인'],
+  whyText: '이미지 한 장을 게임 캐릭터로 쓰는 것과, 실제로 움직이는 스프라이트를 만드는 것은 다른 문제다. 같은 로컬 AI 마법사를 기준으로 GPT Image에는 연속 포즈 시트를 직접 요청하고, LTX 2.5에는 1:1 시작 이미지와 단일 동작을 넣어 영상에서 프레임을 추출했다. 두 레인의 캐릭터 일관성·프레임 연결성·배경 제거·캔버스 설정을 직접 비교해 게임 에셋으로 사용할 수 있는 조건을 확인했다.',
+  nextGoals: [],
   timeline: [
     { name: 'GPT Image 캐릭터 기준 시트', status: '완료', date: '2026.08.23', result: '로컬 AI 마법사의 정면·3/4·전신·측면 픽셀 아트 기준 시트 생성' },
     { name: 'GPT Image 직접 스프라이트', status: '완료', date: '2026.08.23', result: 'idle·walk·jump·attack 4×2 시트 생성, 모션당 8프레임으로 분할' },
@@ -345,8 +327,7 @@ const AI_GAME_ASSETS: Experiment = {
     { name: '스프라이트 후처리', status: '완료', date: '2026.08.23', result: 'LTX 12·24프레임과 GPT Image 8프레임을 192×192 RGBA로 정규화하고 크로마 키·spill 제거' },
     { name: '비교 데모 공개', status: '완료', date: '2026.08.23', result: 'GPT Image·LTX 12f·LTX 24f를 같은 모션 버튼으로 비교하는 HTML Showcase 제작' },
     { name: 'Walk 24fps 전체 프레임 테스트', status: '완료', date: '2026.08.23', result: '2초 영상에서 48장, 3초 영상에서 72장을 추출해 24fps·원본 시간으로 재생하는 전용 Showcase 레인 추가' },
-    { name: '사용자 지시 기반 교정 루프', status: '완료', date: '2026.08.23', result: '1:1 캔버스, 5초→3초 Walk, 24×2·24×3 정확한 프레임 수, 데모 레인 추가를 순차 반영. 구체적 지시에는 빠르게 맞췄지만 기존 워크플로를 재검토하지 않고 이어받은 문제를 확인' },
-    { name: '4일차 운영 관찰과 하네스 개선 가설', status: '진행중', date: '2026.08.23', result: 'Hermes·GPT-5.6 Luna의 지능 부족보다 GPT 실행 하네스와 Hermes의 메모리·스킬·사용 지침, 기존 파일이 겹치며 기존 경로를 우선했을 가능성을 기록. 704×704 필요성·첫 Showcase 속도 기준을 사전 재판단하지 못한 사례를 근거로, 짧은 아이디어 테스트만으로 일반화하지 않고 컨텍스트 분리·목표 재선언·지시 템플릿을 비교 검증' },
+    { name: '사용자 지시 기반 교정 루프', status: '완료', date: '2026.08.23', result: '1:1 캔버스, 5초→3초 Walk, 24×2·24×3 정확한 프레임 수, 데모 레인 추가를 순차 반영' },
   ],
   blogPosts: [],
   externalLinks: [

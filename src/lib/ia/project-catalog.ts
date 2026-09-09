@@ -34,8 +34,8 @@ const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
   },
   'local-llm-benchmark': {
     domain: ['llm', 'inference', 'hardware'],
-    lifecycle: 'testing',
-    isOpenEnded: true,
+    lifecycle: 'completed',
+    isOpenEnded: false,
   },
   'luna-agentic-game-dev': {
     domain: ['game_ai', 'automation'],

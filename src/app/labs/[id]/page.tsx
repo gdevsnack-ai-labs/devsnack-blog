@@ -63,12 +63,108 @@ function getProjectRelatedLinks(experiment: (typeof experiments)[number], projec
   return [...registered, ...directLinks.filter(link => !seen.has(link.href))]
 }
 
+function LocalBenchmarkHistory({ experiment }: { experiment: (typeof experiments)[number] }) {
+  return (
+    <section className="rounded-2xl border border-blue-200 bg-blue-50/50 p-5 dark:border-blue-900/50 dark:bg-blue-950/15" aria-labelledby="benchmark-history-heading">
+      <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+        <FlaskConical className="h-5 w-5" aria-hidden="true" />
+        <h2 id="benchmark-history-heading" className="text-xl font-bold">초기 실험의 의미</h2>
+      </div>
+      <p className="mt-3 max-w-3xl text-base leading-relaxed">{experiment.whyText}</p>
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <div className="rounded-xl border border-blue-200/80 bg-white/80 p-4 dark:border-blue-900/50 dark:bg-gray-900/60">
+          <h3 className="font-semibold">무엇을 확인했나</h3>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">GB10에서 로컬 LLM을 실제로 실행할 수 있는지, 그리고 단순 속도 측정을 넘어 서빙과 결과물까지 이어지는지 확인했습니다.</p>
+        </div>
+        <div className="rounded-xl border border-blue-200/80 bg-white/80 p-4 dark:border-blue-900/50 dark:bg-gray-900/60">
+          <h3 className="font-semibold">현재 결과는 어디에 있나</h3>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">후속 측정은 이 역사 페이지에 누적하지 않고, 재현 가능한 비교 결과와 개별 심층 측정을 별도 Benchmark surface로 관리합니다.</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Link href="/benchmarks" className="inline-flex items-center rounded-lg bg-foreground px-3 py-2 text-sm text-background no-underline hover:opacity-80">Standard Benchmarks 보기</Link>
+            <Link href="/benchmarks/custom" className="inline-flex items-center rounded-lg border border-blue-200 px-3 py-2 text-sm no-underline hover:border-blue-300 hover:text-blue-700 dark:border-blue-900/60 dark:hover:border-blue-700 dark:hover:text-blue-300">Custom Benchmarks 보기</Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function AutonomousBlogOverview({ experiment, live }: { experiment: (typeof experiments)[number]; live: typeof AUTONOMOUS_AI_BLOG_LIVE }) {
+  const publications = live.recentPublications.slice(0, 3)
+  return (
+    <>
+      <section className="rounded-2xl border border-purple-200 bg-purple-50/50 p-5 dark:border-purple-900/50 dark:bg-purple-950/15" aria-labelledby="autonomous-overview-heading">
+        <div className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
+          <FlaskConical className="h-5 w-5" aria-hidden="true" />
+          <h2 id="autonomous-overview-heading" className="text-xl font-bold">실험 목적과 관찰</h2>
+        </div>
+        <p className="mt-3 max-w-3xl text-base leading-relaxed">{experiment.whyText}</p>
+        {live.latestActivity?.summary && <p className="mt-4 max-w-3xl rounded-xl border border-purple-200/80 bg-white/70 p-4 text-sm leading-relaxed dark:border-purple-900/50 dark:bg-gray-900/60"><strong className="text-foreground">최근 관찰 · </strong>{live.latestActivity.summary}</p>}
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <div className="rounded-xl border border-purple-200/80 bg-white/80 p-4 dark:border-purple-900/50 dark:bg-gray-900/60">
+            <h3 className="font-semibold">AI 편집 모델</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">AI가 주제를 고르고, 자료를 비교하고, 글의 형식과 발행 여부를 판단합니다. 사람에게 지시받은 자동화가 아니라 편집권을 위임한 운영 모델입니다.</p>
+          </div>
+          <div className="rounded-xl border border-purple-200/80 bg-white/80 p-4 dark:border-purple-900/50 dark:bg-gray-900/60">
+            <h3 className="font-semibold">유라의 역할</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">유라는 후보 조사·출처 교차검증·초안 편집·발행 판단을 담당합니다. 사람의 개입은 보안·인프라·서비스 장애와 실험 지속 여부 같은 운영 경계에 둡니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="autonomous-publications-heading">
+        <div className="mb-4"><h2 id="autonomous-publications-heading" className="text-xl font-bold">최근 공개 글</h2><p className="mt-1 text-sm text-muted-foreground">글 전문은 Agent Field Notes가 보관하며, 여기에는 최근 공개 결과와 canonical 링크만 남깁니다.</p></div>
+        {publications.length > 0 ? (
+          <div className="space-y-3">
+            {publications.map(publication => (
+              <article key={publication.externalUrl} className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="min-w-0"><h3 className="font-semibold leading-snug">{publication.title}</h3><p className="mt-1 text-xs text-muted-foreground">{publication.publishedAt?.slice(0, 10).replaceAll('-', '.') || '날짜 미기록'}</p></div>
+                  <a href={publication.externalUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 text-sm font-medium text-purple-700 no-underline hover:underline dark:text-purple-300">원문 보기 →</a>
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : <p className="rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">아직 공개된 글이 없습니다.</p>}
+      </section>
+
+      <section aria-labelledby="autonomous-retrospective-heading">
+        <h2 id="autonomous-retrospective-heading" className="text-xl font-bold">현재까지의 회고</h2>
+        <p className="mt-2 rounded-xl border border-border bg-muted/30 p-5 text-sm leading-relaxed text-muted-foreground">{live.retrospective || '아직 최종 회고 시점은 아닙니다. 운영이 더 이어진 뒤 주제 선택, 출처 품질, 발행 판단의 변화를 정리합니다.'}</p>
+      </section>
+    </>
+  )
+}
+
+function CreativeTestOverview({ experiment }: { experiment: (typeof experiments)[number] }) {
+  return (
+    <section className="rounded-2xl border border-sky-200 bg-sky-50/50 p-5 dark:border-sky-900/50 dark:bg-sky-950/15" aria-labelledby="creative-test-result-heading">
+      <div className="flex items-center gap-2 text-sky-700 dark:text-sky-300">
+        <FlaskConical className="h-5 w-5" aria-hidden="true" />
+        <h2 id="creative-test-result-heading" className="text-xl font-bold">Creative Test 결과</h2>
+      </div>
+      <p className="mt-3 max-w-3xl text-base leading-relaxed">{experiment.whyText}</p>
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <div className="rounded-xl border border-sky-200/80 bg-white/80 p-4 dark:border-sky-900/50 dark:bg-gray-900/60">
+          <h3 className="font-semibold">비교한 두 레인</h3>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">GPT Image는 포즈 시트를 직접 만들고, LTX 2.5는 시작 이미지에서 움직임을 만든 뒤 프레임을 추출했습니다. 두 결과를 같은 모션 Showcase에서 비교할 수 있습니다.</p>
+        </div>
+        <div className="rounded-xl border border-sky-200/80 bg-white/80 p-4 dark:border-sky-900/50 dark:bg-gray-900/60">
+          <h3 className="font-semibold">공개 Showcase</h3>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">생성 방식보다 실제 게임 에셋으로 쓸 수 있는지에 초점을 둔 비교 결과입니다.</p>
+          <Link href="/ai-game-assets.html" className="mt-4 inline-flex items-center rounded-lg bg-foreground px-3 py-2 text-sm text-background no-underline hover:opacity-80">Sprite Motion Demo 보기 →</Link>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export const revalidate = 60
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const experiment = experiments.find(item => item.id === id)
-  if (!experiment) return { title: 'Lab Not Found' }
+  if (!experiment || experiment.isDummy) return { title: 'Lab Not Found', robots: { index: false, follow: false } }
 
   return buildRouteMetadata({
     title: `${experiment.name} — DevSnack Lab`,
@@ -83,7 +179,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 export default async function LabsDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const sourceExperiment = experiments.find(item => item.id === id)
-  if (!sourceExperiment) notFound()
+  if (!sourceExperiment || sourceExperiment.isDummy) notFound()
 
   const experiment = id === 'blog'
     ? mergePublishedLabNotes(sourceExperiment, [
@@ -112,13 +208,12 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
   const projectFinding = getProjectFinding(experiment)
   const latestActivity = getLatestResult(experiment)
   const autonomousLive = id === 'autonomous-ai-blog' ? AUTONOMOUS_AI_BLOG_LIVE : null
-  const latestActivitySummary = autonomousLive?.latestActivity?.summary || latestActivity?.result
-  const latestActivityDate = autonomousLive?.latestActivity?.date || latestActivity?.date
-  const recentPublications = autonomousLive?.recentPublications || []
+  const latestActivitySummary = latestActivity?.result
+  const latestActivityDate = latestActivity?.date
   const timeline = getSortedTimeline(experiment)
-  const autonomousIncidents = autonomousLive
-    ? timeline.filter(item => item.name.includes('유지보수') || item.name.includes('변경'))
-    : []
+  const isLocalBenchmark = id === 'local-llm-benchmark'
+  const isAutonomousBlog = id === 'autonomous-ai-blog'
+  const isCreativeTest = id === 'ai-game-assets-sprite-lab'
   const keyMetrics = getKeyMetrics(experiment)
   const keyResults = getKeyResults(experiment)
   const board = getLabBoardMetadata(experiment)
@@ -166,7 +261,10 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
         </header>
 
         <main className="mt-8 space-y-8">
-          <section className="rounded-xl border border-blue-200 bg-blue-50/60 p-5 dark:border-blue-900/50 dark:bg-blue-950/20" aria-labelledby="project-finding-heading">
+          {isLocalBenchmark && <LocalBenchmarkHistory experiment={experiment} />}
+          {isCreativeTest && <CreativeTestOverview experiment={experiment} />}
+
+          {!isLocalBenchmark && !isAutonomousBlog && !isCreativeTest && <section className="rounded-xl border border-blue-200 bg-blue-50/60 p-5 dark:border-blue-900/50 dark:bg-blue-950/20" aria-labelledby="project-finding-heading">
             <h2 id="project-finding-heading" className="text-sm font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Verified Project Finding</h2>
             {projectFinding ? (
               <>
@@ -186,9 +284,9 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
             ) : (
               <p className="mt-3 text-base leading-relaxed text-muted-foreground">아직 독립적인 Project Finding이 없습니다. 현재는 Latest Activity와 Operational Snapshot만 기록되어 있습니다.</p>
             )}
-          </section>
+          </section>}
 
-          {latestActivitySummary && (
+          {!isLocalBenchmark && !isAutonomousBlog && !isCreativeTest && latestActivitySummary && (
             <section className="rounded-xl border border-border bg-muted/30 p-5" aria-labelledby="latest-activity-heading">
               <h2 id="latest-activity-heading" className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Latest Activity</h2>
               <p className="mt-3 text-base leading-relaxed">{latestActivitySummary}</p>
@@ -196,7 +294,7 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
             </section>
           )}
 
-          {(keyMetrics.length > 0 || keyResults.length > 0) && (
+          {!isLocalBenchmark && !isAutonomousBlog && !isCreativeTest && (keyMetrics.length > 0 || keyResults.length > 0) && (
             <section aria-labelledby="key-results-heading">
               <div className="mb-4 flex items-center gap-2">
                 <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -226,63 +324,11 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
             </section>
           )}
 
-          {autonomousLive && (
-            <>
-              <section className="grid gap-4 md:grid-cols-3" aria-label="Autonomous AI Blog project context">
-                <div className="rounded-xl border border-border bg-white p-5 dark:bg-gray-900 md:col-span-3">
-                  <h2 className="text-xl font-bold">Project Context</h2>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{experiment.whyText}</p>
-                </div>
-                <div className="rounded-xl border border-border bg-white p-5 dark:bg-gray-900">
-                  <h2 className="text-lg font-bold">Operating Model</h2>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{experiment.operatingModel}</p>
-                </div>
-                <div className="rounded-xl border border-border bg-white p-5 dark:bg-gray-900 md:col-span-2">
-                  <h2 className="text-lg font-bold">Human Intervention Policy</h2>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{experiment.humanInterventionPolicy}</p>
-                </div>
-              </section>
+          {isAutonomousBlog && autonomousLive && <AutonomousBlogOverview experiment={experiment} live={autonomousLive} />}
 
-              <section aria-labelledby="operational-snapshot-heading">
-                <div className="mb-4 flex items-center gap-2"><CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" /><h2 id="operational-snapshot-heading" className="text-xl font-bold">Operational Snapshot</h2></div>
-                <div className="grid gap-3 sm:grid-cols-3">
-                  <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">Published notes</p><p className="mt-2 text-2xl font-bold">{autonomousLive.publishedCount}</p></div>
-                  <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">Held notes</p><p className="mt-2 text-2xl font-bold">{autonomousLive.heldCount}</p></div>
-                  <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">Last cycle</p><p className="mt-2 text-sm font-semibold">{autonomousLive.lastRunAt || '날짜 미기록'}</p></div>
-                </div>
-              </section>
+          {!isLocalBenchmark && !isAutonomousBlog && !isCreativeTest && <ProjectFeedOutputs outputs={feedOutputs} />}
 
-              <section aria-labelledby="recent-publications-heading">
-                <div className="mb-4"><h2 id="recent-publications-heading" className="text-xl font-bold">Recent Publications</h2><p className="mt-1 text-sm text-muted-foreground">전체 원문은 Agent Field Notes가 보관하며, DevSnack에는 제목·날짜·외부 canonical 링크만 남깁니다.</p></div>
-                {recentPublications.length > 0 ? (
-                  <div className="space-y-3">
-                    {recentPublications.map(publication => (
-                      <article key={publication.externalUrl} className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900">
-                        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                          <div className="min-w-0"><h3 className="font-semibold leading-snug">{publication.title}</h3><p className="mt-1 text-xs text-muted-foreground">{publication.publishedAt || '날짜 미기록'} · {publication.publisher} · bodyStored=false</p></div>
-                          <a href={publication.externalUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 text-sm font-medium text-purple-700 no-underline hover:underline dark:text-purple-300">외부 원문 →</a>
-                        </div>
-                      </article>
-                    ))}
-                  </div>
-                ) : <p className="rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">아직 외부 publication 기록이 없습니다.</p>}
-              </section>
-
-              <section aria-labelledby="autonomous-incidents-heading">
-                <div className="mb-4"><h2 id="autonomous-incidents-heading" className="text-xl font-bold">Incidents &amp; Changes</h2><p className="mt-1 text-sm text-muted-foreground">편집 결과와 분리한 운영 변경·유지보수 기록입니다.</p></div>
-                {autonomousIncidents.length > 0 ? <div className="space-y-3">{autonomousIncidents.map((item, index) => <article key={`${item.date}-${item.name}-${index}`} className="rounded-xl border border-border bg-muted/30 p-4"><div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground"><span>{item.date || '날짜 미기록'}</span><span>·</span><span>{item.status}</span></div><h3 className="mt-2 text-sm font-semibold">{item.name}</h3>{item.result && <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{item.result}</p>}</article>)}</div> : <p className="rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">별도 운영 변경 기록이 없습니다.</p>}
-              </section>
-
-              <section aria-labelledby="autonomous-retrospective-heading">
-                <h2 id="autonomous-retrospective-heading" className="text-xl font-bold">Retrospective</h2>
-                <p className="mt-2 rounded-xl border border-border bg-muted/30 p-5 text-sm leading-relaxed text-muted-foreground">{experiment.retrospective || '아직 최종 회고 시점이 아닙니다. 운영 checkpoint가 쌓인 뒤 실험 결과와 한계를 정리합니다.'}</p>
-              </section>
-            </>
-          )}
-
-          <ProjectFeedOutputs outputs={feedOutputs} />
-
-          <section aria-labelledby="experiment-log-heading">
+          {!isLocalBenchmark && !isAutonomousBlog && !isCreativeTest && <section aria-labelledby="experiment-log-heading">
             <div className="mb-4 flex items-center gap-2">
               <Calendar className="h-5 w-5 text-muted-foreground" />
               <h2 id="experiment-log-heading" className="text-xl font-bold">Experiment Log</h2>
@@ -307,21 +353,10 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
                 </article>
               ))}
             </div>
-          </section>
+          </section>}
 
-          {experiment.id === 'local-llm-benchmark' && (
-            <section className="rounded-xl border border-dashed border-blue-300 bg-blue-50/30 p-5 dark:border-blue-900/60 dark:bg-blue-950/10" aria-labelledby="sub-labs-heading">
-              <h2 id="sub-labs-heading" className="text-lg font-bold">Model Sub-Labs</h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                이 실험은 하나의 완료 과제가 아니라 모델별 측정을 계속 추가하는 부모 실험실로 운영할 수 있습니다. Qwen3.8, Ornith1.5 같은 하위 실험은 실제 측정 데이터가 연결될 때 이 영역에 추가합니다.
-              </p>
-              <Link href="/benchmarks" className="mt-4 inline-flex items-center rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm font-medium text-blue-700 no-underline hover:border-blue-300 hover:text-blue-800 dark:border-blue-900/60 dark:bg-gray-900 dark:text-blue-300 dark:hover:border-blue-700">
-                최신 GB10 로컬 LLM 통합 벤치마크 보기 →
-              </Link>
-            </section>
-          )}
+          {!isLocalBenchmark && !isAutonomousBlog && !isCreativeTest && <RelatedAssets links={getProjectRelatedLinks(experiment, id)} title="Related" />}
 
-          <RelatedAssets links={getProjectRelatedLinks(experiment, id)} title="Related" />
         </main>
       </div>
     </div>
