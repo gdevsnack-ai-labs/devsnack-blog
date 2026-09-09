@@ -72,10 +72,10 @@
           "inserted_count": 8,
           "lane": "v1_fixed_fresh"
         },
-        "llm_failure": null,
+        "llm_failure": true,
         "llm_prediction_id": "llm-prediction-2026-09-09",
-        "llm_success": null,
-        "pending_count": 8,
+        "llm_success": false,
+        "pending_count": 258,
         "prediction_id": "prediction-live-shadow-2026-09-09-morning-01",
         "run_id": "live-shadow-2026-09-09-morning-01",
         "scope": "v1_fixed_fresh_ml_predictions_and_morning_llm",
@@ -267,6 +267,40 @@
     "project_id": "stockpulse-v1-fixed",
     "records": [
       {
+        "actual_applied": false,
+        "application_kind": "prompt",
+        "approved": true,
+        "cycle_id": "improvement-cycle-live-shadow-2026-09-09-morning-01",
+        "effective_runtime_readback": null,
+        "evaluation_id": "evaluation-live-shadow-2026-09-09-morning-01",
+        "evidence_refs": [
+          {
+            "id": "live-shadow-2026-09-09-morning-01",
+            "kind": "run"
+          },
+          {
+            "id": "evaluation-live-shadow-2026-09-09-morning-01",
+            "kind": "evaluation"
+          }
+        ],
+        "observation_state": "pending",
+        "proposal_id": "proposal-7c0bba9fbb0fe77c",
+        "readback_verified": null,
+        "requested_change": {
+          "action_detail": "절대 방향 판단에서 국내 추세 약세와 해외 위험선호·반도체·환율 반등이 충돌할 때, 해외 counter-signal을 별도 평가한 뒤 최종 방향을 결정합니다. 장중 breadth·외국인/기관 수급이 없으면 이를 불확실성으로 표시하고 국내 약세 근거로 대체하지 않습니다.",
+          "action_type": "prompt",
+          "analysis_scope": "yura_evening_full_context",
+          "evaluation": {
+            "fail_reason": "LLM 절대 방향 판단에서 국내 과열·되돌림 위험과 해외 broad market 약세를 과대 반영하고, 반도체 섹터의 독립적인 상승 counter-signal과 국내 대형 반도체의 지지 가능성을 최종 방향에 충분히 반영하지 못했습니다. 당일 breadth와 수급이 없다는 데이터 제약 때문에 상승 확산 여부를 확인할 수 없었지만, 이를 곧바로 보합 근거로 사용하는 대신 상승·보합 양쪽 시나리오의 조건으로 분리했어야 합니다.",
+            "is_correct": false
+          },
+          "expected_impact": "국내 추세 신호와 반대되는 해외·환율 counter-signal의 누락을 줄이고 다음 Morning의 방향 판단 근거를 균형화합니다."
+        },
+        "run_id": "live-shadow-2026-09-09-morning-01",
+        "status": "approved",
+        "trigger": {}
+      },
+      {
         "actual_applied": true,
         "application_kind": "prompt",
         "approved": true,
@@ -372,10 +406,10 @@
     "schema_version": 1,
     "summary": {
       "applied_count": 0,
-      "pending_count": 0,
-      "proposal_count": 0,
-      "reason": "no_evaluated_failure_observed",
-      "status": "none"
+      "pending_count": 1,
+      "proposal_count": 1,
+      "reason": null,
+      "status": "approved"
     }
   },
   "metrics": {
@@ -384,12 +418,12 @@
       {
         "actual_applied_count": 0,
         "evaluation_status": "pending",
-        "improvement_cycles": 0,
-        "llm_correct": null,
-        "llm_evaluated": false,
+        "improvement_cycles": 1,
+        "llm_correct": false,
+        "llm_evaluated": true,
         "ml_correct_count": null,
         "ml_evaluated_count": 0,
-        "ml_pending_count": 8,
+        "ml_pending_count": 258,
         "prediction_count": 8,
         "run_id": "live-shadow-2026-09-09-morning-01",
         "trading_date": "2026-09-09"
@@ -481,17 +515,17 @@
           "n_estimators": 500
         }
       },
-      "current_state": "morning_complete_evening_not_started",
-      "improvement_cycles": 3,
-      "improvement_status": "none",
+      "current_state": "evening_complete",
+      "improvement_cycles": 4,
+      "improvement_status": "approved",
       "live_shadow_day": "Latest run · 2026-09-09",
-      "llm_correct": null,
-      "llm_evaluated": 0,
+      "llm_correct": false,
+      "llm_evaluated": 1,
       "ml_correct": null,
       "ml_evaluated": 0,
       "ml_evaluation_state": "pending",
       "ml_prediction_count": 8,
-      "pending_count": 0,
+      "pending_count": 1,
       "rejected_count": 0,
       "run_count": 6
     }
@@ -507,14 +541,14 @@
     "route": "/labs/stockpulse-v1-fixed",
     "title": "StockPulse V1 Fixed"
   },
-  "projected_at": "2026-09-08T22:34:26+00:00",
+  "projected_at": "2026-09-09T07:34:05+00:00",
   "projection_type": "stockpulse_v1_fixed_public_projection",
   "publication": {
     "daily_lab_slug_policy": "disabled",
     "evening": {
-      "path": null,
+      "path": "reports/2026-09-09/evening/",
       "run_id": "live-shadow-2026-09-09-morning-01",
-      "status": "not_started"
+      "status": "available"
     },
     "morning": {
       "path": "reports/2026-09-09/morning/",
@@ -529,21 +563,39 @@
     "records": [
       {
         "actual_market_result": {
-          "direction": null,
-          "kosdaq_close": null,
-          "kospi_close": null,
-          "llm_success": null,
-          "observed_at": null,
-          "reason": "evening_not_started",
-          "return_pct": null,
-          "status": "not_available"
+          "direction": "상승",
+          "kosdaq_close": 830.3699951171875,
+          "kospi_close": 7051.64013671875,
+          "llm_success": false,
+          "observed_at": "2026-09-09T16:30:14.545076+09:00",
+          "reason": null,
+          "return_pct": 0.80410294,
+          "status": "available"
         },
         "actual_model_set": [
           "LightGBM",
           "XGBoost",
           "LSTM"
         ],
-        "evening_analysis": {},
+        "evening_analysis": {
+          "actual_driver_analysis": "국내에서는 전일 급등 뒤에도 KOSPI가 7,000선을 넘어 상승을 이어가며 지수 상단의 관성이 유지되었습니다. 해외 broad market은 S&P500 -0.58%, Nasdaq -0.32%, Dow -1.18%로 약했지만 SOX +1.30%, SMH +1.19%, AMD +5.90%, 인텔 +9.05%로 반도체 내 상승 신호가 뚜렷했습니다. 이 counter-signal이 국내 반도체와 대형주 하방을 완충했을 가능성이 높습니다. 다만 당일 외국인·기관 수급, breadth 세부값, 종목별 수급은 확보되지 않아 상승 원인을 단일 요인으로 확정할 수 없습니다.",
+          "data_synthesis": {
+            "domestic_market": "KOSPI 7,051.64, 기준가 대비 +0.80%; KOSDAQ 830.37. KOSPI는 7,000선을 상회했고 KOSDAQ도 상승했습니다.",
+            "fear_greed": "KOSPI 공포·탐욕 점수는 71(탐욕), 최근 10일 중 8일 상승, 20일 변동성은 2.85%였습니다.",
+            "flows": "KOSPI 외국인·기관 순매수와 KOSDAQ 수급은 9월 7일 기준으로만 제공되며 9월 9일 당일 수급으로 사용하지 않았습니다.",
+            "intraday_context": "실시간 장중 breadth와 종목별 외국인·기관 수급은 제공되지 않았습니다. 확인 가능한 장 마감 지수만으로 확산 강도는 판단하지 않습니다.",
+            "leaders_and_breadth": "전일 자료상 삼성전자와 SK하이닉스의 5일 상대강도는 각각 +3.26%, +5.91%였고, 반도체 관련 해외 지표는 강했습니다. 전체 breadth는 미확인입니다.",
+            "macro_events": "미국 10년물 금리 4.81%, 브렌트유 99.50달러, WTI 94.34달러로 금리·유가 부담이 있었으며, 9월 11일 미국 CPI와 9월 16일 FOMC가 예정되어 있습니다.",
+            "ml_relative_strength": "ML은 LightGBM·XGBoost·LSTM 3개 모델이 참여해 8개 종목을 예측했으나, 5세션 결과가 성숙하지 않아 평가 0건·pending 258건입니다. ML 상대강도와 KOSPI 절대 방향은 별개로 유지합니다.",
+            "morning_judgment": "보합, confidence 0.58. 과열·해외 broad market 약세를 상단 제한 요인으로, 반도체 강세를 하방 완충 요인으로 판단했습니다.",
+            "news": "주요 종목 뉴스 감성은 삼성전자 -3, SK하이닉스 +3, 삼성SDI +21, HPSP +37 등 혼조였습니다.",
+            "overnight_cross_asset": "S&P500·Nasdaq·Dow는 하락했으나 SOX·SMH와 AMD·인텔은 상승했습니다. broad risk-off와 semiconductor-specific strength가 공존했습니다."
+          },
+          "failure_analysis": "LLM 절대 방향 판단에서 국내 과열·되돌림 위험과 해외 broad market 약세를 과대 반영하고, 반도체 섹터의 독립적인 상승 counter-signal과 국내 대형 반도체의 지지 가능성을 최종 방향에 충분히 반영하지 못했습니다. 당일 breadth와 수급이 없다는 데이터 제약 때문에 상승 확산 여부를 확인할 수 없었지만, 이를 곧바로 보합 근거로 사용하는 대신 상승·보합 양쪽 시나리오의 조건으로 분리했어야 합니다.",
+          "improvement": "none",
+          "rationale_vs_actual": "보합 판단의 핵심 근거였던 KOSPI의 과열과 해외 broad market 약세는 실제 장에서도 상승폭을 제한하는 위험 요인으로 남았습니다. 그러나 방향 결정에서는 위험 요인과 상승 촉매의 균형이 부족했습니다. Morning 데이터에 이미 SOX·SMH 강세와 삼성전자·SK하이닉스의 5일 상대강도 신호가 있었으므로, 이를 국내 지수의 상승 지속 가능성을 남기는 조건부 시나리오로 더 명시했어야 합니다.",
+          "summary": "Morning은 KOSPI 6,995.39의 4.61% 급등, 20일선 대비 +3.98% 이격, 탐욕 구간을 근거로 차익실현과 되돌림 위험을 크게 반영했습니다. 실제 종가는 7,051.64로 기준가 대비 0.80% 상승하여 방향은 상승이었지만 추가 상승폭은 제한되었습니다. 따라서 과열 부담을 방향 신호로 사용한 점은 타당했으나, SOX·SMH·AMD·인텔 등 반도체 counter-signal과 국내 대형 반도체의 상대적 지지력을 최종 방향에 충분히 반영하지 못한 것이 핵심 오판입니다."
+        },
         "evidence_refs": [
           {
             "id": "live-shadow-2026-09-09-morning-01",
@@ -2285,22 +2337,22 @@
         },
         "improvement": {
           "actual_applied": false,
-          "observation_state": "not_started",
-          "proposal_id": null,
-          "status": "none"
+          "observation_state": "pending",
+          "proposal_id": "proposal-7c0bba9fbb0fe77c",
+          "status": "approved"
         },
         "input_snapshot_id": "input-snapshot-579c770bfaa106a4",
         "input_snapshot_readback_verified": true,
         "lane": "v1_fixed_fresh",
         "llm_evaluation": {
-          "failure": null,
-          "status": "pending",
-          "success": null
+          "failure": true,
+          "status": "evaluated",
+          "success": false
         },
         "ml_evaluation": {
           "correct_count": null,
           "evaluated_count": 0,
-          "pending_count": 8,
+          "pending_count": 258,
           "prediction_count": 8,
           "reason": "target_date_unavailable",
           "status": "pending"
@@ -2315,8 +2367,8 @@
             "frozen": true,
             "post_cutoff_edit_allowed": false
           },
-          "evaluation_status": "pending",
-          "failure": null,
+          "evaluation_status": "evaluated",
+          "failure": true,
           "forecast": "국내 지수의 급등 후 과열 부담과 미국 주요 지수 약세가 상단을 제한하는 반면, SOX·SMH 및 일부 반도체 종목의 강세가 하방을 완충할 가능성이 있습니다. 따라서 다음 세션 KOSPI는 보합을 기본 시나리오로 판단합니다.",
           "freeze": {
             "evaluation_session": "day1_evening",
@@ -2365,7 +2417,7 @@
           },
           "sentiment_and_supply": "KOSPI 공포·탐욕 점수는 71(탐욕)이고 최근 10일 중 8일 상승, 20일 변동성은 2.85%입니다. KOSPI 외국인은 2조5532억원, 기관은 2조6491억원 순매수로 집계됐지만 기준일이 9월 7일이라 당일 수급으로 해석할 수 없습니다. KOSDAQ은 외국인 -717억원, 기관 -1,292억원이며 종목별 수급은 누락되어 있습니다. 주요 종목 뉴스 감성은 삼성전자 -3, SK하이닉스 +3, 삼성SDI +21, HPSP +37 등 혼조입니다.",
           "snapshot_cutoff": "2026-09-09T07:31:08.746136+09:00",
-          "success": null,
+          "success": false,
           "summary": "KOSPI는 6,995.39로 하루 4.61% 급등하고 20일선 대비 3.98% 웃돌아 단기 과열·되돌림 위험이 커졌습니다. 해외 증시는 약세였지만 SOX와 SMH는 1%대 상승해 반도체 counter-signal을 제공했습니다. 국내 과열과 해외 반도체 지지력이 충돌하므로 다음 세션은 보합으로 판단하며 확신은 제한합니다.",
           "uncertainties": [
             "수급 데이터 기준일이 9월 7일로 장중 당일 수급이 없습니다.",
@@ -2375,12 +2427,12 @@
             "보합 판단은 주관적 확률이 아닌 제한된 확신도 0.58의 시나리오 판단입니다."
           ]
         },
-        "overall_status": "in_progress_evening_not_started",
+        "overall_status": "complete",
         "project_id": "stockpulse-v1-fixed",
         "publications": {
           "evening": {
-            "path": null,
-            "status": "not_started"
+            "path": "reports/2026-09-09/evening/",
+            "status": "available"
           },
           "morning": {
             "path": "reports/2026-09-09/morning/",
@@ -10990,43 +11042,43 @@
         "n_estimators": 500
       }
     },
-    "current_state": "morning_complete_evening_not_started",
-    "improvement_cycles": 3,
-    "improvement_status": "none",
+    "current_state": "evening_complete",
+    "improvement_cycles": 4,
+    "improvement_status": "approved",
     "live_shadow_day": "Latest run · 2026-09-09",
-    "llm_correct": null,
-    "llm_evaluated": 0,
+    "llm_correct": false,
+    "llm_evaluated": 1,
     "ml_correct": null,
     "ml_evaluated": 0,
     "ml_evaluation_state": "pending",
     "ml_prediction_count": 8,
-    "pending_count": 0,
+    "pending_count": 1,
     "rejected_count": 0,
     "run_count": 6
   },
   "source_manifest": {
     "artifact_count": 7,
     "artifact_hashes": {
-      "day1-morning-verification.json": "d28e3fd465267b12817e4d40ebb0e12e2da1fe021bdbcd7e3ce67daff04c3bcb",
-      "improvement.json": "00f34e244a8473e1e55fa11989981bb5e9474f8fcd3bcc04a4466c15713e4d13",
+      "day1-morning-verification.json": "95bc2c68c8c36b4d7d05aa1ba150bb310ee05b78b6700751124af3cdef10c8c7",
+      "improvement.json": "c4e200f073da4846abd0af8029c9c0a961ea52f81544702e67b81fb62e5435af",
       "input_manifest.json": "7c07a3aa937d82ec949d0721d60d0d9582dac53f98a5e9281341ee6e4549322d",
-      "llm_prediction.json": "88b0dd16a5d4d76450235f7ef74b90c117e1e1d1b7b079b24754913aab65c84e",
+      "llm_prediction.json": "28774c4757ee086cfcc38d21e0be31ec06a44beb687f4b17c379db65421cd7cf",
       "ml_prediction.json": "f0a3c46ca0e42af41742fe96a277659fc62ea63e7c0dbd5b7cb62f8122f8e820",
       "quality.json": "83bfdf529c2e4dc2b43590206173e43c4d0f7d6f1fc38996717a5b5c66fb82a6",
-      "run.json": "e8bc232368c2617638e4ce82e20bcf151a25d0bfb55cdcf1f014aca667c68c74"
+      "run.json": "ca9360e8c4d3422107fcc732bb4b4c60e96360c101624b22a29621c270306e13"
     },
     "generator_command_template": "python3 scripts/project_publication.py --source-run <private-run-dir> --output-dir <output-dir> [--projected-at <iso>]",
     "generator_version": "stockpulse-v1-fixed-projector-1.2.0",
     "history": [
       {
         "artifact_hashes": {
-          "day1-morning-verification.json": "d28e3fd465267b12817e4d40ebb0e12e2da1fe021bdbcd7e3ce67daff04c3bcb",
-          "improvement.json": "00f34e244a8473e1e55fa11989981bb5e9474f8fcd3bcc04a4466c15713e4d13",
+          "day1-morning-verification.json": "95bc2c68c8c36b4d7d05aa1ba150bb310ee05b78b6700751124af3cdef10c8c7",
+          "improvement.json": "c4e200f073da4846abd0af8029c9c0a961ea52f81544702e67b81fb62e5435af",
           "input_manifest.json": "7c07a3aa937d82ec949d0721d60d0d9582dac53f98a5e9281341ee6e4549322d",
-          "llm_prediction.json": "88b0dd16a5d4d76450235f7ef74b90c117e1e1d1b7b079b24754913aab65c84e",
+          "llm_prediction.json": "28774c4757ee086cfcc38d21e0be31ec06a44beb687f4b17c379db65421cd7cf",
           "ml_prediction.json": "f0a3c46ca0e42af41742fe96a277659fc62ea63e7c0dbd5b7cb62f8122f8e820",
           "quality.json": "83bfdf529c2e4dc2b43590206173e43c4d0f7d6f1fc38996717a5b5c66fb82a6",
-          "run.json": "e8bc232368c2617638e4ce82e20bcf151a25d0bfb55cdcf1f014aca667c68c74"
+          "run.json": "ca9360e8c4d3422107fcc732bb4b4c60e96360c101624b22a29621c270306e13"
         },
         "run_id": "live-shadow-2026-09-09-morning-01",
         "trading_date": "2026-09-09"
