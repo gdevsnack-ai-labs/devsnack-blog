@@ -1,8 +1,22 @@
 {
   "schema_version": 1,
   "feed": "devsnack",
-  "generated_at": "2026-09-06T12:14:53.724571+00:00",
+  "generated_at": "2026-09-09T01:39:57.083678+00:00",
   "posts": [
+    {
+      "slug": "google-oauth-token-refresh-youtube-drive",
+      "title": "Google OAuth 토큰 다시 발급하기 — YouTube·Drive invalid_grant 해결",
+      "excerpt": "YouTube와 Google Drive 자동화에서 invalid_grant가 발생했을 때 refresh token 무효화 원인을 진단하고, YouTube 채널과 Drive API까지 검증하는 복구 방법을 정리합니다.",
+      "labels": [
+        "개발 도구",
+        "튜토리얼",
+        "OAuth"
+      ],
+      "published": "2026-09-09T01:37:15+00:00",
+      "cover_image": null,
+      "blog_id": "devsnack",
+      "status": "live"
+    },
     {
       "slug": "dgx-spark-gb10-local-llm-benchmark",
       "title": "DGX Spark GB10 로컬 LLM 벤치마크 — 18개 GGUF 모델 성능·코딩·에이전트 비교",
