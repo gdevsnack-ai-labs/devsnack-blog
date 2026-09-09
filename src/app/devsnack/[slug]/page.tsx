@@ -116,6 +116,11 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
               {new Date(post.published).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
             </span>
           )}
+          {post.updated && (
+            <span className="flex items-center gap-1.5">
+              업데이트 {new Date(post.updated).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </span>
+          )}
           <span className="flex items-center gap-1.5">
             <Clock className="w-4 h-4" />
             약 {readingTime}분
