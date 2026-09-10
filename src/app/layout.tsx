@@ -45,6 +45,7 @@ export default async function RootLayout({
       <head>
         <link rel="alternate" type="application/rss+xml" title="DevSnack Blog (한국어)" href="/rss.xml" />
         <link rel="alternate" type="application/rss+xml" title="DevSnack Blog (English pilot)" href="/en/rss.xml" />
+        <meta name="naver-site-verification" content="21840443ee77e2acdbba2db48a08b3f96dfd38c2" />
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4720187903290730"
