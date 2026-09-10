@@ -37,6 +37,18 @@ export const SEARCH_POLICY_OVERRIDES: Readonly<Record<string, { policy: SearchPo
     policy: 'noindex',
     reason: 'thin_knowledge_reviewed',
   },
+  'research:youtube-music-channel-phase-2': {
+    policy: 'noindex',
+    reason: 'deferred_project_memo',
+  },
+  'research:llama-throughput-lab-draftbench': {
+    policy: 'noindex',
+    reason: 'tooling_research_without_independent_measurement',
+  },
+  'lab:stockpulse-weekly-2026-08-18': {
+    policy: 'noindex',
+    reason: 'migrated_to_external_stockpulse_weekly_note',
+  },
 }
 
 const PRIVATE_PATHS = ['/admin', '/api']

@@ -51,8 +51,18 @@ expectEqual(
 )
 expectEqual(
   searchPolicyForPost({ blog_id: 'lab', slug: 'stockpulse-weekly-2026-08-18', status: 'live', lifecycle_status: 'live' }),
-  'index',
-  'weekly StockPulse Lab note must remain indexable',
+  'noindex',
+  'migrated weekly StockPulse Lab note must be noindex while its redirect remains public',
+)
+expectEqual(
+  searchPolicyForPost({ blog_id: 'research', slug: 'youtube-music-channel-phase-2', status: 'live', lifecycle_status: 'live' }),
+  'noindex',
+  'deferred YouTube Music project memo must be noindex',
+)
+expectEqual(
+  searchPolicyForPost({ blog_id: 'research', slug: 'llama-throughput-lab-draftbench', status: 'live', lifecycle_status: 'live' }),
+  'noindex',
+  'tooling research without independent measurement must be noindex',
 )
 expectEqual(
   searchPolicyForPost({ blog_id: 'lab', slug: 'ornith15-server-quality-speed-benchmark', status: 'live', lifecycle_status: 'live' }),
@@ -207,8 +217,18 @@ expectEqual(
 )
 expectEqual(
   isIndexablePostSitemapEntry({ blog_id: 'lab', slug: 'stockpulse-weekly-2026-08-18', status: 'live' }),
-  true,
-  'indexable weekly Lab notes may enter sitemap projections',
+  false,
+  'migrated weekly Lab notes must stay out of sitemap projections',
+)
+expectEqual(
+  isIndexablePostSitemapEntry({ blog_id: 'research', slug: 'youtube-music-channel-phase-2', status: 'live' }),
+  false,
+  'deferred Research project memo must stay out of sitemap projections',
+)
+expectEqual(
+  isIndexablePostSitemapEntry({ blog_id: 'research', slug: 'llama-throughput-lab-draftbench', status: 'live' }),
+  false,
+  'tooling Research note must stay out of sitemap projections',
 )
 expectEqual(
   isIndexablePostSitemapEntry({ blog_id: 'research', slug: 'dflash-2-qwen3-8-27b-vs-mtp', status: 'live' }),
