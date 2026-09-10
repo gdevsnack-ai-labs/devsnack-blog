@@ -17,6 +17,7 @@ if (!isIndexableSitemapRoute('/demos/html')) throw new Error('populated HTML Sho
 if (!isIndexableSitemapRoute('/benchmarks')) throw new Error('current public benchmark hub must remain in sitemap')
 if (!isIndexableSitemapRoute('/benchmarks/custom')) throw new Error('custom benchmark collection must remain in sitemap')
 if (!isIndexableSitemapRoute('/benchmarks/models/ling-3-0-flash')) throw new Error('Ling model page must remain in sitemap')
+if (!isIndexableSitemapRoute('/benchmarks/models/n25-mini')) throw new Error('N2.5 Mini model page must remain in sitemap')
 if (isIndexableSitemapRoute('/benchmarks/gb10-llm-benchmark-v1-20260906')) throw new Error('historical benchmark URL must not remain indexable')
 if (isIndexableSitemapRoute('/search')) throw new Error('utility route must not be sitemap-indexable')
 if (isIndexableSitemapRoute('/links')) throw new Error('utility Links must not be sitemap-indexable')

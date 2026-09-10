@@ -19,7 +19,7 @@ export type BenchmarkMtpMode = 'mtp' | 'non-mtp'
 
 export type PublicBenchmarkSuite = {
   status: 'available' | 'unavailable' | 'not_in_public_export'
-  source_type?: 'revalidated_evaluator' | 'reused_historical'
+  source_type?: 'revalidated_evaluator' | 'reused_historical' | 'fresh_full_cycle'
   source_run_id?: string
   evaluator_version?: string
   condition?: Record<string, unknown>
@@ -70,6 +70,7 @@ export type PublicBenchmarkRelease = {
     suite_count: number
     revalidated_evaluator_runs: number
     reused_source_runs: number
+    fresh_full_cycle_runs?: number
     source_run_references: number
   }
   suite_versions: Record<string, string>

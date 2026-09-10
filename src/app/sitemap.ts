@@ -50,7 +50,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/benchmarks`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.85 },
     { url: `${baseUrl}/benchmarks/custom`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.65 },
 
-    ...getPublicBenchmarkModelSlugs().map(slug => ({ url: `${baseUrl}/benchmarks/models/${slug}`, lastModified: new Date('2026-09-08T00:00:00Z'), changeFrequency: 'monthly' as const, priority: 0.75 })),
+    ...getPublicBenchmarkModelSlugs().map(slug => ({ url: `${baseUrl}/benchmarks/models/${slug}`, lastModified: new Date('2026-09-10T00:00:00Z'), changeFrequency: 'monthly' as const, priority: 0.75 })),
     { url: `${baseUrl}/data`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.85 },
     { url: `${baseUrl}/demos`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
     { url: `${baseUrl}/demos/html`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.75 },

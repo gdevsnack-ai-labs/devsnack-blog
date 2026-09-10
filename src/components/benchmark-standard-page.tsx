@@ -55,7 +55,7 @@ export function BenchmarkStandardPage() {
   const release = loadPublicBenchmarkRelease()
   const families = getPublicBenchmarkFamilies(release)
   const jsonUrl = absoluteSiteUrl(`/data/benchmarks/${PUBLIC_RELEASE_ID}.json`)
-  const benchmarkKeywords = ['NVIDIA DGX Spark', 'GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'Qwen', 'Gemma', 'Ornith', 'Ling 3.0', 'MTP', 'coding benchmark', 'tool call benchmark', 'agent benchmark', 'local AI']
+  const benchmarkKeywords = ['NVIDIA DGX Spark', 'GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'Qwen', 'Gemma', 'N2.5 Mini', 'N2 Mini', 'Ornith', 'Ling 3.0', 'MTP', 'coding benchmark', 'tool call benchmark', 'agent benchmark', 'local AI']
   const jsonLd = buildJsonLdGraph(
     buildArticleJsonLd({
       type: 'TechArticle',
@@ -109,7 +109,7 @@ export function BenchmarkStandardPage() {
         <header className="mt-6 border-b border-border pb-8">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300"><Gauge className="h-4 w-4" aria-hidden="true" /> Public Benchmark Release <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] normal-case dark:bg-blue-900/30">{release.generated_at}</span></div>
           <h1 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">DGX Spark GB10 — Local LLM Benchmark</h1>
-          <p className="mt-5 max-w-5xl text-sm leading-relaxed text-muted-foreground">Gemma4, Ling 3.0 Flash, N2 Mini, North Mini, Ornith 1.5, Qwen3.6 35B-A3B, Qwen3.8 Flash Next의 여러 GGUF·quantization·MTP variant를 llama.cpp에서 실행하고, 속도부터 코딩·툴 사용·에이전트 작업까지 7개 항목으로 비교했습니다.</p>
+          <p className="mt-5 max-w-5xl text-sm leading-relaxed text-muted-foreground">Gemma4, Ling 3.0 Flash, N2.5 Mini, N2 Mini, North Mini, Ornith 1.5, Qwen3.6 35B-A3B, Qwen3.8 Flash Next의 여러 GGUF·quantization·MTP variant를 llama.cpp에서 실행하고, 속도부터 코딩·툴 사용·에이전트 작업까지 7개 항목으로 비교했습니다.</p>
           <p className="mt-3 text-sm text-muted-foreground">표준 suite 밖의 개별 측정과 심층 분석은 <Link href="/benchmarks/custom" className="font-semibold text-foreground underline-offset-4 hover:underline">Custom Benchmarks에서 확인할 수 있습니다 →</Link></p>
 
         </header>
