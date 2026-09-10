@@ -64,33 +64,84 @@ function getProjectRelatedLinks(experiment: (typeof experiments)[number], projec
 }
 
 function LocalBenchmarkHistory({ experiment }: { experiment: (typeof experiments)[number] }) {
+  const finding = getProjectFinding(experiment)
+  const metrics = getKeyMetrics(experiment)
+  const timeline = getSortedTimeline(experiment)
+
   return (
-    <section className="rounded-2xl border border-blue-200 bg-blue-50/50 p-5 dark:border-blue-900/50 dark:bg-blue-950/15" aria-labelledby="benchmark-history-heading">
-      <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
-        <FlaskConical className="h-5 w-5" aria-hidden="true" />
-        <h2 id="benchmark-history-heading" className="text-xl font-bold">초기 실험의 의미</h2>
-      </div>
-      <p className="mt-3 max-w-3xl text-base leading-relaxed">{experiment.whyText}</p>
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
-        <div className="rounded-xl border border-blue-200/80 bg-white/80 p-4 dark:border-blue-900/50 dark:bg-gray-900/60">
-          <h3 className="font-semibold">무엇을 확인했나</h3>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">GB10에서 로컬 LLM을 실제로 실행할 수 있는지, 그리고 단순 속도 측정을 넘어 서빙과 결과물까지 이어지는지 확인했습니다.</p>
+    <>
+      <section className="rounded-2xl border border-blue-200 bg-blue-50/50 p-5 dark:border-blue-900/50 dark:bg-blue-950/15" aria-labelledby="benchmark-history-heading">
+        <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+          <FlaskConical className="h-5 w-5" aria-hidden="true" />
+          <h2 id="benchmark-history-heading" className="text-xl font-bold">초기 실험의 의미</h2>
         </div>
-        <div className="rounded-xl border border-blue-200/80 bg-white/80 p-4 dark:border-blue-900/50 dark:bg-gray-900/60">
-          <h3 className="font-semibold">현재 결과는 어디에 있나</h3>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">후속 측정은 이 역사 페이지에 누적하지 않고, 재현 가능한 비교 결과와 개별 심층 측정을 별도 Benchmark surface로 관리합니다.</p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Link href="/benchmarks" className="inline-flex items-center rounded-lg bg-foreground px-3 py-2 text-sm text-background no-underline hover:opacity-80">Standard Benchmarks 보기</Link>
-            <Link href="/benchmarks/custom" className="inline-flex items-center rounded-lg border border-blue-200 px-3 py-2 text-sm no-underline hover:border-blue-300 hover:text-blue-700 dark:border-blue-900/60 dark:hover:border-blue-700 dark:hover:text-blue-300">Custom Benchmarks 보기</Link>
+        <p className="mt-3 max-w-3xl text-base leading-relaxed">{experiment.whyText}</p>
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <div className="rounded-xl border border-blue-200/80 bg-white/80 p-4 dark:border-blue-900/50 dark:bg-gray-900/60">
+            <h3 className="font-semibold">무엇을 확인했나</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">GB10에서 로컬 LLM을 실제로 실행할 수 있는지, 그리고 단순 속도 측정을 넘어 서빙과 결과물까지 이어지는지 확인했습니다.</p>
+          </div>
+          <div className="rounded-xl border border-blue-200/80 bg-white/80 p-4 dark:border-blue-900/50 dark:bg-gray-900/60">
+            <h3 className="font-semibold">현재 결과는 어디에 있나</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">후속 측정은 이 역사 페이지에 누적하지 않고, 재현 가능한 비교 결과와 개별 심층 측정을 별도 Benchmark surface로 관리합니다.</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link href="/benchmarks" className="inline-flex items-center rounded-lg bg-foreground px-3 py-2 text-sm text-background no-underline hover:opacity-80">Standard Benchmarks 보기</Link>
+              <Link href="/benchmarks/custom" className="inline-flex items-center rounded-lg border border-blue-200 px-3 py-2 text-sm no-underline hover:border-blue-300 hover:text-blue-700 dark:border-blue-900/60 dark:hover:border-blue-700 dark:hover:text-blue-300">Custom Benchmarks 보기</Link>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {finding && (
+        <section className="rounded-xl border border-blue-200 bg-blue-50/60 p-5 dark:border-blue-900/50 dark:bg-blue-950/20" aria-labelledby="local-benchmark-finding-heading">
+          <h2 id="local-benchmark-finding-heading" className="text-sm font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Verified Project Finding</h2>
+          <p className="mt-3 text-base leading-relaxed">{finding.statement}</p>
+          <div className="mt-4 grid gap-4 text-sm md:grid-cols-2">
+            <div>
+              <p className="font-semibold text-foreground">Evidence</p>
+              <ul className="mt-1 list-disc space-y-1 pl-5 text-muted-foreground">{finding.evidence.map(item => <li key={item}>{item}</li>)}</ul>
+            </div>
+            <div>
+              <p className="font-semibold text-foreground">Scope</p>
+              <p className="mt-1 leading-relaxed text-muted-foreground">{finding.scope}</p>
+              {finding.confidence && <p className="mt-2 text-xs text-muted-foreground">Confidence · {finding.confidence}</p>}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {metrics.length > 0 && (
+        <section aria-labelledby="local-benchmark-metrics-heading">
+          <div className="mb-4 flex items-center gap-2"><CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" /><h2 id="local-benchmark-metrics-heading" className="text-xl font-bold">핵심 결과</h2></div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {metrics.map(metric => <div key={metric.label} className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">{metric.label}</p><p className="mt-2 text-xl font-bold tracking-tight">{metric.value}</p>{metric.note && <p className="mt-1 text-xs text-muted-foreground">{metric.note}</p>}</div>)}
+          </div>
+        </section>
+      )}
+
+      {timeline.length > 0 && (
+        <section aria-labelledby="local-benchmark-log-heading">
+          <div className="mb-4 flex items-center gap-2"><Calendar className="h-5 w-5 text-muted-foreground" /><h2 id="local-benchmark-log-heading" className="text-xl font-bold">주요 실험 기록</h2></div>
+          <div className="space-y-3">
+            {timeline.map((item, index) => (
+              <article key={`${item.date}-${item.name}-${index}`} className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="min-w-0"><h3 className="text-sm font-semibold leading-snug">{item.name}</h3>{item.result && <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{item.result}</p>}</div>
+                  <div className="flex shrink-0 items-center gap-2 pl-0 text-xs text-muted-foreground"><span>{item.date || '날짜 미기록'}</span><span>{item.status}</span>{item.blogSlug && <Link href={item.blogSlug} className="text-blue-600 no-underline hover:underline dark:text-blue-400">원문</Link>}</div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+    </>
   )
 }
 
 function AutonomousBlogOverview({ experiment, live }: { experiment: (typeof experiments)[number]; live: typeof AUTONOMOUS_AI_BLOG_LIVE }) {
   const publications = live.recentPublications.slice(0, 3)
+  const operations = live.timeline.slice(0, 5)
+  const lastRunDate = live.lastRunAt?.slice(0, 10).replaceAll('-', '.') || '날짜 미기록'
   return (
     <>
       <section className="rounded-2xl border border-purple-200 bg-purple-50/50 p-5 dark:border-purple-900/50 dark:bg-purple-950/15" aria-labelledby="autonomous-overview-heading">
@@ -112,6 +163,15 @@ function AutonomousBlogOverview({ experiment, live }: { experiment: (typeof expe
         </div>
       </section>
 
+      <section aria-labelledby="autonomous-snapshot-heading">
+        <div className="mb-4 flex items-center gap-2"><CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" /><h2 id="autonomous-snapshot-heading" className="text-xl font-bold">공개 운영 현황</h2></div>
+        <div className="grid gap-3 sm:grid-cols-3">
+          <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">공개 Field Notes</p><p className="mt-2 text-2xl font-bold">{live.publishedCount}</p></div>
+          <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">보류된 후보</p><p className="mt-2 text-2xl font-bold">{live.heldCount}</p></div>
+          <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">최근 편집 cycle</p><p className="mt-2 text-sm font-semibold">{lastRunDate}</p></div>
+        </div>
+      </section>
+
       <section aria-labelledby="autonomous-publications-heading">
         <div className="mb-4"><h2 id="autonomous-publications-heading" className="text-xl font-bold">최근 공개 글</h2><p className="mt-1 text-sm text-muted-foreground">글 전문은 Agent Field Notes가 보관하며, 여기에는 최근 공개 결과와 canonical 링크만 남깁니다.</p></div>
         {publications.length > 0 ? (
@@ -127,6 +187,20 @@ function AutonomousBlogOverview({ experiment, live }: { experiment: (typeof expe
           </div>
         ) : <p className="rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">아직 공개된 글이 없습니다.</p>}
       </section>
+
+      {live.nextGoals.length > 0 && (
+        <section aria-labelledby="autonomous-next-goals-heading">
+          <div className="mb-4"><h2 id="autonomous-next-goals-heading" className="text-xl font-bold">다음 목표</h2><p className="mt-1 text-sm text-muted-foreground">다음 편집 cycle에서 검증할 운영 가설입니다.</p></div>
+          <ul className="grid gap-3 md:grid-cols-2">{live.nextGoals.map(goal => <li key={goal} className="rounded-xl border border-border bg-white p-4 text-sm leading-relaxed dark:bg-gray-900">{goal}</li>)}</ul>
+        </section>
+      )}
+
+      {operations.length > 0 && (
+        <section aria-labelledby="autonomous-changes-heading">
+          <div className="mb-4"><h2 id="autonomous-changes-heading" className="text-xl font-bold">최근 운영 기록</h2><p className="mt-1 text-sm text-muted-foreground">편집 결과와 분리해, 공개 운영에서 확인한 주요 변화만 남깁니다.</p></div>
+          <div className="space-y-3">{operations.map((item, index) => <article key={`${item.date}-${item.name}-${index}`} className="rounded-xl border border-border bg-muted/30 p-4"><div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground"><span>{item.date}</span><span>·</span><span>{item.status}</span></div><h3 className="mt-2 text-sm font-semibold">{item.name}</h3><p className="mt-1 text-sm leading-relaxed text-muted-foreground">{item.result}</p></article>)}</div>
+        </section>
+      )}
 
       <section aria-labelledby="autonomous-retrospective-heading">
         <h2 id="autonomous-retrospective-heading" className="text-xl font-bold">현재까지의 회고</h2>

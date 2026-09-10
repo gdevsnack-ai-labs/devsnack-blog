@@ -200,6 +200,12 @@ const LLM_BENCH: Experiment = {
   nextGoals: ['표준 Benchmark에서 모델·variant를 같은 기준으로 비교', 'Custom Benchmarks에서 특정 모델·사용 사례 측정을 보존'],
   timeline: [
     { name: 'GB10에서 로컬 LLM 실행 가능성 확인', status: '완료', date: '2026.08.18', result: '로컬 모델의 실행 속도·서빙·실사용 산출물을 확인해 후속 Benchmark의 출발점을 마련' },
+    { name: '단일 테스트·장기 서빙 실측', status: '완료', date: '2026.08.18', result: '단일 실행 prefill 680~930 t/s·decode 17~19.5 t/s, 4-slot 장문 서빙 18~22 t/s와 MTP acceptance 평균 약 94%를 확인' },
+    { name: '실사용 산출물 — Stock Dashboard', status: '완료', date: '2026.08.19', blogSlug: '/lab/local-llm-benchmark-report', result: 'Qwen3.8-27B Ridge 3.7bpw로 KOSPI/KOSDAQ 대시보드를 생성하고 worklog·llama_log까지 기록' },
+    { name: 'HTML in Canvas 데모', status: '완료', date: '2026.08.20', blogSlug: '/research/html-in-canvas-dom-overlay-rasterization', result: 'Canvas bitmap·HTML DOM overlay·html2canvas snapshot을 단일 HTML로 공개' },
+    { name: 'Qwen3.6 YouTube 대본 품질 비교', status: '완료', date: '2026.08.24', blogSlug: '/lab/qwen36-youtube-script-reliability-benchmark', result: '6종 파생 모델을 같은 Science·History fixture로 비교해 12회 실행에서 5회 내 최종 통과 9/12, 평균 3.1회를 기록' },
+    { name: 'Ornith-1.5 서버 품질·실사용 속도', status: '완료', date: '2026.08.24', blogSlug: '/lab/ornith15-server-quality-speed-benchmark', result: 'Q5/Q6/Q8을 실제 긴 품질 prompt에서 측정하고 속도·품질·재시도 수렴성을 비교' },
+    { name: 'Production contract calibration', status: '완료', date: '2026.08.24', result: '순수 rhetorical/hypothetical hook의 fact_refs 규칙 충돌을 production과 Benchmark에 반영' },
     { name: '통합 Benchmark 구조로 전환', status: '완료', date: '2026.08.24', result: '서로 다른 측정 조건을 분리하고, 현재 결과를 Standard·Custom Benchmarks에서 관리하는 구조로 이동' },
   ],
 }

@@ -34,8 +34,8 @@ const expectedAvailableCount = projection.runs.records.reduce((count, run) => co
 expect(projection.runs.records.length >= 5, 'current projection must retain the recovered multi-date run history')
 expect(fixedPublications.length === expectedAvailableCount, 'current projection must expose every available publication in its history')
 expect(fixedPublications.length >= 9, 'current recovered projection must retain the September publication history')
-expect(fixedPublications[0]?.date === '2026-09-08', 'current publication history must start with the latest trading date')
 const latestRun = projection.runs.records[0]
+expect(fixedPublications[0]?.date === latestRun.trading_date, 'current publication history must start with the latest run date')
 const latestStage = latestRun.publications.evening.status === 'available' && Boolean(latestRun.publications.evening.path) ? 'evening' : 'morning'
 const latestRunPublication = latestRun.publications[latestStage]
 expect(fixedPublications[0]?.stage === latestStage, 'latest available publication must prefer the same-date Evening when it exists')
@@ -79,6 +79,8 @@ const historyFixture = JSON.parse(JSON.stringify({
     ...projection.runs,
     records: [{
       ...projection.runs.records[0],
+      run_id: 'live-shadow-2026-09-08-01',
+      trading_date: '2026-09-08',
       publications: {
         morning: { status: 'available', path: 'reports/2026-09-08/morning/' },
         evening: { status: 'not_started', path: null },

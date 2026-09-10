@@ -1,3 +1,4 @@
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -37,9 +38,25 @@ class AuditPolicyTest(unittest.TestCase):
         self.assertEqual(failures, [])
 
     def test_current_stockpulse_publication_comes_from_available_projection_path(self):
+        projection_path = Path(__file__).resolve().parents[1] / 'src' / 'data' / 'stockpulse-v1-fixed-projection.json'
+        projection = json.loads(projection_path.read_text())
+        candidates = []
+        for run in projection['runs']['records']:
+            if run['trading_date'] < '2026-09-01':
+                continue
+            for stage in ('morning', 'evening'):
+                publication = run['publications'][stage]
+                if publication['status'] != 'available' or not publication['path']:
+                    continue
+                candidates.append((
+                    run['trading_date'],
+                    stage == 'evening',
+                    f"https://gdevsnack-ai-labs.github.io/stockpulse-v1-fixed-publication/{publication['path'].lstrip('/')}",
+                ))
+        expected = max(candidates, key=lambda item: (item[0], item[1]))[2]
         self.assertEqual(
             latest_v1_fixed_publication_url(),
-            'https://gdevsnack-ai-labs.github.io/stockpulse-v1-fixed-publication/reports/2026-09-08/evening/',
+            expected,
         )
 
     def test_sitemap_rejects_retired_and_migrated_detail_urls(self):

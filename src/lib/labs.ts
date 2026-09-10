@@ -114,6 +114,22 @@ const LAB_KNOWLEDGE: Record<string, LabKnowledge> = {
     projectFinding: AUTONOMOUS_AI_BLOG_LIVE.projectFinding || undefined,
     showInFindings: false,
   },
+  'local-llm-benchmark': {
+    projectFinding: {
+      statement: '현재 YouTube production contract와 반복 생성 비용을 함께 고려하면 Q5는 속도·용량·통과율의 균형이 좋고, Q6은 재시도 수렴성이 좋았습니다. Q8은 현재 조건에서 우위가 확인되지 않았습니다.',
+      evidence: ['Ornith Q5/Q6/Q8 서버 품질·속도 측정', 'Q5 2/2·64.6 tok/s, Q6 2/2·59.8 tok/s, Q8 0/2·54.4 tok/s'],
+      scope: 'DGX Spark GB10, Science·History 두 fixture, 모델당 1회 반복, 현재 structured output contract',
+      confidence: 'limited',
+    },
+    metrics: [
+      { label: 'Qwen3.8 단일 Decode', value: '17~19.5 t/s', note: '초기 MTP 실측' },
+      { label: 'Qwen3.8 4-slot', value: '18~22 t/s', note: '장문 서빙 평균' },
+      { label: 'MTP acceptance', value: '93.1% / 약 94%', note: '단일 실행 / 4-slot 평균' },
+      { label: 'Ornith Q5/Q6/Q8', value: '64.6 / 59.8 / 54.4 tok/s', note: '품질 통과 2/2 · 2/2 · 0/2' },
+      { label: 'Qwen3.6 quality', value: '9/12', note: '5회 내 최종 통과' },
+    ],
+    showInFindings: false,
+  },
 
   'ai-omok': {
     projectFinding: {
