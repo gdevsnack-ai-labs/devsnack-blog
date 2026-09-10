@@ -1,13 +1,12 @@
-import { isMigratedResearchSlug } from '@/lib/research-note-migration'
+// @ts-expect-error Node's strip-types runner requires the explicit extension.
+import { isIndexablePostSitemapEntry, type SearchPolicyPostLike } from './search-policy.ts'
 
-export interface RssPostLike {
+export type RssPostLike = SearchPolicyPostLike & {
   blog_id: string
   slug: string
-  status?: string | null
 }
 
-/** RSS may expose only live rows that still have a Vercel detail URL. */
+/** Keep the RSS projection on the same post search policy as the sitemap. */
 export function isRssEligiblePost(post: RssPostLike): boolean {
-  if (post.status !== 'live') return false
-  return !(post.blog_id === 'research' && isMigratedResearchSlug(post.slug))
+  return isIndexablePostSitemapEntry(post)
 }

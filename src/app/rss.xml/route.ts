@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { destinationLabel, postHref } from '@/config/site-catalog'
-import { isFeedListable } from '@/lib/ia/feed-lifecycle'
+import { publicFeedOrFilter } from '@/lib/ia/feed-lifecycle'
 import { isRssEligiblePost } from '@/lib/seo/rss-policy'
 
 const SITE_URL = 'https://devsnack-blog.vercel.app'
@@ -10,15 +10,16 @@ export const dynamic = 'force-dynamic'
 export async function GET() {
   const { data: posts, error } = await supabase
     .from('posts')
-    .select('slug, title, excerpt, blog_id, status, lifecycle_status, published, updated, cover_image')
+    .select('slug, title, excerpt, blog_id, status, lifecycle_status, published, updated')
     .eq('status', 'live')
+    .or(publicFeedOrFilter())
     .order('published', { ascending: false })
     .limit(50)
 
   if (error) console.error('[rss] Supabase query failed:', error.message)
 
   const items = (posts ?? []).flatMap((post) => {
-    if (!isFeedListable(post) || !isRssEligiblePost(post)) return []
+    if (!isRssEligiblePost(post)) return []
     const urlPath = postHref(post.blog_id, post.slug)
     if (!urlPath) {
       console.error(`[rss] 알 수 없는 blog_id: ${post.blog_id}`)
@@ -36,7 +37,6 @@ export async function GET() {
       <description><![CDATA[${post.excerpt || post.title}]]></description>
       <pubDate>${pubDate}</pubDate>
       <category>${destinationLabel(post.blog_id)}</category>
-      ${post.cover_image ? `<enclosure url="${post.cover_image}" type="image/jpeg" />` : ''}
     </item>`]
   }).join('')
 

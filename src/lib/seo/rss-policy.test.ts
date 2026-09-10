@@ -21,6 +21,16 @@ expectEqual(
   'published Lab assets may stay in RSS',
 )
 expectEqual(
+  isRssEligiblePost({ blog_id: 'lab', slug: 'stockpulse-self-2026-08-26', status: 'live' }),
+  false,
+  'raw StockPulse daily Lab notes must stay out of RSS',
+)
+expectEqual(
+  isRssEligiblePost({ blog_id: 'lab', slug: 'stockpulse-weekly-2026-08-18', status: 'live' }),
+  false,
+  'redirected StockPulse weekly notes must stay out of RSS',
+)
+expectEqual(
   isRssEligiblePost({ blog_id: 'devsnack', slug: 'draft-story', status: 'draft' }),
   false,
   'non-live rows must stay out of RSS',
