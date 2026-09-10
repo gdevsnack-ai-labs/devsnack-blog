@@ -45,7 +45,7 @@ The public application does not depend on the local LLM, Hindsight, or ComfyUI s
 | `/data` | publication/tracker hub | archive gateways and aggregate tracker links |
 | `/stock` | StockPulse legacy archive | `noindex, follow`; external old publication gateway |
 | `/stock/[slug]` | legacy StockPulse detail | mapped external redirect when an exact publication exists |
-| `/aitech` | AI Tech v1 archive hub | indexable compact title/date history |
+| `/aitech` | AI Tech v1 archive hub | public compact title/date history with `noindex, follow` |
 | `/aitech/[slug]` | AI Tech v1 detail | HTTP 410 and `noindex`; never in sitemap/RSS/search |
 | `/demos` | Showcase hub | public interactive artifacts |
 | `/rss.xml` | Korean RSS | live public rows with valid Vercel detail routes |

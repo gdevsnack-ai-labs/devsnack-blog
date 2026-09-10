@@ -1,4 +1,5 @@
-export const RESEARCH_NOTE_PAGES_BASE = 'https://gdevsnack-ai-labs.github.io/devsnack-research-notes/notes/'
+export const RESEARCH_NOTE_NOTEBOOK_URL = 'https://gdevsnack-ai-labs.github.io/devsnack-research-notes/'
+export const RESEARCH_NOTE_PAGES_BASE = `${RESEARCH_NOTE_NOTEBOOK_URL}notes/`
 
 /**
  * Legacy DevSnack Research slugs migrated to the public Research Notebook.

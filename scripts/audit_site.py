@@ -80,14 +80,14 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
     ),
     "/research": RouteExpectation(
         "/research", 200, meta_robots="index, follow", canonical=True,
-        required_text=("Knowledge Domains", "Recent Knowledge", "Research Notes Board"),
+        required_text=("Knowledge Domains", "Recent Knowledge", "Research Notes Board", "Research Notebook 전체 보기"),
     ),
     "/data": RouteExpectation(
         "/data", 200, meta_robots="index, follow", canonical=True,
         required_text=("Publications & Trackers", "StockPulse", "V1 Fixed daily market publication"),
     ),
     "/aitech": RouteExpectation(
-        "/aitech", 200, meta_robots="index, follow", canonical=True,
+        "/aitech", 200, meta_robots="noindex, follow", canonical=True,
         required_text=("Historical index", "다음 단계"),
         forbidden_hrefs=("/aitech/", "/aitech?page="),
     ),
@@ -119,7 +119,7 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
 }
 
 INDEXABLE_HUB_PATHS = {
-    "/", "/devsnack", "/aitech", "/labs", "/labs/autonomous-ai-blog", "/benchmarks", "/data", "/demos", "/research",
+    "/", "/devsnack", "/labs", "/labs/autonomous-ai-blog", "/benchmarks", "/data", "/demos", "/research",
 }
 
 
@@ -553,6 +553,12 @@ async def check_browser(failures: list[str]) -> None:
         page = await browser.new_page(viewport={"width": 390, "height": 844})
         try:
             await page.goto(f"{BASE_URL}/research", wait_until="networkidle", timeout=60_000)
+            board = page.locator('section[aria-labelledby="research-notes-board-heading"]')
+            board_count = await board.locator('table tbody tr').count()
+            if board_count != 8:
+                failures.append(f"/research Research Notes Board: expected 8 rendered notes, got {board_count}")
+            if await board.locator(f'a[href="https://gdevsnack-ai-labs.github.io/devsnack-research-notes/"]').count() != 1:
+                failures.append("/research Research Notes Board: full Research Notebook link is missing")
             nav = page.locator("nav[data-mobile-nav]")
             await nav.get_by_role("button", name="More 메뉴", exact=True).click(force=True)
             menu = nav.get_by_role("menu", name="More 하위 메뉴", exact=True)

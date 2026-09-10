@@ -29,6 +29,9 @@ export default async function KnowledgePage() {
   const legacySources = posts.filter(post => post.asset.assetId.startsWith('post:devsnack:'))
   const benchmarkResearch = posts.filter(post => post.benchmarkResearch).slice(0, 8)
   const relatedPosts = posts.filter(post => post.related.length > 0).slice(0, 3)
+  const recentResearchNotes = [...RESEARCH_NOTES]
+    .sort((a, b) => b.researched_date.localeCompare(a.researched_date) || b.published_date.localeCompare(a.published_date))
+    .slice(0, 8)
 
   return (
     <div className="min-h-screen bg-background">
@@ -67,7 +70,7 @@ export default async function KnowledgePage() {
           {benchmarkResearch.length > 0 ? <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{benchmarkResearch.map(post => <KnowledgeAssetCard key={post.slug} post={post} />)}</div> : <div className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">Benchmark Research asset가 없습니다.</div>}
         </section>
 
-        <ResearchNotesBoard notes={RESEARCH_NOTES} />
+        <ResearchNotesBoard notes={recentResearchNotes} totalCount={RESEARCH_NOTES.length} />
 
         {relatedPosts.map(post => <RelatedAssets key={post.slug} links={post.related} title={`${post.title} · Related`} />)}
       </div>

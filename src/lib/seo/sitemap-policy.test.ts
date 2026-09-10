@@ -11,6 +11,7 @@ if (routePolicy('/labs/stockpulse-v1-fixed') !== 'INDEX') throw new Error('Stock
 if (routePolicy('/research/category/llm') !== 'NAVIGATION_ONLY') throw new Error('research category is navigation-only in this phase')
 if (routePolicy('/lab') === 'INDEX') throw new Error('legacy Lab hub must not be sitemap-indexable')
 if (!isIndexableSitemapRoute('/research')) throw new Error('Knowledge hub must remain indexable')
+if (isIndexableSitemapRoute('/aitech')) throw new Error('AI Tech compact history must be excluded from sitemap')
 if (!isIndexableSitemapRoute('/privacy')) throw new Error('Privacy must remain indexable')
 if (!isIndexableSitemapRoute('/demos/html')) throw new Error('populated HTML Showcase category must remain in sitemap')
 if (!isIndexableSitemapRoute('/benchmarks')) throw new Error('current public benchmark hub must remain in sitemap')

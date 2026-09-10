@@ -13,13 +13,13 @@ from audit_site import (  # noqa: E402
 
 
 class AuditPolicyTest(unittest.TestCase):
-    def test_aitech_archive_policy_is_indexable_and_not_paginated(self):
+    def test_aitech_archive_policy_is_noindex_and_not_paginated(self):
         expectation = CURRENT_POLICY['/aitech']
         failures = check_route_expectation(
             expectation,
             200,
             {'content-type': 'text/html'},
-            '<title>AI Tech</title><meta name="robots" content="index, follow">'
+            '<title>AI Tech</title><meta name="robots" content="noindex, follow">'
             '<link rel="canonical" href="https://example.test/aitech">'
             '<h1>AI Tech Insight</h1><p>Historical index</p><p>185개 기록</p><p>다음 단계</p>',
             'https://example.test',

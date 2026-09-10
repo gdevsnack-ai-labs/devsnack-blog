@@ -1,7 +1,8 @@
 export type SearchPolicy = 'index' | 'noindex' | 'private'
 export type SearchPolicyDecisionSource = 'automatic' | 'override' | 'default'
 
-import { isMigratedResearchSlug } from '../research-note-migration'
+// @ts-expect-error Node's strip-types runner requires the explicit extension.
+import { isMigratedResearchSlug } from '../research-note-migration.ts'
 
 export interface SearchPolicyDecision {
   policy: SearchPolicy
@@ -40,6 +41,7 @@ export const SEARCH_POLICY_OVERRIDES: Readonly<Record<string, { policy: SearchPo
 
 const PRIVATE_PATHS = ['/admin', '/api']
 const NOINDEX_PATH_REASONS: Readonly<Record<string, string>> = {
+  '/aitech': 'archived_aitech_history_hub',
   '/search': 'utility_search_results',
   '/stock': 'stockpulse_external_publication_gateway',
   '/tools/operations': 'public_operations_transparency_without_search_landing_value',

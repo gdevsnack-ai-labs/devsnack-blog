@@ -1,5 +1,6 @@
 import { ArrowUpRight, ExternalLink } from 'lucide-react'
 import type { ResearchNote } from '@/data/research-notes'
+import { RESEARCH_NOTE_NOTEBOOK_URL } from '@/lib/research-note-migration'
 
 const CATEGORY_LABEL: Record<ResearchNote['category'], string> = {
   models: 'Models',
@@ -62,12 +63,20 @@ function NoteLinks({ note }: { note: ResearchNote }) {
   )
 }
 
-export function ResearchNotesBoard({ notes }: { notes: ResearchNote[] }) {
+export function ResearchNotesBoard({ notes, totalCount = notes.length }: { notes: ResearchNote[]; totalCount?: number }) {
   return (
     <section className="mt-12" aria-labelledby="research-notes-board-heading">
-      <div className="mb-4">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
         <h2 id="research-notes-board-heading" className="text-xl font-bold">Research Notes Board</h2>
-        <p className="mt-1 text-sm text-muted-foreground">조사 단계와 다음 검증 상태를 보여주는 공개 Notebook 목록입니다. 상세 Note는 외부 GitHub Pages에서 열립니다.</p>
+          <p className="mt-1 text-sm text-muted-foreground">최근 {notes.length}개를 간단히 보여주는 공개 Notebook 목록입니다. 긴 조사 원문은 외부 GitHub Pages에서 열립니다.</p>
+        </div>
+        <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+          <span>최근 {notes.length}개 / 전체 {totalCount}개</span>
+          <a href={RESEARCH_NOTE_NOTEBOOK_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-medium text-foreground no-underline hover:text-purple-600 hover:underline dark:hover:text-purple-400">
+            Research Notebook 전체 보기 <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
+        </div>
       </div>
 
       <div className="overflow-hidden rounded-xl border border-border bg-white dark:bg-gray-900">

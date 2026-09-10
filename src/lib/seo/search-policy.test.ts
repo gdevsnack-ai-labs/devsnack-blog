@@ -17,6 +17,7 @@ function expectEqual(actual: unknown, expected: unknown, message: string) {
 }
 
 expectEqual(searchPolicyForPath('/stock'), 'noindex', 'StockPulse Hub must remain public but noindex after externalization')
+expectEqual(searchPolicyForPath('/aitech'), 'noindex', 'AI Tech compact history must remain public but noindex')
 expectEqual(searchPolicyForPath('/tools/operations'), 'noindex', 'Operations must remain public but noindex')
 expectEqual(searchPolicyForPath('/links'), 'noindex', 'utility Links must be noindex')
 expectEqual(searchPolicyForPath('/admin/research'), 'private', 'Admin routes must be private, not merely noindex')
