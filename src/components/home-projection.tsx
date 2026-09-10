@@ -41,7 +41,7 @@ export function HomeFindingItem({ project }: { project: LabProjectProjection }) 
 
 export function HomeKnowledgeItem({ post }: { post: KnowledgeProjection }) {
   return (
-    <Link href={`/research/${post.slug}`} className="group flex min-w-0 items-start gap-3 rounded-xl border border-border bg-white p-4 no-underline transition-colors hover:border-purple-300 dark:bg-gray-900 dark:hover:border-purple-700">
+    <Link href={post.href} className="group flex min-w-0 items-start gap-3 rounded-xl border border-border bg-white p-4 no-underline transition-colors hover:border-purple-300 dark:bg-gray-900 dark:hover:border-purple-700">
       <BookOpen className="mt-0.5 h-4 w-4 shrink-0 text-purple-600 dark:text-purple-400" aria-hidden="true" />
       <div className="min-w-0 flex-1">
         <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{post.domainLabel}</p>
