@@ -87,6 +87,7 @@ function LocalBenchmarkHistory({ experiment }: { experiment: (typeof experiments
             <div className="mt-4 flex flex-wrap gap-2">
               <Link href="/benchmarks" className="inline-flex items-center rounded-lg bg-foreground px-3 py-2 text-sm text-background no-underline hover:opacity-80">Standard Benchmarks 보기</Link>
               <Link href="/benchmarks/custom" className="inline-flex items-center rounded-lg border border-blue-200 px-3 py-2 text-sm no-underline hover:border-blue-300 hover:text-blue-700 dark:border-blue-900/60 dark:hover:border-blue-700 dark:hover:text-blue-300">Custom Benchmarks 보기</Link>
+              <a href="https://github.com/gdevsnack-ai-labs/gb10-local-llm-benchmark" target="_blank" rel="noreferrer" className="inline-flex items-center rounded-lg border border-blue-200 px-3 py-2 text-sm no-underline hover:border-blue-300 hover:text-blue-700 dark:border-blue-900/60 dark:hover:border-blue-700 dark:hover:text-blue-300">GitHub source repository</a>
             </div>
           </div>
         </div>

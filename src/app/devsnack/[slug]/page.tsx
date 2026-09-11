@@ -90,6 +90,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         </Link>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
           <span className="text-xs text-muted-foreground">Source URL 유지 · {presentation.section} projection</span>
+          {slug === 'dgx-spark-gb10-local-llm-benchmark' && <a href="https://github.com/gdevsnack-ai-labs/gb10-local-llm-benchmark" target="_blank" rel="noreferrer" className="text-xs font-medium text-blue-600 no-underline hover:underline dark:text-blue-400">GitHub source repository ↗</a>}
         </div>
       </div>
 

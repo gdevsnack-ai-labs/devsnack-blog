@@ -145,7 +145,7 @@ export function BenchmarkStandardPage() {
             </div>
             <div className="mt-5 flex flex-wrap gap-3" aria-label="Benchmark resources">
               <a href={`/data/benchmarks/${PUBLIC_RELEASE_ID}.json`} className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-3 py-2 text-sm text-background no-underline hover:opacity-80"><Database className="h-4 w-4" aria-hidden="true" /> Download JSON</a>
-              <a href={`https://github.com/gdevsnack-ai-labs/devsnack-blog/blob/main/public/data/benchmarks/${PUBLIC_RELEASE_ID}.json`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm no-underline hover:border-blue-300 hover:text-blue-600 dark:hover:border-blue-700 dark:hover:text-blue-400"><GitBranch className="h-4 w-4" aria-hidden="true" /> GitHub source</a>
+              <a href="https://github.com/gdevsnack-ai-labs/gb10-local-llm-benchmark" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm no-underline hover:border-blue-300 hover:text-blue-600 dark:hover:border-blue-700 dark:hover:text-blue-400"><GitBranch className="h-4 w-4" aria-hidden="true" /> GitHub source repository</a>
               <Link href="/labs/local-llm-benchmark" className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm no-underline hover:border-blue-300 hover:text-blue-600 dark:hover:border-blue-700 dark:hover:text-blue-400"><ExternalLink className="h-4 w-4" aria-hidden="true" /> 초기 실험 Lab 기록</Link>
             </div>
           </section>
