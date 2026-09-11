@@ -1,6 +1,6 @@
 # Benchmark IA Baseline
 
-> 기준일: 2026-09-09 (KST)
+> 기준일: 2026-09-10 (KST)
 > 상태: 현재 DevSnack Benchmark 공개 구조의 기준점
 
 이 문서는 표준 Benchmark와 표준 밖의 Custom Benchmark를 분리한 현재 정보 구조(IA), 공개 경로, 유지 원칙을 기록합니다. 이후 benchmark 개편은 이 기준을 유지하거나, 변경 이유와 함께 갱신합니다.
@@ -19,7 +19,7 @@ Benchmarks
 
 - DGX Spark GB10 + llama.cpp 기준
 - 현재 7개 suite
-- 현재 19개 model variant
+- 현재 23개 model variant
 - 모델·variant·quantization·MTP 조건 비교
 - 검색·필터·정렬 가능한 matrix
 - 모델 제품군 페이지(`/benchmarks/models/[modelSlug]`) 연결
