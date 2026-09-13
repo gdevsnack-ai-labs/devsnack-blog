@@ -13,6 +13,13 @@ import { feedDetailFilters } from '@/lib/ia/feed-lifecycle'
 
 export const revalidate = 60
 
+const LIVING_BENCHMARK_SLUG = 'dgx-spark-gb10-local-llm-benchmark'
+const LIVING_BENCHMARK_SEO_TITLE = 'DGX Spark GB10 로컬 LLM 벤치마크 — 실측·성능·에이전트 테스트 기록 | DevSnack'
+
+function seoTitleForPost(slug: string, title: string): string {
+  return slug === LIVING_BENCHMARK_SLUG ? LIVING_BENCHMARK_SEO_TITLE : title
+}
+
 async function getPost(slug: string): Promise<Post | null> {
   let query = supabase
     .from('posts')
@@ -35,7 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const description = post.seo_desc ?? post.excerpt ?? post.title
   const presentation = getPostPresentation(post)
   return buildRouteMetadata({
-    title: post.title,
+    title: seoTitleForPost(slug, post.title),
     description,
     canonicalPath: `/devsnack/${slug}`,
     kind: 'article',
