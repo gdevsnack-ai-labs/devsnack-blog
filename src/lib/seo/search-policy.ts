@@ -71,6 +71,7 @@ const NOINDEX_PATH_REASONS: Readonly<Record<string, string>> = {
 }
 const NOINDEX_PATHS = new Set(Object.keys(NOINDEX_PATH_REASONS))
 const NOINDEX_PREFIXES = ['/en']
+const INDEXABLE_PATHS = new Set(['/en/benchmarks'])
 
 function normalizePath(pathname: string): string {
   const path = pathname.split(/[?#]/, 1)[0]
@@ -102,6 +103,9 @@ export function searchPolicyDecisionForPath(pathname: string): SearchPolicyDecis
   }
   if (NOINDEX_PATHS.has(path)) {
     return decision('noindex', NOINDEX_PATH_REASONS[path], 'automatic')
+  }
+  if (INDEXABLE_PATHS.has(path)) {
+    return decision('index', 'reviewed_english_benchmark_pilot', 'override')
   }
   if (NOINDEX_PREFIXES.some(root => matchesPath(path, root))) {
     return decision('noindex', 'english_pilot_human_review_required', 'automatic')

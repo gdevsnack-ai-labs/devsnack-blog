@@ -21,7 +21,9 @@ if (!isIndexableSitemapRoute('/benchmarks/models/n25-mini')) throw new Error('N2
 if (isIndexableSitemapRoute('/benchmarks/gb10-llm-benchmark-v1-20260906')) throw new Error('historical benchmark URL must not remain indexable')
 if (isIndexableSitemapRoute('/search')) throw new Error('utility route must not be sitemap-indexable')
 if (isIndexableSitemapRoute('/links')) throw new Error('utility Links must not be sitemap-indexable')
-if (isIndexableSitemapRoute('/en')) throw new Error('English pilot must not be sitemap-indexable')
+if (isIndexableSitemapRoute('/en')) throw new Error('English pilot hub must not be sitemap-indexable')
+if (routePolicy('/en/benchmarks') !== 'INDEX') throw new Error('English Benchmark pilot must be an indexable collection route')
+if (!isIndexableSitemapRoute('/en/benchmarks')) throw new Error('English Benchmark pilot must be in sitemap')
 if (isIndexableSitemapRoute('/html5-poop-dodge-game.html')) throw new Error('raw artifact must not be sitemap-indexable')
 
 console.log('Sitemap policy tests passed')

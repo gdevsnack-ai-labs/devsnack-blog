@@ -48,6 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     })),
     { url: `${baseUrl}/benchmarks`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.85 },
+    { url: `${baseUrl}/en/benchmarks`, lastModified: new Date('2026-09-10T00:00:00Z'), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${baseUrl}/benchmarks/custom`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.65 },
 
     ...getPublicBenchmarkModelSlugs().map(slug => ({ url: `${baseUrl}/benchmarks/models/${slug}`, lastModified: new Date('2026-09-10T00:00:00Z'), changeFrequency: 'monthly' as const, priority: 0.75 })),

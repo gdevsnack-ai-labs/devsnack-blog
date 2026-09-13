@@ -78,22 +78,6 @@ export const EN_PROJECT_PROJECTIONS = {
   },
 } as const
 
-export const EN_BENCHMARK_OVERVIEW = {
-  eyebrow: 'Measurement protocol',
-  title: 'Local LLM Benchmark',
-  description: 'A reproducible measurement project for local GGUF models on an NVIDIA DGX Spark GB10, combining serving speed, structured-output reliability, and real production prompts.',
-  protocolHeading: 'Production contract calibration',
-  protocol: [
-    ['Target', 'YouTube Shorts script generation'],
-    ['Fixtures', 'Science and History production prompts'],
-    ['Hard gate', 'JSON scenes, word budget, fact_refs, image_prompt, video_prompt, and time beats'],
-    ['External lane', 'One-shot external LLM JSON injection without retry or validator feedback'],
-  ],
-  selectedHeading: 'Pilot benchmark',
-  selectedDescription: 'Ornith-1.5 Q5_K_M, Q6_K, and Q8_0 were tested with the same production prompts, server protocol, validator retry budget, and GB10 environment.',
-  limitations: 'Two fixtures and one repetition per model are directional evidence, not a final quantization ranking. Human semantic quality review, reasoning on/off, MTP off, and coding/tool-call lanes remain separate tracks.',
-} as const
-
 export const EN_STATIC_LOCALE_METADATA = {
   locale: 'en',
   language: 'English',

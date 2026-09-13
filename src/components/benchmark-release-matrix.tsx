@@ -15,6 +15,8 @@ const SUITES: Array<{ key: BenchmarkSuiteKey; label: string }> = [
   { key: 'agent_multi', label: 'Agent-multi' },
 ]
 
+type BenchmarkMatrixLocale = 'ko' | 'en'
+
 function record(value: unknown): Record<string, unknown> {
   return typeof value === 'object' && value !== null ? value as Record<string, unknown> : {}
 }
@@ -74,7 +76,7 @@ function sortableScore(model: PublicBenchmarkModel, suiteKey: BenchmarkSuiteKey)
   return number(suite.pass_rate) ?? -1
 }
 
-export function BenchmarkReleaseMatrix({ models }: { models: PublicBenchmarkModel[] }) {
+export function BenchmarkReleaseMatrix({ models, locale = 'ko' }: { models: PublicBenchmarkModel[]; locale?: BenchmarkMatrixLocale }) {
   const [query, setQuery] = useState('')
   const [family, setFamily] = useState('all')
   const [quantization, setQuantization] = useState('all')
@@ -84,6 +86,33 @@ export function BenchmarkReleaseMatrix({ models }: { models: PublicBenchmarkMode
   const families = useMemo(() => Array.from(new Set(models.map(model => model.model_family_slug))).sort(), [models])
   const familyNames = useMemo(() => new Map(models.map(model => [model.model_family_slug, model.model])), [models])
   const quantizations = useMemo(() => Array.from(new Set(models.map(model => model.quantization))).sort(), [models])
+  const copy = locale === 'en'
+    ? {
+        search: 'Search model or variant',
+        families: 'All model families',
+        quantizations: 'All quantizations',
+        mtp: 'All MTP modes',
+        sort: 'Sort',
+        model: 'Model name',
+        tg: 'TG speed',
+        server: 'Server c8',
+        knowledge: 'Knowledge',
+        coding: 'Coding',
+        empty: 'No models match the current filters.',
+      }
+    : {
+        search: '모델·변형 검색',
+        families: '모든 모델군',
+        quantizations: '모든 quantization',
+        mtp: 'MTP 전체',
+        sort: '정렬',
+        model: '모델명순',
+        tg: 'TG 속도순',
+        server: 'Server c8순',
+        knowledge: 'Knowledge순',
+        coding: 'Coding순',
+        empty: '조건에 맞는 모델이 없습니다.',
+      }
 
   const filtered = useMemo(() => {
     const lowered = query.trim().toLowerCase()
@@ -111,16 +140,16 @@ export function BenchmarkReleaseMatrix({ models }: { models: PublicBenchmarkMode
         </div>
         <div className="flex flex-wrap items-center gap-2 xl:justify-end">
           <label className="sr-only" htmlFor="benchmark-model-filter">Filter models</label>
-          <input id="benchmark-model-filter" value={query} onChange={event => setQuery(event.target.value)} placeholder="모델·변형 검색" className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm sm:w-40 dark:bg-gray-900" />
+          <input id="benchmark-model-filter" value={query} onChange={event => setQuery(event.target.value)} placeholder={copy.search} className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm sm:w-40 dark:bg-gray-900" />
           <label className="sr-only" htmlFor="benchmark-family-filter">Filter model family</label>
-          <select id="benchmark-family-filter" value={family} onChange={event => setFamily(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="all">모든 모델군</option>{families.map(value => <option key={value} value={value}>{familyNames.get(value) || value}</option>)}</select>
+          <select id="benchmark-family-filter" value={family} onChange={event => setFamily(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="all">{copy.families}</option>{families.map(value => <option key={value} value={value}>{familyNames.get(value) || value}</option>)}</select>
           <label className="sr-only" htmlFor="benchmark-quant-filter">Filter quantization</label>
-          <select id="benchmark-quant-filter" value={quantization} onChange={event => setQuantization(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="all">모든 quantization</option>{quantizations.map(value => <option key={value} value={value}>{value}</option>)}</select>
+          <select id="benchmark-quant-filter" value={quantization} onChange={event => setQuantization(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="all">{copy.quantizations}</option>{quantizations.map(value => <option key={value} value={value}>{value}</option>)}</select>
           <label className="sr-only" htmlFor="benchmark-mtp-filter">Filter MTP mode</label>
-          <select id="benchmark-mtp-filter" value={mtpMode} onChange={event => setMtpMode(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="all">MTP 전체</option><option value="mtp">MTP</option><option value="non-mtp">non-MTP</option></select>
-          <span className="ml-1 text-xs text-muted-foreground">정렬</span>
+          <select id="benchmark-mtp-filter" value={mtpMode} onChange={event => setMtpMode(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="all">{copy.mtp}</option><option value="mtp">MTP</option><option value="non-mtp">non-MTP</option></select>
+          <span className="ml-1 text-xs text-muted-foreground">{copy.sort}</span>
           <label className="sr-only" htmlFor="benchmark-sort">Sort benchmark models</label>
-          <select id="benchmark-sort" value={sort} onChange={event => setSort(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="model">모델명순</option><option value="tg">TG 속도순</option><option value="server">Server c8순</option><option value="knowledge">Knowledge순</option><option value="coding">Coding순</option></select>
+          <select id="benchmark-sort" value={sort} onChange={event => setSort(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="model">{copy.model}</option><option value="tg">{copy.tg}</option><option value="server">{copy.server}</option><option value="knowledge">{copy.knowledge}</option><option value="coding">{copy.coding}</option></select>
         </div>
       </div>
       <div className="mt-4 overflow-x-auto rounded-2xl border border-border bg-white dark:bg-gray-900">
@@ -141,7 +170,7 @@ export function BenchmarkReleaseMatrix({ models }: { models: PublicBenchmarkMode
             ))}
           </tbody>
         </table>
-        {filtered.length === 0 && <p className="p-8 text-center text-sm text-muted-foreground">조건에 맞는 모델이 없습니다.</p>}
+        {filtered.length === 0 && <p className="p-8 text-center text-sm text-muted-foreground">{copy.empty}</p>}
       </div>
 
     </section>

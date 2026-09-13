@@ -22,6 +22,7 @@ expectEqual(searchPolicyForPath('/tools/operations'), 'noindex', 'Operations mus
 expectEqual(searchPolicyForPath('/links'), 'noindex', 'utility Links must be noindex')
 expectEqual(searchPolicyForPath('/admin/research'), 'private', 'Admin routes must be private, not merely noindex')
 expectEqual(searchPolicyForPath('/en'), 'noindex', 'English pilot hub must be noindex')
+expectEqual(searchPolicyForPath('/en/benchmarks'), 'index', 'English Benchmark pilot must be indexable')
 expectEqual(searchPolicyForPath('/en/research/example'), 'noindex', 'English pilot detail must be noindex')
 expectEqual(searchPolicyForPath('/demos/music'), 'noindex', 'empty Music Showcase must be noindex')
 expectEqual(searchPolicyForPath('/demos/image'), 'noindex', 'empty Image Showcase must be noindex')

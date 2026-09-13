@@ -57,7 +57,7 @@ export default function EnglishHomePage() {
         </section>
 
         <footer className="mt-12 border-t border-border pt-6 text-sm text-muted-foreground">
-          <p>This pilot is temporarily noindex until human review, English collection routes, and the translation policy are complete. The Korean source remains the editorial origin.</p>
+          <p>The English collection hub remains noindex while the Standard Benchmark is tested as the first indexable English collection route. The Korean source remains the editorial origin.</p>
           <Link href="/" className="mt-3 inline-flex text-blue-600 no-underline hover:underline dark:text-blue-400">Back to the Korean DevSnack home →</Link>
         </footer>
       </div>
