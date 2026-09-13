@@ -57,26 +57,25 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
     ),
     "/labs": RouteExpectation(
         "/labs", 200, meta_robots="index, follow", canonical=True,
-        required_text=("Recent Verified Findings", "Lab Board", "Experiments", "Current Active Project", "StockPulse V1 Fixed"),
+        required_text=("Recent Verified Findings", "Lab Board", "Current Project", "StockPulse V1 Fixed"),
         forbidden_text=("Mining",),
     ),
     "/labs/stockpulse-v1-fixed": RouteExpectation(
         "/labs/stockpulse-v1-fixed", 200, meta_robots="index, follow", canonical=True,
-        required_text=("StockPulse V1 Fixed", "Live Shadow", "Morning / Evening publication"),
+        required_text=("StockPulse V1 Fixed", "Run Board", "다음 개선"),
     ),
     "/labs/autonomous-ai-blog": RouteExpectation(
         "/labs/autonomous-ai-blog", 200, meta_robots="index, follow", canonical=True,
-        required_text=("Verified Project Finding", "아직 독립적인 Project Finding이 없습니다.", "Latest Activity", "Operational Snapshot", "Recent Publications", "bodyStored=false", "Agent Field Notes"),
+        required_text=("AI 완전 자율 블로그 운영 실험", "공개 운영 현황", "최근 공개 글", "다음 목표", "최근 운영 기록", "Agent Field Notes"),
         forbidden_text=("Roman의 관측 가치는",),
     ),
     "/benchmarks": RouteExpectation(
         "/benchmarks", 200, meta_robots="index, follow", canonical=True,
-        required_text=("Evaluation Overview", "Latest Result", "Ornith-1.5"),
+        required_text=("DGX Spark GB10", "Model comparison matrix", "Custom Benchmarks", "Qwen3.8 Flash Next"),
     ),
     "/benchmarks/gb10-llm-benchmark-v1-20260906": RouteExpectation(
-        "/benchmarks/gb10-llm-benchmark-v1-20260906", 200,
-        meta_robots="index, follow", canonical=True,
-        required_text=("DGX Spark GB10", "Model comparison matrix", "Models covered", "GGUF", "Suite guide", "Download JSON"),
+        "/benchmarks/gb10-llm-benchmark-v1-20260906", 308,
+        location="/benchmarks",
     ),
     "/research": RouteExpectation(
         "/research", 200, meta_robots="index, follow", canonical=True,
@@ -109,7 +108,7 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
     "/lab": RouteExpectation("/lab", 308, location="/labs"),
     "/labs/local-llm-benchmark": RouteExpectation(
         "/labs/local-llm-benchmark", 200, meta_robots="index, follow", canonical=True,
-        required_text=("Local LLM Benchmark", "Model Sub-Labs"),
+        required_text=("Local LLM Benchmark", "Verified Project Finding", "Standard·Custom Benchmarks", "Qwen3.8"),
     ),
     "/lab/ornith15-server-quality-speed-benchmark": RouteExpectation(
         "/lab/ornith15-server-quality-speed-benchmark", 200,
