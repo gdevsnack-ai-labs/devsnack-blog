@@ -21,7 +21,7 @@ SLUG = "yue2-3b-symbolic-music-generation-autumn-chanson"
 TITLE = "YuE2-3B — 악보를 먼저 쓰는 음악 생성 모델을 DGX Spark에서 실행해봤다"
 DEFAULT_AUDIO_URL = "/api/drive?id=1ksT9J3vCiqQUqw6upVqlmIZfnGXsESxf"
 COVER_IMAGE = "/images/showcase/yue2-autumn-chanson-cover.webp"
-LABELS = ["YuE2", "음악 생성", "악보 생성", "DGX Spark", "ACE-Step", "로컬 AI"]
+LABELS = ["YuE2", "음악 생성", "악보 생성", "DGX Spark", "ACE-Step", "로컬 AI", "media"]
 EXCERPT = (
     "YuE2-3B는 가사와 스타일에서 바로 오디오만 뽑는 대신, 먼저 멜로디와 코드 악보를 계획하고 "
     "그 악보를 바탕으로 보컬과 반주를 렌더링한다. ACE-Step과 무엇이 다른지 궁금해 DGX Spark GB10에서 직접 실행했다."
