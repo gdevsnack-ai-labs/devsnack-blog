@@ -145,7 +145,7 @@ ACE-Step도 cover·repaint·melody 관련 기능을 갖고 있지만, 우리가 
 ## 모델 카드에서 확인한 정보
 
 - 모델: `m-a-p/YuE2-3B`
-- 파라미터: 약 4B
+- 파라미터: Hugging Face 모델 카드의 Model size 표기는 4B params이며, 저장소·모델명은 `YuE2-3B`로 제공된다.
 - 가중치: BF16 safetensors
 - 기본 VAE: [`m-a-p/YuE2-Vae`](https://huggingface.co/m-a-p/YuE2-Vae)
 - 공식 quick start 기준: Linux, Python 3.10 이상, BF16을 지원하는 NVIDIA GPU, 24GB GPU 메모리와 24GB 수준의 호스트 RAM
@@ -201,7 +201,7 @@ pipe.close()
 
 ## 만든 곡: 은행잎 편지
 
-[🎵 Music Showcase에서 바로 듣기](/demos/music)
+[🎵 Music Showcase에서 원본·편집본 비교하기](/demos/music)
 
 - 장르: 가을 여성 샹송 / 재즈 카페 발라드
 - 보컬: 가까이 속삭이는 듯한 따뜻한 여성 알토
@@ -209,7 +209,6 @@ pipe.close()
 - 목표 길이: 2분 30초~2분 50초
 - 최종 길이: **174.48초, 약 2분 54.5초**
 - 오디오: 48kHz 스테레오 FLAC 원본, 320kbps MP3 전달본
-- 듣기: [Music Showcase에서 원본·편집본 비교하기](/demos/music)
 
 처음부터 가사를 길게 쓰면 곡도 3분을 넘어가기 쉬웠다. 첫 번째 생성은 217초, 두 번째는 190초까지 나왔고, 가사 섹션을 압축한 세 번째 실행에서 174.48초가 됐다. YuE2에서는 가사 구조가 곡 길이와 전개에 직접 영향을 주므로, 원하는 길이가 있으면 프롬프트보다 가사 구조를 먼저 조절하는 편이 실용적이었다.
 
@@ -290,7 +289,7 @@ YuE2 로그에는 `Using provided score`가 기록됐고, ABC 계획 생성 시�
 - 수정본 truncation: 없음
 - 수정본 semantic tokens: 4,369
 
-원본과 수정본의 중간 구간을 이어서 비교해 들어보니, 전체 샹송 분위기는 거의 그대로 유지되면서 Final Chorus가 더 올라와서 수정본 쪽이 더 좋았다. 이 실험으로 YuE2에서는 **같은 seed + 수정 ABC** 조합으로 기존 곡의 정체성을 유지하면서 특정 구간을 편집할 수 있다는 점을 확인했다. 단, 오디오 전체를 다시 렌더링하므로 byte-perfect하게 동일한 것은 아니다. 원본과 편집본은 [Music Showcase에서 직접 비교](/demos/music)할 수 있다.
+원본과 수정본의 중간 구간을 이어서 비교해 들어보니, 전체 샹송 분위기는 거의 그대로 유지되면서 Final Chorus가 더 올라와서 수정본 쪽이 더 좋았다. 이 실험으로 YuE2에서는 **같은 seed + 수정 ABC** 조합으로 기존 곡의 정체성을 유지하면서 특정 구간을 편집할 수 있다는 점을 확인했다. 단, 오디오 전체를 다시 렌더링하므로 byte-perfect하게 동일한 것은 아니다. 두 버전은 위 Music Showcase에서 직접 비교할 수 있다.
 
 ## 아직 해보지 않은 것
 
