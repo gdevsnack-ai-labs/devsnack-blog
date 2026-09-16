@@ -21,7 +21,7 @@ SLUG = "yue2-3b-symbolic-music-generation-autumn-chanson"
 TITLE = "YuE2-3B — 악보를 먼저 쓰는 음악 생성 모델을 DGX Spark에서 실행해봤다"
 DEFAULT_AUDIO_URL = "/api/drive?id=1ksT9J3vCiqQUqw6upVqlmIZfnGXsESxf"
 COVER_IMAGE = "/images/showcase/yue2-autumn-chanson-cover.webp"
-LABELS = ["YuE2", "음악 생성", "악보 생성", "DGX Spark", "ACE-Step", "로컬 AI", "media"]
+LABELS = ["적용완료", "YuE2", "음악 생성", "악보 생성", "DGX Spark", "ACE-Step", "로컬 AI", "media"]
 EXCERPT = (
     "YuE2-3B는 가사와 스타일에서 바로 오디오만 뽑는 대신, 먼저 멜로디와 코드 악보를 계획하고 "
     "그 악보를 바탕으로 보컬과 반주를 렌더링한다. ACE-Step과 무엇이 다른지 궁금해 DGX Spark GB10에서 직접 실행했다."
@@ -266,23 +266,48 @@ pipe.close()
 
 첫 결과를 최종 음반처럼 평가할 단계는 아니다. 하지만 “악보를 먼저 만들고 그 결과를 소리로 옮긴다”는 구조를 확인하는 첫 샘플로는 괜찮았다. 특히 생성 후 `score.abc`가 남기 때문에 다음에는 코드를 바꾸거나 브리지의 멜로디를 수정한 뒤 다시 들어볼 수 있다.
 
+## 실제 악보 편집 실험 — 같은 seed로 Final Chorus 교체
+
+첫 번째 생성 결과에서 Final Chorus 마지막 4마디만 직접 수정하고, 같은 가사·스타일·seed `20260918`을 유지한 채 다시 렌더링했다. 화성 `Cm7 → F7 → Bb`는 유지하고, 마지막 멜로디를 상승시켜 `c'`까지 올라간 뒤 내려오도록 바꿨다.
+
+실행 옵션은 다음과 같았다.
+
+```python
+song = pipe(
+    style=style,
+    lyrics=lyrics,
+    abc=edited_score,
+    cot="full",
+    seed=20260918,
+)
+```
+
+YuE2 로그에는 `Using provided score`가 기록됐고, ABC 계획 생성 시간은 0초(`external_prefix_tokens=1691`)였다. 새 악보를 다시 샘플링한 것이 아니라, 수정한 ABC 악보를 고정하고 오디오만 다시 렌더링한 셈이다.
+
+- 원본 길이: 174.48초
+- 수정본 길이: 174.72초
+- 길이 차이: 약 0.24초
+- 수정본 truncation: 없음
+- 수정본 semantic tokens: 4,369
+
+원본과 수정본의 중간 구간을 이어서 비교해 들어보니, 전체 샹송 분위기는 거의 그대로 유지되면서 Final Chorus가 더 올라와서 수정본 쪽이 더 좋았다. 이 실험으로 YuE2에서는 **같은 seed + 수정 ABC** 조합으로 기존 곡의 정체성을 유지하면서 특정 구간을 편집할 수 있다는 점을 확인했다. 단, 오디오 전체를 다시 렌더링하므로 byte-perfect하게 동일한 것은 아니다.
+
 ## 아직 해보지 않은 것
 
 이번에는 다음 단계까지 가지 않았다.
 
-- `score.abc`를 사람이 직접 수정하기
-- 수정한 ABC를 넣어 같은 seed로 재렌더링하기
 - `cot="melody"`로 기존 멜로디를 유지한 커버 만들기
 - best-of-8 후보 생성과 자동 선택 비교
 - ACE-Step과 같은 가사·스타일을 넣은 정면 품질 비교
+- 브리지 화성이나 2절 멜로디까지 함께 수정하는 편집
 
-따라서 이번 결과는 YuE2의 편집 가능성 전체를 검증한 글이 아니라, **악보 중간 표현을 포함한 첫 로컬 실행 기록**이다.
+따라서 이 글은 YuE2의 모든 편집 기능을 검증한 것은 아니지만, 기본 생성과 **부분 악보 수정 후 재렌더링**까지 확인한 실행 기록이다.
 
 ## 정리
 
 ACE-Step이 현재 우리 파이프라인에서 빠르게 프롬프트와 가사를 오디오로 바꾸는 실용적인 생성기라면, YuE2는 작곡 과정을 중간 악보로 끌어내린다. 당장 한 곡을 뽑는 속도만 보면 추가 단계처럼 보이지만, 멜로디와 코드에 손을 대고 다시 만들 수 있다는 점에서 접근 방식 자체가 다르다.
 
-이번에는 악보를 수정하지 않았다. 다음 실험에서는 `score.abc`를 직접 편집해서 코드 진행을 바꾸고, 같은 곡이 얼마나 자연스럽게 유지되는지 확인해볼 생각이다.
+이번에는 Final Chorus의 일부 악보를 실제로 수정했고, 같은 seed로 전체 분위기를 유지하면서 후렴의 상승감을 개선했다. 다음 실험에서는 브리지 화성이나 2절 멜로디까지 범위를 넓히고, `cot="melody"` 커버와 ACE-Step 정면 비교를 진행할 예정이다.
 
 ## 출처
 
@@ -293,14 +318,14 @@ ACE-Step이 현재 우리 파이프라인에서 빠르게 프롬프트와 가사
 """
 
 
-def build_payload(audio_url: str, timestamp: str) -> dict[str, object]:
+def build_payload(audio_url: str, timestamp: str, published_at: str | None = None) -> dict[str, object]:
     return {
         "slug": SLUG,
         "title": TITLE,
         "content": build_content(audio_url),
         "excerpt": EXCERPT,
         "labels": LABELS,
-        "published": timestamp,
+        "published": published_at or timestamp,
         "updated": timestamp,
         "status": "live",
         "lifecycle_status": "live",
@@ -317,11 +342,12 @@ def main() -> None:
     parser.add_argument("--audio-url", default=os.environ.get("YUE2_AUDIO_URL", DEFAULT_AUDIO_URL))
     args = parser.parse_args()
     timestamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    payload = build_payload(args.audio_url, timestamp)
-    query = urllib.parse.urlencode({"select": "id,slug,title,updated,status,lifecycle_status,blog_id,cover_image", "slug": f"eq.{SLUG}"})
+    query = urllib.parse.urlencode({"select": "id,slug,title,published,updated,status,lifecycle_status,blog_id,cover_image", "slug": f"eq.{SLUG}"})
     existing = request_json(f"posts?{query}")
     existing_rows = existing if isinstance(existing, list) else []
-    print(json.dumps({"mode": "apply" if args.apply else "dry-run", "slug": SLUG, "existing_rows": len(existing_rows), "content_chars": len(str(payload["content"])), "audio_url": args.audio_url}, ensure_ascii=False))
+    existing_published = existing_rows[0].get("published") if existing_rows and isinstance(existing_rows[0], dict) else None
+    payload = build_payload(args.audio_url, timestamp, existing_published)
+    print(json.dumps({"mode": "apply" if args.apply else "dry-run", "slug": SLUG, "existing_rows": len(existing_rows), "published_preserved": existing_published, "content_chars": len(str(payload["content"])), "audio_url": args.audio_url}, ensure_ascii=False))
     if not args.apply:
         return
     env = load_env()
