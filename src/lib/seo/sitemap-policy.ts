@@ -18,6 +18,7 @@ const INDEX_ROUTES = new Set([
   '/data',
   '/demos',
   '/demos/html',
+  '/demos/music',
   '/research',
   '/benchmarks/custom',
 

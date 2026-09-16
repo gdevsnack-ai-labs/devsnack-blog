@@ -119,6 +119,12 @@ export default async function ResearchPostPage({ params }: { params: Promise<{ i
         </Link>
 
         <article className="content-article min-w-0">
+          {post.cover_image && (
+            <div className="mb-8 overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={post.cover_image} alt={`${post.title} 대표 이미지`} className="aspect-[16/8] w-full object-cover" />
+            </div>
+          )}
           <h1 className="text-2xl md:text-3xl font-bold leading-tight mb-4">{post.title}</h1>
 
           <div className="flex flex-wrap items-center gap-3 mb-6 text-sm text-muted-foreground">

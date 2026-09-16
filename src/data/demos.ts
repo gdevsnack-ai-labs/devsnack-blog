@@ -12,7 +12,11 @@ export interface Demo {
   /** iframe 임베드 가능 여부 (같은 도메인 정적 html 등) */
   embeddable?: boolean
   /** 외부 미디어의 렌더링 방식 */
-  mediaType?: 'video'
+  mediaType?: 'video' | 'audio'
+  /** 상세 Knowledge/Story 글 링크 */
+  detailHref?: string
+  /** 카드·본문 대표 이미지 */
+  coverImage?: string
   model: string
   createdAt: string
   /** 출처/비고 */
@@ -96,7 +100,20 @@ export const DEMOS: Record<DemoCategory, Demo[]> = {
       note: '원문 Story에서 추출한 독립 실행 artifact. 원문 URL은 /devsnack/ai-vampire-survivor-like-demo으로 유지한다.',
     },
   ],
-  music: [],
+  music: [
+    {
+      id: 'yue2-autumn-chanson-letter',
+      title: 'YuE2-3B — 은행잎 편지',
+      description: '가사와 스타일에서 먼저 멜로디·코드 악보를 계획한 뒤 완성한 2분 54초 가을 여성 샹송. 첫 생성 결과와 전체 실행 기록을 함께 공개합니다.',
+      href: '/api/drive?id=1ksT9J3vCiqQUqw6upVqlmIZfnGXsESxf',
+      detailHref: '/research/yue2-3b-symbolic-music-generation-autumn-chanson',
+      coverImage: '/images/showcase/yue2-autumn-chanson-cover.webp',
+      mediaType: 'audio',
+      model: 'YuE2-3B + YuE2-Vae (DGX Spark GB10)',
+      createdAt: '2026.09.16',
+      note: '악보를 직접 수정하지 않은 첫 실행입니다. 오디오를 먼저 듣고, 상세 글에서 가사·실행 옵션·ACE-Step과의 차이를 확인할 수 있습니다.',
+    },
+  ],
   image: [],
   shortmovie: [
     {

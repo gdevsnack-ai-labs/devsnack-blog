@@ -59,7 +59,6 @@ const NOINDEX_PATH_REASONS: Readonly<Record<string, string>> = {
   '/tools/operations': 'public_operations_transparency_without_search_landing_value',
   '/links': 'utility_directory',
   '/data/hermes-usage': 'aggregate_telemetry_utility',
-  '/demos/music': 'empty_showcase_category',
   '/demos/image': 'empty_showcase_category',
   '/html5-poop-dodge-game.html': 'raw_static_artifact',
   '/pixel-survivors-ai-game.html': 'raw_static_artifact',

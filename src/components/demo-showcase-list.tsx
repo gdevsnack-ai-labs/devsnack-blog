@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { ExternalLink, FileCode2, Film, Image, Music2, type LucideIcon, ChevronDown } from 'lucide-react'
 import type { Demo, DemoCategory } from '@/data/demos'
 
@@ -29,6 +30,12 @@ export default function DemoShowcaseList({ category, items }: DemoShowcaseListPr
         return (
           <article key={demo.id} className="overflow-hidden rounded-xl border border-border bg-white dark:bg-gray-900">
             <div className="p-5">
+              {demo.coverImage && (
+                <div className="-mx-5 -mt-5 mb-5 overflow-hidden bg-muted/40">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={demo.coverImage} alt={`${demo.title} 대표 이미지`} className="aspect-[16/8] w-full object-cover" loading="lazy" />
+                </div>
+              )}
               <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <button
                   type="button"
@@ -74,7 +81,18 @@ export default function DemoShowcaseList({ category, items }: DemoShowcaseListPr
                     )}
 
                     {/* 미디어 데모는 실제 플레이어, HTML 데모는 iframe으로 실행 */}
-                    {demo.mediaType === 'video' ? (
+                    {demo.mediaType === 'audio' ? (
+                      <div className="rounded-xl border border-border bg-muted/20 p-4">
+                        <div className="mb-3 flex items-center justify-between gap-3 text-xs text-muted-foreground">
+                          <span>🎵 YuE2 생성 오디오</span>
+                          <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+                        </div>
+                        <audio controls preload="metadata" className="w-full">
+                          <source src={demo.href} type="audio/mpeg" />
+                          브라우저가 audio 태그를 지원하지 않습니다.
+                        </audio>
+                      </div>
+                    ) : demo.mediaType === 'video' ? (
                       <div className="bg-gray-50 dark:bg-gray-950">
                         <video
                           controls
@@ -100,6 +118,11 @@ export default function DemoShowcaseList({ category, items }: DemoShowcaseListPr
                         />
                       </div>
                     ) : null}
+                    {demo.detailHref && (
+                      <Link href={demo.detailHref} className="mt-4 inline-flex items-center text-sm font-medium text-blue-600 no-underline hover:underline dark:text-blue-400">
+                        실행 기록·가사·옵션 보기 →
+                      </Link>
+                    )}
                   </div>
                 )}
               </div>

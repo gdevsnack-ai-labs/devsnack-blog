@@ -121,7 +121,7 @@ export default async function Home() {
 
         <section className="mx-auto max-w-6xl px-4 py-8 md:py-10" aria-labelledby="home-explore-heading">
           <div className="mb-4"><div className="flex items-center gap-2"><Info className="h-5 w-5 text-muted-foreground" aria-hidden="true" /><h2 id="home-explore-heading" className="text-xl font-bold">Explore</h2></div><p className="mt-1 text-sm text-muted-foreground">나머지 공간과 운영 정보로 이동합니다.</p></div>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4"><HomeExploreLink href="/search" title="Search" description="전체 Asset과 기록 찾기" icon={Search} /><HomeExploreLink href="/demos" title="Showcase" description="실행·재생 가능한 결과물" icon={Play} /><HomeExploreLink href="/about" title="About DevSnack" description="이 공간을 운영하는 방식" icon={Info} /><HomeExploreLink href="/tools/operations" title="Operations" description="운영 중인 시스템 현황" icon={Terminal} /></div>
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4"><HomeExploreLink href="/search" title="Search" description="전체 Asset과 기록 찾기" icon={Search} /><HomeExploreLink href="/demos" title="Showcase" description="음악·영상·HTML 결과물 듣고 실행하기" icon={Play} /><HomeExploreLink href="/about" title="About DevSnack" description="이 공간을 운영하는 방식" icon={Info} /><HomeExploreLink href="/tools/operations" title="Operations" description="운영 중인 시스템 현황" icon={Terminal} /></div>
         </section>
       </main>
 

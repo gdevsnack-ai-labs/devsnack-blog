@@ -14,6 +14,7 @@ if (!isIndexableSitemapRoute('/research')) throw new Error('Knowledge hub must r
 if (isIndexableSitemapRoute('/aitech')) throw new Error('AI Tech compact history must be excluded from sitemap')
 if (!isIndexableSitemapRoute('/privacy')) throw new Error('Privacy must remain indexable')
 if (!isIndexableSitemapRoute('/demos/html')) throw new Error('populated HTML Showcase category must remain in sitemap')
+if (!isIndexableSitemapRoute('/demos/music')) throw new Error('populated Music Showcase category must remain in sitemap')
 if (!isIndexableSitemapRoute('/benchmarks')) throw new Error('current public benchmark hub must remain in sitemap')
 if (!isIndexableSitemapRoute('/benchmarks/custom')) throw new Error('custom benchmark collection must remain in sitemap')
 if (!isIndexableSitemapRoute('/benchmarks/models/ling-3-0-flash')) throw new Error('Ling model page must remain in sitemap')
