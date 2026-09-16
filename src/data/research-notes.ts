@@ -4,6 +4,7 @@ export type ResearchNoteStatus = 'research-complete' | 'experiment-candidate' | 
 export interface ResearchNote {
   researched_date: string
   published_date: string
+  updated_date?: string
   category: ResearchNoteCategory
   title: string
   summary: string
@@ -271,12 +272,13 @@ export const RESEARCH_NOTES: ResearchNote[] = [
   {
     "researched_date": "2026-07-05",
     "published_date": "2026-08-30",
+    "updated_date": "2026-09-16",
     "category": "tools",
     "title": "tool-eval-bench (툴콜링 평가)",
-    "summary": "결정론적 84개 툴콜링 시나리오를 기존 속도·품질 벤치에 통합하는 후보 조사다.",
-    "status": "experiment-candidate",
+    "summary": "표준 69개 외부 툴콜링 시나리오를 GB10에서 8개 N2/N2.5 Mini variant에 실제 실행하고, 기존 벤치에 별도 suite로 승격한 기록이다.",
+    "status": "research-complete",
     "external_url": "https://gdevsnack-ai-labs.github.io/devsnack-research-notes/notes/tool-eval-bench.html",
-    "promoted_asset_url": null,
+    "promoted_asset_url": "https://devsnack-blog.vercel.app/benchmarks#n2-5-mini-q6-k",
     "original_devsnack_url": "https://devsnack-blog.vercel.app/research/tool-eval-bench"
   }
 ]

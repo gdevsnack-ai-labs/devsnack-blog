@@ -30,7 +30,7 @@ export default async function KnowledgePage() {
   const benchmarkResearch = posts.filter(post => post.benchmarkResearch).slice(0, 8)
   const relatedPosts = posts.filter(post => post.related.length > 0).slice(0, 3)
   const recentResearchNotes = [...RESEARCH_NOTES]
-    .sort((a, b) => b.researched_date.localeCompare(a.researched_date) || b.published_date.localeCompare(a.published_date))
+    .sort((a, b) => (b.updated_date || b.researched_date).localeCompare(a.updated_date || a.researched_date) || b.published_date.localeCompare(a.published_date))
     .slice(0, 8)
 
   return (

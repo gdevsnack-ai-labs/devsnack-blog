@@ -3,6 +3,7 @@ import { ArrowLeft, Database, Gauge, GitBranch, Info, Terminal } from 'lucide-re
 import { notFound } from 'next/navigation'
 import {
   BENCHMARK_SUITE_KEYS,
+  EXTERNAL_TOOL_EVAL_NOTE_URL,
   PUBLIC_RELEASE_ID,
   benchmarkMtpLabel,
   benchmarkSuiteLabel,
@@ -54,6 +55,12 @@ function suiteSummary(model: PublicBenchmarkModel, suiteKey: BenchmarkSuiteKey):
     const c8 = conditions.find(condition => condition.concurrency === 8) || conditions.at(-1)
     return `c1 ${tps(record(record(c1).aggregate_generation_throughput_tps).mean)} · c8 ${tps(record(record(c8).aggregate_generation_throughput_tps).mean)}`
   }
+  if (suiteKey === 'external_tool_eval') {
+    const score = number(suite.score)
+    const scored = number(suite.scored)
+    const attempted = number(suite.attempted)
+    if (score !== null) return `${score.toFixed(0)}/100 · ${scored ?? '—'}/${attempted ?? '—'} scored`
+  }
   const total = number(suite.total)
   const passed = number(suite.passed) ?? number(suite.correct)
   return total !== null && passed !== null ? `${passed}/${total} · ${percent(suite.pass_rate)}` : percent(suite.pass_rate)
@@ -91,6 +98,7 @@ export default async function BenchmarkModelPage({ params }: { params: Promise<{
 
   const models = release.models.filter(model => model.model_family_slug === modelSlug)
   if (models.length === 0) notFound()
+  const externalResults = models.filter(model => record(model.suites.external_tool_eval).status === 'available')
 
   const jsonLd = buildJsonLdGraph(
     buildArticleJsonLd({
@@ -151,6 +159,24 @@ export default async function BenchmarkModelPage({ params }: { params: Promise<{
             <div className="mt-4 overflow-x-auto rounded-2xl border border-border bg-white dark:bg-gray-900"><table className="min-w-[1180px] w-full text-left text-xs"><thead className="border-b border-border bg-muted/40 text-muted-foreground"><tr><th className="px-3 py-3 font-semibold">Variant</th>{BENCHMARK_SUITE_KEYS.map(suite => <th key={suite} className="px-3 py-3 font-semibold">{benchmarkSuiteLabel(suite)}</th>)}</tr></thead><tbody>{models.map(model => <tr key={model.model_id} className="border-b border-border/70 last:border-0"><th scope="row" className="px-3 py-3 align-top"><div className="font-semibold">{model.variant}</div><div className="mt-1 font-normal text-muted-foreground">{model.quantization} · {benchmarkMtpLabel(model.mtp_mode)} · {modelServerCondition(model)}</div></th>{BENCHMARK_SUITE_KEYS.map(suite => <td key={suite} className="px-3 py-3 align-top leading-relaxed"><div className="font-medium">{suiteSummary(model, suite)}</div></td>)}</tr>)}</tbody></table></div>
             <p className="mt-2 text-xs text-muted-foreground">서로 다른 MTP/non-MTP 조건은 통합 총점으로 합산하지 않으며, 각 variant의 실제 조건을 함께 표시합니다.</p>
           </section>
+
+          {externalResults.length > 0 && (
+            <section aria-labelledby="external-tool-eval-heading">
+              <div className="flex items-center gap-2"><Database className="h-5 w-5 text-muted-foreground" aria-hidden="true" /><h2 id="external-tool-eval-heading" className="text-xl font-bold">External tool-eval-bench 상세</h2></div>
+              <p className="mt-2 max-w-4xl text-sm leading-relaxed text-muted-foreground">기존 Tool-call 15문항 suite와 별도의 외부 69-scenario protocol입니다. llama.cpp grammar 오류 4건을 제외한 65개 채점분으로 점수를 계산했으며, 이 제품군에서 실제로 측정된 variant만 표시합니다.</p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {externalResults.map(model => {
+                  const suite = record(model.suites.external_tool_eval)
+                  const score = number(suite.score)
+                  const scored = number(suite.scored)
+                  const attempted = number(suite.attempted)
+                  const safetyPassed = suite.safety_gate_passed === true
+                  return <article key={model.model_id} className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><h3 className="font-bold">{model.variant}</h3><p className="mt-2 text-2xl font-bold">{score === null ? '—' : `${score.toFixed(0)}/100`}</p><p className="mt-1 text-xs text-muted-foreground">{scored ?? '—'}/{attempted ?? '—'} scored · {suite.rating ? String(suite.rating) : 'rating unavailable'}</p><p className={`mt-2 text-xs font-semibold ${safetyPassed ? 'text-emerald-700 dark:text-emerald-300' : 'text-amber-700 dark:text-amber-300'}`}>{safetyPassed ? 'Safety gate passed' : `Safety warning ${String(suite.safety_warning_count ?? 0)}`}</p><p className="mt-1 text-xs text-muted-foreground">Responsiveness {String(suite.responsiveness ?? '—')} · Deployability {String(suite.deployability ?? '—')}</p></article>
+                })}
+              </div>
+              <a href={EXTERNAL_TOOL_EVAL_NOTE_URL} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-foreground underline-offset-4 hover:text-blue-600 hover:underline dark:hover:text-blue-400">tool-eval-bench 조사·실행 기록 보기 <GitBranch className="h-4 w-4" aria-hidden="true" /></a>
+            </section>
+          )}
 
           <section aria-labelledby="server-command-heading">
             <div className="flex items-center gap-2"><Terminal className="h-5 w-5 text-muted-foreground" aria-hidden="true" /><h2 id="server-command-heading" className="text-xl font-bold">실제 llama-server 실행 명령</h2></div>

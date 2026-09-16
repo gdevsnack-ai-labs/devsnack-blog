@@ -16,8 +16,9 @@ if (!RESEARCH_NOTES.every(note => statuses.has(note.status))) {
 if (!RESEARCH_NOTES.every(note => note.external_url.startsWith('https://gdevsnack-ai-labs.github.io/devsnack-research-notes/notes/'))) {
   throw new Error('Research Board external_url must point to GitHub Pages Notes')
 }
-if (!RESEARCH_NOTES.every(note => note.promoted_asset_url === null)) {
-  throw new Error('Research Board promotion links must remain null before promotion')
+const promoted = RESEARCH_NOTES.filter(note => note.promoted_asset_url !== null)
+if (promoted.length !== 1 || promoted[0].title !== 'tool-eval-bench (툴콜링 평가)' || !promoted[0].promoted_asset_url?.includes('/benchmarks')) {
+  throw new Error('Research Board must expose the promoted tool-eval-bench Benchmark relation')
 }
 if (!RESEARCH_NOTES.every(note => /^\d{4}-\d{2}-\d{2}$/.test(note.researched_date) && /^\d{4}-\d{2}-\d{2}$/.test(note.published_date))) {
   throw new Error('Research Board dates must use YYYY-MM-DD')

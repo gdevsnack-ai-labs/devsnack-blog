@@ -11,6 +11,7 @@ const SUITES: Array<{ key: BenchmarkSuiteKey; label: string }> = [
   { key: 'knowledge', label: 'Knowledge' },
   { key: 'coding', label: 'Coding' },
   { key: 'tool_call', label: 'Tool-call' },
+  { key: 'external_tool_eval', label: 'External tool-eval' },
   { key: 'agent_single', label: 'Agent-single' },
   { key: 'agent_multi', label: 'Agent-multi' },
 ]
@@ -58,6 +59,12 @@ function scoreCell(model: PublicBenchmarkModel, suiteKey: BenchmarkSuiteKey): Re
     const lastAgg = record(record(last).aggregate_generation_throughput_tps)
     return <><span className="block">c1 {tps(firstAgg.mean)}</span><span className="block">c8 {tps(lastAgg.mean)}</span></>
   }
+  if (suiteKey === 'external_tool_eval') {
+    const score = number(suite.score)
+    const scored = number(suite.scored)
+    const attempted = number(suite.attempted)
+    if (score !== null) return <><span className="block">{score.toFixed(0)} / 100</span>{scored !== null && attempted !== null && <span className="block">{scored}/{attempted} scored</span>}</>
+  }
   const total = number(suite.total)
   const passed = number(suite.passed) ?? number(suite.correct)
   if (total !== null && passed !== null) return <><span className="block">{percent(suite.pass_rate)}</span><span className="block">{passed}/{total}</span></>
@@ -73,6 +80,7 @@ function sortableScore(model: PublicBenchmarkModel, suiteKey: BenchmarkSuiteKey)
     const last = conditions.find(condition => condition.concurrency === 8) || conditions.at(-1)
     return number(record(record(last).aggregate_generation_throughput_tps).mean) ?? -1
   }
+  if (suiteKey === 'external_tool_eval') return number(suite.score) ?? -1
   return number(suite.pass_rate) ?? -1
 }
 
@@ -98,6 +106,7 @@ export function BenchmarkReleaseMatrix({ models, locale = 'ko' }: { models: Publ
         server: 'Server c8',
         knowledge: 'Knowledge',
         coding: 'Coding',
+        external: 'External tool-eval',
         empty: 'No models match the current filters.',
       }
     : {
@@ -111,6 +120,7 @@ export function BenchmarkReleaseMatrix({ models, locale = 'ko' }: { models: Publ
         server: 'Server c8순',
         knowledge: 'Knowledge순',
         coding: 'Coding순',
+        external: 'External tool-eval순',
         empty: '조건에 맞는 모델이 없습니다.',
       }
 
@@ -128,6 +138,7 @@ export function BenchmarkReleaseMatrix({ models, locale = 'ko' }: { models: Publ
       if (sort === 'knowledge') return sortableScore(b, 'knowledge') - sortableScore(a, 'knowledge')
       if (sort === 'coding') return sortableScore(b, 'coding') - sortableScore(a, 'coding')
       if (sort === 'server') return sortableScore(b, 'server_performance') - sortableScore(a, 'server_performance')
+      if (sort === 'external') return sortableScore(b, 'external_tool_eval') - sortableScore(a, 'external_tool_eval')
       return `${a.model} ${a.variant}`.localeCompare(`${b.model} ${b.variant}`)
     })
   }, [models, query, family, quantization, mtpMode, sort])
@@ -149,7 +160,7 @@ export function BenchmarkReleaseMatrix({ models, locale = 'ko' }: { models: Publ
           <select id="benchmark-mtp-filter" value={mtpMode} onChange={event => setMtpMode(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="all">{copy.mtp}</option><option value="mtp">MTP</option><option value="non-mtp">non-MTP</option></select>
           <span className="ml-1 text-xs text-muted-foreground">{copy.sort}</span>
           <label className="sr-only" htmlFor="benchmark-sort">Sort benchmark models</label>
-          <select id="benchmark-sort" value={sort} onChange={event => setSort(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="model">{copy.model}</option><option value="tg">{copy.tg}</option><option value="server">{copy.server}</option><option value="knowledge">{copy.knowledge}</option><option value="coding">{copy.coding}</option></select>
+          <select id="benchmark-sort" value={sort} onChange={event => setSort(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="model">{copy.model}</option><option value="tg">{copy.tg}</option><option value="server">{copy.server}</option><option value="knowledge">{copy.knowledge}</option><option value="coding">{copy.coding}</option><option value="external">{copy.external}</option></select>
         </div>
       </div>
       <div className="mt-4 overflow-x-auto rounded-2xl border border-border bg-white dark:bg-gray-900">

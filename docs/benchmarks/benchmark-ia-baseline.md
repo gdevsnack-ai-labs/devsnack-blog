@@ -18,14 +18,14 @@ Benchmarks
 `/benchmarks`는 비교 가능한 공식 Benchmark의 canonical 페이지입니다.
 
 - DGX Spark GB10 + llama.cpp 기준
-- 현재 7개 suite
+- 현재 8개 suite
 - 현재 23개 model variant
 - 모델·variant·quantization·MTP 조건 비교
 - 검색·필터·정렬 가능한 matrix
 - 모델 제품군 페이지(`/benchmarks/models/[modelSlug]`) 연결
 - 현재 공개 projection JSON과 동일한 결과를 사용
 
-표준 suite와 공통 실행 조건으로 직접 비교할 수 있는 결과만 이 영역에 추가합니다. 날짜별 release 페이지를 새로 만들어 공개 탐색 구조를 확장하지 않고, 최신 통합 projection과 기존 release의 호환 경로를 사용합니다.
+표준 suite와 공통 실행 조건으로 직접 비교할 수 있는 결과만 이 영역에 추가합니다. 외부 `tool-eval-bench`는 기존 내부 Tool-call과 protocol이 다르므로 별도 suite로 표시하고, 숫자를 합산하지 않습니다. 날짜별 release 페이지를 새로 만들어 공개 탐색 구조를 확장하지 않고, 최신 통합 projection과 기존 release의 호환 경로를 사용합니다.
 
 ### Custom Benchmarks — `/benchmarks/custom`
 

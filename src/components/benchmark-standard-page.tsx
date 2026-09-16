@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { BookOpen, Database, ExternalLink, Gauge, GitBranch, Info } from 'lucide-react'
 import { BenchmarkReleaseMatrix } from '@/components/benchmark-release-matrix'
-import { PUBLIC_RELEASE_ID, benchmarkSuiteLabel, getPublicBenchmarkFamilies, loadPublicBenchmarkRelease } from '@/lib/benchmarks/public-release'
+import { EXTERNAL_TOOL_EVAL_NOTE_URL, PUBLIC_RELEASE_ID, benchmarkSuiteLabel, getPublicBenchmarkFamilies, loadPublicBenchmarkRelease } from '@/lib/benchmarks/public-release'
 import { absoluteSiteUrl } from '@/lib/seo/metadata'
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildCollectionPageJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 
@@ -32,6 +32,11 @@ const SUITE_DESCRIPTIONS = [
     points: ['single tool · tool selection · multi-step tool use · recovery · no-tool', 'tool 선택 · argument · 실행 성공 · 최종 task completion', 'OpenCode, Claude Code, Codex 같은 특정 agent framework 전체 성능을 의미하지 않습니다.'],
   },
   {
+    key: 'external_tool_eval',
+    description: '외부 tool-eval-bench의 표준 시나리오를 같은 llama.cpp 계열 환경에서 실행해, 더 긴 tool-use trace와 안전 경계를 확인합니다.',
+    points: ['표준 69개 시나리오 · deterministic mock tool', '도구 선택 · 인자 · multi-step chain · recovery · safety · structured output', '현재 N2/N2.5 Mini 8개 variant만 측정했으며, 내부 Tool-call v1.1과 다른 protocol입니다.'],
+  },
+  {
     key: 'agent_single',
     description: '하나의 agent가 여러 단계를 이어서 최종 작업을 끝낼 수 있는지 봅니다. 조회, 계산, 파일 사용, 최종 답변이 이어지는 작업을 평가합니다.',
     points: ['중간 tool call 실패 뒤 회복하면 최종 성공으로 인정', '실패한 호출 자체는 별도 metric으로 기록', '첫 시도의 완벽함보다 작업을 끝까지 완료하는 능력에 가깝습니다.'],
@@ -47,15 +52,17 @@ const LIMITATION_COPY = [
   '이 benchmark는 DGX Spark GB10 + llama.cpp + 공개된 고정 recipe에서 나온 결과입니다. 다른 GPU, runtime, prompt format에서는 결과가 달라질 수 있습니다.',
   '같은 기반 모델이라도 quantization에 따라 속도와 evaluator 결과가 달라질 수 있어, 기반 모델명과 실제 variant·quantization을 함께 표시했습니다.',
   'Tool-call과 Agent 계열은 고정된 synthetic protocol을 사용하므로 OpenCode, Claude Code, Codex 같은 실제 개발 환경의 체감과 정확히 같지는 않을 수 있습니다.',
+  'External tool-eval-bench는 내부 Tool-call v1.1과 다른 69-scenario protocol입니다. 현재는 69개 중 4개가 llama.cpp structured-output grammar 오류로 제외되어 65개 채점분을 사용했습니다.',
+  'External tool-eval-bench의 N2/N2.5 Mini 결과만 현재 공개 projection에 있으며, 나머지 모델의 빈 칸은 0점이 아니라 아직 측정하지 않은 상태입니다.',
   'Knowledge 100문제는 모델의 모든 지식을 대표하는 절대적인 지능 점수가 아니라, 같은 조건에서 모델 간 차이를 비교하기 위한 고정 dataset입니다.',
-  '서로 다른 7개 suite를 억지로 합친 종합 점수는 만들지 않았습니다. 필요한 작업에 맞춰 항목별로 비교하는 것이 더 유용합니다.',
+  '서로 다른 8개 suite를 억지로 합친 종합 점수는 만들지 않았습니다. 필요한 작업에 맞춰 항목별로 비교하는 것이 더 유용합니다.',
 ] as const
 
 export function BenchmarkStandardPage() {
   const release = loadPublicBenchmarkRelease()
   const families = getPublicBenchmarkFamilies(release)
   const jsonUrl = absoluteSiteUrl(`/data/benchmarks/${PUBLIC_RELEASE_ID}.json`)
-  const benchmarkKeywords = ['NVIDIA DGX Spark', 'GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'Qwen', 'Gemma', 'N2.5 Mini', 'N2 Mini', 'Ornith', 'Ling 3.0', 'MTP', 'coding benchmark', 'tool call benchmark', 'agent benchmark', 'local AI']
+  const benchmarkKeywords = ['NVIDIA DGX Spark', 'GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'Qwen', 'Gemma', 'N2.5 Mini', 'N2 Mini', 'Ornith', 'Ling 3.0', 'MTP', 'coding benchmark', 'tool call benchmark', 'tool-eval-bench', 'agent benchmark', 'local AI']
   const jsonLd = buildJsonLdGraph(
     buildArticleJsonLd({
       type: 'TechArticle',
@@ -73,7 +80,7 @@ export function BenchmarkStandardPage() {
     {
       '@type': 'Dataset',
       name: 'GB10 LLM Benchmark v1 public dataset',
-      description: `Current public JSON projection containing ${release.scope.model_variant_count} model variants measured across seven llama.cpp benchmark suites on NVIDIA DGX Spark GB10.`,
+      description: `Current public JSON projection containing ${release.scope.model_variant_count} model variants measured across ${release.scope.suite_count} llama.cpp benchmark suites on NVIDIA DGX Spark GB10.`,
       url: jsonUrl,
       inLanguage: 'ko-KR',
       isAccessibleForFree: true,
@@ -83,7 +90,7 @@ export function BenchmarkStandardPage() {
       dateModified: release.generated_at,
       keywords: benchmarkKeywords.join(', '),
       measurementTechnique: 'Versioned llama.cpp benchmark recipes with reasoning-off evaluator conditions and source-run provenance.',
-      variableMeasured: ['Prompt processing throughput', 'Token generation throughput', 'Server latency', 'Knowledge accuracy', 'Coding pass rate', 'Tool-call success', 'Agent task completion'],
+      variableMeasured: ['Prompt processing throughput', 'Token generation throughput', 'Server latency', 'Knowledge accuracy', 'Coding pass rate', 'Tool-call success', 'External tool-eval-bench score', 'Agent task completion'],
       distribution: [{ '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: jsonUrl }],
     },
     buildCollectionPageJsonLd({
@@ -109,7 +116,7 @@ export function BenchmarkStandardPage() {
         <header className="mt-6 border-b border-border pb-8">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300"><Gauge className="h-4 w-4" aria-hidden="true" /> Public Benchmark Release <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] normal-case dark:bg-blue-900/30">{release.generated_at}</span></div>
           <h1 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">DGX Spark GB10 — Local LLM Benchmark</h1>
-          <p className="mt-5 max-w-5xl text-sm leading-relaxed text-muted-foreground">Gemma4, Ling 3.0 Flash, N2.5 Mini, N2 Mini, North Mini, Ornith 1.5, Qwen3.6 35B-A3B, Qwen3.8 Flash Next의 여러 GGUF·quantization·MTP variant를 llama.cpp에서 실행하고, 속도부터 코딩·툴 사용·에이전트 작업까지 7개 항목으로 비교했습니다.</p>
+          <p className="mt-5 max-w-5xl text-sm leading-relaxed text-muted-foreground">Gemma4, Ling 3.0 Flash, N2.5 Mini, N2 Mini, North Mini, Ornith 1.5, Qwen3.6 35B-A3B, Qwen3.8 Flash Next의 여러 GGUF·quantization·MTP variant를 llama.cpp에서 실행하고, 속도부터 내부·외부 툴 사용과 에이전트 작업까지 {release.scope.suite_count}개 항목으로 비교했습니다.</p>
           <p className="mt-3 text-sm text-muted-foreground">표준 suite 밖의 개별 측정과 심층 분석은 <Link href="/benchmarks/custom" className="font-semibold text-foreground underline-offset-4 hover:underline">Custom Benchmarks에서 확인할 수 있습니다 →</Link></p>
 
         </header>
@@ -146,6 +153,7 @@ export function BenchmarkStandardPage() {
             <div className="mt-5 flex flex-wrap gap-3" aria-label="Benchmark resources">
               <a href={`/data/benchmarks/${PUBLIC_RELEASE_ID}.json`} className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-3 py-2 text-sm text-background no-underline hover:opacity-80"><Database className="h-4 w-4" aria-hidden="true" /> Download JSON</a>
               <a href="https://github.com/gdevsnack-ai-labs/gb10-local-llm-benchmark" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm no-underline hover:border-blue-300 hover:text-blue-600 dark:hover:border-blue-700 dark:hover:text-blue-400"><GitBranch className="h-4 w-4" aria-hidden="true" /> GitHub source repository</a>
+              <a href={EXTERNAL_TOOL_EVAL_NOTE_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm no-underline hover:border-blue-300 hover:text-blue-600 dark:hover:border-blue-700 dark:hover:text-blue-400"><ExternalLink className="h-4 w-4" aria-hidden="true" /> tool-eval-bench 실행 기록</a>
               <Link href="/labs/local-llm-benchmark" className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm no-underline hover:border-blue-300 hover:text-blue-600 dark:hover:border-blue-700 dark:hover:text-blue-400"><ExternalLink className="h-4 w-4" aria-hidden="true" /> 초기 실험 Lab 기록</Link>
             </div>
           </section>

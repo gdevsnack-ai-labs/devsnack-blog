@@ -3,6 +3,7 @@ import { join } from 'node:path'
 
 export const PUBLIC_RELEASE_ID = 'gb10-local-llm-benchmark'
 export const PUBLIC_RELEASE_JSON_PATH = `/data/benchmarks/${PUBLIC_RELEASE_ID}.json`
+export const EXTERNAL_TOOL_EVAL_NOTE_URL = 'https://gdevsnack-ai-labs.github.io/devsnack-research-notes/notes/tool-eval-bench.html'
 
 export const BENCHMARK_SUITE_KEYS = [
   'performance',
@@ -10,6 +11,7 @@ export const BENCHMARK_SUITE_KEYS = [
   'knowledge',
   'coding',
   'tool_call',
+  'external_tool_eval',
   'agent_single',
   'agent_multi',
 ] as const
@@ -19,7 +21,7 @@ export type BenchmarkMtpMode = 'mtp' | 'non-mtp'
 
 export type PublicBenchmarkSuite = {
   status: 'available' | 'unavailable' | 'not_in_public_export'
-  source_type?: 'revalidated_evaluator' | 'reused_historical' | 'fresh_full_cycle'
+  source_type?: 'revalidated_evaluator' | 'reused_historical' | 'fresh_full_cycle' | 'fresh_external_evaluator'
   source_run_id?: string
   evaluator_version?: string
   condition?: Record<string, unknown>
@@ -72,6 +74,7 @@ export type PublicBenchmarkRelease = {
     reused_source_runs: number
     fresh_full_cycle_runs?: number
     source_run_references: number
+    external_evaluator_runs?: number
   }
   suite_versions: Record<string, string>
   methodology: {
@@ -111,7 +114,11 @@ export function validatePublicBenchmarkRelease(value: unknown): PublicBenchmarkR
   if (models.length === 0 || scope.model_variant_count !== models.length) {
     throw new Error(`Benchmark model count contract failed: ${models.length}`)
   }
-  if (scope.suite_count !== BENCHMARK_SUITE_KEYS.length || scope.source_run_references !== models.length * BENCHMARK_SUITE_KEYS.length) {
+  const availableSourceRunReferences = models.reduce((count, rawModel) => {
+    const suites = asRecord(asRecord(rawModel).suites)
+    return count + BENCHMARK_SUITE_KEYS.filter(suite => asRecord(suites[suite]).status === 'available').length
+  }, 0)
+  if (scope.suite_count !== BENCHMARK_SUITE_KEYS.length || scope.source_run_references !== availableSourceRunReferences) {
     throw new Error('Benchmark suite/source count contract failed')
   }
 
@@ -175,6 +182,7 @@ export function benchmarkSuiteLabel(key: BenchmarkSuiteKey): string {
     knowledge: 'Knowledge',
     coding: 'Coding',
     tool_call: 'Tool-call',
+    external_tool_eval: 'External tool-eval-bench',
     agent_single: 'Agent-single',
     agent_multi: 'Agent-multi',
   }[key]

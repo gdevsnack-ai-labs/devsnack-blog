@@ -9,14 +9,14 @@ export const revalidate = 60
 
 export const metadata = buildRouteMetadata({
   title: 'DGX Spark GB10 — Local LLM Benchmark | DevSnack',
-  description: 'A reproducible comparison of 23 GGUF model variants across seven llama.cpp benchmark suites on an NVIDIA DGX Spark GB10, including speed, coding, tool-call, and agent results.',
+  description: 'A reproducible comparison of 23 GGUF model variants across eight llama.cpp benchmark suites on an NVIDIA DGX Spark GB10, including speed, coding, internal and external tool-call, and agent results.',
   canonicalPath: '/en/benchmarks',
   language: 'en',
   koreanPath: '/benchmarks',
   englishPath: '/en/benchmarks',
   section: 'Benchmarks',
   searchPolicy: 'index',
-  keywords: ['DGX Spark GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'MTP', 'coding benchmark', 'tool-call benchmark', 'agent benchmark'],
+  keywords: ['DGX Spark GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'MTP', 'coding benchmark', 'tool-call benchmark', 'tool-eval-bench', 'agent benchmark'],
 })
 
 function record(value: unknown): Record<string, unknown> {
@@ -68,7 +68,7 @@ export default function EnglishBenchmarksPage() {
       section: 'Benchmarks',
       published: release.generated_at,
       modified: release.generated_at,
-      keywords: ['DGX Spark GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'MTP', 'coding benchmark', 'tool-call benchmark', 'agent benchmark'],
+      keywords: ['DGX Spark GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'MTP', 'coding benchmark', 'tool-call benchmark', 'tool-eval-bench', 'agent benchmark'],
       about: { '@type': 'Thing', name: 'Measured local LLM benchmark on NVIDIA DGX Spark GB10' },
       isPartOf: { '@type': 'CollectionPage', name: 'DevSnack English Benchmarks', url: absoluteSiteUrl('/en/benchmarks') },
     }),
@@ -109,20 +109,21 @@ export default function EnglishBenchmarksPage() {
           <BenchmarkReleaseMatrix models={release.models} locale="en" />
 
           <section aria-labelledby="english-suite-heading">
-            <div className="flex items-center gap-2"><Info className="h-5 w-5 text-muted-foreground" aria-hidden="true" /><h2 id="english-suite-heading" className="text-xl font-bold">What the seven suites measure</h2></div>
+            <div className="flex items-center gap-2"><Info className="h-5 w-5 text-muted-foreground" aria-hidden="true" /><h2 id="english-suite-heading" className="text-xl font-bold">What the eight suites measure</h2></div>
             <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
               <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><h3 className="font-bold">Performance</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Prompt processing and token generation speed from llama-bench-style measurements.</p></div>
               <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><h3 className="font-bold">Server-performance</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Aggregate and per-request throughput across concurrent llama-server slots.</p></div>
               <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><h3 className="font-bold">Knowledge</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Deterministic knowledge, Korea, math, science, and logic questions.</p></div>
               <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><h3 className="font-bold">Coding</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Executable Python generation evaluated by tests, not explanation quality alone.</p></div>
               <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><h3 className="font-bold">Tool-call</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Tool selection, arguments, recovery, and final task completion in a fixed simulator.</p></div>
+              <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><h3 className="font-bold">External tool-eval-bench</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">A separate 69-scenario deterministic tool-use protocol. Four common llama.cpp grammar transport failures are excluded from the 65-scenario score denominator.</p></div>
               <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><h3 className="font-bold">Agent-single / Agent-multi</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Single-agent completion and role handoff under the release’s fixed protocols.</p></div>
             </div>
           </section>
 
           <section className="rounded-2xl border border-amber-200 bg-amber-50/60 p-5 dark:border-amber-900/60 dark:bg-amber-950/20 md:p-6" aria-labelledby="english-limitations-heading">
             <div className="flex items-center gap-2"><Info className="h-5 w-5 text-amber-700 dark:text-amber-300" aria-hidden="true" /><h2 id="english-limitations-heading" className="text-xl font-bold">Limitations</h2></div>
-            <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed"><li>Results are observations from NVIDIA DGX Spark GB10, llama.cpp, and the versioned public recipes; other hardware, runtimes, or prompt formats may differ.</li><li>Quantization and MTP mode can change both speed and evaluator outcomes, so there is no universal single “best model” score.</li><li>Knowledge, coding, tool-call, and agent suites use bounded protocols. They are not a complete measure of general intelligence or every real-world coding environment.</li><li>The release is an immutable public projection. New measurements should update the matrix through a new revision rather than silently rewriting this snapshot.</li></ul>
+            <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed"><li>Results are observations from NVIDIA DGX Spark GB10, llama.cpp, and the versioned public recipes; other hardware, runtimes, or prompt formats may differ.</li><li>Quantization and MTP mode can change both speed and evaluator outcomes, so there is no universal single “best model” score.</li><li>Knowledge, coding, tool-call, external tool-eval-bench, and agent suites use bounded protocols. They are not a complete measure of general intelligence or every real-world coding environment.</li><li>External tool-eval-bench is currently available only for eight N2/N2.5 Mini variants; blank cells mean not measured, not zero.</li><li>The release is an immutable public projection. New measurements should update the matrix through a new revision rather than silently rewriting this snapshot.</li></ul>
           </section>
 
           <section className="rounded-2xl border border-border bg-muted/30 p-5 md:p-6" aria-labelledby="english-resources-heading">

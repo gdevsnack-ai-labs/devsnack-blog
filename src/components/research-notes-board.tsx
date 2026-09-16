@@ -29,6 +29,7 @@ function DateCell({ note }: { note: ResearchNote }) {
   return (
     <div className="whitespace-nowrap text-xs text-muted-foreground">
       <div>{note.published_date}</div>
+      {note.updated_date && <div className="mt-0.5 font-medium text-emerald-700 dark:text-emerald-300">업데이트 {note.updated_date}</div>}
       <div className="mt-0.5 text-[10px]">조사 {note.researched_date}</div>
     </div>
   )
@@ -56,7 +57,7 @@ function NoteLinks({ note }: { note: ResearchNote }) {
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 text-muted-foreground underline-offset-4 hover:text-purple-600 hover:underline dark:hover:text-purple-400"
         >
-          Promoted asset <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+          {note.promoted_asset_url.includes('/benchmarks') ? 'Benchmark result' : 'Promoted asset'} <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
         </a>
       )}
     </div>
@@ -69,10 +70,10 @@ export function ResearchNotesBoard({ notes, totalCount = notes.length }: { notes
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
         <h2 id="research-notes-board-heading" className="text-xl font-bold">Research Notes Board</h2>
-          <p className="mt-1 text-sm text-muted-foreground">최근 {notes.length}개를 간단히 보여주는 공개 Notebook 목록입니다. 긴 조사 원문은 외부 GitHub Pages에서 열립니다.</p>
+          <p className="mt-1 text-sm text-muted-foreground">최근 업데이트된 자료를 간단히 보여주는 공개 Notebook 목록입니다. 긴 조사 원문은 외부 GitHub Pages에서 열립니다.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-          <span>최근 {notes.length}개 / 전체 {totalCount}개</span>
+          <span>표시 {notes.length}개 / 전체 {totalCount}개</span>
           <a href={RESEARCH_NOTE_NOTEBOOK_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-medium text-foreground no-underline hover:text-purple-600 hover:underline dark:hover:text-purple-400">
             Research Notebook 전체 보기 <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
           </a>
