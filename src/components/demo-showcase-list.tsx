@@ -82,16 +82,35 @@ export default function DemoShowcaseList({ category, items }: DemoShowcaseListPr
 
                     {/* 미디어 데모는 실제 플레이어, HTML 데모는 iframe으로 실행 */}
                     {demo.mediaType === 'audio' ? (
-                      <div className="rounded-xl border border-border bg-muted/20 p-4">
-                        <div className="mb-3 flex items-center justify-between gap-3 text-xs text-muted-foreground">
-                          <span>🎵 YuE2 생성 오디오</span>
-                          <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+                      demo.audioVariants?.length ? (
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground">
+                            <span>🎵 원본과 편집본을 이어서 비교해보세요</span>
+                            <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+                          </div>
+                          {demo.audioVariants.map(variant => (
+                            <div key={variant.id} className="rounded-xl border border-border bg-muted/20 p-4">
+                              <p className="mb-2 text-sm font-semibold">{variant.label}</p>
+                              <audio controls preload="metadata" className="w-full">
+                                <source src={variant.href} type="audio/mpeg" />
+                                브라우저가 audio 태그를 지원하지 않습니다.
+                              </audio>
+                              {variant.note && <p className="mt-2 text-xs text-muted-foreground">{variant.note}</p>}
+                            </div>
+                          ))}
                         </div>
-                        <audio controls preload="metadata" className="w-full">
-                          <source src={demo.href} type="audio/mpeg" />
-                          브라우저가 audio 태그를 지원하지 않습니다.
-                        </audio>
-                      </div>
+                      ) : (
+                        <div className="rounded-xl border border-border bg-muted/20 p-4">
+                          <div className="mb-3 flex items-center justify-between gap-3 text-xs text-muted-foreground">
+                            <span>🎵 YuE2 생성 오디오</span>
+                            <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+                          </div>
+                          <audio controls preload="metadata" className="w-full">
+                            <source src={demo.href} type="audio/mpeg" />
+                            브라우저가 audio 태그를 지원하지 않습니다.
+                          </audio>
+                        </div>
+                      )
                     ) : demo.mediaType === 'video' ? (
                       <div className="bg-gray-50 dark:bg-gray-950">
                         <video

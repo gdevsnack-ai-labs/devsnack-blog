@@ -17,6 +17,8 @@ export interface Demo {
   detailHref?: string
   /** 카드·본문 대표 이미지 */
   coverImage?: string
+  /** 같은 데모의 원본·편집본 등 오디오 비교 레인 */
+  audioVariants?: Array<{ id: string; label: string; href: string; note?: string }>
   model: string
   createdAt: string
   /** 출처/비고 */
@@ -106,6 +108,20 @@ export const DEMOS: Record<DemoCategory, Demo[]> = {
       title: 'YuE2-3B — 은행잎 편지',
       description: '가사와 스타일에서 먼저 멜로디·코드 악보를 계획한 뒤 완성한 2분 54초 가을 여성 샹송. 첫 생성 결과와 전체 실행 기록을 함께 공개합니다.',
       href: '/api/drive?id=1ksT9J3vCiqQUqw6upVqlmIZfnGXsESxf',
+      audioVariants: [
+        {
+          id: 'original',
+          label: '원본 — 첫 생성',
+          href: '/api/drive?id=1ksT9J3vCiqQUqw6upVqlmIZfnGXsESxf',
+          note: '첫 번째 score 생성 결과 · 174.48초',
+        },
+        {
+          id: 'edited-final-chorus',
+          label: '편집본 — Final Chorus 상승 수정',
+          href: '/api/drive?id=14k5RhQmlx4LtU-BkPGlp1jzRhRA69SQn',
+          note: '같은 seed · 마지막 4마디 ABC 수정 · 174.72초',
+        },
+      ],
       detailHref: '/research/yue2-3b-symbolic-music-generation-autumn-chanson',
       coverImage: '/images/showcase/yue2-autumn-chanson-cover.webp',
       mediaType: 'audio',
