@@ -27,8 +27,8 @@ const STATUS_CLASS: Record<ResearchNote['status'], string> = {
 
 function DateCell({ note }: { note: ResearchNote }) {
   return (
-    <div className="whitespace-nowrap text-xs text-muted-foreground">
-      <div>{note.published_date}</div>
+    <div className="text-xs text-muted-foreground">
+      <div>게시 {note.published_date}</div>
       {note.updated_date && <div className="mt-0.5 font-medium text-emerald-700 dark:text-emerald-300">업데이트 {note.updated_date}</div>}
       <div className="mt-0.5 text-[10px]">조사 {note.researched_date}</div>
     </div>
@@ -57,7 +57,7 @@ function NoteLinks({ note }: { note: ResearchNote }) {
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 text-muted-foreground underline-offset-4 hover:text-purple-600 hover:underline dark:hover:text-purple-400"
         >
-          {note.promoted_asset_url.includes('/benchmarks') ? 'Benchmark result' : 'Promoted asset'} <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+          Related asset <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
         </a>
       )}
     </div>
@@ -69,8 +69,8 @@ export function ResearchNotesBoard({ notes, totalCount = notes.length }: { notes
     <section className="mt-12" aria-labelledby="research-notes-board-heading">
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-        <h2 id="research-notes-board-heading" className="text-xl font-bold">Research Notes Board</h2>
-          <p className="mt-1 text-sm text-muted-foreground">최근 업데이트된 자료를 간단히 보여주는 공개 Notebook 목록입니다. 긴 조사 원문은 외부 GitHub Pages에서 열립니다.</p>
+          <h2 id="research-notes-board-heading" className="text-xl font-bold">Research Notes Board</h2>
+          <p className="mt-1 text-sm text-muted-foreground">최근 업데이트된 공개 Notebook을 카드로 보여줍니다. 긴 조사 원문은 외부 GitHub Pages에서 열립니다.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
           <span>표시 {notes.length}개 / 전체 {totalCount}개</span>
@@ -80,52 +80,19 @@ export function ResearchNotesBoard({ notes, totalCount = notes.length }: { notes
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-border bg-white dark:bg-gray-900">
-        <div className="md:hidden">
-          <ul className="divide-y divide-border" aria-label="Research Notes list">
-            {notes.map(note => (
-              <li key={note.external_url} className="min-w-0 p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <DateCell note={note} />
-                  <StatusBadge status={note.status} />
-                </div>
-                <div className="mt-3 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{CATEGORY_LABEL[note.category]}</div>
-                <h3 className="mt-1 text-sm font-bold leading-snug">{note.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{note.summary}</p>
-                <div className="mt-3"><NoteLinks note={note} /></div>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="hidden md:block overflow-x-auto">
-          <table className="w-full min-w-[760px] text-left text-sm">
-            <caption className="sr-only">Research Notes Board</caption>
-            <thead className="border-b border-border bg-muted/40 text-xs text-muted-foreground">
-              <tr>
-                <th scope="col" className="px-4 py-3 font-medium">Date</th>
-                <th scope="col" className="px-4 py-3 font-medium">Category</th>
-                <th scope="col" className="px-4 py-3 font-medium">Title / Summary</th>
-                <th scope="col" className="px-4 py-3 font-medium">Status</th>
-                <th scope="col" className="px-4 py-3 font-medium">Links</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {notes.map(note => (
-                <tr key={note.external_url} className="align-top">
-                  <td className="px-4 py-4"><DateCell note={note} /></td>
-                  <td className="px-4 py-4 whitespace-nowrap text-xs font-medium text-muted-foreground">{CATEGORY_LABEL[note.category]}</td>
-                  <td className="min-w-[320px] px-4 py-4">
-                    <div className="font-bold leading-snug">{note.title}</div>
-                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{note.summary}</p>
-                  </td>
-                  <td className="px-4 py-4"><StatusBadge status={note.status} /></td>
-                  <td className="px-4 py-4"><NoteLinks note={note} /></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-label="Research Notes cards">
+        {notes.map(note => (
+          <article key={note.external_url} className="flex min-w-0 flex-col rounded-xl border border-border bg-white p-4 dark:bg-gray-900">
+            <div className="flex items-start justify-between gap-3">
+              <span className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{CATEGORY_LABEL[note.category]}</span>
+              <StatusBadge status={note.status} />
+            </div>
+            <div className="mt-3"><DateCell note={note} /></div>
+            <h3 className="mt-3 break-words text-base font-bold leading-snug">{note.title}</h3>
+            <p className="mt-2 break-words text-sm leading-relaxed text-muted-foreground">{note.summary}</p>
+            <div className="mt-auto pt-4"><NoteLinks note={note} /></div>
+          </article>
+        ))}
       </div>
     </section>
   )

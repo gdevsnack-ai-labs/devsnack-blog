@@ -275,10 +275,10 @@ export const RESEARCH_NOTES: ResearchNote[] = [
     "updated_date": "2026-09-16",
     "category": "tools",
     "title": "tool-eval-bench (툴콜링 평가)",
-    "summary": "표준 69개 외부 툴콜링 시나리오를 GB10에서 8개 N2/N2.5 Mini variant에 실제 실행하고, 기존 벤치에 별도 suite로 승격한 기록이다.",
+    "summary": "표준 69개 외부 툴콜링 시나리오를 GB10에서 8개 N2/N2.5 Mini variant에 실제 실행하고, 기존 벤치에 별도 suite로 추가한 기록이다.",
     "status": "research-complete",
     "external_url": "https://gdevsnack-ai-labs.github.io/devsnack-research-notes/notes/tool-eval-bench.html",
-    "promoted_asset_url": "https://devsnack-blog.vercel.app/benchmarks#n2-5-mini-q6-k",
+    "promoted_asset_url": null,
     "original_devsnack_url": "https://devsnack-blog.vercel.app/research/tool-eval-bench"
   }
 ]
