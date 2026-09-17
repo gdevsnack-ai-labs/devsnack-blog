@@ -14,8 +14,8 @@
     "suite_count": 8,
     "revalidated_evaluator_runs": 76,
     "reused_source_runs": 57,
-    "source_run_references": 208,
-    "fresh_full_cycle_runs": 62,
+    "source_run_references": 209,
+    "fresh_full_cycle_runs": 63,
     "external_evaluator_runs": 13
   },
   "suite_versions": {
@@ -97,10 +97,11 @@
       "Server-performance 조건은 모델의 embedded/native MTP 지원 여부에 따라 MTP와 non-MTP가 섞일 수 있으며, matrix는 이를 별도 필터로 노출합니다.",
       "이 페이지는 최신 상태 projection이며, source run과 raw evidence는 benchmark repository에 immutable하게 보존됩니다.",
       "N2.5 Mini full-cycle은 네 variant 모두 non-MTP·reasoning OFF 조건으로 측정했습니다.",
+      "Laguna S 2.1의 이전 Knowledge v1·25문항 결과는 historical custom record이며 current Knowledge v1.2·100문항과 섞지 않습니다.",
       "External tool-eval-bench is available for 13 variants: 8 N2/N2.5 Mini variants, one Laguna S 2.1 variant, and four Laguna XS 2.1 variants; other model variants remain unmeasured in this lane.",
       "External tool-eval-bench runs attempted 69 scenarios each. Existing N2/N2.5 Mini runs exclude four common llama.cpp structured-output grammar failures and score 65 scenarios; Laguna S 2.1 and Laguna XS 2.1 runs had no excluded scenarios and score all 69.",
       "External tool-eval-bench uses a different 69-scenario mock-tool protocol from the internal Tool-call v1.1 suite, so the two columns are complementary rather than interchangeable.",
-      "Laguna S 2.1의 Knowledge 결과는 legacy Knowledge v1·25문항이라 current Standard Knowledge v1.2·100문항과 직접 비교하지 않고 Custom Benchmark에 별도로 보존합니다."
+      "Laguna S 2.1의 이전 Knowledge v1·25문항 결과는 historical custom record이며 current Knowledge v1.2·100문항과 섞지 않습니다."
     ],
     "external_tool_eval": {
       "name": "tool-eval-bench",
@@ -118,7 +119,7 @@
     "source_run_id_semantics": "Each suite points to the exact local run used for this public projection.",
     "projection_semantics": "Latest current projection; update this dataset when new model variants or conditions are measured.",
     "historical_release": "gb10-llm-benchmark-v1-20260906 remains preserved as historical source data.",
-    "fresh_full_cycle": "N2.5 Mini four-variant full-cycle runs plus Laguna S 2.1 six Standard-compatible suites and Laguna XS 2.1 four-variant seven-suite runs; the legacy Laguna S Knowledge v1 result is preserved in the Custom Benchmark candidate.",
+    "fresh_full_cycle": "N2.5 Mini four-variant full-cycle runs plus Laguna S 2.1 seven-suite full-cycle runs and Laguna XS 2.1 four-variant seven-suite runs; the previous legacy Laguna S Knowledge v1 result remains historical only.",
     "external_tool_eval_lane": "Fresh local tool-eval-bench runs for 13 variants: 8 N2/N2.5 Mini variants, one Laguna S 2.1 variant, and four Laguna XS 2.1 variants; raw traces remain local and are not public.",
     "external_tool_eval_reference": "https://gdevsnack-ai-labs.github.io/devsnack-research-notes/notes/tool-eval-bench.html"
   },
@@ -227,7 +228,7 @@
     "laguna-s-2-1": {
       "slug": "laguna-s-2-1",
       "name": "Laguna S 2.1",
-      "summary": "Laguna S 2.1 APEX-I Balanced (NVFP4)의 GB10 측정 결과입니다. Standard 호환 수트와 legacy Knowledge v1 결과를 구분해 기록합니다.",
+      "summary": "Laguna S 2.1 APEX-I Balanced (NVFP4)의 GB10 canonical 7-suite 및 external tool-eval 측정 결과입니다. 이전 legacy Knowledge v1 결과와 현재 Knowledge v1.2 결과를 구분해 기록합니다.",
       "variant_count": 1,
       "model_ids": [
         "laguna-s-2-1-apex-i-balanced"
@@ -11870,7 +11871,7 @@
       "benchmark_versions": {
         "performance": "existing-v1",
         "server_performance": "existing-v1",
-        "knowledge": "1.1",
+        "knowledge": "1.2",
         "coding": "existing-v1",
         "tool_call": "1.1",
         "agent_single": "1.1",
@@ -12150,8 +12151,58 @@
           ]
         },
         "knowledge": {
-          "status": "not_in_public_export",
-          "note": "Legacy Knowledge v1·25문항 결과는 별도 Custom Benchmark에 보존하며 Standard Knowledge v1.2·100문항과 혼합하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260917-125510-132b45",
+          "evaluator_version": "1.2",
+          "condition": {
+            "dataset_version": "legacy v1",
+            "max_tokens": 128,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.2,
+          "total": 100,
+          "correct": 88,
+          "accuracy": 0.88,
+          "pass_rate": 0.88,
+          "categories": {
+            "general": {
+              "total": 20,
+              "correct": 20,
+              "accuracy": 1.0,
+              "pass_rate": 1.0
+            },
+            "korea": {
+              "total": 20,
+              "correct": 19,
+              "accuracy": 0.95,
+              "pass_rate": 0.95
+            },
+            "math": {
+              "total": 20,
+              "correct": 16,
+              "accuracy": 0.8,
+              "pass_rate": 0.8
+            },
+            "science": {
+              "total": 20,
+              "correct": 19,
+              "accuracy": 0.95,
+              "pass_rate": 0.95
+            },
+            "logic": {
+              "total": 20,
+              "correct": 14,
+              "accuracy": 0.7,
+              "pass_rate": 0.7
+            }
+          },
+          "difficulties": {
+            "unspecified": {}
+          }
         },
         "coding": {
           "status": "available",
@@ -14374,8 +14425,8 @@
     "suites": 8,
     "revalidated_evaluator_runs": 76,
     "reused_source_runs": 57,
-    "fresh_full_cycle_runs": 62,
-    "source_run_references": 208,
+    "fresh_full_cycle_runs": 63,
+    "source_run_references": 209,
     "external_evaluator_runs": 13
   }
 }

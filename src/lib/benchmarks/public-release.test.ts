@@ -13,11 +13,11 @@ const notMeasured = release.models.filter(model => model.suites.external_tool_ev
 if (release.models.length !== 28 || available.length !== 13 || notMeasured.length !== 15) {
   throw new Error(`Benchmark coverage mismatch: models=${release.models.length}, available=${available.length}, notMeasured=${notMeasured.length}`)
 }
-if (release.scope.model_variant_count !== 28 || release.scope.source_run_references !== 208 || release.scope.fresh_full_cycle_runs !== 62 || release.scope.external_evaluator_runs !== 13) {
+if (release.scope.model_variant_count !== 28 || release.scope.source_run_references !== 209 || release.scope.fresh_full_cycle_runs !== 63 || release.scope.external_evaluator_runs !== 13) {
   throw new Error(`Benchmark scope mismatch: ${JSON.stringify(release.scope)}`)
 }
 const laguna = release.models.find(model => model.model_id === 'laguna-s-2-1-apex-i-balanced')
-if (!laguna || laguna.suites.performance.status !== 'available' || laguna.suites.server_performance.status !== 'available' || laguna.suites.knowledge.status !== 'not_in_public_export' || laguna.suites.coding.status !== 'available' || laguna.suites.tool_call.status !== 'available' || laguna.suites.agent_single.status !== 'available' || laguna.suites.agent_multi.status !== 'available' || laguna.suites.external_tool_eval.score !== 86 || laguna.suites.external_tool_eval.scored !== 69 || laguna.suites.external_tool_eval.attempted !== 69 || laguna.suites.external_tool_eval.safety_gate_passed !== false) {
+if (!laguna || laguna.suites.performance.status !== 'available' || laguna.suites.server_performance.status !== 'available' || laguna.suites.knowledge.status !== 'available' || laguna.suites.knowledge.version !== 1.2 || laguna.suites.knowledge.correct !== 88 || laguna.suites.knowledge.total !== 100 || laguna.suites.knowledge.source_run_id !== '20260917-125510-132b45' || laguna.suites.coding.status !== 'available' || laguna.suites.tool_call.status !== 'available' || laguna.suites.agent_single.status !== 'available' || laguna.suites.agent_multi.status !== 'available' || laguna.suites.external_tool_eval.score !== 86 || laguna.suites.external_tool_eval.scored !== 69 || laguna.suites.external_tool_eval.attempted !== 69 || laguna.suites.external_tool_eval.safety_gate_passed !== false) {
   throw new Error('Laguna S 2.1 benchmark result contract failed')
 }
 const xsExpected: Record<string, { quantization: string; knowledge: number; external: number }> = {

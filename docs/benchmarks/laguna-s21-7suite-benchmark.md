@@ -9,7 +9,7 @@
 - Model variant: Laguna S 2.1 — APEX-I Balanced (NVFP4)
 - MTP: non-MTP (`spec_type=none`)
 - Quality suites: no-think, thinking budget 0
-- Measurement date: 2026-09-16 (KST)
+- Measurement date: 2026-09-16~2026-09-17 (KST)
 
 ## Results
 
@@ -17,7 +17,7 @@
 |---|---|---:|
 | Performance | PP 512/2K/8K/32K, TG 512, 5 repetitions | PP `762.48 / 757.70 / 756.94 / 702.17`, TG `27.55 tokens/s` |
 | Server-performance | Concurrency 1/2/4/8, 3 repetitions | 180/180 successful, failure rate 0% |
-| Knowledge | Legacy Knowledge v1, 25 questions | `24/25` (`96%`) |
+| Knowledge | Standard Knowledge v1.2, 100 questions | `88/100` (`88%`) |
 | Coding | 12 tasks | `11/12` (`91.67%`) |
 | Tool-call v1.1 | 15 tasks | `13/15` (`86.67%`) |
 | Agent-single v1.1 | 12 tasks | `6/12` (`50%`) |
@@ -36,11 +36,11 @@
 
 The model maintained 702.17 tokens/s at a 32K prompt and generated at 27.55 tokens/s in the Performance workload. The server lane completed all 180 requests, while increasing concurrency reduced per-request throughput and increased latency.
 
-Knowledge and coding results were strong at 24/25 and 11/12. Tool-call reached 13/15, with tool selection, argument, and execution metrics each at 93.33%. Agent-single was weaker at 6/12, while Agent-multi achieved 100% handoff and role participation but completed 7/10 tasks. The main gap is maintaining required steps through longer agent workflows.
+Knowledge v1.2 scored 88/100, with general 20/20, Korea 19/20, math 16/20, science 19/20, and logic 14/20. Coding reached 11/12. Tool-call reached 13/15, with tool selection, argument, and execution metrics each at 93.33%. Agent-single was weaker at 6/12, while Agent-multi achieved 100% handoff and role participation but completed 7/10 tasks. The main gap is maintaining required steps through longer agent workflows.
 
 ## Compatibility note
 
-This run's Knowledge result uses legacy Knowledge v1 with 25 questions. The current Standard Benchmark uses Knowledge v1.2 with 100 questions, so this Knowledge number is kept as a separate Custom Benchmark result and is not mixed into the Standard Knowledge matrix.
+The Knowledge result now uses the current Standard Knowledge v1.2 dataset with 100 questions. The previous 24/25 result was legacy Knowledge v1 and remains only as a historical custom result.
 
 ## External tool-eval-bench
 
