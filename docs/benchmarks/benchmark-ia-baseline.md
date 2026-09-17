@@ -19,7 +19,7 @@ Benchmarks
 
 - DGX Spark GB10 + llama.cpp 기준
 - 현재 8개 suite
-- 현재 23개 model variant
+- 현재 24개 model variant
 - 모델·variant·quantization·MTP 조건 비교
 - 검색·필터·정렬 가능한 matrix
 - 모델 제품군 페이지(`/benchmarks/models/[modelSlug]`) 연결

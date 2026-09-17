@@ -13,11 +13,11 @@ export const revalidate = 60
 
 export const metadata = buildRouteMetadata({
   title: 'Custom Benchmarks — DevSnack',
-  description: '표준 7-suite Benchmark에 포함하지 않는 특정 모델·사용 사례·serving·품질·심층 분석 측정과 DevSnack 원문',
+  description: '표준 8-suite Benchmark에 포함하지 않는 특정 모델·사용 사례·serving·품질·심층 분석 측정과 DevSnack 원문',
   canonicalPath: '/benchmarks/custom',
   language: 'ko',
   section: 'Benchmarks',
-  keywords: ['custom benchmark', 'DGX Spark', 'GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'Qwen', 'Ornith', 'North Mini', 'Nex-N2-mini'],
+  keywords: ['custom benchmark', 'DGX Spark', 'GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'Qwen', 'Ornith', 'North Mini', 'N2.5 Mini', 'Laguna S 2.1'],
 })
 
 const CATEGORY_META = [
@@ -61,7 +61,7 @@ export default async function CustomBenchmarksPage() {
   const jsonLd = buildJsonLdGraph(
     buildCollectionPageJsonLd({
       name: 'Custom Benchmarks',
-      description: '표준 7-suite Benchmark에 포함하지 않는 특정 모델·사용 사례·serving·품질·심층 분석 기록 모음',
+      description: '표준 8-suite Benchmark에 포함하지 않는 특정 모델·사용 사례·serving·품질·심층 분석 기록 모음',
       url: archiveUrl,
       language: 'ko',
       section: 'Benchmarks',
@@ -87,7 +87,7 @@ export default async function CustomBenchmarksPage() {
           <HubHeader
             eyebrow="Custom Measurements"
             title="Custom Benchmarks"
-            description="표준 7-suite Benchmark에 포함하지 않는 특정 모델·사용 사례·serving·품질·심층 분석 측정과 DevSnack 원문입니다. 각 결과는 고유한 protocol을 사용하므로 표준 Benchmark와 직접 순위를 비교하지 않습니다."
+            description="표준 8-suite Benchmark에 포함하지 않는 특정 모델·사용 사례·serving·품질·심층 분석 측정과 DevSnack 원문입니다. 각 결과는 고유한 protocol을 사용하므로 표준 Benchmark와 직접 순위를 비교하지 않습니다."
             icon={Archive}
           />
         </div>
@@ -95,7 +95,7 @@ export default async function CustomBenchmarksPage() {
         <main className="mt-8 space-y-10">
           <section aria-labelledby="archive-overview-heading" className="rounded-2xl border border-amber-200 bg-amber-50/60 p-5 dark:border-amber-900/60 dark:bg-amber-950/20 md:p-6">
             <h2 id="archive-overview-heading" className="text-lg font-bold">Custom Benchmark를 보는 방법</h2>
-            <p className="mt-2 max-w-4xl text-sm leading-relaxed text-muted-foreground">아래 결과는 표준 7-suite matrix에 넣기 어려운 특정 모델·사용 사례·serving·품질 측정입니다. 각 글의 고유한 조건과 목적을 확인하고, 표준 Benchmark와는 별도의 결과로 해석해 주세요.</p>
+            <p className="mt-2 max-w-4xl text-sm leading-relaxed text-muted-foreground">아래 결과는 표준 8-suite matrix에 넣기 어려운 특정 모델·사용 사례·serving·품질 측정입니다. 각 글의 고유한 조건과 목적을 확인하고, 표준 Benchmark와는 별도의 결과로 해석해 주세요.</p>
             <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {availableCategories.map(category => <div key={category.id} className="rounded-xl border border-amber-200/80 bg-white/70 p-4 dark:border-amber-900/60 dark:bg-gray-950/30"><p className="text-sm font-bold">{category.label}</p><p className="mt-1 text-xs leading-relaxed text-muted-foreground">{category.description}</p><p className="mt-3 text-2xl font-bold">{archiveCountForCategory(category.id)}<span className="ml-1 text-xs font-normal text-muted-foreground">custom</span></p></div>)}
             </div>
