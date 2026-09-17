@@ -17,7 +17,7 @@ export const metadata = buildRouteMetadata({
   canonicalPath: '/benchmarks/custom',
   language: 'ko',
   section: 'Benchmarks',
-  keywords: ['custom benchmark', 'DGX Spark', 'GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'Qwen', 'Ornith', 'North Mini', 'N2.5 Mini', 'Laguna S 2.1'],
+  keywords: ['custom benchmark', 'DGX Spark', 'GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'Qwen', 'Ornith', 'North Mini', 'N2.5 Mini', 'Laguna S 2.1', 'Laguna XS 2.1'],
 })
 
 const CATEGORY_META = [

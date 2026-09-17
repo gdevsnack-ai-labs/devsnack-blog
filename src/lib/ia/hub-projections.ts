@@ -180,6 +180,29 @@ export const BENCHMARK_OVERVIEW = {
 export const BENCHMARK_PROJECTIONS: BenchmarkProjection[] = [
   {
     asset: assetFromLegacyPost({
+      slug: 'laguna-xs-2-1-7suite-benchmark',
+      title: 'Laguna XS 2.1 — canonical 7-suite Benchmark',
+      blog_id: 'lab',
+      status: 'live',
+    }),
+    title: 'Laguna XS 2.1 — canonical 7-suite Benchmark',
+    family: 'Laguna XS 2.1',
+    measurement: '7-suite Full-cycle · 4 variants',
+    categoryIds: ['llm', 'inference', 'hardware'],
+    target: 'Laguna XS 2.1 · Q4_K_M / Q5_K_M / Q6_K_L / Q8_0',
+    environment: 'NVIDIA DGX Spark GB10 · llama.cpp b10930-56381e407 · non-MTP',
+    method: 'Performance·Server-performance·Knowledge v1.2·Coding·Tool-call v1.1·Agent-single·Agent-multi 및 별도 external tool-eval-bench를 네 variant에서 동일 조건으로 실행; quality suite는 no-think·budget 0 조건',
+    baseline: 'Knowledge는 current v1.2·100문항을 사용하며, 모든 variant에 동일 dataset·recipe를 적용',
+    result: 'Q4/Q5/Q6/Q8의 Knowledge는 85/100, 88/100, 88/100, 84/100; Coding은 모두 12/12; Tool-call은 모두 13/15; Agent-single은 6/12, 6/12, 5/12, 5/12; Agent-multi는 모두 9/10; external tool-eval은 86/100, 88/100, 88/100, 87/100',
+    comparison: 'Q4_K_M은 PP·TG 속도가 가장 높았고, Q5_K_M과 Q6_K_L은 Knowledge·external 점수가 가장 높았음. Q8_0은 더 무거운 양자화에도 품질 우위가 확인되지 않았음',
+    interpretation: '속도 우선이면 Q4_K_M, 품질과 속도의 균형이면 Q5_K_M 또는 Q6_K_L을 우선 후보로 볼 수 있음. Agent-single의 required-step 유지와 external safety 경고는 별도 검증 계층이 필요함',
+    limitations: '모델당 full-cycle 1회이며 internal suite와 external tool-eval-bench는 서로 다른 protocol임; 네 external run 모두 safety gate를 통과하지 못했으므로 최종 점수는 완전한 안전성 평가가 아님',
+    contentHref: '/lab/laguna-xs-2-1-7suite-benchmark',
+    projectHref: '/labs/local-llm-benchmark',
+    relatedKnowledge: [],
+  },
+  {
+    asset: assetFromLegacyPost({
       slug: 'laguna-s-2-1-7suite-benchmark',
       title: 'Laguna S 2.1 APEX-I Balanced — canonical 7-suite Benchmark',
       blog_id: 'lab',
