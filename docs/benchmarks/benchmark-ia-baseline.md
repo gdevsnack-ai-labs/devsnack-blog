@@ -42,7 +42,7 @@ Benchmarks
 - 표준 Benchmark에 편입되지 않은 개별 DevSnack benchmark 원문
 - 관련 Knowledge와 Benchmark Project 자료
 
-외부 `tool-eval-bench`는 기존 내부 Tool-call과 별도 protocol로 표시합니다. Laguna S 2.1의 canonical 7-suite 기록은 Knowledge v1·25문항을 사용했으므로 해당 셀에 legacy version과 분모를 표시하며, current Knowledge v1.2·100문항과 단순 순위 비교하지 않습니다.
+각 결과는 고유한 protocol을 사용할 수 있으므로 Standard Benchmark와 직접 순위를 비교하지 않습니다. `Legacy`나 `Archive`가 아니라 현재도 확장 가능한 Custom Benchmark로 분류합니다.
 
 ## 제거한 구조
 

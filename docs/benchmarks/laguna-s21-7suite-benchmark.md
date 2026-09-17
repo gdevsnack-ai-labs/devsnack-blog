@@ -40,7 +40,7 @@ Knowledge and coding results were strong at 24/25 and 11/12. Tool-call reached 1
 
 ## Compatibility note
 
-This run's Knowledge result uses legacy Knowledge v1 with 25 questions. The current Standard Benchmark uses Knowledge v1.2 with 100 questions, so the matrix shows this row with its own version and denominator; direct ranking against the current Standard Knowledge results should be avoided.
+This run's Knowledge result uses legacy Knowledge v1 with 25 questions. The current Standard Benchmark uses Knowledge v1.2 with 100 questions, so this Knowledge number is kept as a separate Custom Benchmark result and is not mixed into the Standard Knowledge matrix.
 
 ## External tool-eval-bench
 

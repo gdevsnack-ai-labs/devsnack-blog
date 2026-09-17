@@ -55,7 +55,6 @@ const LIMITATION_COPY = [
   'External tool-eval-bench는 내부 Tool-call v1.1과 다른 69-scenario protocol입니다. 각 run의 실제 채점 분모를 표시하며, 기존 N2/N2.5 Mini run은 grammar 오류 4건을 제외한 65개, Laguna S 2.1은 69개를 채점했습니다.',
   'External tool-eval-bench는 현재 N2/N2.5 Mini 8개와 Laguna S 2.1 1개 variant에서 측정되었으며, 나머지 모델의 빈 칸은 0점이 아니라 아직 측정하지 않은 상태입니다.',
   'Knowledge 100문제는 모델의 모든 지식을 대표하는 절대적인 지능 점수가 아니라, 같은 조건에서 모델 간 차이를 비교하기 위한 고정 dataset입니다.',
-  'Laguna S 2.1의 Knowledge는 legacy v1·25문항이며 matrix에 버전과 분모를 함께 표시합니다. current Knowledge v1.2·100문항과 단순 순위 비교는 피합니다.',
   '서로 다른 8개 suite를 억지로 합친 종합 점수는 만들지 않았습니다. 필요한 작업에 맞춰 항목별로 비교하는 것이 더 유용합니다.',
 ] as const
 
