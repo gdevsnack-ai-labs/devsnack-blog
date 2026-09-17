@@ -1,7 +1,7 @@
 {
   "release_id": "gb10-local-llm-benchmark",
   "schema_version": "gb10-benchmark-public-v1",
-  "sha256": "020839a9cef2ab025daa808b76e29009953ecae8447dabd52121a61791b0815f",
+  "sha256": "76106757287738d59ab7e23cc8fbc0266d2e92e2fc01c3bd207e8fb20c8535eb",
   "generated_at": "2026-09-17",
   "updated_at": "2026-09-17",
   "counts": {
@@ -9,8 +9,8 @@
     "suites": 8,
     "revalidated_evaluator_runs": 76,
     "reused_source_runs": 57,
-    "fresh_full_cycle_runs": 34,
-    "source_run_references": 176,
+    "fresh_full_cycle_runs": 35,
+    "source_run_references": 177,
     "external_evaluator_runs": 9
   },
   "raw_runs_public": false,

@@ -67,7 +67,9 @@ function scoreCell(model: PublicBenchmarkModel, suiteKey: BenchmarkSuiteKey): Re
   }
   const total = number(suite.total)
   const passed = number(suite.passed) ?? number(suite.correct)
-  if (total !== null && passed !== null) return <><span className="block">{percent(suite.pass_rate)}</span><span className="block">{passed}/{total}</span></>
+  const condition = record(suite.condition)
+  const legacyKnowledge = suiteKey === 'knowledge' && typeof condition.dataset_version === 'string' && condition.dataset_version.startsWith('legacy')
+  if (total !== null && passed !== null) return <><span className="block">{percent(suite.pass_rate)}</span><span className="block">{passed}/{total}</span>{legacyKnowledge && <span className="block text-[10px] text-amber-700 dark:text-amber-300">{String(condition.dataset_version)}</span>}</>
   return percent(suite.pass_rate)
 }
 

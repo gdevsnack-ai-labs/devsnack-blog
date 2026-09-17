@@ -8,13 +8,16 @@ if (BENCHMARK_SUITE_KEYS.length !== 8 || release.scope.suite_count !== 8) {
 if (release.updated_at !== '2026-09-17') {
   throw new Error(`Current benchmark projection update date drifted: ${release.updated_at}`)
 }
+if (release.scope.source_run_references !== 177 || release.scope.fresh_full_cycle_runs !== 35) {
+  throw new Error(`Laguna source count contract failed: refs=${release.scope.source_run_references}, fresh=${release.scope.fresh_full_cycle_runs}`)
+}
 const available = release.models.filter(model => model.suites.external_tool_eval.status === 'available')
 const notMeasured = release.models.filter(model => model.suites.external_tool_eval.status === 'not_in_public_export')
 if (available.length !== 9 || notMeasured.length !== 15) {
   throw new Error(`External tool-eval coverage mismatch: available=${available.length}, notMeasured=${notMeasured.length}`)
 }
 const laguna = release.models.find(model => model.model_id === 'laguna-s-2-1-apex-i-balanced')
-if (!laguna || laguna.suites.performance.status !== 'available' || laguna.suites.server_performance.status !== 'available' || laguna.suites.knowledge.status !== 'not_in_public_export' || laguna.suites.coding.status !== 'available' || laguna.suites.tool_call.status !== 'available' || laguna.suites.agent_single.status !== 'available' || laguna.suites.agent_multi.status !== 'available' || laguna.suites.external_tool_eval.score !== 86 || laguna.suites.external_tool_eval.scored !== 69 || laguna.suites.external_tool_eval.attempted !== 69 || laguna.suites.external_tool_eval.safety_gate_passed !== false) {
+if (!laguna || laguna.suites.performance.status !== 'available' || laguna.suites.server_performance.status !== 'available' || laguna.suites.knowledge.status !== 'available' || laguna.suites.knowledge.evaluator_version !== '1.1' || laguna.suites.knowledge.total !== 25 || laguna.suites.knowledge.correct !== 24 || laguna.suites.coding.status !== 'available' || laguna.suites.tool_call.status !== 'available' || laguna.suites.agent_single.status !== 'available' || laguna.suites.agent_multi.status !== 'available' || laguna.suites.external_tool_eval.score !== 86 || laguna.suites.external_tool_eval.scored !== 69 || laguna.suites.external_tool_eval.attempted !== 69 || laguna.suites.external_tool_eval.safety_gate_passed !== false) {
   throw new Error('Laguna S 2.1 benchmark result contract failed')
 }
 const n25Q6 = release.models.find(model => model.model_id === 'n2-5-mini-q6-k')
