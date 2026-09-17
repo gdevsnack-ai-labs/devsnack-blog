@@ -34,7 +34,7 @@ const SUITE_DESCRIPTIONS = [
   {
     key: 'external_tool_eval',
     description: '외부 tool-eval-bench의 표준 시나리오를 같은 llama.cpp 계열 환경에서 실행해, 더 긴 tool-use trace와 안전 경계를 확인합니다.',
-    points: ['표준 69개 시나리오 · deterministic mock tool', '도구 선택 · 인자 · multi-step chain · recovery · safety · structured output', '현재 N2/N2.5 Mini 8개와 Laguna S 2.1 1개 variant를 측정했으며, 내부 Tool-call v1.1과 다른 protocol입니다.'],
+    points: ['표준 69개 시나리오 · deterministic mock tool', '도구 선택 · 인자 · multi-step chain · recovery · safety · structured output', '현재 N2/N2.5 Mini 8개 variant만 측정했으며, 내부 Tool-call v1.1과 다른 protocol입니다.'],
   },
   {
     key: 'agent_single',
@@ -52,8 +52,8 @@ const LIMITATION_COPY = [
   '이 benchmark는 DGX Spark GB10 + llama.cpp + 공개된 고정 recipe에서 나온 결과입니다. 다른 GPU, runtime, prompt format에서는 결과가 달라질 수 있습니다.',
   '같은 기반 모델이라도 quantization에 따라 속도와 evaluator 결과가 달라질 수 있어, 기반 모델명과 실제 variant·quantization을 함께 표시했습니다.',
   'Tool-call과 Agent 계열은 고정된 synthetic protocol을 사용하므로 OpenCode, Claude Code, Codex 같은 실제 개발 환경의 체감과 정확히 같지는 않을 수 있습니다.',
-  'External tool-eval-bench는 내부 Tool-call v1.1과 다른 69-scenario protocol입니다. 각 run의 실제 채점 분모를 표시하며, 기존 N2/N2.5 Mini run은 grammar 오류 4건을 제외한 65개, Laguna S 2.1은 69개를 채점했습니다.',
-  'External tool-eval-bench는 현재 N2/N2.5 Mini 8개와 Laguna S 2.1 1개 variant에서 측정되었으며, 나머지 모델의 빈 칸은 0점이 아니라 아직 측정하지 않은 상태입니다.',
+  'External tool-eval-bench는 내부 Tool-call v1.1과 다른 69-scenario protocol입니다. 현재는 69개 중 4개가 llama.cpp structured-output grammar 오류로 제외되어 65개 채점분을 사용했습니다.',
+  'External tool-eval-bench의 N2/N2.5 Mini 결과만 현재 공개 projection에 있으며, 나머지 모델의 빈 칸은 0점이 아니라 아직 측정하지 않은 상태입니다.',
   'Knowledge 100문제는 모델의 모든 지식을 대표하는 절대적인 지능 점수가 아니라, 같은 조건에서 모델 간 차이를 비교하기 위한 고정 dataset입니다.',
   '서로 다른 8개 suite를 억지로 합친 종합 점수는 만들지 않았습니다. 필요한 작업에 맞춰 항목별로 비교하는 것이 더 유용합니다.',
 ] as const
@@ -116,7 +116,7 @@ export function BenchmarkStandardPage() {
         <header className="mt-6 border-b border-border pb-8">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300"><Gauge className="h-4 w-4" aria-hidden="true" /> Public Benchmark Release <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] normal-case dark:bg-blue-900/30">{release.generated_at}</span></div>
           <h1 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">DGX Spark GB10 — Local LLM Benchmark</h1>
-          <p className="mt-5 max-w-5xl text-sm leading-relaxed text-muted-foreground">Gemma4, Laguna S 2.1, Ling 3.0 Flash, N2.5 Mini, N2 Mini, North Mini, Ornith 1.5, Qwen3.6 35B-A3B, Qwen3.8 Flash Next의 여러 GGUF·quantization·MTP variant를 llama.cpp에서 실행하고, 속도부터 내부·외부 툴 사용과 에이전트 작업까지 {release.scope.suite_count}개 항목으로 비교했습니다.</p>
+          <p className="mt-5 max-w-5xl text-sm leading-relaxed text-muted-foreground">Gemma4, Ling 3.0 Flash, N2.5 Mini, N2 Mini, North Mini, Ornith 1.5, Qwen3.6 35B-A3B, Qwen3.8 Flash Next의 여러 GGUF·quantization·MTP variant를 llama.cpp에서 실행하고, 속도부터 내부·외부 툴 사용과 에이전트 작업까지 {release.scope.suite_count}개 항목으로 비교했습니다.</p>
           <p className="mt-3 text-sm text-muted-foreground">표준 suite 밖의 개별 측정과 심층 분석은 <Link href="/benchmarks/custom" className="font-semibold text-foreground underline-offset-4 hover:underline">Custom Benchmarks에서 확인할 수 있습니다 →</Link></p>
 
         </header>
