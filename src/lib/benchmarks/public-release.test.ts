@@ -5,15 +5,15 @@ const release = loadPublicBenchmarkRelease()
 if (BENCHMARK_SUITE_KEYS.length !== 8 || release.scope.suite_count !== 8) {
   throw new Error(`Expected eight benchmark suites, got ${BENCHMARK_SUITE_KEYS.length}/${release.scope.suite_count}`)
 }
-if (release.updated_at !== '2026-09-17') {
+if (release.updated_at !== '2026-09-18') {
   throw new Error(`Current benchmark projection update date drifted: ${release.updated_at}`)
 }
 const available = release.models.filter(model => model.suites.external_tool_eval.status === 'available')
 const notMeasured = release.models.filter(model => model.suites.external_tool_eval.status === 'not_in_public_export')
-if (release.models.length !== 28 || available.length !== 13 || notMeasured.length !== 15) {
+if (release.models.length !== 32 || available.length !== 17 || notMeasured.length !== 15) {
   throw new Error(`Benchmark coverage mismatch: models=${release.models.length}, available=${available.length}, notMeasured=${notMeasured.length}`)
 }
-if (release.scope.model_variant_count !== 28 || release.scope.source_run_references !== 209 || release.scope.fresh_full_cycle_runs !== 63 || release.scope.external_evaluator_runs !== 13) {
+if (release.scope.model_variant_count !== 32 || release.scope.source_run_references !== 213 || release.scope.fresh_full_cycle_runs !== 63 || release.scope.external_evaluator_runs !== 17) {
   throw new Error(`Benchmark scope mismatch: ${JSON.stringify(release.scope)}`)
 }
 const laguna = release.models.find(model => model.model_id === 'laguna-s-2-1-apex-i-balanced')
@@ -38,6 +38,22 @@ for (const [modelId, expected] of Object.entries(xsExpected)) {
 const n25Q6 = release.models.find(model => model.model_id === 'n2-5-mini-q6-k')
 if (n25Q6?.suites.external_tool_eval.score !== 91 || n25Q6.suites.external_tool_eval.scored !== 65 || n25Q6.suites.external_tool_eval.attempted !== 69) {
   throw new Error('N2.5 Mini Q6_K external tool-eval result contract failed')
+}
+const occamyExpected: Record<string, { quantization: string; score: number; sourceRunId: string }> = {
+  'occamy-1-0-q4-k-m': { quantization: 'Q4_K_M', score: 87, sourceRunId: '2026-09-18T05-30-01.584263Z_098ce6ed' },
+  'occamy-1-0-q5-k-m': { quantization: 'Q5_K_M', score: 85, sourceRunId: '2026-09-18T05-35-40.616071Z_33585709' },
+  'occamy-1-0-q6-k': { quantization: 'Q6_K', score: 86, sourceRunId: '2026-09-18T05-40-59.894858Z_6f17533b' },
+  'occamy-1-0-q8-0': { quantization: 'Q8_0', score: 86, sourceRunId: '2026-09-18T05-46-48.882631Z_3d816490' },
+}
+if (release.model_families['occamy-1-0']?.variant_count !== 4) {
+  throw new Error('Occamy 1.0 family contract failed')
+}
+for (const [modelId, expected] of Object.entries(occamyExpected)) {
+  const occamy = release.models.find(model => model.model_id === modelId)
+  const external = occamy?.suites.external_tool_eval
+  if (!occamy || occamy.model !== 'Occamy 1.0' || occamy.variant !== expected.quantization || occamy.quantization !== expected.quantization || occamy.model_family_slug !== 'occamy-1-0' || occamy.mtp_mode !== 'non-mtp' || external?.status !== 'available' || external.score !== expected.score || external.scored !== 65 || external.attempted !== 69 || external.excluded_count !== 4 || external.source_run_id !== expected.sourceRunId) {
+    throw new Error(`Occamy 1.0 benchmark result contract failed: ${modelId}`)
+  }
 }
 if (notMeasured.some(model => 'score' in model.suites.external_tool_eval)) {
   throw new Error('Unmeasured external tool-eval rows must not contain numeric scores')

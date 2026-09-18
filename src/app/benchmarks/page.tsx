@@ -11,7 +11,7 @@ export const metadata = buildRouteMetadata({
   koreanPath: '/benchmarks',
   englishPath: '/en/benchmarks',
   section: 'Benchmarks',
-  keywords: ['NVIDIA DGX Spark', 'GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'Qwen', 'Gemma', 'N2.5 Mini', 'N2 Mini', 'Ling 3.0', 'local AI'],
+  keywords: ['NVIDIA DGX Spark', 'GB10', 'local LLM benchmark', 'GGUF', 'llama.cpp', 'Qwen', 'Gemma', 'N2.5 Mini', 'N2 Mini', 'Occamy 1.0', 'Ling 3.0', 'local AI'],
 })
 
 export default function BenchmarksPage() {

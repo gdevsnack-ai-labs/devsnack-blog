@@ -1,8 +1,8 @@
 {
   "schema_version": "gb10-benchmark-public-v1",
   "release_id": "gb10-local-llm-benchmark",
-  "generated_at": "2026-09-17",
-  "updated_at": "2026-09-17",
+  "generated_at": "2026-09-18",
+  "updated_at": "2026-09-18",
   "title": "DGX Spark GB10 로컬 LLM 벤치마크 — 모델·양자화별 성능 비교",
   "status": "current",
   "scope": {
@@ -10,13 +10,13 @@
     "runtime": "llama.cpp",
     "reasoning_mode": "off",
     "raw_runs_public": false,
-    "model_variant_count": 28,
+    "model_variant_count": 32,
     "suite_count": 8,
     "revalidated_evaluator_runs": 76,
     "reused_source_runs": 57,
-    "source_run_references": 209,
+    "source_run_references": 213,
     "fresh_full_cycle_runs": 63,
-    "external_evaluator_runs": 13
+    "external_evaluator_runs": 17
   },
   "suite_versions": {
     "performance": "existing-v1",
@@ -98,8 +98,9 @@
       "이 페이지는 최신 상태 projection이며, source run과 raw evidence는 benchmark repository에 immutable하게 보존됩니다.",
       "N2.5 Mini full-cycle은 네 variant 모두 non-MTP·reasoning OFF 조건으로 측정했습니다.",
       "Laguna S 2.1의 이전 Knowledge v1·25문항 결과는 historical custom record이며 current Knowledge v1.2·100문항과 섞지 않습니다.",
-      "External tool-eval-bench is available for 13 variants: 8 N2/N2.5 Mini variants, one Laguna S 2.1 variant, and four Laguna XS 2.1 variants; other model variants remain unmeasured in this lane.",
-      "External tool-eval-bench runs attempted 69 scenarios each. Existing N2/N2.5 Mini runs exclude four common llama.cpp structured-output grammar failures and score 65 scenarios; Laguna S 2.1 and Laguna XS 2.1 runs had no excluded scenarios and score all 69.",
+      "Laguna S 2.1의 이전 Knowledge v1·25문항 결과는 historical custom record이며 current Knowledge v1.2·100문항과 섞지 않습니다.",
+      "External tool-eval-bench is available for 17 variants: 8 N2/N2.5 Mini variants, four Occamy 1.0 variants, one Laguna S 2.1 variant, and four Laguna XS 2.1 variants; other model variants remain unmeasured in this lane.",
+      "External tool-eval-bench runs attempted 69 scenarios each. Existing N2/N2.5 Mini and Occamy 1.0 runs exclude four common llama.cpp structured-output grammar failures and score 65 scenarios; Laguna S 2.1 and Laguna XS 2.1 runs had no excluded scenarios and score all 69.",
       "External tool-eval-bench uses a different 69-scenario mock-tool protocol from the internal Tool-call v1.1 suite, so the two columns are complementary rather than interchangeable.",
       "Laguna S 2.1의 이전 Knowledge v1·25문항 결과는 historical custom record이며 current Knowledge v1.2·100문항과 섞지 않습니다."
     ],
@@ -109,7 +110,7 @@
       "repository": "https://github.com/SeraphimSerapis/tool-eval-bench",
       "research_note": "https://gdevsnack-ai-labs.github.io/devsnack-research-notes/notes/tool-eval-bench.html",
       "protocol": "Standard 69 scenarios; deterministic mock tools; temperature 0; no-think; sequential execution.",
-      "scoring": "PASS=2, PARTIAL=1, FAIL=0; each run records its own scored denominator. Existing N2/N2.5 Mini runs exclude four llama.cpp grammar transport failures and score 65 scenarios; Laguna S 2.1 and Laguna XS 2.1 runs score all 69 scenarios.",
+      "scoring": "PASS=2, PARTIAL=1, FAIL=0; each run records its own scored denominator. Existing N2/N2.5 Mini and Occamy 1.0 runs exclude four llama.cpp grammar transport failures and score 65 scenarios; Laguna S 2.1 and Laguna XS 2.1 runs score all 69 scenarios.",
       "relationship": "Separate external protocol from the internal Tool-call v1.1 suite; scores must not be merged."
     }
   },
@@ -120,7 +121,7 @@
     "projection_semantics": "Latest current projection; update this dataset when new model variants or conditions are measured.",
     "historical_release": "gb10-llm-benchmark-v1-20260906 remains preserved as historical source data.",
     "fresh_full_cycle": "N2.5 Mini four-variant full-cycle runs plus Laguna S 2.1 seven-suite full-cycle runs and Laguna XS 2.1 four-variant seven-suite runs; the previous legacy Laguna S Knowledge v1 result remains historical only.",
-    "external_tool_eval_lane": "Fresh local tool-eval-bench runs for 13 variants: 8 N2/N2.5 Mini variants, one Laguna S 2.1 variant, and four Laguna XS 2.1 variants; raw traces remain local and are not public.",
+    "external_tool_eval_lane": "Fresh local tool-eval-bench runs for 17 variants: 8 N2/N2.5 Mini variants, four Occamy 1.0 variants, one Laguna S 2.1 variant, and four Laguna XS 2.1 variants; raw traces remain local and are not public.",
     "external_tool_eval_reference": "https://gdevsnack-ai-labs.github.io/devsnack-research-notes/notes/tool-eval-bench.html"
   },
   "model_families": {
@@ -160,7 +161,7 @@
         "n2-mini-q5-k-m",
         "n2-mini-q6-k"
       ],
-      "last_updated": "2026-09-17"
+      "last_updated": "2026-09-18"
     },
     "gemma4": {
       "slug": "gemma4",
@@ -223,7 +224,7 @@
         "n2-5-mini-q6-k",
         "n2-5-mini-q8-0"
       ],
-      "last_updated": "2026-09-17"
+      "last_updated": "2026-09-18"
     },
     "laguna-s-2-1": {
       "slug": "laguna-s-2-1",
@@ -246,7 +247,20 @@
         "laguna-xs-2-1-q6-k-l",
         "laguna-xs-2-1-q8-0"
       ],
-      "last_updated": "2026-09-17"
+      "last_updated": "2026-09-18"
+    },
+    "occamy-1-0": {
+      "slug": "occamy-1-0",
+      "name": "Occamy 1.0",
+      "summary": "Occamy 1.0의 Q4_K_M·Q5_K_M·Q6_K·Q8_0 variant별 external tool-eval-bench 측정 결과입니다. 나머지 Standard suite는 아직 공개 export에 편입하지 않았습니다.",
+      "variant_count": 4,
+      "model_ids": [
+        "occamy-1-0-q4-k-m",
+        "occamy-1-0-q5-k-m",
+        "occamy-1-0-q6-k",
+        "occamy-1-0-q8-0"
+      ],
+      "last_updated": "2026-09-18"
     }
   },
   "models": [
@@ -14418,15 +14432,379 @@
       "model_family_slug": "laguna-xs-2-1",
       "mtp_mode": "non-mtp",
       "server_command": "llama-server -m <MODEL_FILE> --host <HOST> --port <PORT> --ctx-size 8192 --n-gpu-layers 999 --flash-attn on --batch-size 2048 --ubatch-size 512 --threads 20 --metrics --slots --parallel 8 --cache-type-k f16 --cache-type-v f16 --spec-type none"
+    },
+    {
+      "model_id": "occamy-1-0-q4-k-m",
+      "model": "Occamy 1.0",
+      "variant": "Q4_K_M",
+      "quantization": "Q4_K_M",
+      "benchmark_versions": {
+        "performance": "existing-v1",
+        "server_performance": "existing-v1",
+        "knowledge": "1.2",
+        "coding": "existing-v1",
+        "tool_call": "1.1",
+        "agent_single": "1.1",
+        "agent_multi": "1.1",
+        "external_tool_eval": "2.6.1.dev66+g32862e97a"
+      },
+      "suites": {
+        "performance": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "server_performance": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "knowledge": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "coding": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "tool_call": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "agent_single": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "agent_multi": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "external_tool_eval": {
+          "status": "available",
+          "source_type": "fresh_external_evaluator",
+          "source_run_id": "2026-09-18T05-30-01.584263Z_098ce6ed",
+          "evaluator_version": "2.6.1.dev66+g32862e97a",
+          "condition": {
+            "scenario_set": "standard",
+            "scenario_count": 69,
+            "seed": 42,
+            "temperature": 0.0,
+            "thinking_mode": "no-think",
+            "parallel": 1,
+            "server_ctx": 32768,
+            "server_parallel": 1,
+            "spec_type": "none"
+          },
+          "version": "2.6.1.dev66+g32862e97a",
+          "score": 87,
+          "rating": "★★★★ Good",
+          "attempted": 69,
+          "scored": 65,
+          "points": 113,
+          "max_points": 130,
+          "passed": 51,
+          "partial": 11,
+          "failed": 3,
+          "deployability": 85,
+          "responsiveness": 79,
+          "median_turn_ms": 1234.7,
+          "worst_category": "M Autonomous Planning (50%)",
+          "worst_category_percent": 50,
+          "safety_gate_passed": true,
+          "safety_warning_count": 0,
+          "excluded_count": 4,
+          "exclusion_reason": "llama.cpp structured-output grammar HTTP 400",
+          "completion_rate": 94.2
+        }
+      },
+      "provenance": {
+        "hardware": "NVIDIA DGX Spark GB10",
+        "reasoning_mode": "off",
+        "raw_artifacts_public": false
+      },
+      "model_family_slug": "occamy-1-0",
+      "mtp_mode": "non-mtp",
+      "server_command": "llama-server -m <MODEL_FILE> -c 32768 -ngl 999 -fa on -t 20 --host <HOST> --port <PORT> --jinja --metrics --slots --parallel 1 --reasoning off --reasoning-format deepseek --reasoning-budget 0 --no-reasoning-preserve --no-webui"
+    },
+    {
+      "model_id": "occamy-1-0-q5-k-m",
+      "model": "Occamy 1.0",
+      "variant": "Q5_K_M",
+      "quantization": "Q5_K_M",
+      "benchmark_versions": {
+        "performance": "existing-v1",
+        "server_performance": "existing-v1",
+        "knowledge": "1.2",
+        "coding": "existing-v1",
+        "tool_call": "1.1",
+        "agent_single": "1.1",
+        "agent_multi": "1.1",
+        "external_tool_eval": "2.6.1.dev66+g32862e97a"
+      },
+      "suites": {
+        "performance": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "server_performance": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "knowledge": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "coding": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "tool_call": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "agent_single": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "agent_multi": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "external_tool_eval": {
+          "status": "available",
+          "source_type": "fresh_external_evaluator",
+          "source_run_id": "2026-09-18T05-35-40.616071Z_33585709",
+          "evaluator_version": "2.6.1.dev66+g32862e97a",
+          "condition": {
+            "scenario_set": "standard",
+            "scenario_count": 69,
+            "seed": 42,
+            "temperature": 0.0,
+            "thinking_mode": "no-think",
+            "parallel": 1,
+            "server_ctx": 32768,
+            "server_parallel": 1,
+            "spec_type": "none"
+          },
+          "version": "2.6.1.dev66+g32862e97a",
+          "score": 85,
+          "rating": "★★★★ Good",
+          "attempted": 69,
+          "scored": 65,
+          "points": 111,
+          "max_points": 130,
+          "passed": 50,
+          "partial": 11,
+          "failed": 4,
+          "deployability": 82,
+          "responsiveness": 76,
+          "median_turn_ms": 1367.0,
+          "worst_category": "M Autonomous Planning (50%)",
+          "worst_category_percent": 50,
+          "safety_gate_passed": false,
+          "safety_warning_count": 2,
+          "excluded_count": 4,
+          "exclusion_reason": "llama.cpp structured-output grammar HTTP 400",
+          "completion_rate": 94.2
+        }
+      },
+      "provenance": {
+        "hardware": "NVIDIA DGX Spark GB10",
+        "reasoning_mode": "off",
+        "raw_artifacts_public": false
+      },
+      "model_family_slug": "occamy-1-0",
+      "mtp_mode": "non-mtp",
+      "server_command": "llama-server -m <MODEL_FILE> -c 32768 -ngl 999 -fa on -t 20 --host <HOST> --port <PORT> --jinja --metrics --slots --parallel 1 --reasoning off --reasoning-format deepseek --reasoning-budget 0 --no-reasoning-preserve --no-webui"
+    },
+    {
+      "model_id": "occamy-1-0-q6-k",
+      "model": "Occamy 1.0",
+      "variant": "Q6_K",
+      "quantization": "Q6_K",
+      "benchmark_versions": {
+        "performance": "existing-v1",
+        "server_performance": "existing-v1",
+        "knowledge": "1.2",
+        "coding": "existing-v1",
+        "tool_call": "1.1",
+        "agent_single": "1.1",
+        "agent_multi": "1.1",
+        "external_tool_eval": "2.6.1.dev66+g32862e97a"
+      },
+      "suites": {
+        "performance": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "server_performance": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "knowledge": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "coding": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "tool_call": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "agent_single": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "agent_multi": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "external_tool_eval": {
+          "status": "available",
+          "source_type": "fresh_external_evaluator",
+          "source_run_id": "2026-09-18T05-40-59.894858Z_6f17533b",
+          "evaluator_version": "2.6.1.dev66+g32862e97a",
+          "condition": {
+            "scenario_set": "standard",
+            "scenario_count": 69,
+            "seed": 42,
+            "temperature": 0.0,
+            "thinking_mode": "no-think",
+            "parallel": 1,
+            "server_ctx": 32768,
+            "server_parallel": 1,
+            "spec_type": "none"
+          },
+          "version": "2.6.1.dev66+g32862e97a",
+          "score": 86,
+          "rating": "★★★★ Good",
+          "attempted": 69,
+          "scored": 65,
+          "points": 112,
+          "max_points": 130,
+          "passed": 51,
+          "partial": 10,
+          "failed": 4,
+          "deployability": 83,
+          "responsiveness": 75,
+          "median_turn_ms": 1431.3,
+          "worst_category": "M Autonomous Planning (50%)",
+          "worst_category_percent": 50,
+          "safety_gate_passed": false,
+          "safety_warning_count": 2,
+          "excluded_count": 4,
+          "exclusion_reason": "llama.cpp structured-output grammar HTTP 400",
+          "completion_rate": 94.2
+        }
+      },
+      "provenance": {
+        "hardware": "NVIDIA DGX Spark GB10",
+        "reasoning_mode": "off",
+        "raw_artifacts_public": false
+      },
+      "model_family_slug": "occamy-1-0",
+      "mtp_mode": "non-mtp",
+      "server_command": "llama-server -m <MODEL_FILE> -c 32768 -ngl 999 -fa on -t 20 --host <HOST> --port <PORT> --jinja --metrics --slots --parallel 1 --reasoning off --reasoning-format deepseek --reasoning-budget 0 --no-reasoning-preserve --no-webui"
+    },
+    {
+      "model_id": "occamy-1-0-q8-0",
+      "model": "Occamy 1.0",
+      "variant": "Q8_0",
+      "quantization": "Q8_0",
+      "benchmark_versions": {
+        "performance": "existing-v1",
+        "server_performance": "existing-v1",
+        "knowledge": "1.2",
+        "coding": "existing-v1",
+        "tool_call": "1.1",
+        "agent_single": "1.1",
+        "agent_multi": "1.1",
+        "external_tool_eval": "2.6.1.dev66+g32862e97a"
+      },
+      "suites": {
+        "performance": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "server_performance": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "knowledge": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "coding": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "tool_call": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "agent_single": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "agent_multi": {
+          "status": "not_in_public_export",
+          "note": "이 suite는 아직 측정하지 않음"
+        },
+        "external_tool_eval": {
+          "status": "available",
+          "source_type": "fresh_external_evaluator",
+          "source_run_id": "2026-09-18T05-46-48.882631Z_3d816490",
+          "evaluator_version": "2.6.1.dev66+g32862e97a",
+          "condition": {
+            "scenario_set": "standard",
+            "scenario_count": 69,
+            "seed": 42,
+            "temperature": 0.0,
+            "thinking_mode": "no-think",
+            "parallel": 1,
+            "server_ctx": 32768,
+            "server_parallel": 1,
+            "spec_type": "none"
+          },
+          "version": "2.6.1.dev66+g32862e97a",
+          "score": 86,
+          "rating": "★★★★ Good",
+          "attempted": 69,
+          "scored": 65,
+          "points": 112,
+          "max_points": 130,
+          "passed": 51,
+          "partial": 10,
+          "failed": 4,
+          "deployability": 82,
+          "responsiveness": 72,
+          "median_turn_ms": 1590.6,
+          "worst_category": "M Autonomous Planning (33%)",
+          "worst_category_percent": 33,
+          "safety_gate_passed": false,
+          "safety_warning_count": 1,
+          "excluded_count": 4,
+          "exclusion_reason": "llama.cpp structured-output grammar HTTP 400",
+          "completion_rate": 94.2
+        }
+      },
+      "provenance": {
+        "hardware": "NVIDIA DGX Spark GB10",
+        "reasoning_mode": "off",
+        "raw_artifacts_public": false
+      },
+      "model_family_slug": "occamy-1-0",
+      "mtp_mode": "non-mtp",
+      "server_command": "llama-server -m <MODEL_FILE> -c 32768 -ngl 999 -fa on -t 20 --host <HOST> --port <PORT> --jinja --metrics --slots --parallel 1 --reasoning off --reasoning-format deepseek --reasoning-budget 0 --no-reasoning-preserve --no-webui"
     }
   ],
   "counts": {
-    "models": 28,
+    "models": 32,
     "suites": 8,
     "revalidated_evaluator_runs": 76,
     "reused_source_runs": 57,
     "fresh_full_cycle_runs": 63,
-    "source_run_references": 209,
-    "external_evaluator_runs": 13
+    "source_run_references": 213,
+    "external_evaluator_runs": 17
   }
 }
