@@ -179,8 +179,8 @@ export function projectHomePublishedBenchmark(release: PublicBenchmarkRelease): 
     title: `DGX Spark GB10 — ${scope.model_variant_count}개 모델 통합 Benchmark`,
     target: `${scope.model_variant_count} variants · ${scope.suite_count} suites · ${release.generated_at}`,
     environment: `${scope.hardware} · ${scope.runtime} · reasoning ${reasoning}`,
-    result: `${scope.revalidated_evaluator_runs}개 evaluator run과 ${scope.reused_source_runs}개 검증된 source run을 합친 고정 public release입니다.`,
-    comparison: `Performance·Server·Knowledge·Coding·Tool-call·Agent 결과를 같은 GB10 기준으로 비교하며 raw run은 공개하지 않습니다.`,
+    result: `총 ${scope.source_run_references}개 suite source reference(${scope.revalidated_evaluator_runs}개 revalidated evaluator run · ${scope.reused_source_runs}개 reused source run · ${scope.fresh_full_cycle_runs ?? 0}개 fresh full-cycle run · ${scope.external_evaluator_runs ?? 0}개 external evaluator run)를 포함한 고정 public release입니다.`,
+    comparison: `Performance·Server·Knowledge·Coding·Tool-call·External tool-eval·Agent 결과를 같은 GB10 기준으로 비교하며 raw run은 공개하지 않습니다.`,
     contentHref: `/benchmarks/${release.release_id}`,
     jsonHref: `/data/benchmarks/${release.release_id}.json`,
   }

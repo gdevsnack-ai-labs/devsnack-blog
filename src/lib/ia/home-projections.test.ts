@@ -60,6 +60,8 @@ expectEqual(projection.featured[2].knowledge?.asset.primaryType, 'knowledge', 'K
 expectEqual(projection.knowledge[0].slug, 'qwen3-8-27b-nvfp4-mtp-gguf-gb10', 'curated Knowledge override should win when present')
 expectEqual(projection.dataServices.length, 2, 'Home Data strip should represent the remaining feeds')
 expectEqual(projection.dataServices.filter(service => service.type === 'Feed').length, 2, 'AI Tech and StockPulse must remain Feeds')
+expectTrue(projection.benchmark?.result.includes('213개 suite source reference') === true, 'Home Benchmark must expose the current source reference total')
+expectTrue(projection.benchmark?.result.includes('17개 external evaluator run') === true, 'Home Benchmark must expose the current external evaluator count')
 const stockpulseHomeService = projection.dataServices.find(service => service.title === 'StockPulse')
 expectEqual(stockpulseHomeService?.href, '/stock', 'StockPulse Feed Hub route must remain /stock')
 expectEqual(stockpulseHomeService?.status, 'Morning report · 2026-09-08 · StockPulse V1 Fixed', 'Home StockPulse freshness must use V1 Fixed latest publication')
