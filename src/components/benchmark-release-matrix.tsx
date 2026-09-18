@@ -163,13 +163,13 @@ export function BenchmarkReleaseMatrix({ models, locale = 'ko' }: { models: Publ
           <select id="benchmark-sort" value={sort} onChange={event => setSort(event.target.value)} className="rounded-lg border border-border bg-white px-3 py-2 text-sm dark:bg-gray-900"><option value="model">{copy.model}</option><option value="tg">{copy.tg}</option><option value="server">{copy.server}</option><option value="knowledge">{copy.knowledge}</option><option value="coding">{copy.coding}</option><option value="external">{copy.external}</option></select>
         </div>
       </div>
-      <div className="mt-4 overflow-x-auto rounded-2xl border border-border bg-white dark:bg-gray-900">
-        <table className="min-w-[1180px] w-full text-left text-xs">
-          <thead className="border-b border-border bg-muted/40 text-muted-foreground"><tr><th scope="col" className="sticky left-0 z-10 min-w-[250px] bg-muted/95 px-3 py-3 font-semibold dark:bg-gray-900/95">Model / Variant</th>{SUITES.map(suite => <th key={suite.key} scope="col" className="min-w-[140px] px-3 py-3 font-semibold">{suite.label}</th>)}</tr></thead>
+      <div className="mt-4 overflow-x-auto overscroll-x-contain rounded-2xl border border-border bg-white dark:bg-gray-900">
+        <table className="min-w-[1130px] w-full text-left text-xs sm:min-w-[1180px]">
+          <thead className="border-b border-border bg-muted/40 text-muted-foreground"><tr><th scope="col" className="sticky left-0 z-10 w-[170px] min-w-[170px] max-w-[170px] bg-muted/95 px-3 py-3 font-semibold dark:bg-gray-900/95 sm:w-auto sm:min-w-[250px] sm:max-w-none">Model / Variant</th>{SUITES.map(suite => <th key={suite.key} scope="col" className="min-w-[120px] px-3 py-3 font-semibold sm:min-w-[140px]">{suite.label}</th>)}</tr></thead>
           <tbody>
             {filtered.map(model => (
               <tr id={model.model_id} key={model.model_id} className="border-b border-border/70 last:border-0 hover:bg-muted/30">
-                <th scope="row" className="sticky left-0 z-[1] bg-white px-3 py-3 align-top dark:bg-gray-900">
+                <th scope="row" className="sticky left-0 z-[1] w-[170px] min-w-[170px] max-w-[170px] bg-white px-3 py-3 align-top dark:bg-gray-900 sm:w-auto sm:min-w-[250px] sm:max-w-none">
                   <Link href={`/benchmarks/models/${model.model_family_slug}`} className="font-semibold no-underline hover:text-blue-600 dark:hover:text-blue-400">{model.model}</Link>
                   <div className="mt-1 text-[11px] font-normal text-muted-foreground">{model.variant} · {model.quantization}</div>
                   <div className="mt-1 text-[10px] font-semibold text-blue-700 dark:text-blue-300">{benchmarkMtpLabel(model.mtp_mode)}</div>
