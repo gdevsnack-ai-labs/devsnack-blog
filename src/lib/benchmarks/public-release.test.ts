@@ -13,7 +13,7 @@ const notMeasured = release.models.filter(model => model.suites.external_tool_ev
 if (release.models.length !== 32 || available.length !== 17 || notMeasured.length !== 15) {
   throw new Error(`Benchmark coverage mismatch: models=${release.models.length}, available=${available.length}, notMeasured=${notMeasured.length}`)
 }
-if (release.scope.model_variant_count !== 32 || release.scope.source_run_references !== 213 || release.scope.fresh_full_cycle_runs !== 63 || release.scope.external_evaluator_runs !== 17) {
+if (release.scope.model_variant_count !== 32 || release.scope.source_run_references !== 241 || release.scope.fresh_full_cycle_runs !== 91 || release.scope.external_evaluator_runs !== 17) {
   throw new Error(`Benchmark scope mismatch: ${JSON.stringify(release.scope)}`)
 }
 const laguna = release.models.find(model => model.model_id === 'laguna-s-2-1-apex-i-balanced')
@@ -51,7 +51,8 @@ if (release.model_families['occamy-1-0']?.variant_count !== 4) {
 for (const [modelId, expected] of Object.entries(occamyExpected)) {
   const occamy = release.models.find(model => model.model_id === modelId)
   const external = occamy?.suites.external_tool_eval
-  if (!occamy || occamy.model !== 'Occamy 1.0' || occamy.variant !== expected.quantization || occamy.quantization !== expected.quantization || occamy.model_family_slug !== 'occamy-1-0' || occamy.mtp_mode !== 'non-mtp' || external?.status !== 'available' || external.score !== expected.score || external.scored !== 65 || external.attempted !== 69 || external.excluded_count !== 4 || external.source_run_id !== expected.sourceRunId) {
+  const standardSuites = ['performance', 'server_performance', 'knowledge', 'coding', 'tool_call', 'agent_single', 'agent_multi'] as const
+  if (!occamy || occamy.model !== 'Occamy 1.0' || occamy.variant !== expected.quantization || occamy.quantization !== expected.quantization || occamy.model_family_slug !== 'occamy-1-0' || occamy.mtp_mode !== 'non-mtp' || standardSuites.some(suite => occamy.suites[suite].status !== 'available') || external?.status !== 'available' || external.score !== expected.score || external.scored !== 65 || external.attempted !== 69 || external.excluded_count !== 4 || external.source_run_id !== expected.sourceRunId) {
     throw new Error(`Occamy 1.0 benchmark result contract failed: ${modelId}`)
   }
 }

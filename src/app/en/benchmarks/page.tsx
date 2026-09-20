@@ -9,7 +9,7 @@ export const revalidate = 60
 
 export const metadata = buildRouteMetadata({
   title: 'DGX Spark GB10 — Local LLM Benchmark | DevSnack',
-  description: 'A reproducible comparison of 28 GGUF model variants across eight llama.cpp benchmark suites on an NVIDIA DGX Spark GB10, including speed, coding, internal and external tool-call, and agent results.',
+  description: 'A reproducible comparison of 32 GGUF model variants across eight llama.cpp benchmark suites on an NVIDIA DGX Spark GB10, including speed, coding, internal and external tool-call, and agent results.',
   canonicalPath: '/en/benchmarks',
   language: 'en',
   koreanPath: '/benchmarks',
@@ -116,7 +116,7 @@ export default function EnglishBenchmarksPage() {
               <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><h3 className="font-bold">Knowledge</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Deterministic knowledge, Korea, math, science, and logic questions.</p></div>
               <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><h3 className="font-bold">Coding</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Executable Python generation evaluated by tests, not explanation quality alone.</p></div>
               <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><h3 className="font-bold">Tool-call</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Tool selection, arguments, recovery, and final task completion in a fixed simulator.</p></div>
-              <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><h3 className="font-bold">External tool-eval-bench</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">A separate 69-scenario deterministic tool-use protocol. Each variant exposes its actual scored/attempted denominator; current N2/N2.5 Mini runs score 65 after four grammar transport failures, while Laguna S 2.1 and Laguna XS 2.1 runs score all 69.</p></div>
+              <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><h3 className="font-bold">External tool-eval-bench</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">A separate 69-scenario deterministic tool-use protocol. Each variant exposes its actual scored/attempted denominator; current N2/N2.5 Mini and Occamy 1.0 runs score 65 after four grammar transport failures, while Laguna S 2.1 and Laguna XS 2.1 runs score all 69.</p></div>
               <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><h3 className="font-bold">Agent-single / Agent-multi</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Single-agent completion and role handoff under the release’s fixed protocols.</p></div>
             </div>
           </section>

@@ -14,8 +14,8 @@
     "suite_count": 8,
     "revalidated_evaluator_runs": 76,
     "reused_source_runs": 57,
-    "source_run_references": 213,
-    "fresh_full_cycle_runs": 63,
+    "source_run_references": 241,
+    "fresh_full_cycle_runs": 91,
     "external_evaluator_runs": 17
   },
   "suite_versions": {
@@ -99,6 +99,7 @@
       "N2.5 Mini full-cycle은 네 variant 모두 non-MTP·reasoning OFF 조건으로 측정했습니다.",
       "Laguna S 2.1의 이전 Knowledge v1·25문항 결과는 historical custom record이며 current Knowledge v1.2·100문항과 섞지 않습니다.",
       "Laguna S 2.1의 이전 Knowledge v1·25문항 결과는 historical custom record이며 current Knowledge v1.2·100문항과 섞지 않습니다.",
+      "Laguna S 2.1의 이전 Knowledge v1·25문항 결과는 historical custom record이며 current Knowledge v1.2·100문항과 섞지 않습니다.",
       "External tool-eval-bench is available for 17 variants: 8 N2/N2.5 Mini variants, four Occamy 1.0 variants, one Laguna S 2.1 variant, and four Laguna XS 2.1 variants; other model variants remain unmeasured in this lane.",
       "External tool-eval-bench runs attempted 69 scenarios each. Existing N2/N2.5 Mini and Occamy 1.0 runs exclude four common llama.cpp structured-output grammar failures and score 65 scenarios; Laguna S 2.1 and Laguna XS 2.1 runs had no excluded scenarios and score all 69.",
       "External tool-eval-bench uses a different 69-scenario mock-tool protocol from the internal Tool-call v1.1 suite, so the two columns are complementary rather than interchangeable.",
@@ -120,7 +121,7 @@
     "source_run_id_semantics": "Each suite points to the exact local run used for this public projection.",
     "projection_semantics": "Latest current projection; update this dataset when new model variants or conditions are measured.",
     "historical_release": "gb10-llm-benchmark-v1-20260906 remains preserved as historical source data.",
-    "fresh_full_cycle": "N2.5 Mini four-variant full-cycle runs plus Laguna S 2.1 seven-suite full-cycle runs and Laguna XS 2.1 four-variant seven-suite runs; the previous legacy Laguna S Knowledge v1 result remains historical only.",
+    "fresh_full_cycle": "N2.5 Mini four-variant full-cycle runs plus Laguna S 2.1 seven-suite full-cycle runs, Laguna XS 2.1 four-variant seven-suite runs, and Occamy 1.0 four-variant seven-suite runs; the previous legacy Laguna S Knowledge v1 result remains historical only.",
     "external_tool_eval_lane": "Fresh local tool-eval-bench runs for 17 variants: 8 N2/N2.5 Mini variants, four Occamy 1.0 variants, one Laguna S 2.1 variant, and four Laguna XS 2.1 variants; raw traces remain local and are not public.",
     "external_tool_eval_reference": "https://gdevsnack-ai-labs.github.io/devsnack-research-notes/notes/tool-eval-bench.html"
   },
@@ -252,7 +253,7 @@
     "occamy-1-0": {
       "slug": "occamy-1-0",
       "name": "Occamy 1.0",
-      "summary": "Occamy 1.0의 Q4_K_M·Q5_K_M·Q6_K·Q8_0 variant별 external tool-eval-bench 측정 결과입니다. 나머지 Standard suite는 아직 공개 export에 편입하지 않았습니다.",
+      "summary": "Occamy 1.0의 Q4_K_M·Q5_K_M·Q6_K·Q8_0 variant별 GB10 canonical 7-suite 및 external tool-eval 측정 결과입니다.",
       "variant_count": 4,
       "model_ids": [
         "occamy-1-0-q4-k-m",
@@ -14450,32 +14451,460 @@
       },
       "suites": {
         "performance": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-125553-cfef21",
+          "evaluator_version": "existing-v1",
+          "condition": {
+            "batch_size": 2048,
+            "cache_type_k": "f16",
+            "cache_type_v": "f16",
+            "flash_attn": true,
+            "gen_tokens": [
+              512
+            ],
+            "n_gpu_layers": 999,
+            "prompt_tokens": [
+              512,
+              2048,
+              8192,
+              32768
+            ],
+            "repetitions": 5,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think",
+            "threads": 20,
+            "ubatch_size": 512
+          },
+          "metrics": {
+            "pp": {
+              "token_count": 32768,
+              "mean_tps": 1953.524606,
+              "stddev_tps": 6.210044,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "tg": {
+              "token_count": 512,
+              "mean_tps": 80.627057,
+              "stddev_tps": 0.095314,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            }
+          },
+          "metrics_by_prompt": {
+            "512": {
+              "token_count": 512,
+              "mean_tps": 2168.139169,
+              "stddev_tps": 43.762731,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "2048": {
+              "token_count": 2048,
+              "mean_tps": 2124.017001,
+              "stddev_tps": 11.339177,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "8192": {
+              "token_count": 8192,
+              "mean_tps": 2079.053924,
+              "stddev_tps": 9.149564,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "32768": {
+              "token_count": 32768,
+              "mean_tps": 1953.524606,
+              "stddev_tps": 6.210044,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            }
+          },
+          "repetitions": 5
         },
         "server_performance": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-125905-b15c83",
+          "evaluator_version": "existing-v1",
+          "condition": {
+            "batch_size": 2048,
+            "cache_prompt": false,
+            "cache_type_k": "f16",
+            "cache_type_v": "f16",
+            "concurrencies": [
+              1,
+              2,
+              4,
+              8
+            ],
+            "ctx_size": 8192,
+            "flash_attn": true,
+            "gen_tokens": 512,
+            "n_gpu_layers": 999,
+            "parallel": 8,
+            "repetitions": 3,
+            "request_timeout_s": 900,
+            "requests_per_concurrency": 4,
+            "spec_draft_n_max": 3,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think",
+            "threads": 20,
+            "ubatch_size": 512
+          },
+          "formal": true,
+          "concurrencies": [
+            1,
+            2,
+            4,
+            8
+          ],
+          "requests_per_concurrency": 4,
+          "repetitions": 3,
+          "gen_tokens": 512,
+          "samples_count": 180,
+          "conditions": [
+            {
+              "concurrency": 1,
+              "repetitions": 3,
+              "requests_per_repetition": 4,
+              "successful_requests": 12,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 76.3496034478802,
+                "stddev": 0.42100928543910815,
+                "min": 75.9736882190775,
+                "max": 76.80451541042297
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 76.35577255608129,
+                "stddev": 0.6330962701107358,
+                "min": 75.04452421670878,
+                "max": 77.107276521912
+              },
+              "latency_p50_s": {
+                "mean": 6.697751269166474,
+                "stddev": 0.03348148410523434,
+                "min": 6.66896901400105,
+                "max": 6.734496280496387
+              },
+              "latency_p95_s": {
+                "mean": 6.757001063714537,
+                "stddev": 0.06333280981035445,
+                "min": 6.685470277996865,
+                "max": 6.805940477198601
+              },
+              "latency_p99_s": {
+                "mean": 6.763634673274331,
+                "stddev": 0.06931803096362545,
+                "min": 6.685985838796551,
+                "max": 6.819281197838282
+              }
+            },
+            {
+              "concurrency": 2,
+              "repetitions": 3,
+              "requests_per_repetition": 8,
+              "successful_requests": 24,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 114.27004576814868,
+                "stddev": 0.3805548243720566,
+                "min": 113.86408516653984,
+                "max": 114.61869338446652
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 57.14727607456621,
+                "stddev": 0.6230621601983538,
+                "min": 55.638274522572075,
+                "max": 58.01233024113901
+              },
+              "latency_p50_s": {
+                "mean": 8.9438293881661,
+                "stddev": 0.03633506726093083,
+                "min": 8.902878586497536,
+                "max": 8.972211178497673
+              },
+              "latency_p95_s": {
+                "mean": 9.0882462728674,
+                "stddev": 0.10314660729988004,
+                "min": 8.991755851253037,
+                "max": 9.196959834900554
+              },
+              "latency_p99_s": {
+                "mean": 9.091001646841615,
+                "stddev": 0.10360661464544854,
+                "min": 8.995619175053362,
+                "max": 9.201230620582283
+              }
+            },
+            {
+              "concurrency": 4,
+              "repetitions": 3,
+              "requests_per_repetition": 16,
+              "successful_requests": 48,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 157.14477589785636,
+                "stddev": 2.8045480668227794,
+                "min": 154.21097814331824,
+                "max": 159.7991565268672
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 39.30277358850196,
+                "stddev": 0.7249611866808936,
+                "min": 37.79424319020861,
+                "max": 40.270568083823065
+              },
+              "latency_p50_s": {
+                "mean": 13.014970754166521,
+                "stddev": 0.2427292662167898,
+                "min": 12.777739591499994,
+                "max": 13.262847808000515
+              },
+              "latency_p95_s": {
+                "mean": 13.271648597169891,
+                "stddev": 0.28962867956420246,
+                "min": 12.969293923253645,
+                "max": 13.546604003255197
+              },
+              "latency_p99_s": {
+                "mean": 13.271844235967485,
+                "stddev": 0.2898006987580864,
+                "min": 12.96930039425315,
+                "max": 13.546950170250785
+              }
+            },
+            {
+              "concurrency": 8,
+              "repetitions": 3,
+              "requests_per_repetition": 32,
+              "successful_requests": 96,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 202.57576695642015,
+                "stddev": 2.408019437848471,
+                "min": 199.88216948793092,
+                "max": 204.5200245774238
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 25.328283232729916,
+                "stddev": 0.2937530061855844,
+                "min": 24.457630054805026,
+                "max": 25.63415489029554
+              },
+              "latency_p50_s": {
+                "mean": 20.19838081933267,
+                "stddev": 0.23312818739654573,
+                "min": 20.009687564499473,
+                "max": 20.458994982498552
+              },
+              "latency_p95_s": {
+                "mean": 20.423501264799658,
+                "stddev": 0.45132854820939133,
+                "min": 20.07326308865195,
+                "max": 20.932831922699187
+              },
+              "latency_p99_s": {
+                "mean": 20.434494413282398,
+                "stddev": 0.4466506307430766,
+                "min": 20.073408693149396,
+                "max": 20.93395671925995
+              }
+            }
+          ]
         },
         "knowledge": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-130854-b87fe7",
+          "evaluator_version": "1.2",
+          "condition": {
+            "dataset_version": "legacy v1",
+            "max_tokens": 128,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.2,
+          "total": 100,
+          "correct": 94,
+          "accuracy": 0.94,
+          "pass_rate": 0.94,
+          "categories": {
+            "general": {
+              "total": 20,
+              "correct": 19,
+              "accuracy": 0.95,
+              "pass_rate": 0.95
+            },
+            "korea": {
+              "total": 20,
+              "correct": 20,
+              "accuracy": 1.0,
+              "pass_rate": 1.0
+            },
+            "math": {
+              "total": 20,
+              "correct": 17,
+              "accuracy": 0.85,
+              "pass_rate": 0.85
+            },
+            "science": {
+              "total": 20,
+              "correct": 20,
+              "accuracy": 1.0,
+              "pass_rate": 1.0
+            },
+            "logic": {
+              "total": 20,
+              "correct": 18,
+              "accuracy": 0.9,
+              "pass_rate": 0.9
+            }
+          },
+          "difficulties": {
+            "unspecified": {}
+          }
         },
         "coding": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-130913-7c6987",
+          "evaluator_version": "existing-v1",
+          "condition": {
+            "dataset_version": 1,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1,
+          "total": 12,
+          "passed": 12,
+          "pass_rate": 1.0,
+          "categories": {
+            "basic": {
+              "total": 3,
+              "passed": 3,
+              "pass_rate": 1.0
+            },
+            "string": {
+              "total": 3,
+              "passed": 3,
+              "pass_rate": 1.0
+            },
+            "collection": {
+              "total": 3,
+              "passed": 3,
+              "pass_rate": 1.0
+            },
+            "edge_case": {
+              "total": 3,
+              "passed": 3,
+              "pass_rate": 1.0
+            }
+          },
+          "failure_types": {}
         },
         "tool_call": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-130935-7dfe8e",
+          "evaluator_version": "1.1",
+          "condition": {
+            "dataset_version": 1,
+            "max_steps": 6,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.1,
+          "total": 15,
+          "passed": 11,
+          "pass_rate": 0.7333333333333333,
+          "tool_selection_accuracy": 0.8666666666666667,
+          "argument_accuracy": 0.7333333333333333,
+          "execution_success_rate": 0.9333333333333333,
+          "tool_rate": 0.8666666666666667,
+          "args_rate": 0.7333333333333333,
+          "exec_rate": 0.9333333333333333,
+          "failure_types": {
+            "wrong_arguments": 2,
+            "wrong_tool": 1,
+            "incomplete_sequence": 1
+          }
         },
         "agent_single": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-130954-023380",
+          "evaluator_version": "1.1",
+          "condition": {
+            "dataset_version": 1,
+            "max_steps": 6,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.1,
+          "total": 12,
+          "passed": 8,
+          "correct": 8,
+          "pass_rate": 0.6666666666666666,
+          "avg_steps": 3.25,
+          "avg_tool_calls": 2.25,
+          "tool_calls_total": 27,
+          "failed_tool_calls": 1,
+          "repeated_tool_calls": 5,
+          "failure_types": {
+            "missing_required_step": 3,
+            "repeated_loop": 1
+          }
         },
         "agent_multi": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-131022-821ca8",
+          "evaluator_version": "1.1",
+          "condition": {
+            "dataset_version": 1,
+            "max_steps": 8,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.1,
+          "total": 10,
+          "passed": 6,
+          "correct": 6,
+          "pass_rate": 0.6,
+          "handoff_success_rate": 1.0,
+          "role_participation_success_rate": 1.0,
+          "avg_steps": 4.2,
+          "avg_tool_calls": 3.3,
+          "tool_calls_total": 33,
+          "failed_tool_calls": 5,
+          "invalid_tool_calls": 0,
+          "handoffs": 11,
+          "failure_types": {
+            "final_answer_error": 1,
+            "tool_error": 2,
+            "wrong_tool": 1
+          }
         },
         "external_tool_eval": {
           "status": "available",
@@ -14522,7 +14951,7 @@
       },
       "model_family_slug": "occamy-1-0",
       "mtp_mode": "non-mtp",
-      "server_command": "llama-server -m <MODEL_FILE> -c 32768 -ngl 999 -fa on -t 20 --host <HOST> --port <PORT> --jinja --metrics --slots --parallel 1 --reasoning off --reasoning-format deepseek --reasoning-budget 0 --no-reasoning-preserve --no-webui"
+      "server_command": "llama-server -m <MODEL_FILE> --host <HOST> --port <PORT> --ctx-size 8192 --n-gpu-layers 999 --flash-attn on --batch-size 2048 --ubatch-size 512 --threads 20 --metrics --slots --parallel 8 --cache-type-k f16 --cache-type-v f16 --spec-type none"
     },
     {
       "model_id": "occamy-1-0-q5-k-m",
@@ -14541,32 +14970,459 @@
       },
       "suites": {
         "performance": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-131059-1770cf",
+          "evaluator_version": "existing-v1",
+          "condition": {
+            "batch_size": 2048,
+            "cache_type_k": "f16",
+            "cache_type_v": "f16",
+            "flash_attn": true,
+            "gen_tokens": [
+              512
+            ],
+            "n_gpu_layers": 999,
+            "prompt_tokens": [
+              512,
+              2048,
+              8192,
+              32768
+            ],
+            "repetitions": 5,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think",
+            "threads": 20,
+            "ubatch_size": 512
+          },
+          "metrics": {
+            "pp": {
+              "token_count": 32768,
+              "mean_tps": 1854.728054,
+              "stddev_tps": 3.916172,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "tg": {
+              "token_count": 512,
+              "mean_tps": 73.712934,
+              "stddev_tps": 0.032947,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            }
+          },
+          "metrics_by_prompt": {
+            "512": {
+              "token_count": 512,
+              "mean_tps": 2072.404256,
+              "stddev_tps": 38.642737,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "2048": {
+              "token_count": 2048,
+              "mean_tps": 2037.891768,
+              "stddev_tps": 10.801426,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "8192": {
+              "token_count": 8192,
+              "mean_tps": 2006.223637,
+              "stddev_tps": 10.769007,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "32768": {
+              "token_count": 32768,
+              "mean_tps": 1854.728054,
+              "stddev_tps": 3.916172,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            }
+          },
+          "repetitions": 5
         },
         "server_performance": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-131425-5e4636",
+          "evaluator_version": "existing-v1",
+          "condition": {
+            "batch_size": 2048,
+            "cache_prompt": false,
+            "cache_type_k": "f16",
+            "cache_type_v": "f16",
+            "concurrencies": [
+              1,
+              2,
+              4,
+              8
+            ],
+            "ctx_size": 8192,
+            "flash_attn": true,
+            "gen_tokens": 512,
+            "n_gpu_layers": 999,
+            "parallel": 8,
+            "repetitions": 3,
+            "request_timeout_s": 900,
+            "requests_per_concurrency": 4,
+            "spec_draft_n_max": 3,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think",
+            "threads": 20,
+            "ubatch_size": 512
+          },
+          "formal": true,
+          "concurrencies": [
+            1,
+            2,
+            4,
+            8
+          ],
+          "requests_per_concurrency": 4,
+          "repetitions": 3,
+          "gen_tokens": 512,
+          "samples_count": 180,
+          "conditions": [
+            {
+              "concurrency": 1,
+              "repetitions": 3,
+              "requests_per_repetition": 4,
+              "successful_requests": 12,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 68.77784567984855,
+                "stddev": 0.31996531607120776,
+                "min": 68.50159892145024,
+                "max": 69.12843929189073
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 68.78308088381384,
+                "stddev": 0.5549558044652236,
+                "min": 67.56175965106524,
+                "max": 69.60285966752677
+              },
+              "latency_p50_s": {
+                "mean": 7.442561566334916,
+                "stddev": 0.029180062688096822,
+                "min": 7.409601667503011,
+                "max": 7.465100381999946
+              },
+              "latency_p95_s": {
+                "mean": 7.503294320719578,
+                "stddev": 0.05880074685443717,
+                "min": 7.447010925402355,
+                "max": 7.564324654551092
+              },
+              "latency_p99_s": {
+                "mean": 7.50972436307944,
+                "stddev": 0.06315169632041504,
+                "min": 7.449528451481965,
+                "max": 7.575466054910721
+              }
+            },
+            {
+              "concurrency": 2,
+              "repetitions": 3,
+              "requests_per_repetition": 8,
+              "successful_requests": 24,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 101.0804856514117,
+                "stddev": 0.5616091777751613,
+                "min": 100.50083972708505,
+                "max": 101.62212763662515
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 50.54890946958755,
+                "stddev": 0.46642805464369935,
+                "min": 49.80407306249669,
+                "max": 51.25557806347414
+              },
+              "latency_p50_s": {
+                "mean": 10.124577665500206,
+                "stddev": 0.06041641539931123,
+                "min": 10.067703939999774,
+                "max": 10.188002779999806
+              },
+              "latency_p95_s": {
+                "mean": 10.235313822050617,
+                "stddev": 0.05537589136773055,
+                "min": 10.1733149542506,
+                "max": 10.279862965851862
+              },
+              "latency_p99_s": {
+                "mean": 10.237253776943739,
+                "stddev": 0.05272558639678362,
+                "min": 10.178407998850526,
+                "max": 10.280199545171126
+              }
+            },
+            {
+              "concurrency": 4,
+              "repetitions": 3,
+              "requests_per_repetition": 16,
+              "successful_requests": 48,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 146.57540800358177,
+                "stddev": 5.003774565261024,
+                "min": 141.85366568223765,
+                "max": 151.82013456771531
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 36.67226214885351,
+                "stddev": 1.340060755759403,
+                "min": 34.42266376242158,
+                "max": 38.66706064806443
+              },
+              "latency_p50_s": {
+                "mean": 13.954030246665448,
+                "stddev": 0.5787957014055991,
+                "min": 13.298093658497237,
+                "max": 14.392970871500438
+              },
+              "latency_p95_s": {
+                "mean": 14.39103493508143,
+                "stddev": 0.2927409760463339,
+                "min": 14.135833340997124,
+                "max": 14.710602887749701
+              },
+              "latency_p99_s": {
+                "mean": 14.434604089680821,
+                "stddev": 0.36486637418163453,
+                "min": 14.135872643396215,
+                "max": 14.841257809548551
+              }
+            },
+            {
+              "concurrency": 8,
+              "repetitions": 3,
+              "requests_per_repetition": 32,
+              "successful_requests": 96,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 192.5456681216273,
+                "stddev": 2.2754037614650717,
+                "min": 189.9590928466294,
+                "max": 194.2385599855385
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 24.0849062255778,
+                "stddev": 0.5618145193452941,
+                "min": 22.758151969391783,
+                "max": 24.7854183394608
+              },
+              "latency_p50_s": {
+                "mean": 21.102033805667208,
+                "stddev": 0.24159552897673311,
+                "min": 20.962026935500035,
+                "max": 21.381003641999996
+              },
+              "latency_p95_s": {
+                "mean": 22.049093528016602,
+                "stddev": 0.5248367072887534,
+                "min": 21.467121194202264,
+                "max": 22.486485710250054
+              },
+              "latency_p99_s": {
+                "mean": 22.052796385210314,
+                "stddev": 0.5274613545849296,
+                "min": 21.468621529910525,
+                "max": 22.49411612975964
+              }
+            }
+          ]
         },
         "knowledge": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-132503-ec4307",
+          "evaluator_version": "1.2",
+          "condition": {
+            "dataset_version": "legacy v1",
+            "max_tokens": 128,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.2,
+          "total": 100,
+          "correct": 95,
+          "accuracy": 0.95,
+          "pass_rate": 0.95,
+          "categories": {
+            "general": {
+              "total": 20,
+              "correct": 20,
+              "accuracy": 1.0,
+              "pass_rate": 1.0
+            },
+            "korea": {
+              "total": 20,
+              "correct": 20,
+              "accuracy": 1.0,
+              "pass_rate": 1.0
+            },
+            "math": {
+              "total": 20,
+              "correct": 17,
+              "accuracy": 0.85,
+              "pass_rate": 0.85
+            },
+            "science": {
+              "total": 20,
+              "correct": 20,
+              "accuracy": 1.0,
+              "pass_rate": 1.0
+            },
+            "logic": {
+              "total": 20,
+              "correct": 18,
+              "accuracy": 0.9,
+              "pass_rate": 0.9
+            }
+          },
+          "difficulties": {
+            "unspecified": {}
+          }
         },
         "coding": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-132522-3ccc54",
+          "evaluator_version": "existing-v1",
+          "condition": {
+            "dataset_version": 1,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1,
+          "total": 12,
+          "passed": 11,
+          "pass_rate": 0.9166666666666666,
+          "categories": {
+            "basic": {
+              "total": 3,
+              "passed": 3,
+              "pass_rate": 1.0
+            },
+            "string": {
+              "total": 3,
+              "passed": 3,
+              "pass_rate": 1.0
+            },
+            "collection": {
+              "total": 3,
+              "passed": 3,
+              "pass_rate": 1.0
+            },
+            "edge_case": {
+              "total": 3,
+              "passed": 2,
+              "pass_rate": 0.6666666666666666
+            }
+          },
+          "failure_types": {
+            "syntax_error": 1
+          }
         },
         "tool_call": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-132541-a4ea87",
+          "evaluator_version": "1.1",
+          "condition": {
+            "dataset_version": 1,
+            "max_steps": 6,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.1,
+          "total": 15,
+          "passed": 11,
+          "pass_rate": 0.7333333333333333,
+          "tool_selection_accuracy": 0.8666666666666667,
+          "argument_accuracy": 0.7333333333333333,
+          "execution_success_rate": 0.9333333333333333,
+          "tool_rate": 0.8666666666666667,
+          "args_rate": 0.7333333333333333,
+          "exec_rate": 0.9333333333333333,
+          "failure_types": {
+            "wrong_arguments": 2,
+            "wrong_tool": 1,
+            "incomplete_sequence": 1
+          }
         },
         "agent_single": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-132600-2c1f3e",
+          "evaluator_version": "1.1",
+          "condition": {
+            "dataset_version": 1,
+            "max_steps": 6,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.1,
+          "total": 12,
+          "passed": 9,
+          "correct": 9,
+          "pass_rate": 0.75,
+          "avg_steps": 3.25,
+          "avg_tool_calls": 2.25,
+          "tool_calls_total": 27,
+          "failed_tool_calls": 2,
+          "repeated_tool_calls": 4,
+          "failure_types": {
+            "missing_required_step": 3
+          }
         },
         "agent_multi": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-132631-11b52a",
+          "evaluator_version": "1.1",
+          "condition": {
+            "dataset_version": 1,
+            "max_steps": 8,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.1,
+          "total": 10,
+          "passed": 9,
+          "correct": 9,
+          "pass_rate": 0.9,
+          "handoff_success_rate": 1.0,
+          "role_participation_success_rate": 1.0,
+          "avg_steps": 3.9,
+          "avg_tool_calls": 2.9,
+          "tool_calls_total": 29,
+          "failed_tool_calls": 5,
+          "invalid_tool_calls": 0,
+          "handoffs": 11,
+          "failure_types": {
+            "tool_error": 1
+          }
         },
         "external_tool_eval": {
           "status": "available",
@@ -14613,7 +15469,7 @@
       },
       "model_family_slug": "occamy-1-0",
       "mtp_mode": "non-mtp",
-      "server_command": "llama-server -m <MODEL_FILE> -c 32768 -ngl 999 -fa on -t 20 --host <HOST> --port <PORT> --jinja --metrics --slots --parallel 1 --reasoning off --reasoning-format deepseek --reasoning-budget 0 --no-reasoning-preserve --no-webui"
+      "server_command": "llama-server -m <MODEL_FILE> --host <HOST> --port <PORT> --ctx-size 8192 --n-gpu-layers 999 --flash-attn on --batch-size 2048 --ubatch-size 512 --threads 20 --metrics --slots --parallel 8 --cache-type-k f16 --cache-type-v f16 --spec-type none"
     },
     {
       "model_id": "occamy-1-0-q6-k",
@@ -14632,32 +15488,456 @@
       },
       "suites": {
         "performance": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-132705-4a9a1f",
+          "evaluator_version": "existing-v1",
+          "condition": {
+            "batch_size": 2048,
+            "cache_type_k": "f16",
+            "cache_type_v": "f16",
+            "flash_attn": true,
+            "gen_tokens": [
+              512
+            ],
+            "n_gpu_layers": 999,
+            "prompt_tokens": [
+              512,
+              2048,
+              8192,
+              32768
+            ],
+            "repetitions": 5,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think",
+            "threads": 20,
+            "ubatch_size": 512
+          },
+          "metrics": {
+            "pp": {
+              "token_count": 32768,
+              "mean_tps": 1658.977434,
+              "stddev_tps": 2.92193,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "tg": {
+              "token_count": 512,
+              "mean_tps": 66.79336,
+              "stddev_tps": 0.02455,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            }
+          },
+          "metrics_by_prompt": {
+            "512": {
+              "token_count": 512,
+              "mean_tps": 1814.856605,
+              "stddev_tps": 26.364912,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "2048": {
+              "token_count": 2048,
+              "mean_tps": 1789.1185,
+              "stddev_tps": 12.270761,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "8192": {
+              "token_count": 8192,
+              "mean_tps": 1753.645607,
+              "stddev_tps": 9.039322,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "32768": {
+              "token_count": 32768,
+              "mean_tps": 1658.977434,
+              "stddev_tps": 2.92193,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            }
+          },
+          "repetitions": 5
         },
         "server_performance": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-133055-a5f57b",
+          "evaluator_version": "existing-v1",
+          "condition": {
+            "batch_size": 2048,
+            "cache_prompt": false,
+            "cache_type_k": "f16",
+            "cache_type_v": "f16",
+            "concurrencies": [
+              1,
+              2,
+              4,
+              8
+            ],
+            "ctx_size": 8192,
+            "flash_attn": true,
+            "gen_tokens": 512,
+            "n_gpu_layers": 999,
+            "parallel": 8,
+            "repetitions": 3,
+            "request_timeout_s": 900,
+            "requests_per_concurrency": 4,
+            "spec_draft_n_max": 3,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think",
+            "threads": 20,
+            "ubatch_size": 512
+          },
+          "formal": true,
+          "concurrencies": [
+            1,
+            2,
+            4,
+            8
+          ],
+          "requests_per_concurrency": 4,
+          "repetitions": 3,
+          "gen_tokens": 512,
+          "samples_count": 180,
+          "conditions": [
+            {
+              "concurrency": 1,
+              "repetitions": 3,
+              "requests_per_repetition": 4,
+              "successful_requests": 12,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 63.599793391609474,
+                "stddev": 0.08040363707906249,
+                "min": 63.52431102680789,
+                "max": 63.684348613661975
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 63.60441684812861,
+                "stddev": 0.4189877004689661,
+                "min": 62.8601780082151,
+                "max": 64.04905021980682
+              },
+              "latency_p50_s": {
+                "mean": 8.031877092500508,
+                "stddev": 0.007485274138550486,
+                "min": 8.023950586000865,
+                "max": 8.038824839000881
+              },
+              "latency_p95_s": {
+                "mean": 8.117598145034936,
+                "stddev": 0.02106872415362751,
+                "min": 8.093819000252916,
+                "max": 8.133938036800828
+              },
+              "latency_p99_s": {
+                "mean": 8.126995607674834,
+                "stddev": 0.02136794413826166,
+                "min": 8.102692614452899,
+                "max": 8.14283660656074
+              }
+            },
+            {
+              "concurrency": 2,
+              "repetitions": 3,
+              "requests_per_repetition": 8,
+              "successful_requests": 24,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 92.45525755189458,
+                "stddev": 0.5608586060415743,
+                "min": 91.82144372221634,
+                "max": 92.88737036047337
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 46.239792580225995,
+                "stddev": 0.5277862912756013,
+                "min": 45.50397863143449,
+                "max": 47.18593463951704
+              },
+              "latency_p50_s": {
+                "mean": 11.080928367833016,
+                "stddev": 0.07401086978492043,
+                "min": 11.003572050500225,
+                "max": 11.15106457750153
+              },
+              "latency_p95_s": {
+                "mean": 11.202216448050482,
+                "stddev": 0.03892243071786847,
+                "min": 11.170793209101612,
+                "max": 11.24575594300004
+              },
+              "latency_p99_s": {
+                "mean": 11.205649768010408,
+                "stddev": 0.03953173080953082,
+                "min": 11.176127308221549,
+                "max": 11.250561885401039
+              }
+            },
+            {
+              "concurrency": 4,
+              "repetitions": 3,
+              "requests_per_repetition": 16,
+              "successful_requests": 48,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 127.90151084685955,
+                "stddev": 1.7147793473418904,
+                "min": 126.2887798659312,
+                "max": 129.7027593944896
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 31.988898018791122,
+                "stddev": 0.566042491261443,
+                "min": 30.910264331989474,
+                "max": 32.712059085768125
+              },
+              "latency_p50_s": {
+                "mean": 15.978635204333841,
+                "stddev": 0.23363391464135505,
+                "min": 15.714553791000071,
+                "max": 16.158431135001592
+              },
+              "latency_p95_s": {
+                "mean": 16.32717853241714,
+                "stddev": 0.24478146649507898,
+                "min": 16.074740719250258,
+                "max": 16.563507970749924
+              },
+              "latency_p99_s": {
+                "mean": 16.327686806216057,
+                "stddev": 0.24490400195993844,
+                "min": 16.07498240944624,
+                "max": 16.563963233349206
+              }
+            },
+            {
+              "concurrency": 8,
+              "repetitions": 3,
+              "requests_per_repetition": 32,
+              "successful_requests": 96,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 161.19473172133382,
+                "stddev": 1.886751774944292,
+                "min": 159.7647841387908,
+                "max": 163.33317651464225
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 20.154103058158213,
+                "stddev": 0.22731483410327,
+                "min": 19.87676047925875,
+                "max": 20.680762241017444
+              },
+              "latency_p50_s": {
+                "mean": 25.395796722499654,
+                "stddev": 0.30985949987428557,
+                "min": 25.046538372000214,
+                "max": 25.637707865000266
+              },
+              "latency_p95_s": {
+                "mean": 25.61012251429929,
+                "stddev": 0.11186983149623546,
+                "min": 25.525184268797965,
+                "max": 25.736876748649593
+              },
+              "latency_p99_s": {
+                "mean": 25.61554778130669,
+                "stddev": 0.12025427800651788,
+                "min": 25.525241890881006,
+                "max": 25.75205019830064
+              }
+            }
+          ]
         },
         "knowledge": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-134303-749b5c",
+          "evaluator_version": "1.2",
+          "condition": {
+            "dataset_version": "legacy v1",
+            "max_tokens": 128,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.2,
+          "total": 100,
+          "correct": 96,
+          "accuracy": 0.96,
+          "pass_rate": 0.96,
+          "categories": {
+            "general": {
+              "total": 20,
+              "correct": 20,
+              "accuracy": 1.0,
+              "pass_rate": 1.0
+            },
+            "korea": {
+              "total": 20,
+              "correct": 20,
+              "accuracy": 1.0,
+              "pass_rate": 1.0
+            },
+            "math": {
+              "total": 20,
+              "correct": 17,
+              "accuracy": 0.85,
+              "pass_rate": 0.85
+            },
+            "science": {
+              "total": 20,
+              "correct": 20,
+              "accuracy": 1.0,
+              "pass_rate": 1.0
+            },
+            "logic": {
+              "total": 20,
+              "correct": 19,
+              "accuracy": 0.95,
+              "pass_rate": 0.95
+            }
+          },
+          "difficulties": {
+            "unspecified": {}
+          }
         },
         "coding": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-134325-dc8355",
+          "evaluator_version": "existing-v1",
+          "condition": {
+            "dataset_version": 1,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1,
+          "total": 12,
+          "passed": 12,
+          "pass_rate": 1.0,
+          "categories": {
+            "basic": {
+              "total": 3,
+              "passed": 3,
+              "pass_rate": 1.0
+            },
+            "string": {
+              "total": 3,
+              "passed": 3,
+              "pass_rate": 1.0
+            },
+            "collection": {
+              "total": 3,
+              "passed": 3,
+              "pass_rate": 1.0
+            },
+            "edge_case": {
+              "total": 3,
+              "passed": 3,
+              "pass_rate": 1.0
+            }
+          },
+          "failure_types": {}
         },
         "tool_call": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-134356-3854f6",
+          "evaluator_version": "1.1",
+          "condition": {
+            "dataset_version": 1,
+            "max_steps": 6,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.1,
+          "total": 15,
+          "passed": 11,
+          "pass_rate": 0.7333333333333333,
+          "tool_selection_accuracy": 0.9333333333333333,
+          "argument_accuracy": 0.8,
+          "execution_success_rate": 0.8666666666666667,
+          "tool_rate": 0.9333333333333333,
+          "args_rate": 0.8,
+          "exec_rate": 0.8666666666666667,
+          "failure_types": {
+            "wrong_arguments": 2,
+            "wrong_tool": 1,
+            "execution_error": 1
+          }
         },
         "agent_single": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-134418-c5681f",
+          "evaluator_version": "1.1",
+          "condition": {
+            "dataset_version": 1,
+            "max_steps": 6,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.1,
+          "total": 12,
+          "passed": 8,
+          "correct": 8,
+          "pass_rate": 0.6666666666666666,
+          "avg_steps": 3.25,
+          "avg_tool_calls": 2.25,
+          "tool_calls_total": 27,
+          "failed_tool_calls": 3,
+          "repeated_tool_calls": 4,
+          "failure_types": {
+            "missing_required_step": 3,
+            "wrong_tool": 1
+          }
         },
         "agent_multi": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-134452-50b3a6",
+          "evaluator_version": "1.1",
+          "condition": {
+            "dataset_version": 1,
+            "max_steps": 8,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.1,
+          "total": 10,
+          "passed": 10,
+          "correct": 10,
+          "pass_rate": 1.0,
+          "handoff_success_rate": 1.0,
+          "role_participation_success_rate": 1.0,
+          "avg_steps": 3.9,
+          "avg_tool_calls": 2.9,
+          "tool_calls_total": 29,
+          "failed_tool_calls": 5,
+          "invalid_tool_calls": 0,
+          "handoffs": 11,
+          "failure_types": {}
         },
         "external_tool_eval": {
           "status": "available",
@@ -14704,7 +15984,7 @@
       },
       "model_family_slug": "occamy-1-0",
       "mtp_mode": "non-mtp",
-      "server_command": "llama-server -m <MODEL_FILE> -c 32768 -ngl 999 -fa on -t 20 --host <HOST> --port <PORT> --jinja --metrics --slots --parallel 1 --reasoning off --reasoning-format deepseek --reasoning-budget 0 --no-reasoning-preserve --no-webui"
+      "server_command": "llama-server -m <MODEL_FILE> --host <HOST> --port <PORT> --ctx-size 8192 --n-gpu-layers 999 --flash-attn on --batch-size 2048 --ubatch-size 512 --threads 20 --metrics --slots --parallel 8 --cache-type-k f16 --cache-type-v f16 --spec-type none"
     },
     {
       "model_id": "occamy-1-0-q8-0",
@@ -14723,32 +16003,459 @@
       },
       "suites": {
         "performance": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-134529-c85c59",
+          "evaluator_version": "existing-v1",
+          "condition": {
+            "batch_size": 2048,
+            "cache_type_k": "f16",
+            "cache_type_v": "f16",
+            "flash_attn": true,
+            "gen_tokens": [
+              512
+            ],
+            "n_gpu_layers": 999,
+            "prompt_tokens": [
+              512,
+              2048,
+              8192,
+              32768
+            ],
+            "repetitions": 5,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think",
+            "threads": 20,
+            "ubatch_size": 512
+          },
+          "metrics": {
+            "pp": {
+              "token_count": 32768,
+              "mean_tps": 1733.954705,
+              "stddev_tps": 4.611164,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "tg": {
+              "token_count": 512,
+              "mean_tps": 58.790811,
+              "stddev_tps": 0.032521,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            }
+          },
+          "metrics_by_prompt": {
+            "512": {
+              "token_count": 512,
+              "mean_tps": 1914.195673,
+              "stddev_tps": 38.624186,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "2048": {
+              "token_count": 2048,
+              "mean_tps": 1889.061851,
+              "stddev_tps": 13.587546,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "8192": {
+              "token_count": 8192,
+              "mean_tps": 1845.613599,
+              "stddev_tps": 11.010205,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            },
+            "32768": {
+              "token_count": 32768,
+              "mean_tps": 1733.954705,
+              "stddev_tps": 4.611164,
+              "repetitions": 5,
+              "unit": "tokens/s"
+            }
+          },
+          "repetitions": 5
         },
         "server_performance": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-134928-3e5192",
+          "evaluator_version": "existing-v1",
+          "condition": {
+            "batch_size": 2048,
+            "cache_prompt": false,
+            "cache_type_k": "f16",
+            "cache_type_v": "f16",
+            "concurrencies": [
+              1,
+              2,
+              4,
+              8
+            ],
+            "ctx_size": 8192,
+            "flash_attn": true,
+            "gen_tokens": 512,
+            "n_gpu_layers": 999,
+            "parallel": 8,
+            "repetitions": 3,
+            "request_timeout_s": 900,
+            "requests_per_concurrency": 4,
+            "spec_draft_n_max": 3,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think",
+            "threads": 20,
+            "ubatch_size": 512
+          },
+          "formal": true,
+          "concurrencies": [
+            1,
+            2,
+            4,
+            8
+          ],
+          "requests_per_concurrency": 4,
+          "repetitions": 3,
+          "gen_tokens": 512,
+          "samples_count": 180,
+          "conditions": [
+            {
+              "concurrency": 1,
+              "repetitions": 3,
+              "requests_per_repetition": 4,
+              "successful_requests": 12,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 56.60485843261435,
+                "stddev": 0.3374001637125532,
+                "min": 56.21556912088953,
+                "max": 56.8128913036629
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 56.60834484370213,
+                "stddev": 0.4495145905997768,
+                "min": 55.78741149416606,
+                "max": 57.37666277241076
+              },
+              "latency_p50_s": {
+                "mean": 9.037533998169238,
+                "stddev": 0.04366959242275713,
+                "min": 9.00719816900164,
+                "max": 9.087585095003305
+              },
+              "latency_p95_s": {
+                "mean": 9.109251460200783,
+                "stddev": 0.05057776498589905,
+                "min": 9.0651013900002,
+                "max": 9.164435237151702
+              },
+              "latency_p99_s": {
+                "mean": 9.116487021640374,
+                "stddev": 0.054515706359437144,
+                "min": 9.067203813999658,
+                "max": 9.175045233831115
+              }
+            },
+            {
+              "concurrency": 2,
+              "repetitions": 3,
+              "requests_per_repetition": 8,
+              "successful_requests": 24,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 89.67225831498317,
+                "stddev": 6.645843742003985,
+                "min": 82.3169905139992,
+                "max": 95.24521955527423
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 45.03382476709767,
+                "stddev": 4.123105195930616,
+                "min": 40.65736192080007,
+                "max": 50.2220034332913
+              },
+              "latency_p50_s": {
+                "mean": 11.322586347665492,
+                "stddev": 1.079357967782422,
+                "min": 10.304379113498726,
+                "max": 12.454148110999085
+              },
+              "latency_p95_s": {
+                "mean": 12.278384414366034,
+                "stddev": 0.24211503329140185,
+                "min": 12.08987505779769,
+                "max": 12.551434663653344
+              },
+              "latency_p99_s": {
+                "mean": 12.293013665272229,
+                "stddev": 0.2579416750631493,
+                "min": 12.095071642757029,
+                "max": 12.58472316393265
+              }
+            },
+            {
+              "concurrency": 4,
+              "repetitions": 3,
+              "requests_per_repetition": 16,
+              "successful_requests": 48,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 126.53088947201174,
+                "stddev": 1.1716627380070366,
+                "min": 125.64426956969858,
+                "max": 127.85919797302634
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 31.653492185528084,
+                "stddev": 0.6827165374229222,
+                "min": 29.71550941223574,
+                "max": 32.635091173589046
+              },
+              "latency_p50_s": {
+                "mean": 16.09041274166763,
+                "stddev": 0.11740530964286527,
+                "min": 16.00903444100186,
+                "max": 16.225001763501496
+              },
+              "latency_p95_s": {
+                "mean": 16.623797173415976,
+                "stddev": 0.5264298616051861,
+                "min": 16.281799364747712,
+                "max": 17.23000467525162
+              },
+              "latency_p99_s": {
+                "mean": 16.62416840801367,
+                "stddev": 0.5261185976372363,
+                "min": 16.28272352494532,
+                "max": 17.230048663047274
+              }
+            },
+            {
+              "concurrency": 8,
+              "repetitions": 3,
+              "requests_per_repetition": 32,
+              "successful_requests": 96,
+              "failed_requests": 0,
+              "failure_rate": 0.0,
+              "aggregate_generation_throughput_tps": {
+                "mean": 152.0945509385054,
+                "stddev": 1.7822462800921508,
+                "min": 150.06476592419688,
+                "max": 153.40335057328463
+              },
+              "per_request_generation_throughput_tps": {
+                "mean": 19.02125628891885,
+                "stddev": 0.37539972369430247,
+                "min": 18.49643922308635,
+                "max": 19.50852033231086
+              },
+              "latency_p50_s": {
+                "mean": 26.932617610832192,
+                "stddev": 0.6018496852101175,
+                "min": 26.439971820997016,
+                "max": 27.603438017998997
+              },
+              "latency_p95_s": {
+                "mean": 27.421031956568186,
+                "stddev": 0.39308252303878444,
+                "min": 26.96877600299995,
+                "max": 27.680510859352943
+              },
+              "latency_p99_s": {
+                "mean": 27.422218895408367,
+                "stddev": 0.39197079996253803,
+                "min": 26.971239015117753,
+                "max": 27.68093486003854
+              }
+            }
+          ]
         },
         "knowledge": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-140212-bd7c3f",
+          "evaluator_version": "1.2",
+          "condition": {
+            "dataset_version": "legacy v1",
+            "max_tokens": 128,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.2,
+          "total": 100,
+          "correct": 96,
+          "accuracy": 0.96,
+          "pass_rate": 0.96,
+          "categories": {
+            "general": {
+              "total": 20,
+              "correct": 20,
+              "accuracy": 1.0,
+              "pass_rate": 1.0
+            },
+            "korea": {
+              "total": 20,
+              "correct": 20,
+              "accuracy": 1.0,
+              "pass_rate": 1.0
+            },
+            "math": {
+              "total": 20,
+              "correct": 17,
+              "accuracy": 0.85,
+              "pass_rate": 0.85
+            },
+            "science": {
+              "total": 20,
+              "correct": 20,
+              "accuracy": 1.0,
+              "pass_rate": 1.0
+            },
+            "logic": {
+              "total": 20,
+              "correct": 19,
+              "accuracy": 0.95,
+              "pass_rate": 0.95
+            }
+          },
+          "difficulties": {
+            "unspecified": {}
+          }
         },
         "coding": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-140234-7d77aa",
+          "evaluator_version": "existing-v1",
+          "condition": {
+            "dataset_version": 1,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1,
+          "total": 12,
+          "passed": 11,
+          "pass_rate": 0.9166666666666666,
+          "categories": {
+            "basic": {
+              "total": 3,
+              "passed": 3,
+              "pass_rate": 1.0
+            },
+            "string": {
+              "total": 3,
+              "passed": 3,
+              "pass_rate": 1.0
+            },
+            "collection": {
+              "total": 3,
+              "passed": 3,
+              "pass_rate": 1.0
+            },
+            "edge_case": {
+              "total": 3,
+              "passed": 2,
+              "pass_rate": 0.6666666666666666
+            }
+          },
+          "failure_types": {
+            "syntax_error": 1
+          }
         },
         "tool_call": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-140302-bca0d1",
+          "evaluator_version": "1.1",
+          "condition": {
+            "dataset_version": 1,
+            "max_steps": 6,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.1,
+          "total": 15,
+          "passed": 11,
+          "pass_rate": 0.7333333333333333,
+          "tool_selection_accuracy": 0.9333333333333333,
+          "argument_accuracy": 0.8,
+          "execution_success_rate": 0.8666666666666667,
+          "tool_rate": 0.9333333333333333,
+          "args_rate": 0.8,
+          "exec_rate": 0.8666666666666667,
+          "failure_types": {
+            "wrong_arguments": 2,
+            "wrong_tool": 1,
+            "execution_error": 1
+          }
         },
         "agent_single": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-140324-d144e6",
+          "evaluator_version": "1.1",
+          "condition": {
+            "dataset_version": 1,
+            "max_steps": 6,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.1,
+          "total": 12,
+          "passed": 9,
+          "correct": 9,
+          "pass_rate": 0.75,
+          "avg_steps": 3.25,
+          "avg_tool_calls": 2.25,
+          "tool_calls_total": 27,
+          "failed_tool_calls": 2,
+          "repeated_tool_calls": 4,
+          "failure_types": {
+            "missing_required_step": 3
+          }
         },
         "agent_multi": {
-          "status": "not_in_public_export",
-          "note": "이 suite는 아직 측정하지 않음"
+          "status": "available",
+          "source_type": "fresh_full_cycle",
+          "source_run_id": "20260918-140401-c3a2f2",
+          "evaluator_version": "1.1",
+          "condition": {
+            "dataset_version": 1,
+            "max_steps": 8,
+            "request_timeout_s": 900,
+            "spec_type": "none",
+            "thinking_budget": 0,
+            "thinking_mode": "no-think"
+          },
+          "version": 1.1,
+          "total": 10,
+          "passed": 9,
+          "correct": 9,
+          "pass_rate": 0.9,
+          "handoff_success_rate": 1.0,
+          "role_participation_success_rate": 1.0,
+          "avg_steps": 4.1,
+          "avg_tool_calls": 3.1,
+          "tool_calls_total": 31,
+          "failed_tool_calls": 7,
+          "invalid_tool_calls": 0,
+          "handoffs": 11,
+          "failure_types": {
+            "wrong_tool": 1
+          }
         },
         "external_tool_eval": {
           "status": "available",
@@ -14795,7 +16502,7 @@
       },
       "model_family_slug": "occamy-1-0",
       "mtp_mode": "non-mtp",
-      "server_command": "llama-server -m <MODEL_FILE> -c 32768 -ngl 999 -fa on -t 20 --host <HOST> --port <PORT> --jinja --metrics --slots --parallel 1 --reasoning off --reasoning-format deepseek --reasoning-budget 0 --no-reasoning-preserve --no-webui"
+      "server_command": "llama-server -m <MODEL_FILE> --host <HOST> --port <PORT> --ctx-size 8192 --n-gpu-layers 999 --flash-attn on --batch-size 2048 --ubatch-size 512 --threads 20 --metrics --slots --parallel 8 --cache-type-k f16 --cache-type-v f16 --spec-type none"
     }
   ],
   "counts": {
@@ -14803,8 +16510,8 @@
     "suites": 8,
     "revalidated_evaluator_runs": 76,
     "reused_source_runs": 57,
-    "fresh_full_cycle_runs": 63,
-    "source_run_references": 213,
+    "fresh_full_cycle_runs": 91,
+    "source_run_references": 241,
     "external_evaluator_runs": 17
   }
 }
