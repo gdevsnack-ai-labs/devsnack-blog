@@ -1,8 +1,26 @@
 {
   "schema_version": 1,
   "feed": "devsnack",
-  "generated_at": "2026-09-09T01:39:57.083678+00:00",
+  "generated_at": "2026-09-20T15:05:28.286764+00:00",
   "posts": [
+    {
+      "slug": "ninfer-gb10-port-qwen36-moe",
+      "title": "RTX 5090 전용 NInfer를 DGX Spark GB10에 포팅해봤다 — 27B는 졌고, 35B MoE는 달랐다",
+      "excerpt": "NInfer라는 흥미로운 프로젝트를 발견했다. Qwen3.5 계열 Dense/MoE 모델을 위한 C++/CUDA 추론 엔진인데, 범용성을 넓게 가져가는 llama.cpp나 vLLM과는 방향이 다르다. 지원 GPU와 모델을 좁히는 대신 CUDA Graph, 전용 quantization, MTP/DFlash, paged KV cache 같은 최적화를 적극적으로 사용한다. 문제는 지원 대상이 사실상 RTX 5090 하나라는 점이었다. 빌드 타깃은 sm_120a , 내부에도 5090의 170 SM을 전제로 한 튜닝이 들어가 있었다. 내가 ",
+      "labels": [
+        "NInfer",
+        "DGX Spark",
+        "GB10",
+        "CUDA",
+        "LLM",
+        "MoE",
+        "benchmark"
+      ],
+      "published": "2026-09-20T15:05:13.110937+00:00",
+      "cover_image": "https://lh3.googleusercontent.com/d/1OaChfS61i4hMhveY-oeN_CTSXDvYcjOj",
+      "blog_id": "devsnack",
+      "status": "live"
+    },
     {
       "slug": "google-oauth-token-refresh-youtube-drive",
       "title": "Google OAuth 토큰 다시 발급하기 — YouTube·Drive invalid_grant 해결",
@@ -19,7 +37,7 @@
     },
     {
       "slug": "dgx-spark-gb10-local-llm-benchmark",
-      "title": "DGX Spark GB10 로컬 LLM 벤치마크 — 18개 GGUF 모델 성능·코딩·에이전트 비교",
+      "title": "DGX Spark GB10 로컬 LLM 벤치마크",
       "excerpt": "로컬에서 실행할 수 있는 LLM이 빠르게 늘고 있다. 같은 모델도 Q4, Q5, Q6, Q8, NVFP4, MXFP4, UD quant처럼 여러 형태로 배포되고, MTP 지원 여부나 튜닝 방식에 따라 실제 사용감도 크게 달라진다. 모델 카드에는 다양한 공개 벤치마크 결과가 있지만, 내가 궁금했던 것은 조금 더 단순했다. 내 NVIDIA DGX Spark GB10에서 실제로 돌렸을 때 어떤 모델이 빠르고, 어떤 모델이 코드를 잘 만들며, 어떤 모델이 도구를 잘 사용하고 여러 단계의 작업을 끝까지 수행하는가? 그래서 직접 로컬 LLM ",
       "labels": [
         "벤치마크",
