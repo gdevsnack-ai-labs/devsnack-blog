@@ -10,7 +10,7 @@ export const metadata = buildRouteMetadata({
   searchPolicy: 'noindex',
 })
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 export const revalidate = false
 
 export default function StockPage() {

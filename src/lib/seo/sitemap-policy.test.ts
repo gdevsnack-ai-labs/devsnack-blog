@@ -1,8 +1,15 @@
 // @ts-expect-error Node's strip-types runner requires the explicit extension.
 import { isIndexableSitemapRoute, routePolicy } from './sitemap-policy.ts'
+// @ts-expect-error Node's strip-types runner requires the explicit extension.
+import { searchPolicyForPath } from './search-policy.ts'
 
 if (routePolicy('/tools/operations') !== 'UTILITY') throw new Error('operations must remain utility')
+if (routePolicy('/tools/operations/status') !== 'UTILITY') throw new Error('nested operations routes must remain utility')
+if (routePolicy('/operations/status') !== 'UTILITY') throw new Error('operations family must remain utility')
 if (routePolicy('/search') !== 'UTILITY') throw new Error('search must remain utility')
+if (routePolicy('/search/results') !== 'UTILITY') throw new Error('nested search routes must remain utility')
+if (routePolicy('/stock') !== 'UTILITY') throw new Error('StockPulse hub must remain utility')
+if (routePolicy('/stock/2026-09-21') !== 'UTILITY') throw new Error('StockPulse detail routes must remain utility')
 if (routePolicy('/demos/html') !== 'INDEX') throw new Error('populated HTML Showcase category must remain indexable')
 if (!isIndexableSitemapRoute('/labs/board')) throw new Error('Lab Board must remain in sitemap')
 if (routePolicy('/labs/local-llm-benchmark') !== 'NAVIGATION_ONLY') throw new Error('lab project detail is navigation-only in this phase')
@@ -21,7 +28,16 @@ if (!isIndexableSitemapRoute('/benchmarks/models/ling-3-0-flash')) throw new Err
 if (!isIndexableSitemapRoute('/benchmarks/models/n25-mini')) throw new Error('N2.5 Mini model page must remain in sitemap')
 if (isIndexableSitemapRoute('/benchmarks/gb10-llm-benchmark-v1-20260906')) throw new Error('historical benchmark URL must not remain indexable')
 if (isIndexableSitemapRoute('/search')) throw new Error('utility route must not be sitemap-indexable')
+if (isIndexableSitemapRoute('/tools/operations/status')) throw new Error('nested operations route must not be sitemap-indexable')
+if (isIndexableSitemapRoute('/operations/status')) throw new Error('operations route must not be sitemap-indexable')
+if (isIndexableSitemapRoute('/stock/2026-09-21')) throw new Error('StockPulse detail route must not be sitemap-indexable')
 if (isIndexableSitemapRoute('/links')) throw new Error('utility Links must not be sitemap-indexable')
+if (isIndexableSitemapRoute('/data/hermes-usage')) throw new Error('usage telemetry must not be sitemap-indexable')
+if (searchPolicyForPath('/search/results') !== 'noindex') throw new Error('nested search route must be noindex')
+if (searchPolicyForPath('/tools/operations/status') !== 'noindex') throw new Error('nested operations route must be noindex')
+if (searchPolicyForPath('/operations/status') !== 'noindex') throw new Error('operations route must be noindex')
+if (searchPolicyForPath('/data/hermes-usage/model') !== 'noindex') throw new Error('nested usage route must be noindex')
+if (searchPolicyForPath('/stock/2026-09-21') !== 'noindex') throw new Error('StockPulse detail route must be noindex')
 if (isIndexableSitemapRoute('/en')) throw new Error('English pilot hub must not be sitemap-indexable')
 if (routePolicy('/en/benchmarks') !== 'INDEX') throw new Error('English Benchmark pilot must be an indexable collection route')
 if (!isIndexableSitemapRoute('/en/benchmarks')) throw new Error('English Benchmark pilot must be in sitemap')

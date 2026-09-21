@@ -69,6 +69,13 @@ const NOINDEX_PATH_REASONS: Readonly<Record<string, string>> = {
   '/stock-dashboard-qwen3.8.html': 'raw_static_artifact',
 }
 const NOINDEX_PATHS = new Set(Object.keys(NOINDEX_PATH_REASONS))
+const NOINDEX_PREFIX_REASONS: Readonly<Record<string, string>> = {
+  '/search': 'utility_search_results',
+  '/stock': 'stockpulse_external_publication_gateway',
+  '/tools/operations': 'public_operations_transparency_without_search_landing_value',
+  '/operations': 'public_operations_transparency_without_search_landing_value',
+  '/data/hermes-usage': 'aggregate_telemetry_utility',
+}
 const NOINDEX_PREFIXES = ['/en']
 const INDEXABLE_PATHS = new Set(['/en/benchmarks'])
 
@@ -102,6 +109,9 @@ export function searchPolicyDecisionForPath(pathname: string): SearchPolicyDecis
   }
   if (NOINDEX_PATHS.has(path)) {
     return decision('noindex', NOINDEX_PATH_REASONS[path], 'automatic')
+  }
+  for (const [root, reason] of Object.entries(NOINDEX_PREFIX_REASONS)) {
+    if (matchesPath(path, root)) return decision('noindex', reason, 'automatic')
   }
   if (INDEXABLE_PATHS.has(path)) {
     return decision('index', 'reviewed_english_benchmark_pilot', 'override')

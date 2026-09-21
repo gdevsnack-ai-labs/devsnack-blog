@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { AppLayout } from "@/components/app-layout"
 import { CopyLinkButton } from "@/components/copy-link-button"
 import { LanguagePreferencePrompt } from "@/components/language-preference-prompt"
+import { shouldLoadAdSenseForPath } from "@/lib/seo/ad-policy"
 import "./globals.css";
 
 const geistSans = Geist({
@@ -35,6 +36,8 @@ export default async function RootLayout({
 }>) {
   const requestHeaders = await headers()
   const language = requestHeaders.get('x-devsnack-locale') === 'en' ? 'en' : 'ko'
+  const pathname = requestHeaders.get('x-devsnack-pathname') || '/'
+  const loadAdSense = shouldLoadAdSenseForPath(pathname)
 
   return (
     <html
@@ -46,11 +49,13 @@ export default async function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="DevSnack Blog (한국어)" href="/rss.xml" />
         <link rel="alternate" type="application/rss+xml" title="DevSnack Blog (English pilot)" href="/en/rss.xml" />
         <meta name="naver-site-verification" content="21840443ee77e2acdbba2db48a08b3f96dfd38c2" />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4720187903290730"
-          crossOrigin="anonymous"
-        />
+        {loadAdSense ? (
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4720187903290730"
+            crossOrigin="anonymous"
+          />
+        ) : null}
         {/* SSR flash 방지: React hydration 전에 .dark 클래스 적용 */}
         <script
           dangerouslySetInnerHTML={{

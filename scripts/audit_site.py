@@ -553,7 +553,7 @@ async def check_browser(failures: list[str]) -> None:
         try:
             await page.goto(f"{BASE_URL}/research", wait_until="networkidle", timeout=60_000)
             board = page.locator('section[aria-labelledby="research-notes-board-heading"]')
-            board_count = await board.locator('table tbody tr').count()
+            board_count = await board.locator('article').count()
             if board_count != 8:
                 failures.append(f"/research Research Notes Board: expected 8 rendered notes, got {board_count}")
             if await board.locator(f'a[href="https://gdevsnack-ai-labs.github.io/devsnack-research-notes/"]').count() != 1:

@@ -8,8 +8,6 @@ export type SitemapRoutePolicy = 'INDEX' | 'NAVIGATION_ONLY' | 'UTILITY'
 const INDEX_ROUTES = new Set([
   '/',
   '/devsnack',
-  '/stock',
-
   '/aitech',
   '/labs',
   '/labs/board',
@@ -44,7 +42,10 @@ const NAVIGATION_ONLY_PREFIXES = [
 
 const UTILITY_PREFIXES = [
   '/search',
+  '/stock',
   '/tools/operations',
+  '/operations',
+  '/data/hermes-usage',
   '/admin/',
   '/api/',
   '/robots.txt',
