@@ -15,6 +15,7 @@ export const metadata = buildRouteMetadata({
   title: 'Data — DevSnack',
   description: '현재 공개 publication·archive·tracker와 별도 Live Shadow 실험을 구분해 확인하는 DevSnack Data Hub',
   canonicalPath: '/data',
+  searchPolicy: 'noindex',
 })
 
 function formatDate(value?: string | null): string {

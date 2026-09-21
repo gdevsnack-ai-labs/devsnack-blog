@@ -1,11 +1,14 @@
 // @ts-expect-error Node's strip-types runner requires the explicit extension.
-import { MIGRATED_RESEARCH_SLUGS, RESEARCH_NOTE_REDIRECTS } from './research-note-migration.ts'
+import { MIGRATED_RESEARCH_SLUGS, RESEARCH_NOINDEX_SLUGS, RESEARCH_NOTE_REDIRECTS } from './research-note-migration.ts'
 
 if (MIGRATED_RESEARCH_SLUGS.size !== 30) {
   throw new Error(`Expected 30 legacy Research slugs (21 individual + 9 M), got ${MIGRATED_RESEARCH_SLUGS.size}`)
 }
 if (Object.keys(RESEARCH_NOTE_REDIRECTS).length !== 30) {
   throw new Error('Redirect map and migrated Research slug set must have the same size')
+}
+if (RESEARCH_NOINDEX_SLUGS.size !== 10 || [...RESEARCH_NOINDEX_SLUGS].some(slug => !MIGRATED_RESEARCH_SLUGS.has(slug))) {
+  throw new Error('unfinished migrated Research candidates must be explicitly retained as local noindex pages')
 }
 const pagesBase = 'https://gdevsnack-ai-labs.github.io/devsnack-research-notes/notes/'
 if (!Object.values(RESEARCH_NOTE_REDIRECTS).every(url => url.startsWith(pagesBase) && url.endsWith('.html'))) {

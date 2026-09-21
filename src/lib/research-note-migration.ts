@@ -46,6 +46,23 @@ export const RESEARCH_NOTE_REDIRECTS: Readonly<Record<string, string>> = {
 
 export const MIGRATED_RESEARCH_SLUGS = new Set(Object.keys(RESEARCH_NOTE_REDIRECTS))
 
+/**
+ * These migrated candidates remain on DevSnack as noindex pages so their
+ * workflow state is visible without promoting unfinished work to search.
+ */
+export const RESEARCH_NOINDEX_SLUGS = new Set([
+  'higgs-tts-3-4b',
+  'moss-tts-family-8b-1-7b-realtime-2b-ttsd-8b',
+  'moss-tts-gguf',
+  'nvidia-magpietts-357m',
+  'omnivoice-0-6b',
+  'pixelgpt-24-24-lora',
+  'supertone-3',
+  'ternary-bonsai-27b',
+  'tokenchaser-self-bench-pack-gb10-llm',
+  'wan-dancer-14b-music-to-dance',
+])
+
 export function getResearchNoteRedirect(slug: string): string | undefined {
   return RESEARCH_NOTE_REDIRECTS[slug]
 }

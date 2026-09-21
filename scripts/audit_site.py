@@ -62,6 +62,10 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
     ),
     "/labs/stockpulse-v1-fixed": RouteExpectation(
         "/labs/stockpulse-v1-fixed", 200, meta_robots="index, follow", canonical=True,
+        required_text=("StockPulse V1 Fixed", "Project Summary", "현재까지의 Finding", "핵심 결과", "한계와 해석 범위"),
+    ),
+    "/labs/stockpulse-v1-fixed/runs": RouteExpectation(
+        "/labs/stockpulse-v1-fixed/runs", 200, meta_robots="noindex, follow", canonical=True,
         required_text=("StockPulse V1 Fixed", "Run Board", "다음 개선"),
     ),
     "/labs/autonomous-ai-blog": RouteExpectation(
@@ -82,8 +86,16 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
         required_text=("Knowledge Domains", "Recent Knowledge", "Research Notes Board", "Research Notebook 전체 보기"),
     ),
     "/data": RouteExpectation(
-        "/data", 200, meta_robots="index, follow", canonical=True,
+        "/data", 200, meta_robots="noindex, follow", canonical=True,
         required_text=("Publications & Trackers", "StockPulse", "V1 Fixed daily market publication"),
+    ),
+    "/demos": RouteExpectation(
+        "/demos", 200, meta_robots="noindex, follow", canonical=True,
+        required_text=("HTML", "Music", "Short Movie"),
+    ),
+    "/demos/shortmovie": RouteExpectation(
+        "/demos/shortmovie", 200, meta_robots="index, follow", canonical=True,
+        required_text=("Short Movie Showcase", "이세계 인스타 여신 마법사"),
     ),
     "/aitech": RouteExpectation(
         "/aitech", 200, meta_robots="noindex, follow", canonical=True,
@@ -118,7 +130,8 @@ CURRENT_POLICY: dict[str, RouteExpectation] = {
 }
 
 INDEXABLE_HUB_PATHS = {
-    "/", "/devsnack", "/labs", "/labs/autonomous-ai-blog", "/benchmarks", "/data", "/demos", "/research",
+    "/", "/devsnack", "/labs", "/labs/autonomous-ai-blog", "/benchmarks", "/research",
+    "/demos/html", "/demos/music", "/demos/shortmovie",
 }
 
 

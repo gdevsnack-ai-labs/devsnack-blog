@@ -8,6 +8,7 @@ export const metadata = buildRouteMetadata({
   title: 'Showcase — DevSnack',
   description: '로컬 AI로 직접 만든 HTML·이미지·음악·영상 결과물 Showcase',
   canonicalPath: '/demos',
+  searchPolicy: 'noindex',
 })
 
 export default function DemosPage() {

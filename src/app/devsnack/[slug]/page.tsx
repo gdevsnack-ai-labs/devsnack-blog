@@ -10,6 +10,7 @@ import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHe
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 import { getPostPresentation } from '@/lib/ia'
 import { feedDetailFilters } from '@/lib/ia/feed-lifecycle'
+import { EditorialByline } from '@/components/editorial-byline'
 
 export const revalidate = 60
 
@@ -133,6 +134,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             <Clock className="w-4 h-4" />
             약 {readingTime}분
           </span>
+          <EditorialByline context="article" provenance={post.provenance} />
           <ViewCounter slug={post.slug} views={post.views} />
           {post.labels && post.labels.length > 0 && (
             <div className="flex flex-wrap gap-1.5">

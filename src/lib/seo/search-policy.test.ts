@@ -27,8 +27,13 @@ expectEqual(searchPolicyForPath('/en/research/example'), 'noindex', 'English pil
 expectEqual(searchPolicyForPath('/demos/music'), 'index', 'populated Music Showcase must be indexable')
 expectEqual(searchPolicyForPath('/demos/image'), 'noindex', 'empty Image Showcase must be noindex')
 expectEqual(searchPolicyForPath('/privacy'), 'index', 'Privacy must remain indexable')
-expectEqual(searchPolicyForPath('/data'), 'index', 'Data hub must remain indexable')
+expectEqual(searchPolicyForPath('/data'), 'noindex', 'Data hub must be noindex until it has an independent editorial landing page')
+expectEqual(searchPolicyForPath('/demos'), 'noindex', 'Showcase hub must be noindex while populated categories remain indexable')
 expectEqual(searchPolicyForPath('/html5-poop-dodge-game.html'), 'noindex', 'raw artifact must be noindex')
+expectEqual(searchPolicyForPath('/labs/stockpulse-v1-fixed'), 'index', 'StockPulse V1 Fixed editorial project must remain indexable')
+expectEqual(searchPolicyForPath('/labs/stockpulse-v1-fixed/runs'), 'noindex', 'StockPulse raw Run Board must be noindex')
+expectEqual(searchPolicyForPath('/research/tokenchaser-self-bench-pack-gb10-llm'), 'noindex', 'unfinished Research candidates must be noindex at the route level')
+expectEqual(searchPolicyForPath('/research/qwen-image-21-local-first-impressions'), 'index', 'measured Research content must remain indexable at the route level')
 
 expectEqual(
   searchPolicyForPost({ blog_id: 'aitech', slug: 'archived-feed', status: 'live', lifecycle_status: 'archived' }),
@@ -74,6 +79,16 @@ expectEqual(
   searchPolicyForPost({ blog_id: 'research', slug: 'unsloth-gguf', status: 'live', lifecycle_status: 'live' }),
   'noindex',
   'approved thin Knowledge candidate must be noindex',
+)
+expectEqual(
+  searchPolicyForPost({ blog_id: 'research', slug: 'candidate-without-run', status: 'live', labels: ['진행중', 'llm'] }),
+  'index',
+  'an unreviewed in-progress Research row remains visible until its explicit decision is made',
+)
+expectEqual(
+  searchPolicyForPost({ blog_id: 'research', slug: 'awaiting-run', status: 'live', labels: ['적용대기', 'llm'] }),
+  'noindex',
+  'Research candidates waiting for direct execution must be noindex',
 )
 expectEqual(
   searchPolicyForPost({ blog_id: 'research', slug: 'ternary-bonsai-27b', status: 'live', lifecycle_status: 'live' }),

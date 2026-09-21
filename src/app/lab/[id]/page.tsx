@@ -12,6 +12,7 @@ import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHe
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
 import { searchPolicyForPost } from '@/lib/seo/search-policy'
 import { getStockPulseWeeklyExternalNoteUrl } from '@/lib/stockpulse-migration'
+import { EditorialByline } from '@/components/editorial-byline'
 
 export const revalidate = 60
 export const dynamicParams = true
@@ -118,6 +119,7 @@ async function LabPostPage({ slug }: { slug: string }) {
             <Clock className="w-4 h-4" />
             약 {readingTime}분
           </span>
+          <EditorialByline context="lab" provenance={post.provenance} />
           {post.labels && post.labels.length > 0 && (
             <div className="flex flex-wrap gap-1.5">
               {post.labels.map((label: string) => (
@@ -304,6 +306,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       description: experiment.description,
       canonicalPath: `/labs/${id}`,
       kind: 'website',
+      searchPolicy: experiment.publicDiscovery ? 'index' : 'noindex',
     })
   }
 

@@ -1,5 +1,6 @@
 // 현재 운영 상태 projection — Agent Field Notes operator가 갱신합니다.
-import { AUTONOMOUS_AI_BLOG_LIVE } from './autonomous-ai-blog-live'
+// @ts-expect-error Node's strip-types runner requires the explicit extension.
+import { AUTONOMOUS_AI_BLOG_LIVE } from './autonomous-ai-blog-live.ts'
 
 // docs/DESIGN.md 참조
 //
@@ -92,6 +93,7 @@ const AI_OMOK: Experiment = {
   status: '진행중',
   category: 'running',
   startedAt: '2026.07',
+  publicDiscovery: true,
   whyText: '생성형 AI가 오목을 둘 수 있을까? 단순히 LLM에게 "착수하라"고 프롬프트를 주는 것만으로는 전혀 작동하지 않았다. Threat Analyzer라는 외부 도구를 연결했을 때 비로소 22턴까지 방어하는 수준에 도달. 이후 AI가 만든 Minimax 엔진은 Rapfi(NNUE)에게 5:0 완패, AI가 스스로 고치고 테스트하는 자율 개선 루프(69판)도 승률 0% — "AI가 강해질수록 더 많은 도구가 필요하다"는 역설을 검증하는 실험.',
   nextGoals: ['MCTS 탐색 적용 (알파고 방식)', 'Self-Play 강화학습', 'NNUE 신경망 평가 학습', '시각화 및 분석'],
   timeline: [
@@ -116,6 +118,7 @@ const STOCKPULSE_SELF: Experiment = {
   status: '완료',
   category: 'completed',
   startedAt: '2026.07.21',
+  publicDiscovery: true,
   whyText: 'StockPulse v1은 매일의 예측과 실제 장 결과를 비교하고, 실패 원인을 분석해 프롬프트·ML 파라미터·피처 변경을 시도하는 자기개선 루프를 실제로 운영했다. 68개 Daily Report와 54개 prediction raw를 남겼고, 반복적인 개선 시도와 데이터 누적을 통해 자동화 파이프라인의 장단점을 확인했다. 다만 짧고 비정상적인 시장 구간, 평가 기준의 혼재, 개선안 적용 효과를 분리해 검증하지 못했기 때문에 v1을 성공적인 정확도 개선으로 과장하지 않는다.',
   nextGoals: ['v1 raw/evaluation 재분석', '새 평가 방법과 실험 가설 설계', '별도 StockPulse v2 Lab 준비'],
   timeline: [
@@ -148,6 +151,7 @@ const BLOG_AUTO: Experiment = {
   status: '완료',
   category: 'completed',
   startedAt: '2026.04',
+  publicDiscovery: true,
   whyText: 'AI를 활용한 자동화 파이프라인으로 매일 AI 기술·산업 기사를 작성하고, 생성된 결과를 독자 관점에서 평가하는 실험을 진행했다. 일부 결과에서 사실과 다른 내용이나 과장된 표현이 확인되어 v1을 완료 처리하고, source·evidence·quality gate를 강화한 v2 실험을 준비한다. v2의 실제 기사는 GitHub Pages에서 발행하고, Vercel의 DevSnack Lab에는 단순 피드 전용 slug를 만들지 않고 기사 생성 과정과 실험 기록을 남긴다.',
   nextGoals: ['v2 source·evidence pipeline 설계', 'GitHub Pages publication 전환'],
   timeline: [
@@ -196,6 +200,7 @@ const LLM_BENCH: Experiment = {
   status: '완료',
   category: 'completed',
   startedAt: '2026.08.18',
+  publicDiscovery: true,
   whyText: '초기에는 GB10에서 로컬 LLM을 실제로 실행하고, 속도·서빙·실사용 산출물을 빠르게 확인했다. 이후 조건이 서로 다른 측정을 하나의 실험 기록에 계속 덧붙이지 않도록, 모델·variant·quantization·작업별 결과를 Standard·Custom Benchmarks로 분리해 운영하는 방식으로 전환했다.',
   nextGoals: ['표준 Benchmark에서 모델·variant를 같은 기준으로 비교', 'Custom Benchmarks에서 특정 모델·사용 사례 측정을 보존'],
   timeline: [
@@ -252,6 +257,7 @@ const ISEKAI_MAGE: Experiment = {
   status: '완료',
   category: 'completed',
   startedAt: '2026.08.20',
+  publicDiscovery: true,
   whyText: '이 실험은 완벽한 영화 제작이 아니라 로컬 AI 비디오 생성, GPT Luna의 프롬프트 작성·검증 능력, Hermes 멀티툴 자동화, LTX 2.5의 native audio를 한 번에 확인하는 Lab 테스트다. GPT Image 2 캐릭터 기준 시트를 모든 장면에 참조했지만, 최종 영상에서는 여성·헤어·분위기는 유지되고 얼굴 identity는 장면 중간에 달라졌다. 개별 프레임의 해부학 검증만으로는 cross-scene 동일 인물을 보장할 수 없다는 검증 프로토콜의 한계를 확인했다.',
   nextGoals: ['얼굴이 잘 보이는 2~3개 장면만 distilled/base 모델 비교', 'steps 증가에 따른 얼굴 보존·생성 시간 trade-off 측정', '얼굴 identity gate와 임베딩 기반 비교 추가'],
   timeline: [
@@ -274,6 +280,7 @@ const LUNA_AGENTIC_GAME_DEV: Experiment = {
   status: '진행중',
   category: 'running',
   startedAt: '2026.08.23',
+  publicDiscovery: true,
   whyText: 'AI에게 게임 기능을 한 번 만들어보게 하는 것이 아니라, 실제 소프트웨어 프로젝트의 책임 구조를 나누고 결과를 다음 세션에 이어받을 수 있는지 확인한다. Luna는 계획·검토·merge를 담당하고 worker는 독립 workspace와 branch에서 구현한다. 첫 단계는 작은 Godot task로 시작해 server-side main 보호, PR review, post-merge test까지 실제로 연결하는 것이다.',
   nextGoals: ['worker-qwen과 Luna 계정 분리 후 공식 APPROVED review 검증', 'non-trivial Godot task-002', 'worker metrics/profile 영속화', 'live safe-stop/watchdog', '두 번째 worker와 resource budget 검증', 'conflict recovery 실험'],
   timeline: [
@@ -299,6 +306,7 @@ const HERMES_MEMORY: Experiment = {
   status: '진행중',
   category: 'running',
   startedAt: '2026.08.23',
+  publicDiscovery: true,
   whyText: 'Hermes를 실제 비서처럼 사용하면서 Hindsight에 기억은 계속 쌓이는데도 나를 기억한다기보다 매번 검색하는 느낌을 받았다. 이번 실험은 Hindsight를 더 크게 만드는 대신 SOUL·USER·MEMORY·Hindsight·Wiki가 무엇을 항상 알고 있어야 하는지부터 나누고, 새 세션의 실제 사용 데이터로 기억 경험이 달라지는지 확인한다.',
   nextGoals: ['새 Hermes 세션에서 Phase 1 사용 데이터 수집', 'Phase 2 Recall Diet A/B', 'Phase 3 Current-turn Recall 비교', 'Phase 4 Cross-layer Consolidation', 'Phase 5 Forgetting', 'Phase 6 Blind Memory Test'],
   timeline: [
@@ -323,6 +331,7 @@ const AI_GAME_ASSETS: Experiment = {
   status: '완료',
   category: 'completed',
   startedAt: '2026.08.23',
+  publicDiscovery: true,
   whyText: '이미지 한 장을 게임 캐릭터로 쓰는 것과, 실제로 움직이는 스프라이트를 만드는 것은 다른 문제다. 같은 로컬 AI 마법사를 기준으로 GPT Image에는 연속 포즈 시트를 직접 요청하고, LTX 2.5에는 1:1 시작 이미지와 단일 동작을 넣어 영상에서 프레임을 추출했다. 두 레인의 캐릭터 일관성·프레임 연결성·배경 제거·캔버스 설정을 직접 비교해 게임 에셋으로 사용할 수 있는 조건을 확인했다.',
   nextGoals: [],
   timeline: [

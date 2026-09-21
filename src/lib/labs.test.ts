@@ -1,4 +1,4 @@
-import { experiments, type Experiment } from '@/data/experiments'
+import { experiments, getPublicLabProjects, type Experiment } from '@/data/experiments'
 import {
   getCurrentStage,
   getDomainLabel,
@@ -81,6 +81,10 @@ expectEqual(getFeaturedExperiment([knownCompletedSameDate, knownActiveSameDate])
 const localLlm = experiments.find(item => item.id === 'local-llm-benchmark')!
 expectEqual(getProjectFinding(localLlm), undefined, 'Local LLM initial history must not be promoted to an operational finding')
 expectEqual(localLlm.timeline?.length, 2, 'Local LLM public history must keep only the two high-level transition steps')
+const publicLabProjects = getPublicLabProjects()
+expectEqual(publicLabProjects.length, 10, 'all ten measured Lab Board projects must be public-discovery eligible')
+expectEqual(publicLabProjects.some(project => project.id === 'music-qa'), false, 'dummy Lab backlog must not be publicly discoverable')
+expectEqual(publicLabProjects.some(project => project.id === 'hook'), false, 'dummy Lab backlog must not be publicly discoverable')
 const autonomous = experiments.find(item => item.id === 'autonomous-ai-blog')!
 expectEqual(getProjectFinding(autonomous), undefined, 'autonomous publications must not become a project finding')
 expectEqual(getProjectFinding({ ...experiment, id: 'activity-only-project' }), undefined, 'Latest Activity must not become a Project Finding')

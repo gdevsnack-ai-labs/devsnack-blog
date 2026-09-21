@@ -13,6 +13,8 @@ import { ProjectFeedOutputs } from '@/components/project-feed-outputs'
 import { RelatedAssets } from '@/components/related-assets'
 import { buildRouteMetadata, absoluteSiteUrl } from '@/lib/seo/metadata'
 import { buildBreadcrumbJsonLd, buildCollectionPageJsonLd, buildJsonLdGraph } from '@/lib/seo/structured-data'
+import { EDITORIAL_AUTHOR, EDITORIAL_AUTHOR_URL } from '@/lib/seo/site'
+import { EditorialByline } from '@/components/editorial-byline'
 
 const STATUS_CLASS: Record<string, string> = {
   진행중: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
@@ -241,14 +243,18 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const experiment = experiments.find(item => item.id === id)
   if (!experiment || experiment.isDummy) return { title: 'Lab Not Found', robots: { index: false, follow: false } }
 
-  return buildRouteMetadata({
-    title: `${experiment.name} — DevSnack Lab`,
-    description: experiment.description,
-    canonicalPath: `/labs/${id}`,
-    kind: 'website',
-    language: 'ko',
-    section: 'Lab Project',
-  })
+  return {
+    ...buildRouteMetadata({
+      title: `${experiment.name} — DevSnack Lab`,
+      description: experiment.description,
+      canonicalPath: `/labs/${id}`,
+      kind: 'website',
+      language: 'ko',
+      section: 'Lab Project',
+      searchPolicy: experiment.publicDiscovery ? 'index' : 'noindex',
+    }),
+    authors: [{ name: EDITORIAL_AUTHOR, url: EDITORIAL_AUTHOR_URL }],
+  }
 }
 
 export default async function LabsDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -333,6 +339,7 @@ export default async function LabsDetailPage({ params }: { params: Promise<{ id:
           </div>
           <p className="mt-6 max-w-3xl text-base leading-relaxed text-muted-foreground">{experiment.description}</p>
           <p className="mt-3 text-sm text-muted-foreground">{nature.description}</p>
+          <div className="mt-4"><EditorialByline context="lab" /></div>
         </header>
 
         <main className="mt-8 space-y-8">

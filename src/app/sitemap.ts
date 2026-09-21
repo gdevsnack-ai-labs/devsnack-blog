@@ -7,6 +7,7 @@ import { SITE_URL } from '@/lib/seo/metadata'
 import { publicFeedOrFilter } from '@/lib/ia/feed-lifecycle'
 import { isIndexablePostSitemapEntry } from '@/lib/seo/search-policy'
 import { getPublicBenchmarkModelSlugs } from '@/lib/benchmarks/public-release'
+import { DEMO_CATEGORIES, DEMOS } from '@/data/demos'
 
 export const dynamic = 'force-dynamic'
 
@@ -52,10 +53,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/benchmarks/custom`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.65 },
 
     ...getPublicBenchmarkModelSlugs().map(slug => ({ url: `${baseUrl}/benchmarks/models/${slug}`, lastModified: new Date('2026-09-10T00:00:00Z'), changeFrequency: 'monthly' as const, priority: 0.75 })),
-    { url: `${baseUrl}/data`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.85 },
-    { url: `${baseUrl}/demos`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${baseUrl}/demos/html`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.75 },
-    { url: `${baseUrl}/demos/music`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.75 },
+    ...DEMO_CATEGORIES
+      .filter(category => DEMOS[category.key].length > 0)
+      .map(category => ({
+        url: `${baseUrl}/demos/${category.key}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.75,
+      })),
     { url: `${baseUrl}/research`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
 
     { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },

@@ -15,8 +15,16 @@ for (const path of [
   if (shouldLoadAdSenseForPath(path)) throw new Error(`AdSense must be excluded from ${path}`)
 }
 
-for (const path of ['/', '/data', '/demos', '/demos/html', '/research', '/benchmarks']) {
+for (const path of ['/', '/demos/html', '/demos/music', '/demos/shortmovie', '/research', '/benchmarks']) {
   if (!shouldLoadAdSenseForPath(path)) throw new Error(`AdSense should remain available on ${path}`)
+}
+
+for (const path of ['/data', '/demos', '/labs/stockpulse-v1-fixed/runs', '/research/tokenchaser-self-bench-pack-gb10-llm', '/research/wan-dancer-14b-music-to-dance']) {
+  if (shouldLoadAdSenseForPath(path)) throw new Error(`AdSense must be excluded from ${path}`)
+}
+
+if (!shouldLoadAdSenseForPath('/research/qwen-image-21-local-first-impressions')) {
+  throw new Error('AdSense should remain available on measured Research content')
 }
 
 console.log('Ad policy tests passed')

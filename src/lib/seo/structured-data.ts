@@ -1,5 +1,5 @@
 // @ts-expect-error Node's strip-types runner requires the explicit extension.
-import { SITE_URL } from './site.ts'
+import { EDITORIAL_AUTHOR, EDITORIAL_AUTHOR_URL, SITE_URL } from './site.ts'
 // @ts-expect-error Node's strip-types runner requires the explicit extension.
 import { cleanMetaText, type SeoLanguage } from './metadata.ts'
 
@@ -26,12 +26,6 @@ export interface ArticleSchemaInput {
   isPartOf?: Record<string, unknown>
 }
 
-const ORGANIZATION = {
-  '@type': 'Organization',
-  name: 'DevSnack',
-  url: SITE_URL,
-}
-
 const PUBLISHER = {
   '@type': 'Organization',
   name: 'DevSnack Blog',
@@ -49,7 +43,7 @@ export function buildArticleJsonLd(input: ArticleSchemaInput): Record<string, un
     inLanguage: language,
     isAccessibleForFree: true,
     articleSection: input.section,
-    author: ORGANIZATION,
+    author: { '@type': 'Person', name: EDITORIAL_AUTHOR, url: EDITORIAL_AUTHOR_URL },
     publisher: PUBLISHER,
     ...(input.image ? { image: input.image } : {}),
     ...(input.keywords?.length ? { keywords: input.keywords.join(', ') } : {}),

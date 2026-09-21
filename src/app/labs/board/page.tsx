@@ -19,7 +19,7 @@ type SearchParams = Promise<{ status?: string | string[] }>
 
 export default async function LabBoardPage({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams
-  const projects = getLabProjectProjections(experiments).filter(project => !project.isDummy)
+  const projects = getLabProjectProjections(experiments).filter(project => !project.isDummy && project.experiment.publicDiscovery)
 
   return (
     <div className="min-h-screen bg-background">

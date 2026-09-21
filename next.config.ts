@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
-import { RESEARCH_NOTE_REDIRECTS } from "./src/lib/research-note-migration";
+import { RESEARCH_NOTE_REDIRECTS, RESEARCH_NOINDEX_SLUGS } from "./src/lib/research-note-migration";
 
 const nextConfig: NextConfig = {
   turbopack: {
@@ -15,11 +15,13 @@ const nextConfig: NextConfig = {
     ],
   },
   async redirects() {
-    return Object.entries(RESEARCH_NOTE_REDIRECTS).map(([slug, destination]) => ({
+    return Object.entries(RESEARCH_NOTE_REDIRECTS)
+      .filter(([slug]) => !RESEARCH_NOINDEX_SLUGS.has(slug))
+      .map(([slug, destination]) => ({
       source: `/research/${slug}`,
       destination,
       permanent: true,
-    }));
+      }));
   },
 };
 

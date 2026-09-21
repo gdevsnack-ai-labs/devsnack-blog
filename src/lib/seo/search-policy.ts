@@ -2,7 +2,7 @@ export type SearchPolicy = 'index' | 'noindex' | 'private'
 export type SearchPolicyDecisionSource = 'automatic' | 'override' | 'default'
 
 // @ts-expect-error Node's strip-types runner requires the explicit extension.
-import { isMigratedResearchSlug } from '../research-note-migration.ts'
+import { isMigratedResearchSlug, RESEARCH_NOINDEX_SLUGS } from '../research-note-migration.ts'
 
 export interface SearchPolicyDecision {
   policy: SearchPolicy
@@ -21,6 +21,7 @@ export interface SearchPolicyPostLike {
   content_type?: string | null
   provenance?: unknown
   human_reviewed?: boolean | null
+  labels?: string[] | null
   locale?: string | null
   search_policy?: SearchPolicy | string | null
   search_policy_reason?: string | null
@@ -45,6 +46,14 @@ export const SEARCH_POLICY_OVERRIDES: Readonly<Record<string, { policy: SearchPo
     policy: 'noindex',
     reason: 'tooling_research_without_independent_measurement',
   },
+  'research:tokenchaser-self-bench-pack-gb10-llm': {
+    policy: 'noindex',
+    reason: 'research_candidate_without_full_execution',
+  },
+  'research:wan-dancer-14b-music-to-dance': {
+    policy: 'noindex',
+    reason: 'research_candidate_without_direct_generation',
+  },
   'lab:stockpulse-weekly-2026-08-18': {
     policy: 'noindex',
     reason: 'migrated_to_external_stockpulse_weekly_note',
@@ -58,7 +67,10 @@ const NOINDEX_PATH_REASONS: Readonly<Record<string, string>> = {
   '/stock': 'stockpulse_external_publication_gateway',
   '/tools/operations': 'public_operations_transparency_without_search_landing_value',
   '/links': 'utility_directory',
+  '/data': 'automated_data_hub_without_independent_editorial_landing_value',
+  '/demos': 'showcase_category_hub_without_independent_editorial_landing_value',
   '/data/hermes-usage': 'aggregate_telemetry_utility',
+  ...Object.fromEntries([...RESEARCH_NOINDEX_SLUGS].map(slug => [`/research/${slug}`, 'research_candidate_without_direct_execution'])),
   '/demos/image': 'empty_showcase_category',
   '/html5-poop-dodge-game.html': 'raw_static_artifact',
   '/pixel-survivors-ai-game.html': 'raw_static_artifact',
@@ -75,6 +87,7 @@ const NOINDEX_PREFIX_REASONS: Readonly<Record<string, string>> = {
   '/tools/operations': 'public_operations_transparency_without_search_landing_value',
   '/operations': 'public_operations_transparency_without_search_landing_value',
   '/data/hermes-usage': 'aggregate_telemetry_utility',
+  '/labs/stockpulse-v1-fixed/runs': 'raw_stockpulse_run_board',
 }
 const NOINDEX_PREFIXES = ['/en']
 const INDEXABLE_PATHS = new Set(['/en/benchmarks'])
@@ -152,6 +165,9 @@ function hardSafetyPostDecision(post: SearchPolicyPostLike): SearchPolicyDecisio
 function automaticPostDecision(post: SearchPolicyPostLike): SearchPolicyDecision | null {
   if (post.is_raw_artifact || post.content_type === 'raw_artifact') {
     return decision('noindex', 'raw_static_artifact', 'automatic')
+  }
+  if (post.blog_id === 'research' && (post.labels || []).some(label => label === '적용대기' || label === '보류')) {
+    return decision('noindex', 'research_candidate_without_direct_execution', 'automatic')
   }
   if (post.is_empty_category) {
     return decision('noindex', 'empty_showcase_category', 'automatic')

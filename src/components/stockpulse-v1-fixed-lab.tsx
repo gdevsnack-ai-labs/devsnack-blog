@@ -245,7 +245,7 @@ export function StockpulseV1FixedLab({ projection }: { projection: StockpulseFix
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-6xl px-4 py-6 md:py-10">
-        <Link href="/labs" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground no-underline hover:text-foreground"><ArrowLeft className="h-4 w-4" aria-hidden="true" />Labs 대시보드</Link>
+        <Link href="/labs/stockpulse-v1-fixed" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground no-underline hover:text-foreground"><ArrowLeft className="h-4 w-4" aria-hidden="true" />Project Summary</Link>
 
         <header className="mt-6 overflow-hidden rounded-[1.75rem] bg-slate-950 text-white shadow-xl shadow-slate-950/10 md:mt-8">
           <div className="p-5 md:p-8">

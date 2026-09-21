@@ -1,5 +1,5 @@
 // @ts-expect-error Node's strip-types runner requires the explicit extension.
-import { absoluteSiteUrl, SITE_URL } from './site.ts'
+import { absoluteSiteUrl, EDITORIAL_AUTHOR, EDITORIAL_AUTHOR_URL, SITE_URL } from './site.ts'
 // @ts-expect-error Node's strip-types runner requires the explicit extension.
 import { robotsForSearchPolicy, searchPolicyForPath, type SearchPolicy } from './search-policy.ts'
 
@@ -186,7 +186,7 @@ export function buildResearchJsonLd({
     inLanguage: language === 'en' ? 'en-US' : 'ko-KR',
     isAccessibleForFree: true,
     articleSection: categoryLabel,
-    author: { '@type': 'Organization', name: 'DevSnack' },
+    author: { '@type': 'Person', name: EDITORIAL_AUTHOR, url: EDITORIAL_AUTHOR_URL },
     publisher: { '@type': 'Organization', name: 'DevSnack Blog', url: SITE_URL },
     ...(keywords ? { keywords } : {}),
   }

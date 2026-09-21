@@ -17,6 +17,8 @@ import {
 } from '@/lib/content-taxonomy'
 import { buildRouteMetadata, absoluteSiteUrl, extractSourceUrls, stripImportedHeadArtifacts } from '@/lib/seo/metadata'
 import { searchPolicyForPost } from '@/lib/seo/search-policy'
+import { EDITORIAL_AUTHOR, EDITORIAL_AUTHOR_URL } from '@/lib/seo/site'
+import { EditorialByline } from '@/components/editorial-byline'
 
 async function getResearchPost(id: string) {
   const { data } = await supabase
@@ -66,7 +68,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       modifiedTime: post.updated,
     }),
     keywords,
-    authors: [{ name: 'DevSnack' }],
+    authors: [{ name: EDITORIAL_AUTHOR, url: EDITORIAL_AUTHOR_URL }],
   }
 }
 
@@ -147,6 +149,7 @@ export default async function ResearchPostPage({ params }: { params: Promise<{ i
               <Clock className="w-4 h-4" />
               약 {readingTime}분
             </span>
+            <EditorialByline context="research" provenance={post.provenance} />
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-1.5" aria-label="글 태그">
                 {tags.map(tag => (

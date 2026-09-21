@@ -1,5 +1,9 @@
-import { experiments, getPublicLabProjects } from '@/data/experiments'
-import { getPublicBenchmarkModelSlugs } from '@/lib/benchmarks/public-release'
+// @ts-expect-error Node's strip-types runner requires the explicit extension.
+import { experiments, getPublicLabProjects } from '../../data/experiments.ts'
+// @ts-expect-error Node's strip-types runner requires the explicit extension.
+import { DEMO_CATEGORIES, DEMOS } from '../../data/demos.ts'
+// @ts-expect-error Node's strip-types runner requires the explicit extension.
+import { getPublicBenchmarkModelSlugs } from '../benchmarks/public-release.ts'
 // @ts-expect-error Node's strip-types runner requires the explicit extension.
 import { isIndexableSearchPolicy, searchPolicyForPath } from './search-policy.ts'
 
@@ -13,8 +17,6 @@ const INDEX_ROUTES = new Set([
   '/labs/board',
   '/benchmarks',
   '/en/benchmarks',
-  '/data',
-  '/demos',
   '/demos/html',
   '/demos/music',
   '/research',
@@ -32,6 +34,12 @@ const PUBLIC_LAB_PROJECT_PATHS = new Set(
 const PUBLIC_BENCHMARK_RELEASE_PATHS = new Set([
   ...getPublicBenchmarkModelSlugs().map(slug => `/benchmarks/models/${slug}`),
 ])
+
+const PUBLIC_DEMO_CATEGORY_PATHS = new Set(
+  DEMO_CATEGORIES
+    .filter(category => DEMOS[category.key].length > 0)
+    .map(category => `/demos/${category.key}`),
+)
 
 const NAVIGATION_ONLY_PREFIXES = [
   '/demos/',
@@ -55,7 +63,8 @@ const UTILITY_PREFIXES = [
 
 export function routePolicy(pathname: string): SitemapRoutePolicy {
   const path = pathname === '' ? '/' : pathname.replace(/\/$/, '') || '/'
-  if (INDEX_ROUTES.has(path) || PUBLIC_LAB_PROJECT_PATHS.has(path) || PUBLIC_BENCHMARK_RELEASE_PATHS.has(path)) return 'INDEX'
+  if (!isIndexableSearchPolicy(searchPolicyForPath(path))) return 'UTILITY'
+  if (INDEX_ROUTES.has(path) || PUBLIC_LAB_PROJECT_PATHS.has(path) || PUBLIC_BENCHMARK_RELEASE_PATHS.has(path) || PUBLIC_DEMO_CATEGORY_PATHS.has(path)) return 'INDEX'
   if (UTILITY_PREFIXES.some(prefix => path === prefix || path.startsWith(`${prefix}/`))) return 'UTILITY'
   if (NAVIGATION_ONLY_PREFIXES.some(prefix => path.startsWith(prefix))) return 'NAVIGATION_ONLY'
   return 'NAVIGATION_ONLY'
