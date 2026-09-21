@@ -18,6 +18,7 @@ This directory is the management surface for the child repository. It contains d
 - [`research-sync.md`](./research-sync.md) — Research Backlog parser contract and sync procedure
 - [`content-inventory.md`](./content-inventory.md) — where content, assets, routes, and change records belong
 - [`history.md`](./history.md) — sanitized project timeline and links to detailed phase records
+- [`adsense-search-surface-2026-09-21.md`](./adsense-search-surface-2026-09-21.md) — second-wave AdSense/search-surface closeout and Production evidence
 
 ## Source-of-truth matrix
 

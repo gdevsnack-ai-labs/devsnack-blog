@@ -27,6 +27,16 @@ The wiki DevSnack page was reduced to a one-page hub. Operational detail, conten
 
 This documentation change does not alter routes, Supabase rows, or publication behavior.
 
+## 2026-09-21 — AdSense/search surface second-wave closeout
+
+- Completed the bounded second-wave work without reworking the first-wave utility-route policy.
+- `/data` and `/demos` hubs are `noindex, follow`, excluded from sitemap, and excluded from the AdSense loader; populated demo categories remain indexable.
+- Lab Board, public discovery, detail metadata, and sitemap were reconciled for 10 public Lab projects.
+- StockPulse V1 Fixed editorial content remains indexable while the raw Run Board moved to a separate noindex surface.
+- Research candidate redirects were corrected so DevSnack metadata is read back directly; representative candidates return `noindex, follow`, while measured Qwen-Image, YuE2, and GB10 research remains indexable.
+- Production sitemap contains 88 unique URLs; Production link audit reports 152 internal targets and 0 broken links.
+- Detailed evidence: [`adsense-search-surface-2026-09-21.md`](./adsense-search-surface-2026-09-21.md)
+
 ## Ongoing rule
 
 Add a dated record for each material migration. Link the detailed evidence, state what was not changed, and separate historical observations from current live verification.

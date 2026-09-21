@@ -466,7 +466,20 @@ production release 뒤에는 최소한 다음을 read-back합니다.
 - ads.txt
 - internal link audit
 
-## 17. 이 문서의 운영 의미
+## 17. 2026-09-21 2차 마감 보충 기록
+
+현재 Production의 2차 감사 확정 사례는 다음과 같습니다.
+
+- `/data`, `/demos`: `noindex, follow` · sitemap 제외 · AdSense loader 제외
+- `/demos/html`, `/demos/music`, `/demos/shortmovie`: `index, follow` · sitemap 포함 · 광고 유지
+- `/labs/stockpulse-v1-fixed`: editorial summary는 `index, follow`
+- `/labs/stockpulse-v1-fixed/runs`: raw Run Board는 `noindex, follow` · sitemap/광고 제외
+- 실행·측정·결론이 있는 Research: `index, follow`
+- 실행 전·보류 Research 후보: `noindex, follow` · redirect destination도 동일 정책으로 검증
+
+Lab Board의 공개 상세 10개는 metadata와 sitemap에 모두 일치한다. Production sitemap은 88개 unique URL이며, 상세 검증 기록은 [`docs/operations/adsense-search-surface-2026-09-21.md`](./operations/adsense-search-surface-2026-09-21.md)에 둔다.
+
+## 18. 이 문서의 운영 의미
 
 이 규칙은 “AdSense를 통과하기 위해 글을 숨기는 방법”이 아닙니다.
 
