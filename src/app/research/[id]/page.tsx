@@ -83,6 +83,7 @@ export default async function ResearchPostPage({ params }: { params: Promise<{ i
   const keywords = getKeywords(post)
   const canonical = absoluteSiteUrl(`/research/${id}`)
   const content = stripImportedHeadArtifacts(post.content || '')
+  const sourceUrls = extractSourceUrls(content)
   const jsonLd = buildJsonLdGraph(
     buildArticleJsonLd({
       type: 'TechArticle',
@@ -95,7 +96,7 @@ export default async function ResearchPostPage({ params }: { params: Promise<{ i
       modified: post.updated,
       image: post.cover_image,
       keywords,
-      citations: extractSourceUrls(content),
+      citations: sourceUrls,
       about: { '@type': 'Thing', name: 'AI 모델 및 인프라 리서치' },
       isPartOf: { '@type': 'CollectionPage', name: 'DevSnack Knowledge', url: absoluteSiteUrl('/research') },
     }),
@@ -160,21 +161,32 @@ export default async function ResearchPostPage({ params }: { params: Promise<{ i
           {/* 본문 — 마크다운 렌더링 */}
           <MarkdownRenderer content={content} />
 
-          {/* 공개 링크 (있을 경우) */}
-          {(post.seo_desc || post.cover_image) && (
+          {/* 참고 원문 링크 */}
+          {sourceUrls.length > 0 && (
             <div className="mt-8 p-4 border border-border rounded-xl bg-muted/30">
               <h2 className="text-sm font-semibold mb-2 text-muted-foreground">관련 자료</h2>
-              {post.cover_image && (
-                <a
-                  href={post.cover_image}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 no-underline"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  원문 링크
-                </a>
-              )}
+              <div className="flex flex-col gap-2">
+                {sourceUrls.map((url, index) => {
+                  let label = url
+                  try {
+                    label = new URL(url).hostname.replace(/^www\./, '')
+                  } catch {
+                    // Keep the full URL when the source is not a standard URL.
+                  }
+                  return (
+                    <a
+                      key={url}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex min-w-0 items-start gap-1.5 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 no-underline"
+                    >
+                      <ExternalLink className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                      <span className="break-all">원문 {index + 1} · {label}</span>
+                    </a>
+                  )
+                })}
+              </div>
             </div>
           )}
         </article>
