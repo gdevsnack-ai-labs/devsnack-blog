@@ -62,7 +62,7 @@ export default async function Home() {
         </section>
 
         <section className="mx-auto max-w-6xl px-4 py-8 md:py-10" aria-labelledby="home-featured-heading">
-          <div className="mb-4"><p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Now</p><h2 id="home-featured-heading" className="mt-1 text-2xl font-bold">지금 볼 만한 것</h2><p className="mt-1 text-sm text-muted-foreground">최근성만 나열하지 않고, 현재 DevSnack을 가장 잘 보여주는 대표 Asset을 골랐습니다.</p></div>
+          <div className="mb-4"><p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Now</p><h2 id="home-featured-heading" className="mt-1 text-2xl font-bold">지금 볼 만한 것</h2><p className="mt-1 text-sm text-muted-foreground">최근 업데이트된 작업과 최신 결과 중, 지금 보기 좋은 Asset을 골랐습니다.</p></div>
           {projection.featured.length > 0 ? <div className="grid gap-4 md:grid-cols-3">{projection.featured.map((item, index) => <HomeFeatureCard key={item.href} item={item} featured={index === 0} />)}</div> : <div className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">대표 항목을 준비 중입니다.</div>}
           {featuredRelations.length > 0 && <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">{featuredRelations.map(item => <HomeRelationNote key={`${item.href}-${item.kind}`} link={item.related} label={`${item.kind === 'benchmark' ? 'Benchmark' : item.kind === 'finding' ? 'Lab' : 'Knowledge'} relation`} />)}</div>}
         </section>

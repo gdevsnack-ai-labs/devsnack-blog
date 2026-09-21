@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
-import { ArrowRight, BarChart3, BookOpen, Database, ExternalLink, FlaskConical, Radio, Server, Sparkles } from 'lucide-react'
+import { ArrowRight, BarChart3, BookOpen, Database, ExternalLink, FlaskConical, Newspaper, Radio, Server, Sparkles } from 'lucide-react'
 import type { HomeDataService, HomeFeaturedItem, HomeStoryProjection } from '@/lib/ia/home-projections'
 import type { LabProjectProjection, KnowledgeProjection, RelatedAssetLink } from '@/lib/ia/hub-projections'
 
 const FEATURE_META = {
+  story: { icon: Newspaper, className: 'text-blue-600 dark:text-blue-400', label: 'Story' },
   finding: { icon: FlaskConical, className: 'text-blue-600 dark:text-blue-400', label: 'Finding' },
   benchmark: { icon: BarChart3, className: 'text-amber-600 dark:text-amber-400', label: 'Benchmark' },
   knowledge: { icon: BookOpen, className: 'text-purple-600 dark:text-purple-400', label: 'Knowledge' },

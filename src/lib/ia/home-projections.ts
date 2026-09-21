@@ -2,28 +2,16 @@ import type { Experiment } from '@/data/experiments'
 import type { PublicBenchmarkRelease } from '@/lib/benchmarks/public-release'
 import type { DataHubSnapshot, StoryPostInput } from '@/lib/ia/hub-data'
 import {
-  BENCHMARK_PROJECTIONS,
-  getIncomingRelatedAssets,
   getLabProjectProjections,
-  getRelatedAssets,
   type BenchmarkProjection,
   type KnowledgeProjection,
   type LabProjectProjection,
   type RelatedAssetLink,
 } from '@/lib/ia/hub-projections'
-import { assetFromLegacyPost, projectRef, type AssetRef } from '@/lib/ia'
+import { assetFromLegacyPost, type AssetRef } from '@/lib/ia'
 import fixedProjection from '@/data/stockpulse-v1-fixed-projection.json'
-import { getFeaturedExperiment, getProjectFinding, getRecentFindings } from '@/lib/labs'
+import { getFeaturedExperiment, getRecentFindings } from '@/lib/labs'
 import { getLatestAvailableStockpulsePublication, type StockpulseFixedProjection } from '@/lib/stockpulse-v1-fixed'
-
-export const HOME_CURATED_OVERRIDES = {
-  featured: {
-    aiOmokProjectId: 'ai-omok',
-    benchmarkAssetId: 'post:lab:qwen36-youtube-script-reliability-benchmark',
-    knowledgeAssetId: 'post:research:qwen3-8-27b-nvfp4-mtp-gguf-gb10',
-  },
-  knowledge: 'post:research:qwen3-8-27b-nvfp4-mtp-gguf-gb10',
-} as const
 
 export interface HomeStoryProjection {
   asset: AssetRef
@@ -31,18 +19,20 @@ export interface HomeStoryProjection {
   title: string
   excerpt: string
   published: string
+  updated?: string | null
   coverImage: string | null
   href: string
 }
 
 export interface HomeFeaturedItem {
-  kind: 'finding' | 'benchmark' | 'knowledge'
+  kind: 'story' | 'finding' | 'benchmark' | 'knowledge'
   eyebrow: string
   title: string
   summary: string
   href: string
   related?: RelatedAssetLink
-  benchmark?: BenchmarkProjection
+  story?: HomeStoryProjection
+  benchmark?: BenchmarkProjection | HomePublishedBenchmarkProjection
   project?: LabProjectProjection
   knowledge?: KnowledgeProjection
 }
@@ -95,43 +85,48 @@ export function projectHomeStory(post: StoryPostInput): HomeStoryProjection {
     title: post.title,
     excerpt: compactText(post.excerpt || '직접 조사하고 만든 결과를 기록한 DevSnack Story입니다.', 150),
     published: post.published,
+    updated: post.updated,
     coverImage: post.cover_image || null,
     href: `/devsnack/${post.slug}`,
   }
 }
 
 export function selectHomeStories(posts: StoryPostInput[], limit = 3): HomeStoryProjection[] {
-  return posts.slice(0, limit).map(projectHomeStory)
+  const activityTime = (post: StoryPostInput): number => {
+    const value = post.updated || post.published
+    const time = Date.parse(value)
+    return Number.isNaN(time) ? 0 : time
+  }
+  return [...posts].sort((a, b) => activityTime(b) - activityTime(a)).slice(0, limit).map(projectHomeStory)
 }
 
 export function selectHomeKnowledge(posts: KnowledgeProjection[], limit = 2): KnowledgeProjection[] {
-  const curated = posts.find(post => post.asset.assetId === HOME_CURATED_OVERRIDES.knowledge)
-  const ordered = curated ? [curated, ...posts.filter(post => post !== curated)] : posts
-  return ordered.slice(0, limit)
+  const activityTime = (post: KnowledgeProjection): number => {
+    const value = post.updated || post.published
+    const time = Date.parse(value)
+    return Number.isNaN(time) ? 0 : time
+  }
+  return [...posts].sort((a, b) => activityTime(b) - activityTime(a)).slice(0, limit)
 }
 
-function toFindingProjection(project: LabProjectProjection, eyebrow = 'Lab · Finding'): HomeFeaturedItem {
-  const related = getRelatedAssets(projectRef(project.id)).find(link => link.kind === 'story' || link.kind === 'showcase')
+function toStoryFeature(story: HomeStoryProjection): HomeFeaturedItem {
   return {
-    kind: 'finding',
-    eyebrow,
-    title: project.title,
-    summary: compactText(getProjectFinding(project.experiment)?.statement || '아직 독립적인 Project Finding이 없습니다.'),
-    href: project.href,
-    related,
-    project,
+    kind: 'story',
+    eyebrow: 'Story · Recent Update',
+    title: story.title,
+    summary: compactText(story.excerpt, 170),
+    href: story.href,
+    story,
   }
 }
 
-function toBenchmarkProjection(benchmark: BenchmarkProjection): HomeFeaturedItem {
-  const related = getIncomingRelatedAssets(benchmark.asset.assetId).find(link => link.kind === 'knowledge')
+function toPublishedBenchmarkFeature(benchmark: HomePublishedBenchmarkProjection): HomeFeaturedItem {
   return {
     kind: 'benchmark',
-    eyebrow: 'Benchmark · Published Result',
+    eyebrow: 'Benchmark · Latest Release',
     title: benchmark.title,
     summary: compactText(benchmark.result, 170),
     href: benchmark.contentHref,
-    related,
     benchmark,
   }
 }
@@ -210,13 +205,11 @@ export function createHomeProjection({
   const labItems = recentFindingProjects.filter(project => project.id !== labFinding?.id).slice(0, 2)
   const benchmark = projectHomePublishedBenchmark(publicBenchmark)
   const recentKnowledge = selectHomeKnowledge(knowledge, 2)
-  const curatedAiOmok = labProjects.find(project => project.id === HOME_CURATED_OVERRIDES.featured.aiOmokProjectId)
-  const curatedBenchmark = BENCHMARK_PROJECTIONS.find(item => item.asset.assetId === HOME_CURATED_OVERRIDES.featured.benchmarkAssetId)
-  const curatedKnowledge = knowledge.find(post => post.asset.assetId === HOME_CURATED_OVERRIDES.featured.knowledgeAssetId) || recentKnowledge[0]
+  const recentStories = selectHomeStories(stories, 3)
   const featured = [
-    ...(curatedAiOmok ? [toFindingProjection(curatedAiOmok, 'Lab · Featured Finding')] : []),
-    ...(curatedBenchmark ? [toBenchmarkProjection(curatedBenchmark)] : []),
-    ...(curatedKnowledge ? [toKnowledgeProjection(curatedKnowledge)] : []),
+    ...(recentStories[0] ? [toStoryFeature(recentStories[0])] : []),
+    toPublishedBenchmarkFeature(benchmark),
+    ...(recentKnowledge[0] ? [toKnowledgeProjection(recentKnowledge[0])] : []),
   ]
 
   return {
@@ -226,6 +219,6 @@ export function createHomeProjection({
     benchmark,
     knowledge: recentKnowledge,
     dataServices: projectHomeDataServices(data),
-    stories: selectHomeStories(stories, 3),
+    stories: recentStories,
   }
 }
