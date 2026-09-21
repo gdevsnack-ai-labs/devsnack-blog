@@ -116,7 +116,7 @@ export function buildRouteMetadata({
 
 export { SITE_URL, absoluteSiteUrl }
 
-const SOURCE_HEADING = /(?:출처|참고문헌|참고 자료|sources?|references?)/i
+const SOURCE_HEADING = /(?:출처|참고문헌|참고\s*자료|sources?|references?)/i
 const HEADING_BOUNDARY = /(?:<h[1-6]\b|^#{1,6}\s+)/gim
 const URL_PATTERN = /https?:\/\/[^\s<>)\]"']+/g
 const HREF_PATTERN = /href\s*=\s*["'](https?:\/\/[^"']+)["']/gi
