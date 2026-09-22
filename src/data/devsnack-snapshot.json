@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "feed": "devsnack",
-  "generated_at": "2026-09-20T15:05:28.286764+00:00",
+  "generated_at": "2026-09-22T12:38:33.818852+00:00",
   "posts": [
     {
       "slug": "ninfer-gb10-port-qwen36-moe",
       "title": "RTX 5090 전용 NInfer를 DGX Spark GB10에 포팅해봤다 — 27B는 졌고, 35B MoE는 달랐다",
-      "excerpt": "NInfer라는 흥미로운 프로젝트를 발견했다. Qwen3.5 계열 Dense/MoE 모델을 위한 C++/CUDA 추론 엔진인데, 범용성을 넓게 가져가는 llama.cpp나 vLLM과는 방향이 다르다. 지원 GPU와 모델을 좁히는 대신 CUDA Graph, 전용 quantization, MTP/DFlash, paged KV cache 같은 최적화를 적극적으로 사용한다. 문제는 지원 대상이 사실상 RTX 5090 하나라는 점이었다. 빌드 타깃은 sm_120a , 내부에도 5090의 170 SM을 전제로 한 튜닝이 들어가 있었다. 내가 ",
+      "excerpt": "Qwen3.5 계열 Dense/MoE 모델에 특화된 C++/CUDA 기반 추론 엔진 NInfer를 접했다. llama.cpp나 vLLM처럼 범용성을 우선하는 엔진과 달리, NInfer는 특정 GPU와 모델을 목표로 CUDA Graph, 커스텀 양자화, MTP/DFlash, Paged KV Cache 같은 최적화를 밀도 있게 결합한 구조였다. 문제는 지원 환경이었다. 빌드 타깃은 사실상 RTX 5090의 sm_120a 에 맞춰져 있었고, 코드 곳곳에는 5090의 170 SM을 기준으로 한 튜닝 값이 들어 있었다. 내가 테스트할 장비는",
       "labels": [
         "NInfer",
         "DGX Spark",
@@ -14,7 +14,7 @@
         "CUDA",
         "LLM",
         "MoE",
-        "benchmark"
+        "Benchmark"
       ],
       "published": "2026-09-20T15:05:13.110937+00:00",
       "cover_image": "https://lh3.googleusercontent.com/d/1OaChfS61i4hMhveY-oeN_CTSXDvYcjOj",
