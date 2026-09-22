@@ -161,7 +161,7 @@ function AutonomousBlogOverview({ experiment, live }: { experiment: (typeof expe
           </div>
           <div className="rounded-xl border border-purple-200/80 bg-white/80 p-4 dark:border-purple-900/50 dark:bg-gray-900/60">
             <h3 className="font-semibold">유라의 역할</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">유라는 후보 조사·출처 교차검증·초안 편집·발행 판단뿐 아니라 편집 방향·성장 기준·발행 빈도·자기개선도 결정합니다. 일반적인 편집 리뷰나 발행 승인은 요구하지 않으며, 사람의 개입은 계정·인증·보안·인프라·서비스 장애 등 시스템 경계에 둡니다.</p>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">유라는 후보 조사·출처 교차검증·초안 편집·발행 판단뿐 아니라 편집 방향·성장 기준·발행 빈도·자기개선도 결정합니다. 일반적인 편집 리뷰나 발행 승인은 요구하지 않으며, 사람의 개입은 계정·인증·보안·인프라·서비스 장애와 실험 중단·연장처럼 사람의 명시적 판단이 필요한 시스템 경계에 둡니다.</p>
           </div>
         </div>
       </section>
