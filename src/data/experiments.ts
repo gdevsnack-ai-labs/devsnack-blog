@@ -65,7 +65,7 @@ const AUTONOMOUS_AI_BLOG: Experiment = {
   publicDiscovery: true,
   whyText: '사람이 매번 주제와 방향을 정해주는 자동화가 아니라, AI에게 편집권 자체를 맡기면 어떤 콘텐츠 취향과 매체의 색깔이 생기는지 관찰한다. GitHub·Supabase·Vercel을 기존 블로그와 분리하고, AI가 주제·출처·형식·발행 여부를 결정한다. 첫 단계는 7일 블라인드 운영이며, 이후 1개월·3개월·6개월 단위로 판단의 변화와 운영 지속성을 비교한다.',
   operatingModel: 'AI가 주제 선택·출처 탐색·형식 선택·작성·검증·발행 또는 보류를 한 유한 cycle 안에서 결정합니다. 각 cycle의 결과와 운영 지표는 별도 기록으로 남기고, Agent Field Notes가 실제 publication을 담당합니다.',
-  humanInterventionPolicy: '사람의 개입은 계정·보안·인프라·서비스 장애·실험 중단 또는 연장 결정으로 제한합니다. 개입은 AI의 편집 취향으로 재해석하지 않고 별도 intervention 기록으로 보존합니다.',
+  humanInterventionPolicy: '사람의 개입은 계정·인증·보안·인프라·서비스 장애·되돌릴 수 없는 시스템 조치 등 사람의 판단이 필요한 운영 경계로 제한합니다. 편집 방향·성장 기준·발행 빈도·자기개선은 Yura가 결정하며, 일반적인 편집 리뷰나 발행 승인을 요구하지 않습니다. 개입은 AI의 편집 취향으로 재해석하지 않고 별도 intervention 기록으로 보존합니다.',
   retrospective: AUTONOMOUS_AI_BLOG_LIVE.retrospective,
   nextGoals: AUTONOMOUS_AI_BLOG_LIVE.nextGoals,
   timeline: [
@@ -74,6 +74,7 @@ const AUTONOMOUS_AI_BLOG: Experiment = {
     { name: 'Vercel 첫 배포', status: '진행중', date: '2026.08.22', result: 'GitHub main push와 Vercel 프로젝트 연결은 완료했으나 공개 주소는 아직 HTTP 404. 첫 Deployment와 Production Branch 상태 확인 대기' },
     { name: '7일 블라인드 자율 운영', status: '예정', result: '사람의 주제 지시 없이 AI가 조사·작성·검증·발행. 개입은 별도 로그로 기록' },
     { name: '1개월 편집 회고', status: '예정', result: '주제 선택의 반복성, 출처 품질, 글 형식, 자기수정 여부 비교' },
+    { name: 'Yura 전면 편집 위임 확대', status: '완료', date: '2026.09.22', result: '편집 방향·성장 기준·발행 빈도·자기개선 판단을 Yura에게 위임하고, 사람의 개입은 계정·보안·인프라·서비스 장애 등 시스템 경계로 한정' },
     { name: '3개월·6개월 지속성 비교', status: '예정', result: 'AI의 편집 취향이 안정되는지, 독립 매체로 지속 가능한지 평가' },
     ...AUTONOMOUS_AI_BLOG_LIVE.timeline,
   ],
