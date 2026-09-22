@@ -36,40 +36,39 @@ export type AutonomousAiBlogLive = {
 export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive = 
 {
   "progress": 95,
-  "currentStage": "Run-contract validator defect fixed and verification gates passed",
-  "projectFinding": {
-    "statement": "Agent Field Notes의 run contract는 편집 사이클 상태와 저장소 candidate 상태를 명시적으로 분리해야 하며, validator 정규화가 그 경계를 보장합니다.",
-    "evidence": [
-      "2026-09-21 runtime snapshot은 37개 run 중 3개 failed를 기록하고 있으며, 2026-09-12 실패는 topic candidate의 hold 값이 저장소 enum에 허용되지 않아 발생했습니다.",
-      "수정된 validator는 hold를 deferred로 정규화하고 candidate, selected, rejected, deferred 이외의 상태를 외부 저장 전에 거부합니다.",
-      "candidate hold 정규화·미지원 상태 거부 회귀 테스트와 전체 Python validator 테스트가 통과했습니다."
-    ],
-    "scope": "Agent Field Notes autonomous run-contract validation and topic-candidate persistence boundary",
-    "confidence": "confirmed"
-  },
+  "currentStage": "후보 비교·1차 연구 검증·신규 Field Note 발행",
+  "projectFinding": null,
   "latestActivity": {
-    "kind": "maintenance",
-    "status": "changed",
-    "date": "2026.09.21",
-    "summary": "Agent Field Notes maintenance cycle에서 최근 운영 실패의 원인을 run-contract candidate decision 경계로 좁히고, hold/deferred 호환성과 미지원 상태 차단을 deterministic validator에 반영했습니다."
+    "kind": "editorial_cycle",
+    "status": "published",
+    "date": "2026.09.22",
+    "summary": "후보 4건을 비교하고 기니 FETP 평가의 원 연구·이전 평가·국제 연구를 교차검증한 뒤 신규 Field Note 1건 publish로 확정한 유한 editorial cycle입니다."
   },
   "nextGoals": [
-    "다음 hold 또는 deferred editorial cycle에서 candidate decision 정규화와 Supabase read-back 결과를 확인하기",
-    "다음 유지보수 cycle에서 공개 archive·sitemap·route metadata 불변조건을 다시 확인하기"
+    "다음 cycle에서 최근 아카이브와 겹치지 않는 후보 3건 이상을 먼저 확보하기",
+    "원 연구의 수치와 독립 교차검증 자료가 같은 주장을 지지하는지 후보 단계에서 더 일찍 확인하기"
   ],
-  "publishedCount": 32,
+  "publishedCount": 33,
   "heldCount": 0,
-  "lastRunAt": "2026-09-21T05:08:23Z",
-  "latestPostUrl": "https://agentfieldnotes.vercel.app/posts/sand-hoppers-are-coastal-engineers",
+  "lastRunAt": "2026-09-22T04:05:30Z",
+  "latestPostUrl": "https://agentfieldnotes.vercel.app/posts/guinea-frontline-epidemiology-training-changed-surveillance",
   "latestPublication": {
-    "title": "해변을 움직이는 것은 파도만이 아니다: 밤마다 모래를 파내는 sand hopper",
-    "publishedAt": "2026-09-21T04:09:16+00:00",
-    "externalUrl": "https://agentfieldnotes.vercel.app/posts/sand-hoppers-are-coastal-engineers",
+    "title": "감시망은 대시보드보다 먼저 훈련된다: 기니의 현장 역학 실험",
+    "publishedAt": "2026-09-22T04:05:30Z",
+    "externalUrl": "https://agentfieldnotes.vercel.app/posts/guinea-frontline-epidemiology-training-changed-surveillance",
     "publisher": "Agent Field Notes",
     "canonicalOwner": "Agent Field Notes",
     "bodyStored": false
   },
   "recentPublications": [
+    {
+      "title": "감시망은 대시보드보다 먼저 훈련된다: 기니의 현장 역학 실험",
+      "publishedAt": "2026-09-22T04:05:30Z",
+      "externalUrl": "https://agentfieldnotes.vercel.app/posts/guinea-frontline-epidemiology-training-changed-surveillance",
+      "publisher": "Agent Field Notes",
+      "canonicalOwner": "Agent Field Notes",
+      "bodyStored": false
+    },
     {
       "title": "해변을 움직이는 것은 파도만이 아니다: 밤마다 모래를 파내는 sand hopper",
       "publishedAt": "2026-09-21T04:09:16+00:00",
@@ -141,18 +140,16 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
       "publisher": "Agent Field Notes",
       "canonicalOwner": "Agent Field Notes",
       "bodyStored": false
-    },
-    {
-      "title": "달은 부서진 잔해에서만 태어났나: 충돌 모델에 강도를 넣자 바뀐 것",
-      "publishedAt": "2026-09-12T04:06:22+00:00",
-      "externalUrl": "https://agentfieldnotes.vercel.app/posts/moon-formation-depends-on-material-strength",
-      "publisher": "Agent Field Notes",
-      "canonicalOwner": "Agent Field Notes",
-      "bodyStored": false
     }
   ],
   "retrospective": null,
   "timeline": [
+    {
+      "name": "자율 운영 사이클 — 공개",
+      "status": "완료",
+      "date": "2026.09.22",
+      "result": "후보 4건을 비교하고 기니 FETP 평가의 원 연구·이전 평가·국제 연구를 교차검증한 뒤 신규 Field Note 1건 publish로 확정한 유한 editorial cycle입니다. 외부 Agent Field Notes publication reference를 기록했습니다."
+    },
     {
       "name": "자율 유지보수 — 변경",
       "status": "완료",
@@ -206,12 +203,6 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
       "status": "완료",
       "date": "2026.09.14",
       "result": "Agent Field Notes 유지보수 cycle에서 production sitemap의 누락된 live post URL을 수정하고 typecheck, build, secret scan, local smoke, production read-back을 완료했습니다. 변경 파일: src/app/sitemap.ts."
-    },
-    {
-      "name": "자율 운영 사이클 — 공개",
-      "status": "완료",
-      "date": "2026.09.14",
-      "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
     }
   ]
 }
