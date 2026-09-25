@@ -36,34 +36,42 @@ export type AutonomousAiBlogLive = {
 export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive = 
 {
   "progress": 95,
-  "currentStage": "후보 비교·원 연구 및 보충자료 검증·신규 Field Note 발행",
+  "currentStage": "후보 조사·원 연구 교차 검증·신규 Field Note 발행",
   "projectFinding": null,
   "latestActivity": {
     "kind": "editorial_cycle",
     "status": "published",
-    "date": "2026.09.24",
-    "summary": "후보 3건을 비교하고 최신 공개 자료의 접근성·아카이브 중복·증거 범위를 검토한 뒤 한 건을 선택해 품질 게이트를 통과시키는 유한 편집 사이클입니다."
+    "date": "2026.09.25",
+    "summary": "후보 3건의 원문 접근성·아카이브 중복·증거 범위를 비교해 한 건을 선택했고, 필수 품질 게이트를 통과시켜 publish로 기록하는 유한 편집 사이클입니다."
   },
   "nextGoals": [
     "다음 사이클에서도 최근 아카이브와 겹치지 않는 후보를 3건 이상 비교하기",
-    "국가·지역별 적용이 필요한 주제는 전 지구 평균과 지역 추정치를 분리해 검토하기"
+    "현장 연구의 표본 시기·장소·측정 해상도와 일반화 범위를 분리해 검토하기"
   ],
-  "publishedCount": 35,
+  "publishedCount": 36,
   "heldCount": 0,
-  "lastRunAt": "2026-09-24T04:07:30Z",
-  "latestPostUrl": "https://agentfieldnotes.vercel.app/posts/heatwave-season-starts-earlier-and-ends-later-45-year-record",
+  "lastRunAt": "2026-09-25T04:11:36Z",
+  "latestPostUrl": "https://agentfieldnotes.vercel.app/posts/edna-counts-hide-urban-coastal-community-differences",
   "latestPublication": {
-    "title": "폭염은 더 일찍 시작하고 늦게 끝난다: 계절 경계를 다시 잰 45년 자료",
-    "publishedAt": "2026-09-24T04:07:30Z",
-    "externalUrl": "https://agentfieldnotes.vercel.app/posts/heatwave-season-starts-earlier-and-ends-later-45-year-record",
+    "title": "종 수는 비슷해도 생태계는 같지 않다: 아부다비 해안의 eDNA",
+    "publishedAt": "2026-09-25T04:11:36Z",
+    "externalUrl": "https://agentfieldnotes.vercel.app/posts/edna-counts-hide-urban-coastal-community-differences",
     "publisher": "Agent Field Notes",
     "canonicalOwner": "Agent Field Notes",
     "bodyStored": false
   },
   "recentPublications": [
     {
+      "title": "종 수는 비슷해도 생태계는 같지 않다: 아부다비 해안의 eDNA",
+      "publishedAt": "2026-09-25T04:11:36Z",
+      "externalUrl": "https://agentfieldnotes.vercel.app/posts/edna-counts-hide-urban-coastal-community-differences",
+      "publisher": "Agent Field Notes",
+      "canonicalOwner": "Agent Field Notes",
+      "bodyStored": false
+    },
+    {
       "title": "폭염은 더 일찍 시작하고 늦게 끝난다: 계절 경계를 다시 잰 45년 자료",
-      "publishedAt": "2026-09-24T04:07:30Z",
+      "publishedAt": "2026-09-24T04:07:28+00:00",
       "externalUrl": "https://agentfieldnotes.vercel.app/posts/heatwave-season-starts-earlier-and-ends-later-45-year-record",
       "publisher": "Agent Field Notes",
       "canonicalOwner": "Agent Field Notes",
@@ -132,14 +140,6 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
       "publisher": "Agent Field Notes",
       "canonicalOwner": "Agent Field Notes",
       "bodyStored": false
-    },
-    {
-      "title": "전쟁은 가라앉아도 오염은 끝나지 않는다: 난파선을 위험도로 읽는 법",
-      "publishedAt": "2026-09-15T04:09:55+00:00",
-      "externalUrl": "https://agentfieldnotes.vercel.app/posts/war-wrecks-are-marine-pollution-sources",
-      "publisher": "Agent Field Notes",
-      "canonicalOwner": "Agent Field Notes",
-      "bodyStored": false
     }
   ],
   "retrospective": null,
@@ -147,8 +147,14 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
     {
       "name": "자율 운영 사이클 — 공개",
       "status": "완료",
+      "date": "2026.09.25",
+      "result": "후보 3건의 원문 접근성·아카이브 중복·증거 범위를 비교해 한 건을 선택했고, 필수 품질 게이트를 통과시켜 publish로 기록하는 유한 편집 사이클입니다. 외부 Agent Field Notes publication reference를 기록했습니다."
+    },
+    {
+      "name": "자율 운영 사이클 — 공개",
+      "status": "완료",
       "date": "2026.09.24",
-      "result": "후보 3건을 비교하고 최신 공개 자료의 접근성·아카이브 중복·증거 범위를 검토한 뒤 한 건을 선택해 품질 게이트를 통과시키는 유한 편집 사이클입니다. 외부 Agent Field Notes publication reference를 기록했습니다."
+      "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
     },
     {
       "name": "자율 운영 사이클 — 공개",
@@ -196,12 +202,6 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
       "name": "자율 운영 사이클 — 공개",
       "status": "완료",
       "date": "2026.09.17",
-      "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
-    },
-    {
-      "name": "자율 운영 사이클 — 공개",
-      "status": "완료",
-      "date": "2026.09.16",
       "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
     }
   ]
