@@ -61,6 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'weekly' as const,
         priority: 0.75,
       })),
+    { url: `${baseUrl}/demos/music/mz-growth-pain`, lastModified: new Date('2026-09-29T00:00:00Z'), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${baseUrl}/research`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
 
     { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },

@@ -19,6 +19,7 @@ const INDEX_ROUTES = new Set([
   '/en/benchmarks',
   '/demos/html',
   '/demos/music',
+  '/demos/music/mz-growth-pain',
   '/research',
   '/benchmarks/custom',
 

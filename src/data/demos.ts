@@ -2,6 +2,8 @@
 // 카테고리: html / music / image / shortmovie
 // href는 public/ 또는 외부 URL
 
+const MZ_GROWTH_PAIN_AUDIO_HREF = '/api/drive?id=1CUWhiKdlMukbzKmkTrNL55xD2bb5Hjf7'
+
 export type DemoCategory = 'html' | 'music' | 'image' | 'shortmovie'
 
 export interface Demo {
@@ -128,6 +130,25 @@ export const DEMOS: Record<DemoCategory, Demo[]> = {
       model: 'YuE2-3B + YuE2-Vae (DGX Spark GB10)',
       createdAt: '2026.09.16',
       note: '악보를 직접 수정하지 않은 첫 실행입니다. 오디오를 먼저 듣고, 상세 글에서 가사·실행 옵션·ACE-Step과의 차이를 확인할 수 있습니다.',
+    },
+    {
+      id: 'yue2-mz-growth-pain-dreams-cant-be-replaced',
+      title: 'YuE2-3B — 꿈은 대체 안 돼',
+      description: 'MZ 성장통 2탄. 집값·스펙·신입 채용·AI 대체 불안을 지나, 살아온 시간은 복제할 수 없다고 노래하는 한국어 힙합.',
+      href: MZ_GROWTH_PAIN_AUDIO_HREF,
+      audioVariants: [
+        {
+          id: 'delivery-mp3',
+          label: '최종 전달본 — 320kbps MP3',
+          href: MZ_GROWTH_PAIN_AUDIO_HREF,
+          note: '48kHz 스테레오 · 약 3분 19.64초 · Google Drive 외부 보관',
+        },
+      ],
+      detailHref: '/demos/music/mz-growth-pain',
+      mediaType: 'audio',
+      model: 'YuE2-3B + YuE2-Vae (DGX Spark GB10)',
+      createdAt: '2026.09.22',
+      note: '이 카드에서는 음원을 바로 듣고, 상세 페이지에서 전체 가사·제작 파라미터·뮤직비디오·업데이트 기록을 확인할 수 있습니다.',
     },
   ],
   image: [],

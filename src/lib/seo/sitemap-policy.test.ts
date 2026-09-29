@@ -22,6 +22,7 @@ if (isIndexableSitemapRoute('/aitech')) throw new Error('AI Tech compact history
 if (!isIndexableSitemapRoute('/privacy')) throw new Error('Privacy must remain indexable')
 if (!isIndexableSitemapRoute('/demos/html')) throw new Error('populated HTML Showcase category must remain in sitemap')
 if (!isIndexableSitemapRoute('/demos/music')) throw new Error('populated Music Showcase category must remain in sitemap')
+if (!isIndexableSitemapRoute('/demos/music/mz-growth-pain')) throw new Error('MZ Growth Pain showcase must remain in sitemap')
 if (!isIndexableSitemapRoute('/demos/shortmovie')) throw new Error('populated Short Movie Showcase category must remain in sitemap')
 if (isIndexableSitemapRoute('/data')) throw new Error('Data hub must be excluded until it has an independent editorial landing page')
 if (isIndexableSitemapRoute('/demos')) throw new Error('Showcase hub must be excluded while categories remain indexable')
