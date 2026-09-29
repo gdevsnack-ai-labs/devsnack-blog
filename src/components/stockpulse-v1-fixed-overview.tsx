@@ -20,6 +20,7 @@ export function StockpulseV1FixedOverview({ projection }: { projection: Stockpul
   const latest = projection.runs.records[0]
   const appliedCount = projection.improvements.records.filter(record => recordBoolean(record, 'actual_applied')).length
   const latestActual = latest?.actual_market_result.direction || '미확인'
+  const latestKospiClose = latest?.actual_market_result.kospi_close
   const latestLlm = latest?.llm_evaluation.success === true ? '맞음' : latest?.llm_evaluation.success === false ? '틀림' : '평가 대기'
   const mlPending = projection.snapshot.ml_evaluation_state !== 'evaluated'
 
@@ -65,6 +66,7 @@ export function StockpulseV1FixedOverview({ projection }: { projection: Stockpul
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">최근 run</p><p className="mt-2 text-xl font-bold">{latest ? formatDate(latest.trading_date) : '—'}</p></div>
               <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">최근 실제 방향</p><p className="mt-2 text-xl font-bold">{latestActual}</p></div>
+              <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">최근 실제 KOSPI 종가</p><p className="mt-2 text-xl font-bold">{latestKospiClose === null || latestKospiClose === undefined ? '미확인' : latestKospiClose.toLocaleString('en-US', { maximumFractionDigits: 2 })}</p></div>
               <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">최근 LLM 평가</p><p className="mt-2 text-xl font-bold">{latestLlm}</p></div>
               <div className="rounded-xl border border-border bg-white p-4 dark:bg-gray-900"><p className="text-xs text-muted-foreground">ML 평가</p><p className="mt-2 text-xl font-bold">{mlPending ? `${projection.snapshot.ml_prediction_count}개 대기` : `${projection.snapshot.ml_evaluated}개 완료`}</p></div>
             </div>
