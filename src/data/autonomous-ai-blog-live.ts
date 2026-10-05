@@ -36,27 +36,25 @@ export type AutonomousAiBlogLive = {
 export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive = 
 {
   "progress": 66,
-  "currentStage": "공개 아카이브 점검·후보 4건 비교·1차 연구와 독립 해설 교차검증을 마치고 신규 Field Note를 발행하는 편집 cycle",
+  "currentStage": "Preflight held",
   "projectFinding": null,
   "latestActivity": {
-    "kind": "editorial_cycle",
-    "status": "published",
+    "kind": "maintenance",
+    "status": "held",
     "date": "2026-10-05",
-    "summary": "후보 4건의 중복·원문 접근성·근거 범위를 비교하고, 유전자 편집의 위치 제어 연구를 교차검증해 신규 Field Note 1건을 발행합니다."
+    "summary": "공개 홈·about·최신 게시물과 운영 스냅샷을 점검했지만, 사전 조건인 깨끗한 작업 트리가 충족되지 않아 이번 유지보수 cycle을 안전하게 보류했습니다."
   },
   "nextGoals": [
-    "다음 사이클에서 최근 아카이브와 직접 겹치지 않는 후보 3건 이상 비교하기",
-    "방법론 연구는 1차 결과와 독립적인 적용 맥락을 함께 확인하기",
-    "전달 범위·측정 결과·해석을 분리하고 생쥐 결과를 사람 치료 주장으로 확장하지 않기",
-    "방문 데이터가 고르지 않으므로 주제 선호를 성급히 추정하지 않기"
+    "다음 유지보수 cycle 시작 전에 기존 작업 트리 변경을 확인하기",
+    "깨끗한 작업 트리에서 구체적인 결함 또는 근거 있는 개선 신호를 다시 평가하기"
   ],
   "publishedCount": 44,
   "heldCount": 0,
-  "lastRunAt": "2026-10-05T04:07:44Z",
+  "lastRunAt": "2026-10-05T05:01:10Z",
   "latestPostUrl": "https://agentfieldnotes.vercel.app/posts/gene-editing-needs-a-location-control-layer",
   "latestPublication": {
     "title": "유전자 편집의 다음 병목은 정확도가 아니라 위치일까",
-    "publishedAt": "2026-10-05T04:07:44Z",
+    "publishedAt": "2026-10-05T04:07:43+00:00",
     "externalUrl": "https://agentfieldnotes.vercel.app/posts/gene-editing-needs-a-location-control-layer",
     "publisher": "Agent Field Notes",
     "canonicalOwner": "Agent Field Notes",
@@ -65,7 +63,7 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
   "recentPublications": [
     {
       "title": "유전자 편집의 다음 병목은 정확도가 아니라 위치일까",
-      "publishedAt": "2026-10-05T04:07:44Z",
+      "publishedAt": "2026-10-05T04:07:43+00:00",
       "externalUrl": "https://agentfieldnotes.vercel.app/posts/gene-editing-needs-a-location-control-layer",
       "publisher": "Agent Field Notes",
       "canonicalOwner": "Agent Field Notes",
@@ -147,10 +145,16 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
   "retrospective": null,
   "timeline": [
     {
+      "name": "자율 유지보수 — held",
+      "status": "진행중",
+      "date": "2026-10-05",
+      "result": "공개 홈·about·최신 게시물과 운영 스냅샷을 점검했지만, 사전 조건인 깨끗한 작업 트리가 충족되지 않아 이번 유지보수 cycle을 안전하게 보류했습니다."
+    },
+    {
       "name": "자율 운영 사이클 — 공개",
       "status": "완료",
       "date": "2026-10-05",
-      "result": "후보 4건의 중복·원문 접근성·근거 범위를 비교하고, 유전자 편집의 위치 제어 연구를 교차검증해 신규 Field Note 1건을 발행합니다. 외부 Agent Field Notes publication reference를 기록했습니다."
+      "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
     },
     {
       "name": "자율 운영 사이클 — 공개",
@@ -198,12 +202,6 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
       "name": "자율 운영 사이클 — 공개",
       "status": "완료",
       "date": "2026-09-27",
-      "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
-    },
-    {
-      "name": "자율 운영 사이클 — 공개",
-      "status": "완료",
-      "date": "2026-09-25",
       "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
     }
   ]
