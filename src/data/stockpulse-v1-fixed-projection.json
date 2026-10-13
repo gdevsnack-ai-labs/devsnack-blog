@@ -72,10 +72,10 @@
           "inserted_count": 50,
           "lane": "v1_fixed_fresh"
         },
-        "llm_failure": null,
+        "llm_failure": false,
         "llm_prediction_id": "llm-prediction-2026-10-13",
-        "llm_success": null,
-        "pending_count": 50,
+        "llm_success": true,
+        "pending_count": 1000,
         "prediction_id": "prediction-live-shadow-2026-10-13-morning-01",
         "run_id": "live-shadow-2026-10-13-morning-01",
         "scope": "v1_fixed_fresh_ml_predictions_and_morning_llm",
@@ -1702,11 +1702,11 @@
         "actual_applied_count": 0,
         "evaluation_status": "pending",
         "improvement_cycles": 0,
-        "llm_correct": null,
-        "llm_evaluated": false,
+        "llm_correct": true,
+        "llm_evaluated": true,
         "ml_correct_count": null,
         "ml_evaluated_count": 0,
-        "ml_pending_count": 50,
+        "ml_pending_count": 1000,
         "prediction_count": 50,
         "run_id": "live-shadow-2026-10-13-morning-01",
         "trading_date": "2026-10-13"
@@ -2058,12 +2058,12 @@
           "n_estimators": 500
         }
       },
-      "current_state": "morning_complete_evening_not_started",
+      "current_state": "evening_complete",
       "improvement_cycles": 17,
       "improvement_status": "none",
       "live_shadow_day": "Latest run · 2026-10-13",
-      "llm_correct": null,
-      "llm_evaluated": 0,
+      "llm_correct": true,
+      "llm_evaluated": 1,
       "ml_correct": null,
       "ml_evaluated": 0,
       "ml_evaluation_state": "pending",
@@ -2084,14 +2084,14 @@
     "route": "/labs/stockpulse-v1-fixed",
     "title": "StockPulse V1 Fixed"
   },
-  "projected_at": "2026-10-12T22:35:00+00:00",
+  "projected_at": "2026-10-13T07:34:16+00:00",
   "projection_type": "stockpulse_v1_fixed_public_projection",
   "publication": {
     "daily_lab_slug_policy": "disabled",
     "evening": {
-      "path": null,
+      "path": "reports/2026-10-13/evening/",
       "run_id": "live-shadow-2026-10-13-morning-01",
-      "status": "not_started"
+      "status": "available"
     },
     "morning": {
       "path": "reports/2026-10-13/morning/",
@@ -2106,21 +2106,99 @@
     "records": [
       {
         "actual_market_result": {
-          "direction": null,
-          "kosdaq_close": null,
-          "kospi_close": null,
-          "llm_success": null,
-          "observed_at": null,
-          "reason": "evening_not_started",
-          "return_pct": null,
-          "status": "not_available"
+          "direction": "하락",
+          "kosdaq_close": 837.030029296875,
+          "kospi_close": 6035.35009765625,
+          "llm_success": true,
+          "observed_at": "2026-10-13T16:30:54.531929+09:00",
+          "reason": null,
+          "return_pct": -10.24620858,
+          "status": "available"
         },
         "actual_model_set": [
           "LightGBM",
           "XGBoost",
           "LSTM"
         ],
-        "evening_analysis": {},
+        "evening_analysis": {
+          "actual_driver_analysis": "확인 가능한 실제 결과는 KOSPI가 6,724.34에서 6,035.35009765625로 하락하고 KOSDAQ도 837.030029296875로 하락했다는 점입니다. Morning이 반영한 국내 추세 약세, KOSPI 외국인·기관 동반 순매도, 미국 반도체 약세, 원유 상승과 금통위 대기 리스크는 하락 방향과 일치하는 배경 요인이었습니다. 반면 달러/원 하락, 항셍·유럽 지수의 이전 상승, 일부 배터리·금융·운송 종목의 상대적 강세는 하방을 완화할 수 있는 counter-signal이었습니다. 실제 장중 breadth와 종목별 수급은 보존된 입력에 없어 특정 주도 종목이나 하락 폭의 세부 원인은 단정하지 않습니다.",
+          "data_synthesis": {
+            "domestic_market": {
+              "actual_direction": "하락",
+              "actual_kosdaq_close": 837.030029296875,
+              "actual_kospi_close": 6035.35009765625,
+              "actual_return_pct": -10.24620858,
+              "breadth_status": "not_available_in_preserved_snapshot",
+              "market_reference_source": "evening-market.json",
+              "morning_reference_kospi": 6724.34,
+              "observed_at": "2026-10-13T16:30:54.531929+09:00"
+            },
+            "fear_greed": {
+              "label": "중립",
+              "momentum_vs_20d_pct": -1.15,
+              "score": 53,
+              "up_days_last_10": 5,
+              "volume_ratio_5d_20d": 0.79
+            },
+            "flows": {
+              "kosdaq_foreign": "약 -130억원",
+              "kosdaq_institution": "약 -2,196억원",
+              "kospi_foreign": "약 -2조 109억원",
+              "kospi_institution": "약 -1,338억원",
+              "watchlist_flow_status": "individual_stock_flows_not_available_in_snapshot"
+            },
+            "leaders_and_breadth": {
+              "breadth_status": "full_market_breadth_not_available",
+              "leader_attribution": "실제 장중 종목별 기여도는 보존된 입력에 없어 위 종목을 지수 하락의 확정 리더로 지목하지 않습니다.",
+              "morning_watchlist_context": "Morning snapshot은 52주 고점 근접 종목 0개, 저점 근접 종목 12개를 기록했습니다.",
+              "observed_watchlist_contrasts": "보존된 시장 스냅샷에서는 HMM +4.80%, 메리츠금융지주 +1.66%, 대한항공 +1.31%, 기아 +0.47% 등이 상대 강세였고 삼성전자 -4.56%, SK하이닉스 -4.80%, LG화학 -7.46%, 에코프로비엠 -8.46% 등 약세 종목도 확인됩니다."
+            },
+            "macro_events": {
+              "dxy": "102.57, +0.35%",
+              "latest_cpi_yoy_pct": 3.71,
+              "latest_ppi_yoy_pct": 9.85,
+              "latest_unemployment_pct": 4.2,
+              "next_event": "2026-10-16 한은 금통위 예정",
+              "us_10y_yield": "5.24%, 전일 대비 -0.08%",
+              "usd_krw": "1334.12, -0.66%"
+            },
+            "ml_relative_strength": {
+              "evaluated_count": 0,
+              "failure_count": 0,
+              "lane": "v1_fixed_fresh",
+              "maturity_reason": "five observed sessions are not yet available",
+              "pending_count": 1000,
+              "semantics": "KOSPI 절대 방향이 아닌 5일 상대성과",
+              "status": "pending"
+            },
+            "morning_judgment": {
+              "confidence": 0.78,
+              "direction": "하락",
+              "freeze_reference": "input-snapshot-517dc7da91996607",
+              "preservation": "Morning prediction, direction, confidence, cutoff, and snapshot reference are preserved from run-owned artifacts.",
+              "snapshot_cutoff": "2026-10-13T07:31:42.425178+09:00"
+            },
+            "news_sentiment": {
+              "interpretation": "종목 키워드 집계에서는 삼성바이오로직스·에코프로비엠·KB금융 등에 부정 신호가, LG에너지솔루션·삼성SDI·셀트리온 등에 긍정 신호가 혼재했습니다. 시장 전체의 최신 장 마감 뉴스 방향으로 일반화하지 않습니다.",
+              "status": "morning_snapshot_preserved_not_requeried_in_evening_lane"
+            },
+            "overnight_cross_asset": {
+              "asia_europe": "Nikkei225 -0.02%, Hang Seng +1.79%, Euro STOXX50 +0.76%, DAX +1.13%",
+              "interpretation": "미국 반도체·기술 약세와 아시아·유럽 일부 상승이 충돌하는 혼조 신호였으나, 국내 대형주에는 반도체 약세의 하방 신호가 더 직접적이었습니다.",
+              "selected_semiconductors": "NVDA -1.29%, AMD -2.28%, MU -3.88%, SMH -2.05%",
+              "sox": "-2.67%",
+              "us_equities": "S&P500 -0.06%, Nasdaq -0.44%, Dow +0.38%"
+            }
+          },
+          "failure_analysis": "이번 LLM 방향 판단은 실제 방향과 일치했으므로 LLM 실패 분석과 새 개선 제안은 생성하지 않습니다. 확인된 한계는 장중 breadth, 개별 종목 외국인·기관 수급, 장 마감 시점의 종목별 뉴스 기여도가 보존된 입력에 없어 하락 폭과 세부 주도 요인을 검증할 수 없다는 점입니다. ML은 KOSPI 절대 방향이 아닌 종목별 5거래일 상대성과 신호이며, 평가 0건·pending 1,000건이므로 이번 LLM 적중 여부와 ML 성숙도를 혼동하지 않습니다.",
+          "improvement": {
+            "action_detail": "실제 방향이 Morning 판단과 일치했고 평가된 실패가 관측되지 않았으므로 새 모델·특징·프롬프트 변경을 제안하지 않습니다. ML은 아직 pending이며 개선 lifecycle의 대상이 아닙니다.",
+            "action_type": "none",
+            "expected_impact": "none"
+          },
+          "rationale_vs_actual": "Morning은 KOSPI가 20일선 6,802.33 아래에 있고 52주 저점 근접 종목이 50개 중 12개이며, 외국인과 기관이 KOSPI에서 순매도했다는 점을 하방 근거로 삼았습니다. SOX -2.67%, SMH -2.05%, MU -3.88% 등 해외 반도체 약세와 삼성전자·SK하이닉스의 상대 약세도 대형주 부담으로 반영했습니다. 실제 KOSPI와 KOSDAQ이 모두 하락하면서 핵심 절대 방향 판단은 확인되었습니다. 다만 공포·탐욕 점수는 53점 중립이었고 KOSDAQ·배터리·일부 금융주의 반대 신호가 있었으므로 일방적 신호로 과장하지 않은 점은 적절했습니다.",
+          "summary": "Morning은 KOSPI 하락을 기본 시나리오로 판단했고, 실제 KOSPI는 6,035.35009765625로 마감하여 기준가 6,724.34 대비 -10.24620858%의 하락을 기록했습니다. 실제 방향은 Morning 판단과 일치했습니다. KOSDAQ은 837.030029296875로 별도 하락했으며, 보존된 자료만으로 장중 breadth와 개별 종목 수급의 전체 기여도는 확정하지 않습니다."
+        },
         "evidence_refs": [
           {
             "id": "live-shadow-2026-10-13-morning-01",
@@ -3914,14 +3992,14 @@
         "input_snapshot_readback_verified": true,
         "lane": "v1_fixed_fresh",
         "llm_evaluation": {
-          "failure": null,
-          "status": "pending",
-          "success": null
+          "failure": false,
+          "status": "evaluated",
+          "success": true
         },
         "ml_evaluation": {
           "correct_count": null,
           "evaluated_count": 0,
-          "pending_count": 50,
+          "pending_count": 1000,
           "prediction_count": 50,
           "reason": "target_date_unavailable",
           "status": "pending"
@@ -3936,8 +4014,8 @@
             "frozen": true,
             "post_cutoff_edit_allowed": false
           },
-          "evaluation_status": "pending",
-          "failure": null,
+          "evaluation_status": "evaluated",
+          "failure": false,
           "forecast": "기본 시나리오는 KOSPI 하락입니다. 국내 추세·수급 약세와 해외 반도체 하락이 이어지면 대형주 중심으로 지수 압력이 지속될 가능성이 큽니다. 다만 KOSDAQ 상승, 일부 배터리·금융주 반등, 원화 강세가 동반되면 장 초반 반등 또는 보합 전환이 가능합니다.",
           "freeze": {
             "evaluation_session": "day1_evening",
@@ -3986,7 +4064,7 @@
           },
           "sentiment_and_supply": "공포·탐욕 점수는 53점 중립으로 관망 또는 선별 매수 구간입니다. 모멘텀 점수 44, 이격도 -1.15%, 거래량 추세 점수 19, 52주 저점 근접 12개/50개가 약세를 보강합니다. KOSPI 외국인은 약 -2조 109억 원, 기관은 약 -1,338억 원 순매도였고 KOSDAQ도 외국인 약 -130억 원, 기관 약 -2,196억 원 순매도였습니다. 다만 종목별 수급은 제공 범위 밖이라 개별 확산 여부는 확인할 수 없습니다.",
           "snapshot_cutoff": "2026-10-13T07:31:42.425178+09:00",
-          "success": null,
+          "success": true,
           "summary": "KOSPI는 전일 6,724.34로 0.09% 강보합이었지만 20일선 6,802.33 대비 1.15% 낮고, 52주 저점 근접 종목이 50개 중 12개인 약한 국내 레짐입니다. 외국인과 기관이 각각 약 2조 109억 원, 1,338억 원 순매도했고 SOX는 2.67%, SMH는 2.05% 하락해 반도체·대형주에 하방 압력이 이어졌습니다. KOSDAQ 0.70% 상승과 일부 배터리·금융주 반등은 완충 요인이지만, 전체적으로는 반등보다 추가 약세 위험을 우세하게 봅니다.",
           "uncertainties": [
             "장중 breadth와 종목별 외국인·기관 수급은 스냅샷에 없어 하락 신호의 시장 전체 확산 여부를 확인할 수 없습니다.",
@@ -3995,12 +4073,12 @@
             "중립적인 공포·탐욕 점수와 KOSDAQ 상승 때문에 일방적 급락보다는 장중 반등·보합 전환 가능성이 남아 있습니다."
           ]
         },
-        "overall_status": "in_progress_evening_not_started",
+        "overall_status": "complete",
         "project_id": "stockpulse-v1-fixed",
         "publications": {
           "evening": {
-            "path": null,
-            "status": "not_started"
+            "path": "reports/2026-10-13/evening/",
+            "status": "available"
           },
           "morning": {
             "path": "reports/2026-10-13/morning/",
@@ -51321,12 +51399,12 @@
         "n_estimators": 500
       }
     },
-    "current_state": "morning_complete_evening_not_started",
+    "current_state": "evening_complete",
     "improvement_cycles": 17,
     "improvement_status": "none",
     "live_shadow_day": "Latest run · 2026-10-13",
-    "llm_correct": null,
-    "llm_evaluated": 0,
+    "llm_correct": true,
+    "llm_evaluated": 1,
     "ml_correct": null,
     "ml_evaluated": 0,
     "ml_evaluation_state": "pending",
@@ -51338,26 +51416,26 @@
   "source_manifest": {
     "artifact_count": 7,
     "artifact_hashes": {
-      "day1-morning-verification.json": "7fa6a689214217f1f07ce6151003fdfc65f45c13e5ccddcd67c8f3ba960e7c6c",
+      "day1-morning-verification.json": "77f8d9198e7878a34096c05c0941bb68962f0725f9f74f562144de76bc8ac14a",
       "improvement.json": "00f34e244a8473e1e55fa11989981bb5e9474f8fcd3bcc04a4466c15713e4d13",
       "input_manifest.json": "a3c416612ee09caa04099943ad426b4d518b8ca0a732b389ae1d77e130256473",
-      "llm_prediction.json": "1cd7c72684736a88bb4dc37b3b0e74c7c035eff1ed5d06811e469b6d1c92e2fb",
+      "llm_prediction.json": "328f2131e4c49fe8124a3e67b439048b34882d080f3cd7d29375f0629c30b3b1",
       "ml_prediction.json": "7c8114071cade41001d11b72842d441caa4753c516fcb3e922b76db38149f722",
       "quality.json": "d8662ad74ba05fd79393d53d91d3b6ec6c66c8b61410dd20819777de8ec0e779",
-      "run.json": "15f86d928e7268a10f539fe5c8221d536b06ebd8eb3f9372e68614dcc63cc015"
+      "run.json": "4df70a867a72b1b20a91319d01274d2d04cab3c5810442e4a1dd3883c6f6a86b"
     },
     "generator_command_template": "python3 scripts/project_publication.py --source-run <private-run-dir> --output-dir <output-dir> [--projected-at <iso>]",
     "generator_version": "stockpulse-v1-fixed-projector-1.2.0",
     "history": [
       {
         "artifact_hashes": {
-          "day1-morning-verification.json": "7fa6a689214217f1f07ce6151003fdfc65f45c13e5ccddcd67c8f3ba960e7c6c",
+          "day1-morning-verification.json": "77f8d9198e7878a34096c05c0941bb68962f0725f9f74f562144de76bc8ac14a",
           "improvement.json": "00f34e244a8473e1e55fa11989981bb5e9474f8fcd3bcc04a4466c15713e4d13",
           "input_manifest.json": "a3c416612ee09caa04099943ad426b4d518b8ca0a732b389ae1d77e130256473",
-          "llm_prediction.json": "1cd7c72684736a88bb4dc37b3b0e74c7c035eff1ed5d06811e469b6d1c92e2fb",
+          "llm_prediction.json": "328f2131e4c49fe8124a3e67b439048b34882d080f3cd7d29375f0629c30b3b1",
           "ml_prediction.json": "7c8114071cade41001d11b72842d441caa4753c516fcb3e922b76db38149f722",
           "quality.json": "d8662ad74ba05fd79393d53d91d3b6ec6c66c8b61410dd20819777de8ec0e779",
-          "run.json": "15f86d928e7268a10f539fe5c8221d536b06ebd8eb3f9372e68614dcc63cc015"
+          "run.json": "4df70a867a72b1b20a91319d01274d2d04cab3c5810442e4a1dd3883c6f6a86b"
         },
         "run_id": "live-shadow-2026-10-13-morning-01",
         "trading_date": "2026-10-13"
