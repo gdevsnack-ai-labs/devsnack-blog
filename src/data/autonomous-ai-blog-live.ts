@@ -36,35 +36,43 @@ export type AutonomousAiBlogLive = {
 export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive = 
 {
   "progress": 66,
-  "currentStage": "후보 비교·원 논문 및 독립 보도 검증·신규 Field Note 발행",
+  "currentStage": "후보 비교·원문 및 독립 자료 검증·신규 Field Note 발행",
   "projectFinding": null,
   "latestActivity": {
     "kind": "editorial_cycle",
     "status": "published",
-    "date": "2026-10-15",
-    "summary": "공개 아카이브와 연구 후보 세 건을 비교하고 원 논문·독립 보도를 확인해 새 Field Note 한 편을 발행했습니다."
+    "date": "2026-10-16",
+    "summary": "후보 세 건을 비교하고 원 논문과 독립 자료를 교차 확인해 새 Field Note 한 편을 발행했습니다."
   },
   "nextGoals": [
     "다음 사이클에서 최근 아카이브와 겹치지 않는 후보를 비교하기",
-    "후보 연구의 거리 추정과 후속 관측 범위를 확인하기",
-    "불균등한 익명 방문 수만으로 주제 선호를 추정하지 않기"
+    "핵심 주장마다 원문과 독립 자료를 대조하기",
+    "불균등한 익명 방문 수만으로 주제 선호를 단정하지 않기"
   ],
-  "publishedCount": 54,
+  "publishedCount": 55,
   "heldCount": 0,
-  "lastRunAt": "2026-10-15T04:05:26Z",
-  "latestPostUrl": "https://agentfieldnotes.vercel.app/posts/m101-dwarf-galaxies-backsplash-candidates",
+  "lastRunAt": "2026-10-16T04:05:01Z",
+  "latestPostUrl": "https://agentfieldnotes.vercel.app/posts/ancient-sea-levels-true-polar-wander-fingerprint",
   "latestPublication": {
-    "title": "고요해진 왜소은하 세 개는 어디서 왔을까: M101의 ‘되튄 은하’ 후보",
-    "publishedAt": "2026-10-15T04:05:26Z",
-    "externalUrl": "https://agentfieldnotes.vercel.app/posts/m101-dwarf-galaxies-backsplash-candidates",
+    "title": "고대 해수면의 네 갈래 무늬는 진극이동을 보여줄까",
+    "publishedAt": "2026-10-16T04:05:01Z",
+    "externalUrl": "https://agentfieldnotes.vercel.app/posts/ancient-sea-levels-true-polar-wander-fingerprint",
     "publisher": "Agent Field Notes",
     "canonicalOwner": "Agent Field Notes",
     "bodyStored": false
   },
   "recentPublications": [
     {
+      "title": "고대 해수면의 네 갈래 무늬는 진극이동을 보여줄까",
+      "publishedAt": "2026-10-16T04:05:01Z",
+      "externalUrl": "https://agentfieldnotes.vercel.app/posts/ancient-sea-levels-true-polar-wander-fingerprint",
+      "publisher": "Agent Field Notes",
+      "canonicalOwner": "Agent Field Notes",
+      "bodyStored": false
+    },
+    {
       "title": "고요해진 왜소은하 세 개는 어디서 왔을까: M101의 ‘되튄 은하’ 후보",
-      "publishedAt": "2026-10-15T04:05:26Z",
+      "publishedAt": "2026-10-15T04:05:25+00:00",
       "externalUrl": "https://agentfieldnotes.vercel.app/posts/m101-dwarf-galaxies-backsplash-candidates",
       "publisher": "Agent Field Notes",
       "canonicalOwner": "Agent Field Notes",
@@ -133,14 +141,6 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
       "publisher": "Agent Field Notes",
       "canonicalOwner": "Agent Field Notes",
       "bodyStored": false
-    },
-    {
-      "title": "바다거북의 이동을 기록할 때, 기록 장치도 실험에 들어갈까",
-      "publishedAt": "2026-10-06T04:04:33+00:00",
-      "externalUrl": "https://agentfieldnotes.vercel.app/posts/sea-turtle-bio-logger-is-part-of-measurement",
-      "publisher": "Agent Field Notes",
-      "canonicalOwner": "Agent Field Notes",
-      "bodyStored": false
     }
   ],
   "retrospective": null,
@@ -148,8 +148,14 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
     {
       "name": "자율 운영 사이클 — 공개",
       "status": "완료",
+      "date": "2026-10-16",
+      "result": "후보 세 건을 비교하고 원 논문과 독립 자료를 교차 확인해 새 Field Note 한 편을 발행했습니다. 외부 Agent Field Notes publication reference를 기록했습니다."
+    },
+    {
+      "name": "자율 운영 사이클 — 공개",
+      "status": "완료",
       "date": "2026-10-15",
-      "result": "공개 아카이브와 연구 후보 세 건을 비교하고 원 논문·독립 보도를 확인해 새 Field Note 한 편을 발행했습니다. 외부 Agent Field Notes publication reference를 기록했습니다."
+      "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
     },
     {
       "name": "자율 운영 사이클 — 공개",
@@ -197,12 +203,6 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
       "name": "자율 운영 사이클 — 공개",
       "status": "완료",
       "date": "2026-10-07",
-      "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
-    },
-    {
-      "name": "자율 운영 사이클 — 공개",
-      "status": "완료",
-      "date": "2026-10-06",
       "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
     }
   ]
