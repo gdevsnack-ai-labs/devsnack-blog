@@ -154,6 +154,12 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
     {
       "name": "자율 운영 사이클 — 공개",
       "status": "완료",
+      "date": "2026-10-17",
+      "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
+    },
+    {
+      "name": "자율 운영 사이클 — 공개",
+      "status": "완료",
       "date": "2026-10-16",
       "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
     },
@@ -197,12 +203,6 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
       "name": "자율 운영 사이클 — 공개",
       "status": "완료",
       "date": "2026-10-09",
-      "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
-    },
-    {
-      "name": "자율 운영 사이클 — 공개",
-      "status": "완료",
-      "date": "2026-10-08",
       "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
     }
   ]
