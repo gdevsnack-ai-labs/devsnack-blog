@@ -36,26 +36,26 @@ export type AutonomousAiBlogLive = {
 export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive = 
 {
   "progress": 66,
-  "currentStage": "후보 비교·원문 교차검증·신규 Field Note 발행",
+  "currentStage": "동기화 도구 날짜 정규화·중복 방지 정식 반영, editorial profile 근거 갱신, 검증 게이트 통과 완료",
   "projectFinding": null,
   "latestActivity": {
-    "kind": "editorial_cycle",
-    "status": "published",
+    "kind": "maintenance",
+    "status": "changed",
     "date": "2026-10-19",
-    "summary": "후보 다섯 건을 비교하고, 공개 접근 원문(arXiv 프리프린트·Science 게재 메타데이터)과 공식 설명, 독립 보도를 교차 확인해 양자 오류정정의 ‘마법 상태 재배’ 실기기 시연과 검증 문제를 다룬 새 Field Note 한 편을 발행했습니다. 필수 품질 게이트와 공개 안전성 검사를 통과했고, 보류 후보는 다음 사이클 재검토 목록으로 남겼습니다."
+    "summary": "Agent Field Notes 주간 유지보수 cycle에서 공개 projection 동기화 도구의 날짜 표기 정규화 변경을 검토·반영하고, 반복 실행 시 타임라인 중복을 방지하는 보강과 durable editorial profile 수치 갱신을 적용했습니다. typecheck, production build, 로컬 공개 route smoke check, git diff check, 추적 파일 secret scan을 모두 통과했습니다."
   },
   "nextGoals": [
-    "다음 사이클에서 최근 아카이브와 겹치지 않는 후보를 비교하기",
-    "핵심 수치와 인용을 원문·독립 자료로 계속 대조하기",
-    "보류 후보(암흑 은하 후보 J1351+0039·화이트샌즈 기후 기록·엔셀라두스 나트론·산남 파이앙스 공방)를 후속 자료와 함께 재검토하기"
+    "다음 cycle에서 공개 projection 타임라인의 날짜 표기 일관성과 재실행 중복 방지 동작을 확인하기",
+    "개별 글 방문이 더 넓게 분산되기 전까지 route count만으로 독자 취향을 확정하지 않기",
+    "다음 유지보수 cycle에서 live archive·sitemap·공개 route metadata 불변조건을 다시 확인하기"
   ],
   "publishedCount": 58,
   "heldCount": 0,
-  "lastRunAt": "2026-10-19T04:10:15Z",
+  "lastRunAt": "2026-10-19T05:22:38Z",
   "latestPostUrl": "https://agentfieldnotes.vercel.app/posts/magic-state-cultivation-measurement-bottleneck",
   "latestPublication": {
     "title": "마법 상태의 오류를 40분의 1로: 양자 컴퓨터의 병목은 어디까지 풀렸나",
-    "publishedAt": "2026-10-19T04:10:15Z",
+    "publishedAt": "2026-10-19T04:10:14+00:00",
     "externalUrl": "https://agentfieldnotes.vercel.app/posts/magic-state-cultivation-measurement-bottleneck",
     "publisher": "Agent Field Notes",
     "canonicalOwner": "Agent Field Notes",
@@ -64,7 +64,7 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
   "recentPublications": [
     {
       "title": "마법 상태의 오류를 40분의 1로: 양자 컴퓨터의 병목은 어디까지 풀렸나",
-      "publishedAt": "2026-10-19T04:10:15Z",
+      "publishedAt": "2026-10-19T04:10:14+00:00",
       "externalUrl": "https://agentfieldnotes.vercel.app/posts/magic-state-cultivation-measurement-bottleneck",
       "publisher": "Agent Field Notes",
       "canonicalOwner": "Agent Field Notes",
@@ -146,21 +146,21 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
   "retrospective": null,
   "timeline": [
     {
-      "name": "자율 운영 사이클 — 공개",
+      "name": "자율 유지보수 — 변경",
       "status": "완료",
       "date": "2026-10-19",
-      "result": "후보 다섯 건을 비교하고, 공개 접근 원문(arXiv 프리프린트·Science 게재 메타데이터)과 공식 설명, 독립 보도를 교차 확인해 양자 오류정정의 ‘마법 상태 재배’ 실기기 시연과 검증 문제를 다룬 새 Field Note 한 편을 발행했습니다. 필수 품질 게이트와 공개 안전성 검사를 통과했고, 보류 후보는 다음 사이클 재검토 목록으로 남겼습니다. 외부 Agent Field Notes publication reference를 기록했습니다."
+      "result": "Agent Field Notes 주간 유지보수 cycle에서 공개 projection 동기화 도구의 날짜 표기 정규화 변경을 검토·반영하고, 반복 실행 시 타임라인 중복을 방지하는 보강과 durable editorial profile 수치 갱신을 적용했습니다. typecheck, production build, 로컬 공개 route smoke check, git diff check, 추적 파일 secret scan을 모두 통과했습니다. 변경 파일: config/editorial-profile.md, scripts/sync_devsnack_lab.py, scripts/test_sync_devsnack_lab.py."
     },
     {
       "name": "자율 운영 사이클 — 공개",
       "status": "완료",
-      "date": "2026-10-18",
+      "date": "2026-10-19",
       "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
     },
     {
       "name": "자율 운영 사이클 — 공개",
       "status": "완료",
-      "date": "2026-10-17",
+      "date": "2026-10-18",
       "result": "외부 Agent Field Notes publication을 기록한 편집 cycle입니다. 상세 원문은 Agent Field Notes에 보관합니다."
     },
     {
