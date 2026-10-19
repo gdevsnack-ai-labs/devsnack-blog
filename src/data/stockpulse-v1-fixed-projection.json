@@ -2492,7 +2492,7 @@
     "route": "/labs/stockpulse-v1-fixed",
     "title": "StockPulse V1 Fixed"
   },
-  "projected_at": "2026-10-19T22:38:56+00:00",
+  "projected_at": "2026-10-19T22:39:50+00:00",
   "projection_type": "stockpulse_v1_fixed_public_projection",
   "publication": {
     "daily_lab_slug_policy": "disabled",
@@ -4338,7 +4338,7 @@
             "frozen_for_comparison": true,
             "post_cutoff_edit_allowed": false
           },
-          "generated_at": "2026-10-20T07:34:23.211773+09:00",
+          "generated_at": "2026-10-20T07:39:45.432405+09:00",
           "generation_status": "generated",
           "llm_prediction_id": "llm-prediction-2026-10-20",
           "macro": "미국 CPI는 전년 대비 4.02%, 전월 대비 0.65%, PPI는 전년 대비 12.84%, 실업률은 4.2%로 물가 부담이 남아 있고 미국 10년물 금리는 5.14%입니다. 예정 이벤트는 11월 5일 FOMC(16일 후), 11월 13일 미국 10월 CPI(24일 후), 11월 27일 한은 금통위(38일 후)이며 직전 금통위는 2026-10-16에 있었습니다. 당일 2026-10-20에 방향을 바꿀 만한 주요 지표 발표는 스냅샷에 없습니다.",
@@ -4347,7 +4347,7 @@
           "ml_summary": "ML은 LightGBM·XGBoost·LSTM 3개 모델로 50개 종목 예측을 생성했습니다. 트리 평균 정확도 0.716·AUC 0.7832, LSTM AUC 0.7708·정확도 0.7018이며 시장 편향은 약세(모델 평균 0.9%)입니다. 상위 상대신호는 기아(순위 80%), HMM(75%), 나우IB(71%), 삼성바이오로직스(69%), 셀트리온(64%)이고 하위는 티엠씨(20%), HD현대일렉트릭(24%), 삼성전기(26%), 한미반도체(28%), 두산(31%)입니다. 이 신호는 5거래일 상대성과 기준이므로 KOSPI 절대 방향 판단과 분리해 사용했습니다.",
           "observation_points": [
             "시가 갭 방향과 KOSPI 20일선 6,589.89 대비 회복 여부",
-            "KOSPI 외국인 +9,473억원·기관 +10,378억원 순매수의 지속 여부(기준일 2026-10-19)",
+            "KOSPI 외국인 +947.3억원·기관 +10,378억원 순매수의 지속 여부(기준일 2026-10-19)",
             "삼성전자 223,500원·SK하이닉스 1,304,000원의 갭 이후 종가 흐름",
             "원달러 1,330.92원의 추가 하향 안정과 달러인덱스 101.97의 방향",
             "미국 10년물 5.14%와 WTI 98.25달러의 추가 흐름",
@@ -4356,7 +4356,7 @@
           "overseas_market_and_overnight": "직전 미국 세션(2026-10-19)은 위험선호였습니다. S&P500 +0.41%, 나스닥 +1.11%, 다우 -0.07%로 기술주가 지수를 이끌었고 SOX +1.61%, SMH +1.61%, NVDA +1.38%, AMD +1.76%, MU +2.97%, INTC +2.43%, QCOM +0.83%로 반도체가 강했습니다. VIX는 18.44(-7.75%)로 하락했으나 VXN은 27.13(+18.52%)으로 2026-10-16 기준 값입니다. 미국 10년물은 5.14%(+0.75%), 달러인덱스는 101.97(+0.13%), 원달러는 1,330.92(-0.75%), 엔달러는 158.54(+0.25%)입니다. WTI는 98.25달러(-3.12%), 브렌트유는 109.26달러(-0.55%), 금은 4,160.2달러(-0.50%)였습니다. 아시아·유럽은 2026-10-16 기준으로 니케이 +1.39%, 항셍 +0.52%, 유로스톡스50 +0.58%, DAX +0.95%이며, 한국 관련 ADR은 PKX +4.42%, KT +1.68%, SKM +1.06%, KB +0.28%, KEP +0.19%, SHG -0.97%로 대체로 우호적입니다.",
           "publication_path": "reports/2026-10-20/morning/",
           "rationale": [
-            "2026-10-19 KOSPI +1.76%(5,768.01)와 KOSDAQ +1.78%(808.89)의 동반 상승에 KOSPI 외국인 +9,473억원·기관 +10,378억원 순매수가 겹쳐 단기 수급이 개선됐습니다.",
+            "2026-10-19 KOSPI +1.76%(5,768.01)와 KOSDAQ +1.78%(808.89)의 동반 상승에 KOSPI 외국인 +947.3억원·기관 +10,378억원 순매수가 겹쳐 단기 수급이 개선됐습니다.",
             "직전 미국 세션에서 나스닥 +1.11%, SOX +1.61%, SMH +1.61%로 반도체가 주도했고 MU +2.97%, INTC +2.43%, AMD +1.76%가 이를 뒷받침해 KOSPI 대형 반도체 비중에 우호적입니다.",
             "VIX 18.44(-7.75%)와 원달러 1,330.92(-0.75%)의 동반 안정은 위험회피 완화와 외국인 수급 여건 개선을 시사합니다.",
             "공포탐욕 31점, 20일선 이격도 -12.47%의 과매도 상태로 기술적 반등 여지가 남아 있습니다.",
@@ -4381,7 +4381,7 @@
               "uncertainties_and_missing_sources"
             ]
           },
-          "sentiment_and_supply": "공포탐욕 지수는 31점으로 '공포'이며 구성요소는 모멘텀 0(20일선 대비 -12.47%), 변동성 68(20일 변동성 2.66%), 감성 30(최근 10일 중 3일 상승), 이격도 0(-12.47%), 거래량비 49(5일/20일 1.23배), 고저 52(52주 고점 근접 2개, 저점 근접 0개/50)입니다. 수급은 2026-10-19 기준으로 KOSPI 외국인 +9,473억원, 기관 +10,378억원 순매수, KOSDAQ 외국인 -1,618억원 순매도, 기관 +686억원 순매수입니다. 종목별 외국인·기관 수급은 시장 단위 제공 범위 밖입니다. 뉴스 감성은 19개 종목 평균 +7.6으로 긍정 7, 중립 9, 부정 3이며 포스코퓨처엠 +34, 삼성바이오로직스 +31, LG에너지솔루션 +28이 긍정, 리노공업 -28, SK하이닉스 -18, KB금융 -18이 부정입니다.",
+          "sentiment_and_supply": "공포탐욕 지수는 31점으로 '공포'이며 구성요소는 모멘텀 0(20일선 대비 -12.47%), 변동성 68(20일 변동성 2.66%), 감성 30(최근 10일 중 3일 상승), 이격도 0(-12.47%), 거래량비 49(5일/20일 1.23배), 고저 52(52주 고점 근접 2개, 저점 근접 0개/50)입니다. 수급은 2026-10-19 기준으로 KOSPI 외국인 +947.3억원, 기관 +10,378억원 순매수, KOSDAQ 외국인 -1,618억원 순매도, 기관 +686억원 순매수입니다. 종목별 외국인·기관 수급은 시장 단위 제공 범위 밖입니다. 뉴스 감성은 19개 종목 평균 +7.6으로 긍정 7, 중립 9, 부정 3이며 포스코퓨처엠 +34, 삼성바이오로직스 +31, LG에너지솔루션 +28이 긍정, 리노공업 -28, SK하이닉스 -18, KB금융 -18이 부정입니다.",
           "snapshot_cutoff": "2026-10-20T07:31:28.612135+09:00",
           "success": null,
           "summary": "Morning 기준 KOSPI 종가는 5,768.01로 전일 대비 +1.76%, KOSDAQ은 808.89로 +1.78% 상승했습니다. 같은 날 미국은 나스닥 +1.11%, SOX +1.61%, VIX 18.44(-7.75%)로 반도체 중심 위험선호가 이어졌고 원달러도 1,330.92로 하락해 다음 세션은 제한적 상승을 기본 시나리오로 판단합니다. 다만 20일선 6,589.89를 12.47% 하회하는 중기 약세와 CPI 4.02%·10년물 5.14%의 매크로 부담이 남아 있어 상승 폭과 확신도는 0.55로 제한합니다.",
@@ -61636,26 +61636,26 @@
   "source_manifest": {
     "artifact_count": 7,
     "artifact_hashes": {
-      "day1-morning-verification.json": "717c8e375459592c33deccb4054d38ef40970ac1b2a8896984cc6af3fdbbe141",
+      "day1-morning-verification.json": "0e6d0de47e07cc94cc04b95f6b1b53ea03404d339d54710bc087f69ec3efd178",
       "improvement.json": "00f34e244a8473e1e55fa11989981bb5e9474f8fcd3bcc04a4466c15713e4d13",
       "input_manifest.json": "7aba975b77f499c406c4d88aca54574c129398eaa59559544f9a4d832c390522",
-      "llm_prediction.json": "6b5986230e419717bd9e4f939908ba03e33b0b4f548bb58a747c8b4167b3acee",
+      "llm_prediction.json": "fa9516291601691d1f831af50c708635238ff30c7f521f8f713a15256f4d3fd7",
       "ml_prediction.json": "3cff6fb5d128a1ea2a48b479d14c56fa4e1c63fe1787cdd50bd73cdc1dd0d1e2",
       "quality.json": "6cc961ca20dd8a76282c1df324f53d375f08c22b255910a8b6e6a1c581675101",
-      "run.json": "63383a08cca0da48710c51d13c6a8aaa06f25d60324eaaf9f265232707b43f72"
+      "run.json": "b215d1b3ebeaa4eeccdfb94b4c4b87855f639ebb02115a8b6ac0cd220df24d0d"
     },
     "generator_command_template": "python3 scripts/project_publication.py --source-run <private-run-dir> --output-dir <output-dir> [--projected-at <iso>]",
     "generator_version": "stockpulse-v1-fixed-projector-1.2.0",
     "history": [
       {
         "artifact_hashes": {
-          "day1-morning-verification.json": "717c8e375459592c33deccb4054d38ef40970ac1b2a8896984cc6af3fdbbe141",
+          "day1-morning-verification.json": "0e6d0de47e07cc94cc04b95f6b1b53ea03404d339d54710bc087f69ec3efd178",
           "improvement.json": "00f34e244a8473e1e55fa11989981bb5e9474f8fcd3bcc04a4466c15713e4d13",
           "input_manifest.json": "7aba975b77f499c406c4d88aca54574c129398eaa59559544f9a4d832c390522",
-          "llm_prediction.json": "6b5986230e419717bd9e4f939908ba03e33b0b4f548bb58a747c8b4167b3acee",
+          "llm_prediction.json": "fa9516291601691d1f831af50c708635238ff30c7f521f8f713a15256f4d3fd7",
           "ml_prediction.json": "3cff6fb5d128a1ea2a48b479d14c56fa4e1c63fe1787cdd50bd73cdc1dd0d1e2",
           "quality.json": "6cc961ca20dd8a76282c1df324f53d375f08c22b255910a8b6e6a1c581675101",
-          "run.json": "63383a08cca0da48710c51d13c6a8aaa06f25d60324eaaf9f265232707b43f72"
+          "run.json": "b215d1b3ebeaa4eeccdfb94b4c4b87855f639ebb02115a8b6ac0cd220df24d0d"
         },
         "run_id": "live-shadow-2026-10-20-morning-01",
         "trading_date": "2026-10-20"
