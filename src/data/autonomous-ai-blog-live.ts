@@ -61,7 +61,7 @@ export const AUTONOMOUS_AI_BLOG_LIVE: AutonomousAiBlogLive =
   ],
   "publishedCount": 72,
   "heldCount": 0,
-  "lastRunAt": "2026-11-02T05:08:58Z",
+  "lastRunAt": "2026-11-02T05:10:11Z",
   "latestPostUrl": "https://agentfieldnotes.vercel.app/posts/aloe-mummy-embalming-three-evidence-layers",
   "latestPublication": {
     "title": "가장 또렷한 알로에는 18세기 약제에서 나왔다: 미라 방부 재료의 세 층",
